@@ -1,0 +1,55 @@
+.modal.fade#viewModal{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
+  .modal-dialog
+    .modal-body(style="overflow: hidden;")
+      %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+      %img{:id => 'image_preview', :width => '100%'}
+    .modal-footer
+      %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal"}
+        Close
+
+.doc-details
+  .row
+    .col-md-1
+      = image_tag(thumbnail_url(@file.id), width: '72px')
+    .col-md-11(style="margin-left: -80px;")
+      .row
+        .col-md-2
+          .key
+            = "File Name:"
+        .col-md-10
+          .value
+            = @file.name
+      .row
+        .col-md-2
+          .key
+            = "Created At:"
+        .col-md-10
+          .value
+            = @file.created_at
+      .row
+        .col-md-2
+          .key
+            = "Size:"
+        .col-md-10
+          .value
+            = "#{@file["size"]/1024} KB"
+      .row
+        .col-md-2
+        .col-md-10
+          = link_to 'Download', download_path(@file.id)
+      - unless @file.name.end_with?('.mp4')
+        .row
+          .col-md-2
+          .col-md-10
+            - if @file.name.downcase.end_with?('.png') or @file.name.downcase.end_with?('.jpg')
+              = link_to '#', :onclick => "$('#preview').hide(); $('#viewModal').modal(open); $('#image_preview').attr('src','#{download_url(@file.id)}'); " do
+                Preview
+            - else
+              = link_to '#', :onclick => "$('#image_preview').hide(); $('#viewModal').modal(open); $('#preview').attr('src','#{preview_url(@file.id)}'); " do
+                Preview
+
+  - if @file.name.downcase.end_with?('.mp4') or @file.name.downcase.end_with?('.mov')
+    / https://github.com/videojs/video.js/blob/stable/docs/guides/setup.md
+    .row(style="margin-top: 20px; margin-left: 0px;")
+      %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '640', height: '400', poster: "#{thumbnail_url(@file.id)}", 'data-setup' => true}
+        %source{src: "#{download_url(@file.id)}", type: 'video/mp4'}

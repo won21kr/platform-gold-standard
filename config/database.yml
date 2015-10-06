@@ -1,0 +1,24 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: rails_template_development
+  host: localhost
+  min_messages: warning
+  pool: 20
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: rails_template_production
+  host: localhost
+  min_messages: warning
+  pool: 20
+  username: postgres
+  password: password!
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: rails_template_test
+  host: localhost
+  min_messages: warning

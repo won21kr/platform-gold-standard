@@ -1,0 +1,78 @@
+:css
+  .item {
+      display: table-cell;
+      border:3px solid #f9f9f9;
+  }
+
+%h3
+  Set header config options:
+
+%section#config-form
+  %form{:action => save_config_path, :method => "post", :role => "form"}
+    .form-group.col-md-7
+      %label{:for => "company"} Company Name
+      %input.form-control#company{:type => "text", :name => "company", :placeholder => "Blue Insurance"}
+      %label{:for => "logo"} Company Logo URL
+      %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "logo.png"}
+      %label{:for => "navbar_color"} Navbar Primary Color
+      %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "ffffff"}
+      %label{:for => "navbar_text"} Navbar Secondary Color
+      %input.form-control#navbar_text{:type => "text", :name => "navbar_text", :placeholder => "000000"}
+      %label Display Company Name in Navigation Header?
+      %label#radio-inline
+        %input{:type => "radio", :name => "navbar_display_name?", :value => false, :checked => session[:navbar_display_name?]=='on'} Enable
+      %label#radio-inline
+        %input{:type => "radio", :name => "navbar_display_name?", :value => true, :checked => session[:navbar_display_name?]=='off' || session[:navbar_display_name?].nil?} Disable
+      .br
+
+
+    .form-group.col-md-12.item
+      %input.btn.btn-default{:type => "submit", :value => "Save"}
+
+%container.col-md-12{:role => "group"}
+
+  %form.item{:action => reset_config_path(reset: 'reset'), :method => "get"}
+    %button.btn.btn-default{:type => "submit", :type => "form"} Reset
+  %form.item{:action => "/", :method => "get", :role => "form"}
+    %input.btn.btn-default{:type => "submit", :value => "Main Page"}
+  %form.item{:action => "/config/save_config", :method => "get", :role => "form"}
+    %input.btn.btn-default{:type =>  "submit", :value => "Store Current Configuration"}
+  .dropdown.item
+    %button#menu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+      Restore Previous Configuration
+      %span.caret
+    %ul.dropdown-menu{"aria-labelledby" => "menu1", :role => "menu"}
+      - if @urls != nil
+        - @urls.each do |u|
+          %li{:role => "presentation"}
+            %a{:href => "/config/restore?company=#{u[0]}", :role => "menuitem", :tabindex => "-1"}
+              = u[0]
+
+%section
+  %h3
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Attribute Name
+          %th Attribute Value
+      %tbody
+        %tr
+          %td Company Name:
+          %td
+            = session[:company]
+        %tr
+          %td Logo:
+          %td
+            %img{:src => session[:logo], :style => "max-height:100px"}
+        %tr
+          %td Navbar Primary Color:
+          %td
+            = session[:navbar_color]
+        %tr
+          %td Navbar Secondary Color:
+          %td
+            = session[:navbar_text]
+        %tr
+          %td Navbar Display Company Name:
+          %td
+            = session[:navbar_display_name?]

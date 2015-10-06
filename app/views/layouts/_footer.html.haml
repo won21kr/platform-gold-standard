@@ -1,0 +1,6 @@
+.footer
+  .navbar.navbar-fixed-bottom.custom-footer
+    .col-md-12
+      .logout
+        - if session[:userinfo]
+          = link_to 'Logout', logout_path

@@ -1,0 +1,80 @@
+- content_for :auth0_code do
+  = javascript_include_tag '//cdn.auth0.com/js/lock-7.1.min.js'
+
+:css
+  .bg {
+    background-image:url('http://i1066.photobucket.com/albums/u418/austinringer/cropped_zpsh8romcfg.jpg');
+    min-width: 100%;
+    min-height: 790px;
+    background-repeat:no-repeat;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin-top: 0px;
+    }
+
+  .one {
+    position:relative; !important;
+    margin-left:25%; !important;
+    border:3px solid #055388;
+    padding:20px;
+    font-size:0.9em;
+    color:white;
+    background-color: white; !important;
+
+    font-family: 'Open Sans', sans-serif;
+    color: #055388; !important
+    font-weight:600;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    border-radius: 5px;
+    width: 50%; !important;
+
+    }
+
+    .one:hover {
+      bottom:4px;
+        box-shadow:0px 2px 0px 0px #055388;
+      transition: all .01s ease-in-out;
+      -moz-transition: all .01s ease-in-out;
+      -webkit-transition: all .01s ease-in-out;
+    }
+
+    .one:active {
+      top:4px;
+      box-shadow:inset 0px 2px 0px 0px #055388;
+      transition: all .01s ease-in-out;
+      -moz-transition: all .01s ease-in-out;
+      -webkit-transition: all .01s ease-in-out;
+
+      #055388;
+        transition: all .01s ease-in-out;
+        -moz-transition: all .01s ease-in-out;
+        -webkit-transition: all .01s ease-in-out;
+
+
+%body.bg{:background => "http://i1066.photobucket.com/albums/u418/austinringer/6824363551_4031f41105_o_zpsvvze0pbo.jpg"}
+
+.signin-button
+  .tagline(style="font-size: 270%; margin-left: 300px; margin-top: -160px; margin-bottom: 40px; color: #fff;")
+    %p
+      Dig the well before you are thirsty.
+  .row
+    .col-md-4
+    .col-md-4
+      %button.one{:onclick => 'signin()', :class => "btn btn-primary btn-lg btn-login btn-block"}
+        Sign In
+    .col-md-4
+
+
+
+:javascript
+  var lock = new Auth0Lock('#{ENV["AUTH0_CLIENT_ID"]}', '#{ENV["AUTH0_DOMAIN"]}');
+
+  function signin() {
+    lock.show({
+        callbackURL: '#{ENV["AUTH0_CALLBACK"]}',
+        responseType: 'code',
+        authParams: {scope: 'openid profile'}
+    });
+  }

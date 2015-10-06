@@ -1,0 +1,431 @@
+:css
+
+  .form-group {
+    width: 500px;
+    border-radius: 3px;
+    margin-top: -2em;
+    margin-bottom: 0em;
+    padding: 1.25em;
+    font-size: 20px;
+  }
+
+
+  .btn-primary {
+    box-shadow: 0;
+    border: none;
+    background-color: #48c9b0;
+    border-color: #48c9b0;
+    color: #ffffff;
+    outline: none;
+    -webkit-font-smoothing: subpixel-antialiased;
+    transition: all .5s;
+    padding: 10px 19px;
+    font-size: 17px;
+    line-height: 1.471;
+    width: 30%;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin: auto;
+    margin-top: 1.44em;
+    margin-bottom: .55em;
+    display: inherit;
+  }
+
+  .btn-primary:hover {
+    background-color: #1ABC9C;
+  }
+
+   input, textarea {
+    transition: all 800ms;
+    resize: none;  /* removes the resize handle */
+    overflow: auto; /* removes default scrolling bars in IE */
+    outline:none;
+    font-family:inherit;
+    box-sizing:border-box;
+    width: 100%;
+    padding: 0px 4px;
+    color: #34495e;
+    margin-top: 1.25em;
+  }
+
+  #contact-send {
+
+  }
+
+  .form-control {
+    transition: opacity .6s;
+    opacity: 1;
+    border: 0;
+    border-bottom: 2px solid #bdc3c7;
+    border-radius: 0;
+    background: white;
+    font-size: 15px;
+    line-height: 1.467;
+    padding: 8px;
+    padding-bottom: 37px;
+    height: 90px; !important;
+    transition: .6s; !important;
+  }
+
+  * {
+      margin: 0;
+      padding: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+   }
+
+  a {
+      color: #03658c;
+      text-decoration: none;
+   }
+
+  ul {
+    list-style-type: none;
+  }
+
+  body {
+    background: #dee1e3;
+  }
+
+  /** ====================
+   * Lista de Comentarios
+   =======================*/
+  .comments-container {
+    margin: 60px auto 15px;
+    width: 768px;
+  }
+
+  .comments-container h1 {
+    font-size: 36px;
+    color: #283035;
+    font-weight: 400;
+  }
+
+  .comments-container h1 a {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .comments-list {
+    margin-top: 30px;
+    position: relative;
+  }
+
+  /**
+   * Lineas / Detalles
+   -----------------------*/
+  .comments-list:before {
+    content: '';
+    width: 2px;
+    height: 100%;
+    background: #c7cacb;
+    position: absolute;
+    left: 32px;
+    top: 0;
+  }
+
+  .comments-list:after {
+    content: '';
+    position: absolute;
+    background: #c7cacb;
+    bottom: 0;
+    left: 27px;
+    width: 7px;
+    height: 7px;
+    border: 3px solid #dee1e3;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+  }
+
+  .reply-list:before, .reply-list:after {display: none;}
+  .reply-list li:before {
+    content: '';
+    width: 60px;
+    height: 2px;
+    background: #c7cacb;
+    position: absolute;
+    top: 25px;
+    left: -55px;
+  }
+
+
+  .comments-list li {
+    margin-bottom: 15px;
+    display: block;
+    position: relative;
+    margin-right: 150px; !important;
+  }
+
+  .comments-list li:after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0;
+    width: 0;
+  }
+
+  .reply-list {
+    padding-left: 88px;
+    clear: both;
+    margin-top: 15px;
+  }
+  /**
+   * Avatar
+   ---------------------------*/
+  .comments-list .comment-avatar {
+    width: 65px;
+    height: 65px;
+    position: relative;
+    z-index: 99;
+    float: left;
+    border: 3px solid #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+
+  .comments-list .comment-avatar img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .reply-list .comment-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .comment-main-level:after {
+    content: '';
+    width: 0;
+    height: 0;
+    display: block;
+    clear: both;
+  }
+  /**
+   * Caja del Comentario
+   ---------------------------*/
+  .comments-list .comment-box {
+    width: 680px;
+    float: right;
+    position: relative;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    margin-right: 185px;
+    margin-top: -115px;
+  }
+
+  .comments-list .comment-box:before, .comments-list .comment-box:after {
+    content: '';
+    height: 0;
+    width: 0;
+    position: absolute;
+    display: block;
+    border-width: 10px 12px 10px 0;
+    border-style: solid;
+    border-color: transparent #FCFCFC;
+    top: 8px;
+    left: -11px;
+  }
+
+  .comments-list .comment-box:before {
+    border-width: 11px 13px 11px 0;
+    border-color: transparent rgba(0,0,0,0.05);
+    left: -12px;
+  }
+
+  .reply-list .comment-box {
+    width: 610px;
+  }
+  .comment-box .comment-head {
+    background: #FCFCFC;
+    padding: 10px 12px;
+    border-bottom: 1px solid #E5E5E5;
+    overflow: hidden;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .comment-box .comment-head i {
+    float: right;
+    margin-left: 14px;
+    position: relative;
+    top: 2px;
+    color: #A6A6A6;
+    cursor: pointer;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+  }
+
+  .comment-box .comment-head i:hover {
+    color: #03658c;
+  }
+
+  .comment-box .comment-name {
+    color: #283035;
+    font-size: 14px;
+    font-weight: 700;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .comment-box .comment-name a {
+    color: #283035;
+  }
+
+  .comment-box .comment-head span {
+    float: left;
+    color: #999;
+    font-size: 13px;
+    position: relative;
+    margin-right: 50px;
+    top: 1px;
+  }
+
+  .comment-box .comment-content {
+    background: #FFF;
+    padding: 12px;
+    font-size: 15px;
+    color: #595959;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+  }
+
+  .comment-box .comment-name.by-author, .comment-box .comment-name.by-author a {color: #03658c;}
+  .comment-box .comment-name.by-author:after {
+    content: 'autor';
+    background: #03658c;
+    color: #FFF;
+    font-size: 12px;
+    padding: 3px 5px;
+    font-weight: 700;
+    margin-left: 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+
+  /** =====================
+   * Responsive
+   ========================*/
+  @media only screen and (max-width: 766px) {
+    .comments-container {
+      width: 480px;
+    }
+
+    .comments-list .comment-box {
+      width: 390px;
+    }
+
+    .reply-list .comment-box {
+      width: 320px;
+    }
+  }
+
+
+
+.modal.fade#viewModal1{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
+  .modal-dialog
+    .modal-body(style="overflow: hidden;")
+      %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+    .modal-footer
+      %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal"}
+        Close
+
+.modal.fade#viewModal2{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
+  .modal-dialog
+    .modal-body(style="overflow: hidden;")
+      %img{:id => 'image_preview', :width => '100%'}
+    .modal-footer
+      %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal"}
+        Close
+
+%h5(style="margin-top: -5px; font-size: 120%;")
+  = link_to '<< Back to Dashboard', dashboard_path
+
+
+%h3 Claim Documents
+
+
+- @items.each do |f|
+  .doc-details
+    .row
+      .col-md-1
+        = image_tag(thumbnail_url(f.id), width: '72px')
+      .col-md-11(style="margin-left: -80px;")
+        .row
+          .col-md-2
+            .key
+              = "File Name:"
+          .col-md-10
+            .value
+              = f.name
+        .row
+          .col-md-10
+            .value
+              = f.created_at
+        .row
+          .col-md-2
+          .col-md-10
+            = link_to 'Download', download_path(f.id)
+        - unless f.name.end_with?('.mp4')
+          .row
+            .col-md-2
+            .col-md-10
+              - if f.name.downcase.end_with?('.png') or f.name.downcase.end_with?('.jpg')
+                = link_to '#', :onclick => "$('#viewModal2').modal(open); $('#image_preview').attr('src','#{download_url(f.id)}'); " do
+                  Preview
+              - else
+                = link_to '#', :onclick => "$('#viewModal1').modal(open); $('#preview').attr('src','#{preview_url(f.id)}'); " do
+                  Preview
+
+    - if f.name.downcase.end_with?('.mp4') or f.name.downcase.end_with?('.mov')
+      / https://github.com/videojs/video.js/blob/stable/docs/guides/setup.md
+      .row(style="margin-top: 20px; margin-left: 0px;")
+        %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '640', height: '400', poster: "#{thumbnail_url(f.id)}", 'data-setup' => true}
+          %source{src: "#{download_url(f.id)}", type: 'video/mp4'}
+
+<br><br><br>
+
+%h3 Leave a Comment
+%form{:action => display_claim_post_path(@claimFolderId), :role => "form", :method => "post"}
+  = token_tag
+  .form-group
+    %input#contact-message.form-control{:name => "comment", :placeholder => "Write a message then press ENTER...", :type => "text", :value => ""}
+    %label.input-field-icon.icon-user{:for => "login-name"}
+
+%col-md-8
+- @comments.each do |c|
+  .doc-details
+    .row
+      .col-md-1
+        - if (c.created_by.id == session[:box_id])
+          %img{:src => session[:userinfo][:info][:image], :width => '60px', :class => 'img-circle'}
+        - else
+          %img{:src => session[:agent_url], :width => '60px', :class => 'img-circle'}
+    .comments-container
+      %ul#comments-list.comments-list
+        .comment-main-level
+          .comment-box
+            .comment-content
+              = c.message
+
+
+
+        -#  .col-md-2
+        -#.row
+          -#.col-md-4
+          -#  .key
+          -#    = "Posted By:"
+          -#.col-md-4
+          -#  .value
+          -#    = c.created_by.name
