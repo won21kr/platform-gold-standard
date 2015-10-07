@@ -16,92 +16,72 @@
 
 .home
   .container
-    .col-md-12
-      .alert.alert-info.alert-dismissable
-        %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button",} ×
-        %h4 <b>Heads up! </b> You have a new message from #{@agent.name}
+    .new-bookshelf
+      .title
+        Vault
+      .sub-title
+        = "Here are your personal & shared files"
+      %ul#tabs.nav.nav-tabs{:role => "tablist", :style => "margin-top: 10px; font-size: 60%; font-weight: 400"}
+        - @tabs.each_with_index do |f, i|
+          %li{:class => "#{'active' if @tabs.first == f}"}
+            %a{"aria-controls" => f.name, "data-toggle" => "tab", :href => "##{f.id}"}= f.name
+      %hr
+      .tab-content
+        - @tabs.each_with_index do |folder, index|
+          %div{:class => "tab-pane fade #{'in active' if @tabs.first == folder}", :id => folder.id}
+            .drop-area
+              .row
+                .col-md-12
+                  = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(folder.id))  {}
 
-    / /articles
-    %hr
-      .row
-        .col-sm-3.col-xs-6
-          .panel.panel-default
-            .panel-thumbnail
-              %img.img-responsive{:width => "100%", :src => session[:agent_url]}/
-            .panel-body
-              %p.lead Hi, I'm your agent. How can I help you today?
-              %h4
-                %b
-                  = @agent.name
-              %h5
-                %i.glyphicon.glyphicon-tag
-                = @agent.job_title
-              %h5
-                %i.glyphicon.glyphicon-envelope
-                = @agent.login
-              %h5
-                %i.glyphicon.glyphicon-phone-alt
-                = @agent.phone
-              %h4
-                <br>
-                My Team
-                <br><br>
-                %img{:height => "28px", :src => "http://api.randomuser.me/portraits/med/men/20.jpg", :width => "28px"}
-                  %img{:height => "28px", :src => "http://api.randomuser.me/portraits/med/men/21.jpg", :width => "28px"}
-                    %img{:height => "28px", :src => "http://api.randomuser.me/portraits/med/men/14.jpg", :width => "28px"}
-        .container
-          .col-md-9.col-sm-9.pull-right
-            .panel.panel-default
-              .panel-heading
-                .pull-right.h4
-                  = link_to "New Claim", new_claim_path()
-                %h2 My Claim History
-              %table.table
-                %thead
-                  %tr
-                    %th Claim #
-                    %th Claim Type
-                    %th Claim Value
-                    %th Status
-                  %tbody
-                  - @claims.each do |f|
-                    - if (f.id != ENV['RESOURCES_ID'])
-                      %tr
-                        %td
-                          = link_to f.name, display_claim_path(f.id)
-                        %td
-                          = @meta[f.id]["type"] if !@meta[f.id].nil?
-                        %td
-                          = "$" + @meta[f.id]["value"] if !@meta[f.id].nil?
-                        %td
-                          = @meta[f.id]["status"] if !@meta[f.id].nil?
-            .new-bookshelf.pull-right
-              %h2
-                My Content
-              .sub-title
-                = "We've selected some literature appropriate for your insurance plans. More documents will be added to this bookshelf as you progress as a customer."
-              .tabs
-                .row
-                  .col-md-2(style="color: #3278cf")
-                    .tab-label{:style=>@tab_style}
-                      Resources
-                  .col-md-8
-              %hr
-                .items
-                  - @resource_files.each_slice(4) do |book_row|
-                    .row
-                      - bg_colors = ["background-color: #8dc0b1;","background-color: #5061b8;","background-color: #5093b8;","background-color: #d55353;"]
-                      - book_row.each_with_index do |f,i|
-                        .col-md-3
-                          - bg_style = bg_colors[i]
-                          .item{:style=>bg_style}
-                            - if f.name.downcase.end_with?('.png') or f.name.downcase.end_with?('.jpg')
-                              = link_to '#', :onclick => "$('#viewModal2').modal(open); $('#image_preview').attr('src','#{download_url(f.id)}'); " do
-                                = image_tag(thumbnail_url(f.id), height: '100px', class: 'view-thumbnail')
-                            - else
-                              = link_to '#', :onclick => "$('#viewModal1').modal(open); $('#preview').attr('src','#{preview_url(f.id)}'); " do
-                                = image_tag(thumbnail_url(f.id), height: '100px', class: 'view-thumbnail')
-                            .title-backdrop
-                            .title-container
-                              .title
-                                = f.name.split('.').first
+.home
+.container
+  .col-md-12.col-sm-12.pull-right
+    .panel.panel-default
+      .panel-heading
+        %h2 My Vault
+        .sub-title
+          = "Here are your personal & shared files"
+      %table.table
+        %thead
+          %tr
+            %th File
+            %th Name
+            %th Date Uploaded
+            %th Status
+          %tbody
+            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 60%; font-weight: 400"}
+              - @tabs.each_with_index do |f, i|
+                %li{:class => "#{'active' if @tabs.first == f}"}
+                  %a{"aria-controls" => f.name, "data-toggle" => "tab", :href => "##{f.id}"}= f.name
+            %tr
+              %td
+                .tab-content
+                  - @tabs.each_with_index do |folder, index|
+                    %div{:class => "tab-pane fade #{'in active' if @tabs.first == folder}", :id => folder.id}
+                      .drop-area
+                        .row
+                          .col-md-12
+                            = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(folder.id))  {}
+          -# - @files.each do |f|
+          -#     %tr
+          -#       %td
+          -#         /= link_to f.name, display_claim_path(f.id)
+          -#       %td
+          -#         /= @meta[f.id]["type"] if !@meta[f.id].nil?
+          -#       %td
+          -#         /= "$" + @meta[f.id]["value"] if !@meta[f.id].nil?
+          -#       %td
+          -#         /= @meta[f.id]["status"] if !@meta[f.id].nil?
+
+:javascript
+  Dropzone.options.myDropzone = {
+    init: function() {
+      this.on("queuecomplete", function(file) {
+        setTimeout(function() {location.reload();}, 2000);
+      });
+    }
+  };
+
+:javascript
+  $(function () {$('[data-toggle="tooltip"]').tooltip()})

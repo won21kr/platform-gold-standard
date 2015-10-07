@@ -1,46 +1,21 @@
 class DashboardController < SecuredController
 
   def show
-    @claims = user_client.root_folder_items.folders
 
-    @access_token = Box.user_token(session[:box_id])
-    #@agent = Box.admin_client.user_from_id(session[:agent])
+    client = user_client
+    # folder = user_client.folder_from_id('4267363735')
+    rootFolders = client.folder_items(Boxr::ROOT)
 
-    # fetching box user token
-    agent_client = Box.user_client(session[:agent])
-    @agent = agent_client.user_from_id(session[:agent])
-    ap @agent
+    @tabs = Array.new
 
-    # setup metadata hashmap
-    @meta = Hash.new
-    @claims.each do |f|
-
-      puts "folder name: "
-      puts f.name
-
-      if(f.id != ENV['RESOURCES_ID'])
-
-        file = user_client.folder_items(f).files.first
-        if (file != nil)
-          data = user_client.metadata(file)
-
-          fileMeta = Hash.new
-          fileMeta.store("type", data["Claim Type"])
-          fileMeta.store("value", data["Claim Value"])
-          fileMeta.store("status", data["Claim Status"])
-
-          @meta.store(f.id, fileMeta)
-        end
+    rootFolders.each do |f|
+      if(f.name.include? "My Files" or f.name.include? "Shared Files")
+          if(f.name.include? session[:userinfo]['info']['name'])
+            f.name = "Shared Files"
+          end
+          @tabs.push(f)
       end
     end
-
-    ap @meta
-
-    # get resource files
-    folder = user_client.folder_from_id(ENV['RESOURCES_ID'])
-    # folder = user_client.folder_from_id('4267363735')
-    @resource_files = user_client.folder_items(folder).files
-    ap @resource_files
 
   end
 

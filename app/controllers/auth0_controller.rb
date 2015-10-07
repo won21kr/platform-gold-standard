@@ -16,27 +16,9 @@ class Auth0Controller < ApplicationController
 
       #store the box_id in Auth0
       Auth0API.client.patch_user_metadata(uid, { box_id: box_user.id})
-
       setup_box_account
-
-
       puts "created new box user and set box_id in auth0 metadata"
     end
-
-    assign_agent(session[:box_id])
-
-    resource = Box.user_client(ENV['RUSER_ID'])
-    folder = resource.folder_from_id(ENV['AVATARS_ID'])
-    items = resource.folder_items(folder).files
-    items.each do |f|
-
-      meta = resource.metadata(f)
-      if(meta['agent_id'] == session[:agent])
-        session[:agent_url] = resource.download_url(f)
-      end
-
-    end
-
 
     redirect_to dashboard_path
   end
@@ -45,33 +27,19 @@ class Auth0Controller < ApplicationController
     @error_msg = request.params['message']
   end
 
-  def assign_agent(id)
-    num = Integer(session[:box_id]).modulo(3)
-
-    if(num == 0)
-      session[:agent] = ENV['AGENT_ID1']
-    elsif(num == 1)
-      session[:agent] = ENV['AGENT_ID2']
-    else
-      session[:agent] = ENV['AGENT_ID3']
-    end
-  end
-
   private
 
   def setup_box_account
     #puts "user: #{session[:box_id]}"
-    #box_user = Box.user_client(session[:box_id])
+    box_user = Box.user_client(session[:box_id])
 
-    resource = Box.user_client(ENV['RUSER_ID'])
+    # add user to "Customers" group
+    Box.admin_client.add_user_to_group(session[:box_id], ENV['CUSTOMER_GROUP'])
 
-    folder = resource.folder_from_id(ENV['RESOURCES_ID'])
-
-    resource.add_collaboration(folder, {id: session[:box_id], type: :user}, :viewer)
-
-    #this is where you set up the new app user's initial files, folders, permissions, etc.
-    #box_user.create_folder("Test Folder", Boxr::ROOT)
-    #box_user.upload_file(Rails.root.join("docs","test.txt"), Boxr::ROOT)
+    # create new user folders and add collaborator
+    sharedFolder = box_user.create_folder("#{session[:userinfo]['info']['name']} - Shared Files", Boxr::ROOT)
+    box_user.add_collaboration(sharedFolder, {id: ENV['EMPL_ID'], type: :user}, :editor)
+    box_user.create_folder("My Files", Boxr::ROOT)
   end
 
 end
