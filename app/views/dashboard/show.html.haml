@@ -13,27 +13,6 @@
     .modal-footer
       %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal"}
         Close
-
-.home
-  .container
-    .new-bookshelf
-      .title
-        Vault
-      .sub-title
-        = "Here are your personal & shared files"
-      %ul#tabs.nav.nav-tabs{:role => "tablist", :style => "margin-top: 10px; font-size: 60%; font-weight: 400"}
-        - @tabs.each_with_index do |f, i|
-          %li{:class => "#{'active' if @tabs.first == f}"}
-            %a{"aria-controls" => f.name, "data-toggle" => "tab", :href => "##{f.id}"}= f.name
-      %hr
-      .tab-content
-        - @tabs.each_with_index do |folder, index|
-          %div{:class => "tab-pane fade #{'in active' if @tabs.first == folder}", :id => folder.id}
-            .drop-area
-              .row
-                .col-md-12
-                  = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(folder.id))  {}
-
 .home
 .container
   .col-md-12.col-sm-12.pull-right
@@ -48,31 +27,36 @@
             %th File
             %th Name
             %th Date Uploaded
-            %th Status
+            %th Actions
           %tbody
             %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 60%; font-weight: 400"}
-              - @tabs.each_with_index do |f, i|
-                %li{:class => "#{'active' if @tabs.first == f}"}
-                  %a{"aria-controls" => f.name, "data-toggle" => "tab", :href => "##{f.id}"}= f.name
+              %li{:class => "#{'active' if @myFolder.id == @currentFolder}"}
+                = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
+              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}"}
+                = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
+          - @files.each do |f|
             %tr
               %td
-                .tab-content
-                  - @tabs.each_with_index do |folder, index|
-                    %div{:class => "tab-pane fade #{'in active' if @tabs.first == folder}", :id => folder.id}
-                      .drop-area
-                        .row
-                          .col-md-12
-                            = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(folder.id))  {}
-          -# - @files.each do |f|
-          -#     %tr
-          -#       %td
-          -#         /= link_to f.name, display_claim_path(f.id)
-          -#       %td
-          -#         /= @meta[f.id]["type"] if !@meta[f.id].nil?
-          -#       %td
-          -#         /= "$" + @meta[f.id]["value"] if !@meta[f.id].nil?
-          -#       %td
-          -#         /= @meta[f.id]["status"] if !@meta[f.id].nil?
+                = image_tag(thumbnail_url(f.id), width: '30px')
+              %td
+                = f.name
+              %td
+                = f.created_at
+              %td
+                .btn-group
+                  %a.btn.btn-default.btn-md{href: dashboard_id_path(@myFolder.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Advisor'}
+                    %span.glyphicon.glyphicon-share
+                  %a.btn.btn-default.btn-md{href: dashboard_id_path(@myFolder.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                    %span.glyphicon.glyphicon-cloud-download
+                  %a.btn.btn-default.btn-md{href: dashboard_id_path(@myFolder.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
+                    %span.glyphicon.glyphicon-trash
+          %tr
+            .tab-content
+              .drop-area
+                .row
+                  .col-md-12
+                    = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
+
 
 :javascript
   Dropzone.options.myDropzone = {

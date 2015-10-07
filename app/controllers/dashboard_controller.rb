@@ -6,16 +6,34 @@ class DashboardController < SecuredController
     # folder = user_client.folder_from_id('4267363735')
     rootFolders = client.folder_items(Boxr::ROOT)
 
-    @tabs = Array.new
+    @myFolder = client.folder_from_path('My Files')
+    @sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+    @sharedFolder.name = "Shared Files"
 
-    rootFolders.each do |f|
-      if(f.name.include? "My Files" or f.name.include? "Shared Files")
-          if(f.name.include? session[:userinfo]['info']['name'])
-            f.name = "Shared Files"
-          end
-          @tabs.push(f)
-      end
+    # set active folder tab
+    if(params[:id])
+      puts "changing active folder"
+      @currentFolder = params[:id]
+    else
+      @currentFolder = @myFolder.id
     end
+
+    # get files for dashboard display
+    if(@currentFolder == @myFolder.id)
+      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at])
+    elsif(@currentFolder == @sharedFolder.id)
+      @files = client.folder_items(@sharedFolder, fields: [:created_at])
+    end
+
+
+    # @files.each do |f|
+    #   class << f
+    #     attr_accessor :created_at
+    #   end
+    #
+    #   file = client.file_from_id(f.id, fields: [:created_at])
+    #   f.created_at = file.created_at
+    # end
 
   end
 
@@ -73,6 +91,7 @@ class DashboardController < SecuredController
       ap @comments
     end
 
+
   end
 
   def upload
@@ -105,7 +124,11 @@ class DashboardController < SecuredController
   end
 
   def thumbnail
-    image = user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
+    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 10.minutes) do
+      puts "miss!"
+      user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
+    end
+
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
 

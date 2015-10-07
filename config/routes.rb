@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get "/" => "home#show", :as => 'home'
 
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
+  get "/dashboard/:id" => "dashboard#show", :as => 'dashboard_id'
+
   get "/doc/:id" => "dashboard#doc", :as => 'doc'
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
   get "/download/:id" => 'dashboard#download', :as => "download"
