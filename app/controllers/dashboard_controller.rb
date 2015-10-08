@@ -17,24 +17,14 @@ class DashboardController < SecuredController
     else
       @currentFolder = @myFolder.id
     end
+    session[:current_folder] = @currentFolder
 
     # get files for dashboard display
     if(@currentFolder == @myFolder.id)
       @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at])
     elsif(@currentFolder == @sharedFolder.id)
-      @files = client.folder_items(@sharedFolder, fields: [:created_at])
+      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at])
     end
-
-
-    # @files.each do |f|
-    #   class << f
-    #     attr_accessor :created_at
-    #   end
-    #
-    #   file = client.file_from_id(f.id, fields: [:created_at])
-    #   f.created_at = file.created_at
-    # end
-
   end
 
   def upload_claim
@@ -144,6 +134,39 @@ class DashboardController < SecuredController
     end
 
     redirect_to download_url
+  end
+
+  def delete_file
+
+    id = params[:id]
+    client = user_client
+    client.delete_file(id)
+
+    redirect_to dashboard_id_path(session[:current_folder])
+  end
+
+  def share_file
+
+    id = params[:id]
+    client = user_client
+
+    # get shared folder, then move file into shared folder
+    sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+    client.move_file(id, sharedFolder)
+
+    redirect_to dashboard_id_path(sharedFolder.id)
+  end
+
+  def unshare_file
+
+    id = params[:id]
+    client = user_client
+
+    # get my folder, then move file into my folder
+    myFolder = client.folder_from_path('My Files')
+    client.move_file(id, myFolder)
+
+    redirect_to dashboard_id_path(myFolder.id)
   end
 
   private

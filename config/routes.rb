@@ -4,10 +4,13 @@ Rails.application.routes.draw do
 
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
   get "/dashboard/:id" => "dashboard#show", :as => 'dashboard_id'
+  get "/delete/:id" => "dashboard#delete_file", :as => "delete_file"
+  get "/download/:id" => 'dashboard#download', :as => "download"
+  get "/share/:id" => "dashboard#share_file", :as => "share_file"
+  get "/unshare/:id" => "dashboard#unshare_file", :as => "unshare_file"
 
   get "/doc/:id" => "dashboard#doc", :as => 'doc'
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
-  get "/download/:id" => 'dashboard#download', :as => "download"
   get "/preview/:id" => 'dashboard#preview', :as => "preview"
 
   get "/new-claim/" => "dashboard#new_claim", :as => "new_claim"

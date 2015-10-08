@@ -1,3 +1,4 @@
+
 .modal.fade#viewModal1{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
   .modal-dialog
     .modal-body(style="overflow: hidden;")
@@ -20,7 +21,7 @@
       .panel-heading
         %h2 My Vault
         .sub-title
-          = "Here are your personal & shared files"
+          = "Your personal & shared files"
       %table.table
         %thead
           %tr
@@ -29,33 +30,38 @@
             %th Date Uploaded
             %th Actions
           %tbody
-            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 60%; font-weight: 400"}
+            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400"}
               %li{:class => "#{'active' if @myFolder.id == @currentFolder}"}
                 = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
               %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}"}
                 = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
-          - @files.each do |f|
-            %tr
-              %td
-                = image_tag(thumbnail_url(f.id), width: '30px')
-              %td
-                = f.name
-              %td
-                = f.created_at
-              %td
-                .btn-group
-                  %a.btn.btn-default.btn-md{href: dashboard_id_path(@myFolder.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Advisor'}
-                    %span.glyphicon.glyphicon-share
-                  %a.btn.btn-default.btn-md{href: dashboard_id_path(@myFolder.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                    %span.glyphicon.glyphicon-cloud-download
-                  %a.btn.btn-default.btn-md{href: dashboard_id_path(@myFolder.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
-                    %span.glyphicon.glyphicon-trash
-          %tr
-            .tab-content
-              .drop-area
-                .row
-                  .col-md-12
-                    = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
+            - @files.each do |f|
+              %tr
+                %td
+                  = link_to preview_path(f.id) do
+                    = image_tag(thumbnail_url(f.id), width: '30px')
+                %td
+                  = f.name
+                %td
+                  = DateTime.strptime(f.created_at).strftime("%B %d, %Y %l:%M %p")
+                %td
+                  .btn-group
+                    %a.btn.btn-default.btn-md{href: preview_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                      %span.glyphicon.glyphicon-eye-open
+                    - if (@currentFolder == @myFolder.id)
+                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
+                        %span.glyphicon.glyphicon-share
+                    - elsif (@currentFolder == @sharedFolder.id)
+                      %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
+                        %span.glyphicon.glyphicon-share
+                    %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                      %span.glyphicon.glyphicon-cloud-download
+                    %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
+                      %span.glyphicon.glyphicon-trash
+    .drop-area
+      .row
+        .col-md-12
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
 
 
 :javascript
