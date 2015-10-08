@@ -14,9 +14,16 @@
     .modal-footer
       %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal"}
         Close
+
 .home
+.col-md-2
+  %ul.nav.nav-pills.nav-stacked
+    %li.active
+      %a{:href => "/dashboard"} My Vault
+    %li
+      %a{:href => "#"} Resources
 .container
-  .col-md-12.col-sm-12.pull-right
+  .col-md-10.col-sm-10.pull-right
     .panel.panel-default
       .panel-heading
         %h2 My Vault
@@ -38,7 +45,7 @@
             - @files.each do |f|
               %tr
                 %td
-                  = link_to preview_path(f.id) do
+                  = link_to view_doc_path(f.id) do
                     = image_tag(thumbnail_url(f.id), width: '30px')
                 %td
                   = f.name
@@ -46,7 +53,7 @@
                   = DateTime.strptime(f.created_at).strftime("%B %d, %Y %l:%M %p")
                 %td
                   .btn-group
-                    %a.btn.btn-default.btn-md{href: preview_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                    %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                       %span.glyphicon.glyphicon-eye-open
                     - if (@currentFolder == @myFolder.id)
                       %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}

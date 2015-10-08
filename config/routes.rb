@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get "/share/:id" => "dashboard#share_file", :as => "share_file"
   get "/unshare/:id" => "dashboard#unshare_file", :as => "unshare_file"
 
+  get "/view_doc/:id" => "view#show", :as => "view_doc"
+
+
   get "/doc/:id" => "dashboard#doc", :as => 'doc'
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
   get "/preview/:id" => 'dashboard#preview', :as => "preview"
