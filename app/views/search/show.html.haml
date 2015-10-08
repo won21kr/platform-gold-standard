@@ -30,7 +30,7 @@
               .col-md-3
                 .thumb-image-border
                   = link_to view_doc_path(result.id) do
-                    = image_tag(thumbnail_url(result.id), :height => "100px")
+                    = image_tag(thumbnail_url(result.id), :height => "90px")
               .col-md-7
                 .row(style = 'margin-left: -25px;')
                   .col-md-3
@@ -39,16 +39,18 @@
                     .result-label
                       Date Created:
                     .result-label
-                      Size:
+                      Resource Type:
                     .result-label
-                      Type:
+                      Product:
                   .col-md-9
                     .result-data
                       = result.name
                     .result-data
                       = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
                     .result-data
-                      = "#{result.size} Bytes"
+                      resource
+                    .result-data
+                      product
               .col-md-2
                 .btn-group.pull-right
                   %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
