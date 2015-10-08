@@ -410,8 +410,6 @@
       .col-md-1
         - if (c.created_by.id == session[:box_id])
           %img{:src => session[:userinfo][:info][:image], :width => '60px', :class => 'img-circle'}
-        - else
-          %img{:src => session[:agent_url], :width => '60px', :class => 'img-circle'}
     .comments-container
       %ul#comments-list.comments-list
         .comment-main-level

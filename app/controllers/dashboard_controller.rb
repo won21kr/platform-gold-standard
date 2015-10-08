@@ -5,6 +5,7 @@ class DashboardController < SecuredController
     client = user_client
     # folder = user_client.folder_from_id('4267363735')
     rootFolders = client.folder_items(Boxr::ROOT)
+    session[:current_page] = "vault"
 
     @myFolder = client.folder_from_path('My Files')
     @sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
@@ -25,63 +26,6 @@ class DashboardController < SecuredController
     elsif(@currentFolder == @sharedFolder.id)
       @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at])
     end
-  end
-
-  def upload_claim
-
-    meta = Hash.new
-    ap params
-
-    # add file metadata
-    id = session[:claimId].to_s
-    puts id
-    meta.store("Claim ID", id)
-    meta.store("Claim Type", params[:claimType])
-    meta.store("Claim Date", params[:claimDate])
-    meta.store("Claim Value", params[:claimValue])
-    meta.store("Claim Desciption", params[:description])
-    meta.store("Claim Status", "Pending")
-    session[:meta] = meta
-    ap meta
-
-    @folder = user_client.folder_from_id(params[:id])
-
-  end
-
-  def new_claim
-    puts "creating claim"
-
-    session[:claimId] = rand(10 ** 10)
-
-    # create new claim Folder
-    @newClaimFolder = user_client.create_folder("Claim - ##{session[:claimId]}", Boxr::ROOT)
-    user_client.add_collaboration(@newClaimFolder, {id: session[:agent], type: :user}, :editor)
-
-  end
-
-  def display_claim
-
-    @comments = []
-    @claimFolderId = params[:id]
-    @claimFolder = user_client.folder_from_id(@claimFolderId)
-    @items = user_client.folder_items(@claimFolderId).files
-
-    begin
-      if(request.post?)
-        puts "post request\ncomment: #{params[:comment]}"
-        comment = params[:comment]
-        user_client.add_comment_to_file(@items[0], message: comment)
-      end
-    rescue
-      puts "Error in processing comment"
-    end
-
-    if(@items.length > 0)
-      @comments = user_client.file_comments(@items[0])
-      ap @comments
-    end
-
-
   end
 
   def upload
@@ -114,7 +58,7 @@ class DashboardController < SecuredController
   end
 
   def thumbnail
-    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 10.minutes) do
+    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 20.minutes) do
       puts "miss!"
       user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
     end
@@ -132,7 +76,6 @@ class DashboardController < SecuredController
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
     end
-
     redirect_to download_url
   end
 
@@ -174,5 +117,63 @@ class DashboardController < SecuredController
   def user_client
     Box.user_client(session[:box_id])
   end
+
+  # def upload_claim
+  #
+  #   meta = Hash.new
+  #   ap params
+  #
+  #   # add file metadata
+  #   id = session[:claimId].to_s
+  #   puts id
+  #   meta.store("Claim ID", id)
+  #   meta.store("Claim Type", params[:claimType])
+  #   meta.store("Claim Date", params[:claimDate])
+  #   meta.store("Claim Value", params[:claimValue])
+  #   meta.store("Claim Desciption", params[:description])
+  #   meta.store("Claim Status", "Pending")
+  #   session[:meta] = meta
+  #   ap meta
+  #
+  #   @folder = user_client.folder_from_id(params[:id])
+  #
+  # end
+  #
+  # def new_claim
+  #   puts "creating claim"
+  #
+  #   session[:claimId] = rand(10 ** 10)
+  #
+  #   # create new claim Folder
+  #   @newClaimFolder = user_client.create_folder("Claim - ##{session[:claimId]}", Boxr::ROOT)
+  #   user_client.add_collaboration(@newClaimFolder, {id: session[:agent], type: :user}, :editor)
+  #
+  # end
+  #
+  # def display_claim
+  #
+  #   @comments = []
+  #   @claimFolderId = params[:id]
+  #   @claimFolder = user_client.folder_from_id(@claimFolderId)
+  #   @items = user_client.folder_items(@claimFolderId).files
+  #
+  #   begin
+  #     if(request.post?)
+  #       puts "post request\ncomment: #{params[:comment]}"
+  #       comment = params[:comment]
+  #       user_client.add_comment_to_file(@items[0], message: comment)
+  #     end
+  #   rescue
+  #     puts "Error in processing comment"
+  #   end
+  #
+  #   if(@items.length > 0)
+  #     @comments = user_client.file_comments(@items[0])
+  #     ap @comments
+  #   end
+  #
+  #
+  # end
+
 
 end

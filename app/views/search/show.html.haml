@@ -1,0 +1,58 @@
+.home
+.col-md-2
+  %ul.nav.nav-pills.nav-stacked
+    %li
+      %a{:href => "/dashboard"} My Vault
+    %li.active
+      %a{:href => "/resources"} Resources
+.container
+  .col-md-10.col-sm-10.pull-right
+    = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
+      %h2.form-search-heading
+        Search Resources
+      = f.input :query, placeholder: "training, onboarding, assets, etc...", input_html: { class: 'form-control', type: 'search' }
+      = f.submit 'Search', class: 'btn btn-lg btn-primary btn-block', style: 'height: 44px;width: 180px; margin-top: -44px; margin-left: 405px;'
+
+    .results
+      - if @results.nil? or @results.count == 0
+        %h2(style='text-align: center;')
+          There were no results matching your search criteria.
+      - else
+        %h3
+          - if (@text.nil?)
+            = "Here are #{@results.count} useful resource files for you to check out..."
+          - else
+            = "Found #{@results.count} results for '#{@text}'"
+          /= "Found #{@results.count} results for '#{@text}'"
+        - @results.each do |result|
+          .result
+            .row
+              .col-md-3
+                .thumb-image-border
+                  = link_to view_doc_path(result.id) do
+                    = image_tag(thumbnail_url(result.id), :height => "100px")
+              .col-md-7
+                .row(style = 'margin-left: -25px;')
+                  .col-md-3
+                    .result-label
+                      File Name:
+                    .result-label
+                      Date Created:
+                    .result-label
+                      Size:
+                    .result-label
+                      Type:
+                  .col-md-9
+                    .result-data
+                      = result.name
+                    .result-data
+                      = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                    .result-data
+                      = "#{result.size} Bytes"
+              .col-md-2
+                .btn-group.pull-right
+                  %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                    %span.glyphicon.glyphicon-eye-open
+                  %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                    %span.glyphicon.glyphicon-cloud-download
+                /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
