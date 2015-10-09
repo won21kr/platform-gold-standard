@@ -1,10 +1,39 @@
 .home
 .col-md-2
-  %ul.nav.nav-pills.nav-stacked
-    %li
-      %a{:href => "/dashboard"} My Vault
-    %li.active
-      %a{:href => "/resources"} Resources
+  / SIDEBAR USERPIC
+  .row
+    .profile-userpic
+      %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg"}
+
+    / END SIDEBAR USERPIC
+    / SIDEBAR USER TITLE
+    .profile-usertitle
+      .profile-usertitle-name
+        Marcus Doe
+      .profile-usertitle-job
+        Customer
+    / END SIDEBAR USER TITLE
+
+    / SIDEBAR MENU
+    .profile-usermenu
+      %ul.nav
+        %li
+          %a{:href => "/dashboard"}
+            %i.glyphicon.glyphicon-home
+            My Vault
+        %li.active{:style => "background-color: #A9E2F3"}
+          %a{:href => "/resources"}
+            %i.glyphicon.glyphicon-user
+            Resources
+        %li
+          %a{:href => "#", :target => "_blank"}
+            %i.glyphicon.glyphicon-ok
+            Tasks
+        %li
+          %a{:href => "#"}
+            %i.glyphicon.glyphicon-flag
+            Help
+  / END MENU
 .container
   .col-md-10.col-sm-10.pull-right
     = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
