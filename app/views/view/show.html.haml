@@ -2,7 +2,7 @@
 
 %h5(style="margin-top: -5px; font-size: 120%;")
   - if (session[:current_page] == "resources")
-    = link_to '<< Back to Resources', resources_path
+    = link_to '<< Back to Resources', '/resources/' + session[:rfolder]
   - else
     = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
 
@@ -24,7 +24,7 @@
             - if (c.created_by.id == session[:box_id])
               %img{:src => session[:userinfo][:info][:image]}
             - else
-              %img{:src => get_thumbnail(c.created_by.id)}
+              %img{:src => get_thumbnail(c.created_by.id)} 
 
           .commentText
             %p
