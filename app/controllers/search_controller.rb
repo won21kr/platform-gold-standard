@@ -7,24 +7,42 @@ class SearchController < SecuredController
     @results = nil
     session[:current_page] = "resources"
 
+    # get root resource folder
+    @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 20.minutes) do
+      puts "miss"
+      client.folder_from_id(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :size])
+    end
 
+    # check if search query was entered
     if(params[:search].nil? or params[:search][:query] == "")
 
-      # did we redirect to a subfolder?
-      # If yes, fetch subfolder contents, else fetch resource folders
+      # Check if we are in the root resource folder or a sub-resource folder
       if(params[:folder_id].nil?)
-
+        # get resource subfolders
+        @results = client.folder_items(ENV['RESOURCE_FOLDER'],
+                                       fields: [:id, :name, :created_at, :size])
+        @root = true
       else
-        puts "get subfolder"
+
+        # get subfolder contents and subfolder name
         @results = client.folder_items(params[:folder_id],
                                        fields: [:id, :name, :created_at, :size])
+        subFolder = client.folder_from_id(params[:folder_id], fields: [:name])
+        @subName = subFolder.name
+        session[:current]
       end
-
-      ap @results
     else
+
+      # search based on posted query
       @text = params[:search][:query]
       @results = client.search(@text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
       @results = @results.files
+    end
+
+    if (!@subName.nil?)
+      session[:rfolder] = subFolder.id
+    else
+      session[:rfolder] = ""
     end
 
   end

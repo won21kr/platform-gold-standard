@@ -19,45 +19,56 @@
           There were no results matching your search criteria.
       - else
         %h3
-          - if (@text.nil?)
-            .row
-              %ol.breadcrumb{:style => "font-size: 100%"}
+          .row
+            %ol.breadcrumb{:style => "font-size: 85%"}
+              %li
+                = link_to @resource.name, resources_path
+              - if !@subName.nil?
                 %li.active
-                  = @results.name
-          - else
+                  = @subName
+          / are we in the root folder?
+          - if (@root == true)
+            - @results.each do |folder|
+              .row(style="margin-bottom: 10px;")
+                .col-md-1
+                  = image_tag("folder.png", height: '70px')
+                .col-md-9
+                  .filename{:style => "margin-top: 23px; margin-left: 10px"}
+                    = link_to folder.name, sub_resource_path(folder.id)
+          - if (!@text.nil?)
             = "Found #{@results.count} results for '#{@text}'"
-          /= "Found #{@results.count} results for '#{@text}'"
-        - @results.each do |result|
-          .result
-            .row
-              .col-md-3
-                .thumb-image-border
-                  = link_to view_doc_path(result.id) do
-                    = image_tag(thumbnail_url(result.id), :height => "90px")
-              .col-md-7
-                .row(style = 'margin-left: -25px;')
-                  .col-md-3
-                    .result-label
-                      File Name:
-                    .result-label
-                      Date Created:
-                    .result-label
-                      Resource Type:
-                    .result-label
-                      Product:
-                  .col-md-9
-                    .result-data
-                      = result.name
-                    .result-data
-                      = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
-                    .result-data
-                      resource
-                    .result-data
-                      product
-              .col-md-2
-                .btn-group.pull-right
-                  %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                    %span.glyphicon.glyphicon-eye-open
-                  %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                    %span.glyphicon.glyphicon-cloud-download
-                /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
+        - if (@root != true)
+          - @results.each do |result|
+            .result
+              .row
+                .col-md-3
+                  .thumb-image-border
+                    = link_to view_doc_path(result.id) do
+                      = image_tag(thumbnail_url(result.id), :height => "90px")
+                .col-md-7
+                  .row(style = 'margin-left: -25px;')
+                    .col-md-3
+                      .result-label
+                        File Name:
+                      .result-label
+                        Date Created:
+                      .result-label
+                        Resource Type:
+                      .result-label
+                        Product:
+                    .col-md-9
+                      .result-data
+                        = result.name
+                      .result-data
+                        = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                      .result-data
+                        resource
+                      .result-data
+                        product
+                .col-md-2
+                  .btn-group.pull-right
+                    %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                      %span.glyphicon.glyphicon-eye-open
+                    %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                      %span.glyphicon.glyphicon-cloud-download
+                  /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
