@@ -9,7 +9,7 @@
   .col-md-10.col-sm-10.pull-right
     = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
       %h2.form-search-heading
-        Search Resources
+        Search All Resources
       = f.input :query, placeholder: "training, onboarding, assets, etc...", input_html: { class: 'form-control', type: 'search' }
       = f.submit 'Search', class: 'btn btn-lg btn-primary btn-block', style: 'height: 44px;width: 180px; margin-top: -44px; margin-left: 405px;'
 
@@ -20,7 +20,10 @@
       - else
         %h3
           - if (@text.nil?)
-            = "Here are #{@results.count} useful resource files for you to check out..."
+            .row
+              %ol.breadcrumb{:style => "font-size: 100%"}
+                %li.active
+                  = @results.name
           - else
             = "Found #{@results.count} results for '#{@text}'"
           /= "Found #{@results.count} results for '#{@text}'"

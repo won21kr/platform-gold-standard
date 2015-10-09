@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
 
   get "/resources" => "search#show", :as => "resources"
+  get "/resources/:folder_id" => "search#show", :as => "sub_resource"
   post "/resources" => "search#show", :as => "search"
 
   get "/new-claim/" => "dashboard#new_claim", :as => "new_claim"
