@@ -1,4 +1,3 @@
-
 .modal.fade#viewModal1{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
   .modal-dialog
     .modal-body(style="overflow: hidden;")
@@ -17,13 +16,13 @@
 
 .home
 .col-md-2
-  %ul.nav.nav-pills.nav-stacked
+  %ul.nav.nav-pills.nav-stacked.appnavbtns
     %li.active
       %a{:href => "/dashboard"} My Vault
     %li
       %a{:href => "/resources"} Resources
 .container
-  .col-md-10.col-sm-10.pull-right
+  .col-md-10.col-sm-10.pull-right{:class => "myvaulttable" }
     .panel.panel-default
       .panel-heading
         %h2 My Vault
@@ -37,10 +36,10 @@
             %th Date Uploaded
             %th Actions
           %tbody
-            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}"}
+            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
+              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
                 = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}"}
+              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
                 = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
             - @files.each do |f|
               %tr

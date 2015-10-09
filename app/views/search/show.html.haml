@@ -1,14 +1,14 @@
 .home
 .col-md-2
-  %ul.nav.nav-pills.nav-stacked
+  %ul.nav.nav-pills.nav-stacked.appnavbtns
     %li
       %a{:href => "/dashboard"} My Vault
     %li.active
       %a{:href => "/resources"} Resources
-.container
-  .col-md-10.col-sm-10.pull-right
+.container.searchbarcontainer
+  .col-md-10.col-sm-10.pull-right.searchresults
     = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
-      %h2.form-search-heading
+      %h2.form-search-heading.searchbar
         Search Resources
       = f.input :query, placeholder: "training, onboarding, assets, etc...", input_html: { class: 'form-control', type: 'search' }
       = f.submit 'Search', class: 'btn btn-lg btn-primary btn-block', style: 'height: 44px;width: 180px; margin-top: -44px; margin-left: 405px;'
