@@ -65,7 +65,7 @@
                 %td
                   = DateTime.strptime(f.created_at).strftime("%B %d, %Y %l:%M %p")
                 %td
-                  / file action options 
+                  / file action options
                   .btn-group
                     %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                       %span.glyphicon.glyphicon-eye-open
