@@ -1,3 +1,35 @@
+:css
+
+  /* Portrait phones and smaller */
+  @media (max-width: 480px){
+  .navbar-inverse .username img {
+    display: none;
+  }
+
+  .navbar-inverse .username span {
+    display: none;
+  }
+  }
+  /* Landscape phones and portrait tablets */
+  @media(max-width:767px){
+    .navbar-inverse .username img {
+      display: none;
+    }
+
+    .navbar-inverse .username span {
+      display: none;
+    }
+
+  }
+  /* Portrait tablets and small desktops */
+  @media(min-width:768px) and (max-width: 991px){}
+  /* Landscape tablets and medium desktops */
+  @media(min-width:992px) and (max-width: 1199px){}
+  /* Large desktops and laptops */
+  @media(min-width:1200px){}
+
+
+
 %nav.navbar.navbar-inverse{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
   .container
     .navbar-header
@@ -20,5 +52,5 @@
       .username
         %span
           %img{:src => session[:userinfo][:info][:image], :width => '30px', :class => 'img-circle'}
-        %span
+        %span{:class => 'foop'}
           = "#{session[:userinfo][:info][:name]}"
