@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
 
   # search page routes
-  post "/resources" => "search#show", :as => "search"  
+  post "/resources" => "search#show", :as => "search"
   get "/resources" => "search#show", :as => "resources"
   get "/resources/:folder_id" => "search#show", :as => "resources1"
   post "/resources/:folder_id" => "search#show", :as => "sub_resource"
