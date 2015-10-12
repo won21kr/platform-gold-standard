@@ -3,22 +3,26 @@ class ViewController < SecuredController
 
   helper_method :get_thumbnail
 
+  # main view controller
   def show
 
+    # get user client obj and file ID
     client = user_client
     @fileId = params[:id]
     session[:fileId] = @fileId
 
     @file = client.file_from_id(params[:id])
 
-    # fetch and reorder comments
+    # fetch and reorder file comments
     comments = client.file_comments(@file)
     @comments = Array.new
     while (comments.size != 0)
       @comments.push(comments.pop)
     end
+
   end
 
+  # add comment to file
   def comment
 
     client = user_client
@@ -31,6 +35,7 @@ class ViewController < SecuredController
     redirect_to view_doc_path(session[:fileId])
   end
 
+  # get and return Box user avatar thumbnail URL
   def get_thumbnail(id)
 
     user = Rails.cache.fetch("/avatar_urls/#{id}", :expires_in => 10.minutes) do
@@ -40,6 +45,7 @@ class ViewController < SecuredController
     user.avatar_url
   end
 
+  # download file
   def download
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
@@ -48,6 +54,7 @@ class ViewController < SecuredController
     download_url
   end
 
+  # preview file
   def preview
     embed_url = user_client.embed_url(params[:id])
   end

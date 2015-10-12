@@ -1,7 +1,11 @@
 class SearchController < SecuredController
 
+  skip_before_filter :verify_authenticity_token
 
+  # main search page controller
   def show
+
+    ap params
 
     client = user_client
     @results = nil
@@ -14,15 +18,19 @@ class SearchController < SecuredController
     end
 
     # check if search query was entered
-    if(params[:search].nil? or params[:search][:query] == "")
+    if((params[:search].nil? or params[:search][:query] == "") and params[:filter_query].nil?)
+      # search query was not entered
 
       # Check if we are in the root resource folder or a sub-resource folder
       if(params[:folder_id].nil?)
+        # in root resource folder
+
         # get resource subfolders
         @results = client.folder_items(ENV['RESOURCE_FOLDER'],
                                        fields: [:id, :name, :created_at, :size])
         @root = true
       else
+        # in resource subfolder
 
         # get subfolder contents and subfolder name
         @results = client.folder_items(params[:folder_id],
@@ -32,13 +40,25 @@ class SearchController < SecuredController
         session[:current]
       end
     else
+      # a search query was enterd
 
-      # search based on posted query
-      @text = params[:search][:query]
-      @results = client.search(@text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+      # search based on posted search query or filter query
+      if(!params[:search].nil?)
+        @text = params[:search][:query]
+      else
+        @text = params[:filter_query]
+      end
+
+      if (params[:filter] == "file_type")
+        @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+      else
+        @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+      end
+
       @results = @results.files
     end
 
+    # set current folder session variable
     if (!@subName.nil?)
       session[:rfolder] = subFolder.id
     else

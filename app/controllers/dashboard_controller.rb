@@ -1,17 +1,19 @@
 class DashboardController < SecuredController
 
+  # main controller for customer vault
   def show
 
+    # get user client obj for Box API calls
     client = user_client
-    # folder = user_client.folder_from_id('4267363735')
     rootFolders = client.folder_items(Boxr::ROOT)
     session[:current_page] = "vault"
 
+    # get "My Files" and "Shared Files" folder objects
     @myFolder = client.folder_from_path('My Files')
     @sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
     @sharedFolder.name = "Shared Files"
 
-    # set active folder tab
+    # set active folder ID, either "My Files" or "Shared Files" folder
     if(params[:id])
       puts "changing active folder"
       @currentFolder = params[:id]
@@ -20,7 +22,7 @@ class DashboardController < SecuredController
     end
     session[:current_folder] = @currentFolder
 
-    # get files for dashboard display
+    # get all files for dashboard display, either "My Files" or "Shared Files"
     if(@currentFolder == @myFolder.id)
       @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at])
     elsif(@currentFolder == @sharedFolder.id)
@@ -28,9 +30,10 @@ class DashboardController < SecuredController
     end
   end
 
+  # upload files to parameter specified folder ID
   def upload
-    #http://www.dropzonejs.com/
 
+    #http://www.dropzonejs.com/
     uploaded_file = params[:file]
     folder = params[:folder_id]
 
@@ -40,10 +43,9 @@ class DashboardController < SecuredController
       temp_file.close
 
       box_user = Box.user_client(session[:box_id])
-      #vault_folder = vault_folder(box_user)
 
       box_file = box_user.upload_file(temp_file.path, folder)
-      box_user.create_metadata(box_file, session[:meta])
+      #box_user.create_metadata(box_file, session[:meta])
 
     rescue => ex
       puts ex.message
@@ -57,6 +59,7 @@ class DashboardController < SecuredController
     sleep(5)
   end
 
+  # get file thumbnail from file ID
   def thumbnail
     image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 20.minutes) do
       puts "miss!"
@@ -66,12 +69,14 @@ class DashboardController < SecuredController
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
 
+  # get preview url from file ID
   def preview
     embed_url = user_client.embed_url(params[:id])
 
     redirect_to embed_url
   end
 
+  # download file from file ID
   def download
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
@@ -79,6 +84,7 @@ class DashboardController < SecuredController
     redirect_to download_url
   end
 
+  # delete file
   def delete_file
 
     id = params[:id]
@@ -88,6 +94,7 @@ class DashboardController < SecuredController
     redirect_to dashboard_id_path(session[:current_folder])
   end
 
+  # move file from personal vault to "Shared Files" folder
   def share_file
 
     id = params[:id]
@@ -100,6 +107,7 @@ class DashboardController < SecuredController
     redirect_to dashboard_id_path(sharedFolder.id)
   end
 
+  # move file from "Shared Files" folder to personal vault
   def unshare_file
 
     id = params[:id]
@@ -114,6 +122,7 @@ class DashboardController < SecuredController
 
   private
 
+  # Get user client obj using App User ID
   def user_client
     Box.user_client(session[:box_id])
   end
