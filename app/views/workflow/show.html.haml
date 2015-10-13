@@ -1,18 +1,19 @@
 .home
-.col-md-2
+.col-md-3.col-sm-3.pull-left
   / SIDEBAR USERPIC
-  .row
-    .profile-userpic
-      %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg"}
+  .profile{:style => "margin: 1px 0"}
+    .profile-sidebar{:style => "padding: 20px 0 90px 0; background: #fff"}
+      .profile-userpic
+        %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
 
-    / END SIDEBAR USERPIC
-    / SIDEBAR USER TITLE
-    .profile-usertitle
-      .profile-usertitle-name
-        Marcus Doe
-      .profile-usertitle-job
-        Customer
-    / END SIDEBAR USER TITLE
+      / END SIDEBAR USERPIC
+      / SIDEBAR USER TITLE
+      .profile-usertitle{:style => "text-align: center; margin-top: 20px;"}
+        .profile-usertitle-name{:style => "color: #5a7391; font-size: 16px; font-weight: 600; margin-bottom: 7px"}
+          Marcus Doe
+        .profile-usertitle-job{:style => " text-transform: uppercase; color: #5b9bd1; font-size: 12px; font-weight: 600; margin-bottom: 15px;"}
+          Customer
+      / END SIDEBAR USER TITLE
 
     / SIDEBAR MENU
     .profile-usermenu
@@ -25,7 +26,7 @@
           %a{:href => "/resources"}
             %i.glyphicon.glyphicon-user
             Resources
-        %li.active{:style => "background-color: #A9E2F3"}
+        %li.active{:style => "color: #5b9bd1; background-color: #f6f9fb; border-left: 2px solid #5b9bd1; margin-left: -2px"}
           %a{:href => "/onboarding-tasks"}
             %i.glyphicon.glyphicon-ok
             Onboarding Tasks
@@ -35,7 +36,7 @@
             Help
   / END MENU
 .container
-  .col-md-10.col-sm-10.pull-right{:class => "myvaulttable" }
+  .col-md-9.col-sm-9.pull-right{:class => "myvaulttable" }
     .page-header
       .col-md-6.pull-right
         %h4

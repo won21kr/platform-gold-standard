@@ -15,7 +15,6 @@
           Customer
       / END SIDEBAR USER TITLE
 
-<<<<<<< HEAD
     / SIDEBAR MENU
     .profile-usermenu
       %ul.nav.nav-pills.nav-stacked.appnavbtns
@@ -23,7 +22,7 @@
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
-        %li.active{:style => "background-color: #A9E2F3"}
+        %li.active{:style => "color: #5b9bd1; background-color: #f6f9fb; border-left: 2px solid #5b9bd1; margin-left: -2px"}
           %a{:href => "/resources"}
             %i.glyphicon.glyphicon-user
             Resources
@@ -36,28 +35,7 @@
             %i.glyphicon.glyphicon-flag
             Help
   / END MENU
-=======
-      / SIDEBAR MENU
-      .profile-usermenu{:style =>  "margin-top: 30px"}
-        %ul.nav.nav-pills.nav-stacked.appnavbtns
-          %li.active{:style => "color: #5b9bd1; background-color: #f6f9fb; border-left: 2px solid #5b9bd1; margin-left: -2px"}
-            %a{:href => "/dashboard"}
-              %i.glyphicon.glyphicon-home
-              My Vault
-          %li
-            %a{:href => "/resources"}
-              %i.glyphicon.glyphicon-user
-              Resources
-          %li
-            %a{:href => "#", :target => "_blank"}
-              %i.glyphicon.glyphicon-ok
-              Tasks
-          %li
-            %a{:href => "#"}
-              %i.glyphicon.glyphicon-flag
-              Help
-    / END MENU
->>>>>>> 8e9c2f86f6f3b5669cd5d806329c335ccefcf280
+
 .container
   .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px"}
     = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|

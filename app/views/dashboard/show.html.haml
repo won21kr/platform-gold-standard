@@ -1,6 +1,3 @@
-:css
-
-<<<<<<< HEAD
 #myModal.modal.fade{:role => "dialog"}
   .modal-dialog.modal-md
     .modal-content
@@ -15,25 +12,6 @@
               = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
       .modal-footer
         %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
-=======
-  #profile-sidebar
-    padding: 20px 0 10px 0
-    background: #fff
-
-  #profile-usertitle
-   text-align: center
-   margin-top: 20px
-
-  #profile-usertitle-name
-   color: #5a7391
-   font-size: 16px
-   font-weight: 600
-   margin-bottom: 7px
-
-  #profile-sidebar
-   padding: 20px 0 10px 0
-   background: #fff
->>>>>>> 8e9c2f86f6f3b5669cd5d806329c335ccefcf280
 
 .home
 .col-md-3.col-sm-3.pull-left
@@ -52,11 +30,10 @@
           Customer
       / END SIDEBAR USER TITLE
 
-<<<<<<< HEAD
     / SIDEBAR MENU
     .profile-usermenu
       %ul.nav.nav-pills.nav-stacked.appnavbtns
-        %li.active{:style => "background-color: #A9E2F3"}
+        %li.active{:style => "color: #5b9bd1; background-color: #f6f9fb; border-left: 2px solid #5b9bd1; margin-left: -2px"}
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
@@ -73,32 +50,13 @@
             %i.glyphicon.glyphicon-flag
             Help
   / END MENU
-=======
-      / SIDEBAR MENU
-      .profile-usermenu{:style =>  "margin-top: 30px"}
-        %ul.nav.nav-pills.nav-stacked.appnavbtns
-          %li.active{:style => "color: #5b9bd1; background-color: #f6f9fb; border-left: 2px solid #5b9bd1; margin-left: -2px"}
-            %a{:href => "/dashboard"}
-              %i.glyphicon.glyphicon-home
-              My Vault
-          %li
-            %a{:href => "/resources"}
-              %i.glyphicon.glyphicon-user
-              Resources
-          %li
-            %a{:href => "#", :target => "_blank"}
-              %i.glyphicon.glyphicon-ok
-              Tasks
-          %li
-            %a{:href => "#"}
-              %i.glyphicon.glyphicon-flag
-              Help
-    / END MENU
->>>>>>> 8e9c2f86f6f3b5669cd5d806329c335ccefcf280
+
 .container
   .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
     .panel.panel-default
       .panel-heading
+        .pull-right.h4
+          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload File
         %h2 My Vault
         .sub-title
           = "Your personal & shared files"
@@ -140,10 +98,6 @@
                       %span.glyphicon.glyphicon-cloud-download
                     %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
                       %span.glyphicon.glyphicon-trash
-    .drop-area
-      .row
-        .col-md-12
-          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
 
 .footer{:style=>"text-align: right; margin-top: 20px; font-size: 10px; font-weight: 600; color: #5a7391;"}
   = "Powered by DemoEng"

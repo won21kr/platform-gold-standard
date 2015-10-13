@@ -20,11 +20,7 @@ Rails.application.routes.draw do
   get "/doc/:id" => "dashboard#doc", :as => 'doc'
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
 
-<<<<<<< HEAD
   # search page
-=======
-  # search page routes
->>>>>>> 8e9c2f86f6f3b5669cd5d806329c335ccefcf280
   post "/resources" => "search#show", :as => "search"
   get "/resources" => "search#show", :as => "resources"
   get "/resources/:folder_id" => "search#show", :as => "resources1"
