@@ -1,0 +1,37 @@
+:sass
+	h1
+		margin-bottom: 30px
+	h2
+		color: #444
+	h3
+		margin-top: -10px
+	table
+		width: 100%
+		border-collapse: collapse
+
+= wicked_pdf_image_tag "folder.png", :width => 200
+%h1
+	Customer Onboarding Contract
+.div
+	%table
+		%tr
+			%td{:style => 'width: 50%;'}
+				%h2
+					Customer
+				%h3= @info[:username]
+				%h2
+					Phone Number
+				%h3= @info[:tel]
+				%h2
+					Address
+				%h3= @info[:address]
+				%h2
+					Birthday
+				%h3= @info[:bday]
+				%h2
+					Bank Account #
+				%h3= @info[:acct]
+
+.div{:style => 'margin-top: 30px;'}
+	%h2
+		Signature

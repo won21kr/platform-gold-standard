@@ -1,0 +1,71 @@
+.home
+.col-md-2
+  / SIDEBAR USERPIC
+  .row
+    .profile-userpic
+      %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg"}
+
+    / END SIDEBAR USERPIC
+    / SIDEBAR USER TITLE
+    .profile-usertitle
+      .profile-usertitle-name
+        Marcus Doe
+      .profile-usertitle-job
+        Customer
+    / END SIDEBAR USER TITLE
+
+    / SIDEBAR MENU
+    .profile-usermenu
+      %ul.nav.nav-pills.nav-stacked.appnavbtns
+        %li
+          %a{:href => "/dashboard"}
+            %i.glyphicon.glyphicon-home
+            My Vault
+        %li
+          %a{:href => "/resources"}
+            %i.glyphicon.glyphicon-user
+            Resources
+        %li.active{:style => "background-color: #A9E2F3"}
+          %a{:href => "/onboarding-tasks"}
+            %i.glyphicon.glyphicon-ok
+            Onboarding Tasks
+        %li
+          %a{:href => "#"}
+            %i.glyphicon.glyphicon-flag
+            Help
+  / END MENU
+.container
+  .col-md-10.col-sm-10.pull-right{:class => "myvaulttable" }
+    .page-header
+      .col-md-6.pull-right
+        %h4
+          Progress
+        .progress
+          .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "#{session[:progress]}%", :role => "progressbar", :style => "width: #{session[:progress]}%;"}
+            = "#{session[:progress]}%"
+      %h1 Onboarding Tasks
+      %p Please complete the onboarding process
+
+    %h3
+      Fill out the required personal information below:
+    %form.form-horizontal{:role => "form", :method => "post", :action => workflow_post_path}
+      .form-group
+        %label.control-label.col-sm-2{:for => "tel"} Phone Number:
+        .col-sm-6
+          %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel"}
+      .form-group
+        %label.control-label.col-sm-2{:for => "address"} Address:
+        .col-sm-6
+          %input#address.form-control{:placeholder => "4 Privet Drive", :type => "text", :name => "address"}
+      .form-group
+        %label.control-label.col-sm-2{:for => "bday"} Birthday:
+        .col-sm-6
+          %input#bday.form-control{:type => "date", :name => "bday"}
+      .form-group
+        %label.control-label.col-sm-2{:for => "acct"} Bank Account #:
+        .col-sm-6
+          %input#acct.form-control{:type => "text", :placeholder => "1234-1234132", :name => "acct"}
+      %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+      .form-group
+        .col-sm-offset-2.col-sm-6
+          %button.btn.btn-primary.btn-md{:type => "submit"} Submit for Approval

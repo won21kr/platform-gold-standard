@@ -24,9 +24,9 @@ class DashboardController < SecuredController
 
     # get all files for dashboard display, either "My Files" or "Shared Files"
     if(@currentFolder == @myFolder.id)
-      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at])
+      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at]).files
     elsif(@currentFolder == @sharedFolder.id)
-      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at])
+      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at]).files
     end
   end
 

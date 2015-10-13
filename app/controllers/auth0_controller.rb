@@ -40,6 +40,13 @@ class Auth0Controller < ApplicationController
     sharedFolder = box_user.create_folder("#{session[:userinfo]['info']['name']} - Shared Files", Boxr::ROOT)
     box_user.add_collaboration(sharedFolder, {id: ENV['EMPL_ID'], type: :user}, :editor)
     box_user.create_folder("My Files", Boxr::ROOT)
+
+    # create onboarding workflow folders, add automation
+    workflowFolder = box_user.create_folder("Onboarding Workflow", sharedFolder)
+    box_user.create_folder("Pending Approval", workflowFolder)
+    box_user.create_folder("Signature Required", workflowFolder)
+    box_user.create_folder("Completed", workflowFolder)
+
   end
 
 end
