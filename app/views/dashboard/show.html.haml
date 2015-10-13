@@ -1,3 +1,27 @@
+:css
+
+  #foop
+    font-size: 50px
+
+  -# #profile-sidebar
+  -#   padding: 20px 0 10px 0
+  -#   background: #fff
+  -#
+  -# #profile-usertitle
+  -#  text-align: center
+  -#  margin-top: 20px
+  -#
+  -# #profile-usertitle-name
+  -#  color: #5a7391
+  -#  font-size: 16px
+  -#  font-weight: 600
+  -#  margin-bottom: 7px
+  -#
+  -#
+  -# #profile-sidebar
+  -#  padding: 20px 0 10px 0
+  -#  background: #fff
+
 .home
 .col-md-2
   / SIDEBAR USERPIC
@@ -7,9 +31,9 @@
 
     / END SIDEBAR USERPIC
     / SIDEBAR USER TITLE
-    .profile-usertitle
-      .profile-usertitle-name
-        Marcus Doe
+    %h2{:class => 'foop'}
+      Marcus Doe
+      -# .profile-usertitle-name
       .profile-usertitle-job
         Customer
     / END SIDEBAR USER TITLE
