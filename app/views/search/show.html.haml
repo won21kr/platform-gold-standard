@@ -80,6 +80,14 @@
               = link_to 'Egnyte', search_path(:filter_query => "Egnyte"), :method => :post
     / Print out results or display resource folders
     .results
+      %h3
+        .row
+          %ol.breadcrumb{:style => "font-size: 85%"}
+            %li
+              = link_to @resource.name, resources_path
+            - if !@subName.nil?
+              %li.active
+                = @subName
       - if @results.nil? or @results.count == 0
         / there were no results found for your search query
         %h2(style='text-align: center;')
@@ -87,13 +95,6 @@
       - else
         / either results were found for your search or were are in the resource root folder / sub-folder
         %h3
-          .row
-            %ol.breadcrumb{:style => "font-size: 85%"}
-              %li
-                = link_to @resource.name, resources_path
-              - if !@subName.nil?
-                %li.active
-                  = @subName
           / are we in the root folder?
           - if (@root == true)
             - @results.each do |folder|
