@@ -56,6 +56,8 @@
               = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
             %li
               = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
+            %li
+              = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
         .btn-group{:role => "group"}
           %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
             Resource Type
@@ -131,9 +133,9 @@
                       .result-data
                         = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
                       .result-data
-                        resource
+                        = result.type
                       .result-data
-                        product
+                        = result.product
                 .col-md-2
                   .btn-group.pull-right
                     %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}

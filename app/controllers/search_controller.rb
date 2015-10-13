@@ -52,7 +52,7 @@ class SearchController < SecuredController
       if (params[:filter] == "file_type")
         @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
       else
-        @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+        @results = client.search(@text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
       end
 
       @results = @results.files
@@ -63,6 +63,26 @@ class SearchController < SecuredController
       session[:rfolder] = subFolder.id
     else
       session[:rfolder] = ""
+    end
+
+    # attach metadata to each result file
+    @results.each do |r|
+      class << r
+        attr_accessor :type, :product
+      end
+      
+      begin  
+        meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 20.minutes) do
+          puts "miss"
+          client.metadata(r)
+        end
+
+        r.type = meta["Type"]
+        r.product = meta["Product"]
+      rescue
+        r.type = ""
+        r.product = ""
+      end
     end
 
   end
