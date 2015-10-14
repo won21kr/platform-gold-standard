@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   # workflow
   get "/onboarding-tasks" => "workflow#show", :as => "workflow"
   post "/onboarding-tasks" => "workflow#show", :as => "workflow_post"
+  get "docusign_response/:envelope_id" => "workflow#docusign_response", :as => "docusign_response"
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
