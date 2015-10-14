@@ -120,16 +120,16 @@
                       = image_tag(thumbnail_url(result.id), :height => "90px")
                 .col-md-7
                   .row(style = 'margin-left: -25px;')
-                    .col-md-3
+                    .col-md-3{:style => "font-size: 14px"}
                       .result-label
                         File Name:
                       .result-label
                         Date Created:
                       .result-label
-                        Resource Type:
+                        Type:
                       .result-label
                         Product:
-                    .col-md-9
+                    .col-md-9{:style => "font-size: 14px"}
                       .result-data
                         = result.name
                       .result-data
