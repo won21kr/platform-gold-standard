@@ -6,7 +6,9 @@ gem 'rails', '4.1.9'
 
 gem 'pry', group: :development
 
+
 gem 'pg', '~> 0.18.3'
+
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -40,7 +42,9 @@ gem 'awesome_print'
 gem 'protected_attributes'
 gem 'fatalistic'
 
-gem 'boxr', '~> 0.29.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
+
+gem 'boxr', '~> 0.31.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
+
 
 gem 'omniauth', '~> 1.2'
 gem 'omniauth-auth0', '~> 1.1'
@@ -49,3 +53,15 @@ gem 'auth0'
 gem 'simple_form'
 
 gem 'dotenv', '~> 0.11.1', group: :development
+
+gem 'wicked_pdf'
+gem 'docusign_rest'
+
+# Gems only used on heroku
+group :production, :staging do
+  gem 'wkhtmltopdf-heroku'
+end
+
+group :development, :test do
+	gem 'wkhtmltopdf'
+end
