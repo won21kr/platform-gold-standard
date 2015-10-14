@@ -16,8 +16,8 @@
 .home
 .col-md-3.col-sm-3.pull-left
   / SIDEBAR USERPIC
-  .profile{:style => "margin: 1px 0"}
-    .profile-sidebar{:style => "padding: 20px 0 90px 0; background: #fff"}
+  .profile{:style => "margin: 1px 0; background: #fff"}
+    .profile-sidebar{:style => "padding: 20px 0 90px 0"}
       .profile-userpic
         %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
 
@@ -33,7 +33,7 @@
     / SIDEBAR MENU
     .profile-usermenu
       %ul.nav.nav-pills.nav-stacked.appnavbtns
-        %li.active{:style => "color: #5b9bd1; background-color: #f6f9fb; border-left: 2px solid #5b9bd1; margin-left: -2px"}
+        %li.active{:style => "color: #5b9bd1; background-color: #93a3b5; margin-left: -2px"}
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
@@ -99,7 +99,7 @@
                     %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
                       %span.glyphicon.glyphicon-trash
 
-.footer{:style=>"text-align: right; margin-top: 20px; font-size: 10px; font-weight: 600; color: #5a7391;"}
+.footer{:style=>"text-align: right; margin-top: 20px; font-size: 10px; font-weight: 600; color: #5a7391"}
   = "Powered by DemoEng"
 
 :javascript
