@@ -75,3 +75,6 @@
       %h3
         Your onboarding document is pending employee review...
       %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+    - elsif (session[:progress] == 6)
+      %h3
+        Please sign the document below
