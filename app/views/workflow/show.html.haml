@@ -47,26 +47,31 @@
       %h1 Onboarding Tasks
       %p Please complete the onboarding process
 
-    %h3
-      Fill out the required personal information below:
-    %form.form-horizontal{:role => "form", :method => "post", :action => workflow_post_path}
-      .form-group
-        %label.control-label.col-sm-2{:for => "tel"} Phone Number:
-        .col-sm-6
-          %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel"}
-      .form-group
-        %label.control-label.col-sm-2{:for => "address"} Address:
-        .col-sm-6
-          %input#address.form-control{:placeholder => "4 Privet Drive", :type => "text", :name => "address"}
-      .form-group
-        %label.control-label.col-sm-2{:for => "bday"} Birthday:
-        .col-sm-6
-          %input#bday.form-control{:type => "date", :name => "bday"}
-      .form-group
-        %label.control-label.col-sm-2{:for => "acct"} Bank Account #:
-        .col-sm-6
-          %input#acct.form-control{:type => "text", :placeholder => "1234-1234132", :name => "acct"}
-      %input{:name => "formSubmit", :type => "hidden", :value => "true"}
-      .form-group
-        .col-sm-offset-2.col-sm-6
-          %button.btn.btn-primary.btn-md{:type => "submit"} Submit for Approval
+    - if (session[:progress] == 0)
+      %h3
+        Fill out the required personal information below:
+      %form.form-horizontal{:role => "form", :method => "post", :action => workflow_post_path}
+        .form-group
+          %label.control-label.col-sm-2{:for => "tel"} Phone Number:
+          .col-sm-6
+            %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel"}
+        .form-group
+          %label.control-label.col-sm-2{:for => "address"} Address:
+          .col-sm-6
+            %input#address.form-control{:placeholder => "4 Privet Drive", :type => "text", :name => "address"}
+        .form-group
+          %label.control-label.col-sm-2{:for => "bday"} Birthday:
+          .col-sm-6
+            %input#bday.form-control{:type => "date", :name => "bday"}
+        .form-group
+          %label.control-label.col-sm-2{:for => "acct"} Bank Account #:
+          .col-sm-6
+            %input#acct.form-control{:type => "text", :placeholder => "1234-1234132", :name => "acct"}
+        %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+        .form-group
+          .col-sm-offset-2.col-sm-6
+            %button.btn.btn-primary.btn-md{:type => "submit"} Submit for Approval
+    - elsif (session[:progress] == 33)
+      %h3
+        Your onboarding document is pending employee review...
+      %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
