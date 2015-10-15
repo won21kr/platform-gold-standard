@@ -52,7 +52,7 @@
     - if (session[:progress] == 0)
       %h3
         Fill out the required personal information below:
-      %form.form-horizontal{:role => "form", :method => "post", :action => workflow_post_path}
+      %form.form-horizontal{:role => "form", :method => "post", :action => form_submit_path}
         .form-group
           %label.control-label.col-sm-2{:for => "tel"} Phone Number:
           .col-sm-6

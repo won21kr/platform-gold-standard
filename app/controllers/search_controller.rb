@@ -70,8 +70,8 @@ class SearchController < SecuredController
       class << r
         attr_accessor :type, :product
       end
-      
-      begin  
+
+      begin
         meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 20.minutes) do
           puts "miss"
           client.metadata(r)

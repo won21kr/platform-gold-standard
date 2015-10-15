@@ -53,6 +53,8 @@
 
 .container
   .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
+    .flash
+      = render partial: "shared/flash_messages", flash: flash
     .panel.panel-default
       .panel-heading
         .pull-right.h4

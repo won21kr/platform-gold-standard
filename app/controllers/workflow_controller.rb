@@ -7,26 +7,53 @@ class WorkflowController < SecuredController
   def show
 
     client = user_client
-    approvalPath = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Pending\ Approval/"
-    sigReqPath = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Signature\ Required/"
-    completedPath = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Completed/"
 
-    # progress bar initialize
-    session[:progress] = 0
+    # fetch the onboarding doc file from whichever folder it current lives in
+    # also, update the current workflow status state
+    @onboardDoc = get_onboarding_doc
 
-    approvalFolder = client.folder_from_path(approvalPath)
-    sigReqFolder = client.folder_from_path(sigReqPath)
-    completedFolder = client.folder_from_path(completedPath)
 
-    # check where we are in the onboarding workflow process
-    @pendingApproval = client.folder_items(approvalFolder).files
-    @sigRequired = client.folder_items(sigReqFolder).files
-    @completed = client.folder_items(completedFolder).files
+    # perform actions based on current workflow status state
+    if (@status == "toFill")
+      session[:progress] = 0
 
+    elsif(@status == "pendingApproval")
+      set_preview_url(@onboardDoc.id)
+      session[:progress] = 33
+
+    elsif(@status == "approved" or @status == "pendingSig")
+      # create docusign doc
+      envelope_response = create_docusign_envelope(@onboardDoc.id)
+
+      # set up docusign view, fetch url
+      recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
+        envelope_id: envelope_response["envelopeId"],
+        name: "Chad Burnette",
+        email: "cburnette+docusign-test@box.com",
+        return_url: docusign_response_url(envelope_response["envelopeId"])
+      )
+
+      @url = recipient_view["url"]
+      session[:progress] = 66
+
+    elsif(@status == "signed")
+      set_preview_url(@onboardDoc.id)
+      session[:progress] = 100
+
+    end
+
+  end
+
+  def form_submit
+
+    puts "submitting form"
+    client = user_client
+    ap params
 
     if(params[:formSubmit] == "true")
       # use form variables to fill out html template file,
       # convert html file to a pdf and upload to Box
+      filename = "tmp/Onboarding Contract.pdf"
 
       # the "Doc" module code can be found in app/models/
       doc = Doc.new({:tel => params[:tel], :address => params[:address],
@@ -34,55 +61,16 @@ class WorkflowController < SecuredController
                      :username => session[:userinfo]['info']['name'],
                      :review_status => "pending", :signature_status => "pending"})
 
-      filename = "tmp/Onboarding Contract.pdf"
+
       path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Pending\ Approval"
       doc.configure_pdf(client, filename, path)
-
-      session[:progress] = 33
-      @pendingApproval = client.folder_items(approvalFolder).files
-      set_preview_url(@pendingApproval.first.id)
-    elsif (@pendingApproval.size > 0)
-
-      task = client.file_tasks(@pendingApproval.first, fields: [:is_completed])
-
-      if (task.first.is_completed == true)
-        # task has been completed, move to "Pending Signatures" document, setup DocuSign
-
-        # move @pendingApproval file into sig required folder
-        client.move_file(@pendingApproval.first, sigReqFolder.id)
-        @sigRequired = client.folder_items(sigReqFolder).files
-
-        #set_preview_url(@pendingApproval.first.id)
-        session[:progress] = 66
-      else
-        # task not yet compeleted, display pending approval file
-        set_preview_url(@pendingApproval.first.id)
-        session[:progress] = 33
-      end
     end
 
-    # check if document needs to be signed
-    if (@sigRequired.size > 0)
-
-      envelope_response = create_docusign_envelope(@sigRequired.first.id)
-
-      recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
-        envelope_id: envelope_response["envelopeId"],
-        name: "Chad Burnette",
-        email: "cburnette+docusign-test@box.com",
-        return_url: docusign_response_url(envelope_response["envelopeId"])
-      )
-      @url = recipient_view["url"]
-      ap @url
-      session[:progress] = 66
-    end
-
-    if (@completed.size > 0)
-      set_preview_url(@completed.first.id)
-      session[:progress] = 100
-    end
+    flash[:notice] = "Thanks for filling out your information! A company employee will now review the contract."
+    redirect_to workflow_path
 
   end
+
 
   def docusign_response
     utility = DocusignRest::Utility.new
@@ -112,7 +100,7 @@ class WorkflowController < SecuredController
         temp_file.delete
       end
 
-      flash[:notice] = "Thanks! Successfully signed."
+      flash[:notice] = "Thanks! Document successfully signed."
       render :text => utility.breakout_path(workflow_path), content_type: 'text/html'
     else
       flash[:error] = "You chose not to sign the document."
@@ -173,6 +161,67 @@ class WorkflowController < SecuredController
     ap envelope
 
     envelope
+  end
+
+  # determine what the current workflow status
+  # return the onboarding doc file obj
+  def get_onboarding_doc
+
+    # either "toFill", "pendingApproval", "approved", "pendingSig", "signed"
+    @status = nil
+    client = user_client
+
+    # get workflow folder paths
+    path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
+    approvalPath = "#{path}/Pending\ Approval/"
+    sigReqPath = "#{path}/Signature\ Required/"
+    completedPath = "#{path}/Completed/"
+
+    # get all workflow folders, utilize cache
+    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}", :expires_in => 20.minutes) do
+      client.folder_from_path(approvalPath)
+    end
+    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}", :expires_in => 20.minutes) do
+      client.folder_from_path(sigReqPath)
+    end
+    completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 20.minutes) do
+      client.folder_from_path(completedPath)
+    end
+
+    # determine where we are in the onboarding workflow process
+    if ((file = client.folder_items(approvalFolder, fields: [:id]).files).size > 0)
+
+      # get the approval task status on the document
+      task = client.file_tasks(file.first, fields: [:is_completed])
+
+      if (task.first.is_completed == true)
+        # task has been approved, move file to sig required folder
+
+        @status = "approved"
+        client.move_file(file.first, sigReqFolder.id)
+        #file = client.folder_items(sigReqFolder).files
+      else
+        # task has not yet been approved, wait for approval
+        @status = "pendingApproval"
+      end
+    elsif((file = client.folder_items(sigReqFolder, fields: [:id]).files).size > 0)
+      # document in signature required folder, needs to be signed
+
+      @status = "pendingSig"
+    elsif((file = client.folder_items(completedFolder, fields: [:id]).files).size > 0)
+      # document has already been signed
+      @status = "signed"
+    else
+      # the information form has not yet been filled out by the customer
+      @status = "toFill"
+    end
+
+    # return document obj or nil if document doesn't exist yet
+    if(!file.nil?)
+      file.first
+    else
+      nil
+    end
   end
 
   def set_preview_url(id)

@@ -53,6 +53,7 @@ class DashboardController < SecuredController
       File.delete(temp_file)
     end
 
+    flash[:notice] = "File successfully uploaded!"
     respond_to do |format|
       format.json{ render :json => {} }
     end
