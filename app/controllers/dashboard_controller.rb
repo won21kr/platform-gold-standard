@@ -5,12 +5,15 @@ class DashboardController < SecuredController
 
     # get user client obj for Box API calls
     client = user_client
-    rootFolders = client.folder_items(Boxr::ROOT)
     session[:current_page] = "vault"
 
     # get "My Files" and "Shared Files" folder objects
-    @myFolder = client.folder_from_path('My Files')
-    @sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+    @myFolder = Rails.cache.fetch("/folder/my_folder", :expires_in => 10.minutes) do
+      client.folder_from_path('My Files')
+    end
+    @sharedFolder = Rails.cache.fetch("/folder/shared_folder", :expires_in => 10.minutes) do
+      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+    end
     @sharedFolder.name = "Shared Files"
 
     # set active folder ID, either "My Files" or "Shared Files" folder
@@ -22,12 +25,13 @@ class DashboardController < SecuredController
     end
     session[:current_folder] = @currentFolder
 
-    # get all files for dashboard display, either "My Files" or "Shared Files"
+    # get all files for dashboard vault display, either "My Files" or "Shared Files"
     if(@currentFolder == @myFolder.id)
       @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at]).files
     elsif(@currentFolder == @sharedFolder.id)
       @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at]).files
     end
+
   end
 
   # upload files to parameter specified folder ID
@@ -53,6 +57,7 @@ class DashboardController < SecuredController
       File.delete(temp_file)
     end
 
+    flash[:notice] = "File successfully uploaded!"
     respond_to do |format|
       format.json{ render :json => {} }
     end
@@ -61,10 +66,12 @@ class DashboardController < SecuredController
 
   # get file thumbnail from file ID
   def thumbnail
-    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 20.minutes) do
+    puts "before"
+    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 8.minutes) do
       puts "miss!"
       user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
     end
+    puts "after"
 
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
@@ -90,6 +97,7 @@ class DashboardController < SecuredController
     id = params[:id]
     client = user_client
     client.delete_file(id)
+    flash[:notice] = "File successfully deleted!"
 
     redirect_to dashboard_id_path(session[:current_folder])
   end
@@ -103,6 +111,7 @@ class DashboardController < SecuredController
     # get shared folder, then move file into shared folder
     sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
     client.move_file(id, sharedFolder)
+    flash[:notice] = "File shared with company employee!"
 
     redirect_to dashboard_id_path(sharedFolder.id)
   end
@@ -116,6 +125,7 @@ class DashboardController < SecuredController
     # get my folder, then move file into my folder
     myFolder = client.folder_from_path('My Files')
     client.move_file(id, myFolder)
+    flash[:notice] = "File unshared with company employee!"
 
     redirect_to dashboard_id_path(myFolder.id)
   end

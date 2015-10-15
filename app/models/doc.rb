@@ -9,6 +9,7 @@ class Doc < SecuredController
   def pdferize
 
     rendered = render_to_string(:template => 'pdfs/onboarding_googdoc.pdf.haml',
+
                                 :locals => {:info => @info})
     WickedPdf.new.pdf_from_string(rendered)
   end
@@ -20,7 +21,6 @@ class Doc < SecuredController
 
     # convert haml file to pdf
     pdf = self.pdferize
-
 
     pdf_filename = filename
     File.open(pdf_filename, 'wb') do |f|
