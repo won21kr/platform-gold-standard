@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  DO_NOT_DELETE_IDS = [ENV['AGENT_ID1'],ENV['AGENT_ID2'], ENV['AGENT_ID3'], ENV['RUSER_ID']]
+  DO_NOT_DELETE_IDS = [ENV['EMPL_ID']]
 
   def reset_logins
   @message = "This feature is currently disabled"

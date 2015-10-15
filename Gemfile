@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.2.0"
+ruby "2.2.1"
 
 gem 'rails', '4.1.9'
 
@@ -49,4 +49,17 @@ gem 'auth0'
 gem 'simple_form'
 
 gem 'dotenv', '~> 0.11.1', group: :development
+
+gem 'wicked_pdf'
+gem 'docusign_rest'
+gem 'lazyload-rails'
+
+# Gems only used on heroku
+group :production, :staging do
+  gem 'wkhtmltopdf-heroku'
+end
+
+group :development, :test do
+	gem 'wkhtmltopdf'
+end
 

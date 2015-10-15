@@ -5,7 +5,6 @@ class SearchController < SecuredController
   # main search page controller
   def show
 
-    ap params
 
     client = user_client
     @results = nil
@@ -65,25 +64,27 @@ class SearchController < SecuredController
       session[:rfolder] = ""
     end
 
-    # attach metadata to each result file
-    @results.each do |r|
-      class << r
-        attr_accessor :type, :product
-      end
-      
-      begin  
-        meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 20.minutes) do
-          puts "miss"
-          client.metadata(r)
+    # attach metadata to each result file if we're not in the root folder
+    if (@root.nil?)  
+      @results.each do |r|
+        class << r
+          attr_accessor :type, :product
         end
 
-        r.type = meta["Type"]
-        r.product = meta["Product"]
-      rescue
-        r.type = ""
-        r.product = ""
+        begin
+          meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 20.minutes) do
+            puts "miss"
+            client.metadata(r)
+          end
+
+          r.type = meta["Type"]
+          r.product = meta["Product"]
+        rescue
+          r.type = ""
+          r.product = ""
+        end
       end
-    end
+    end  
 
   end
 
