@@ -8,7 +8,7 @@ class Doc < SecuredController
 
   def pdferize
 
-    rendered = render_to_string(:template => 'pdfs/onboarding_doc.pdf.haml',
+    rendered = render_to_string(:template => 'pdfs/onboarding_googdoc.pdf.haml',
                                 :locals => {:info => @info})
     WickedPdf.new.pdf_from_string(rendered)
   end

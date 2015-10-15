@@ -196,7 +196,7 @@ DEPENDENCIES
   memcachier
   omniauth (~> 1.2)
   omniauth-auth0 (~> 1.1)
-  pg
+  pg (~> 0.18.3)
   protected_attributes
   pry
   rails (= 4.1.9)
