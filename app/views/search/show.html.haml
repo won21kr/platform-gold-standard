@@ -37,7 +37,7 @@
   / END MENU
 
 .container
-  .col-md-9.col-sm-9.pull-right{:class => "myvaulttable" }
+  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
     = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
       %h2.form-search-heading
         Search All Resources

@@ -19,7 +19,7 @@ class WorkflowController < SecuredController
 
     elsif(@status == "pendingApproval")
       set_preview_url(@onboardDoc.id)
-      session[:progress] = 33
+      session[:progress] = 1
 
     elsif(@status == "approved" or @status == "pendingSig")
       # create docusign doc
@@ -34,11 +34,11 @@ class WorkflowController < SecuredController
       )
 
       @url = recipient_view["url"]
-      session[:progress] = 66
+      session[:progress] = 2
 
     elsif(@status == "signed")
       set_preview_url(@onboardDoc.id)
-      session[:progress] = 100
+      session[:progress] = 3
 
     end
 
@@ -48,7 +48,6 @@ class WorkflowController < SecuredController
 
     puts "submitting form"
     client = user_client
-    ap params
 
     if(params[:formSubmit] == "true")
       # use form variables to fill out html template file,
@@ -57,7 +56,7 @@ class WorkflowController < SecuredController
 
       # the "Doc" module code can be found in app/models/
       doc = Doc.new({:tel => params[:tel], :address => params[:address],
-                     :bday => params[:bday], :acct => params[:acct],
+                     :bday => params[:bday], :id => params[:id],
                      :username => session[:userinfo]['info']['name'],
                      :review_status => "pending", :signature_status => "pending"})
 
@@ -66,7 +65,7 @@ class WorkflowController < SecuredController
       doc.configure_pdf(client, filename, path)
     end
 
-    flash[:notice] = "Thanks for filling out your information! A company employee will now review the contract."
+    flash[:notice] = "Thanks for filling out your information! Your contract is now under review."
     redirect_to workflow_path
 
   end
@@ -106,6 +105,27 @@ class WorkflowController < SecuredController
       flash[:error] = "You chose not to sign the document."
       render :text => utility.breakout_path(workflow_path), content_type: 'text/html'
     end
+  end
+
+  def reset_workflow
+
+    puts "reset workflow..."
+    client = user_client
+
+    # get workflow folder paths
+    path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
+    completedPath = "#{path}/Completed/"
+
+    begin
+      completedFolder = client.folder_from_path(completedPath)
+
+      file = client.folder_items(completedFolder, fields: [:id]).files.first
+      client.delete_file(file)
+    rescue
+      puts "Error: workflow not yet complete!"
+    end
+
+    redirect_to workflow_path
   end
 
 
