@@ -8,10 +8,10 @@ class DashboardController < SecuredController
     session[:current_page] = "vault"
 
     # get "My Files" and "Shared Files" folder objects
-    @myFolder = Rails.cache.fetch("/folder/my_folder", :expires_in => 10.minutes) do
+    @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
       client.folder_from_path('My Files')
     end
-    @sharedFolder = Rails.cache.fetch("/folder/shared_folder", :expires_in => 10.minutes) do
+    @sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
       client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
     end
     @sharedFolder.name = "Shared Files"
