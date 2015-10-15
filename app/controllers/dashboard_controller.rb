@@ -66,12 +66,11 @@ class DashboardController < SecuredController
 
   # get file thumbnail from file ID
   def thumbnail
-    puts "before"
+
     image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 8.minutes) do
       puts "miss!"
       user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
     end
-    puts "after"
 
     send_data image, :type => 'image/png', :disposition => 'inline'
   end

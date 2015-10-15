@@ -48,17 +48,23 @@
       -#     = "#{session[:progress]}%"
       %h1 Onboarding Tasks
       %p Please complete the onboarding process
-    .col-md-6.col-sm-6
-      %ul.list-group
-        %li.list-group-item.active
-          = "Current Action Needed: step #{session[:progress] + 1}" 
-        %li.list-group-item{:style => "#{'text-decoration:line-through' if session[:progress] > 0}"}
-          1. Fill out your personal information
-        %li.list-group-item{:style => "#{'text-decoration:line-through' if session[:progress] > 1}"}
-          2. Wait for contract to be reviewed by the company
-        %li.list-group-item{:style => "#{'text-decoration:line-through' if session[:progress] > 2}"}
-          3. Sign the onboarding contract
-    .col-md-6.col-sm-6
+    .col-md-12.col-sm-12
+      .progress
+        .progress-bar{:class => "#{'progress-bar-info' if session[:progress] >= 0}", :role => "progressbar", :style => "width:33.3%"}
+          Step 1
+        .progress-bar.progress-bar-todo{:class => "#{'progress-bar-info!important' if session[:progress] >= 1}", :role => "progressbar", :style => "width:33.3%"}
+          Step 2
+        .progress-bar{:class => "#{'progress-bar-info' if session[:progress] >= 2}", :role => "progressbar", :style => "width:33.3%"}
+          Step 3
+      -# %ul.list-group
+      -#   %li.list-group-item.active
+      -#     = "Current Action Needed: step #{session[:progress] + 1}"
+      -#   %li.list-group-item{:style => "#{'text-decoration:line-through' if session[:progress] > 0}"}
+      -#     1. Fill out your personal information
+      -#   %li.list-group-item{:style => "#{'text-decoration:line-through' if session[:progress] > 1}"}
+      -#     2. Wait for contract to be reviewed by the company
+      -#   %li.list-group-item{:style => "#{'text-decoration:line-through' if session[:progress] > 2}"}
+      -#     3. Sign the onboarding contract
     - if (session[:progress] == 0)
       .col-md-12.col-sm-12
         %h3

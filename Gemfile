@@ -57,6 +57,7 @@ gem 'dotenv', '~> 0.11.1', group: :development
 gem 'wicked_pdf'
 gem 'docusign_rest'
 gem 'lazyload-rails'
+gem 'puma'
 
 # Gems only used on heroku
 group :production, :staging do
@@ -66,4 +67,3 @@ end
 group :development, :test do
 	gem 'wkhtmltopdf'
 end
-
