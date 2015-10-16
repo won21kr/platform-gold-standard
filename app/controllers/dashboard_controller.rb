@@ -18,7 +18,6 @@ class DashboardController < SecuredController
 
     # set active folder ID, either "My Files" or "Shared Files" folder
     if(params[:id])
-      puts "changing active folder"
       @currentFolder = params[:id]
     else
       @currentFolder = @myFolder.id
@@ -67,7 +66,7 @@ class DashboardController < SecuredController
   # get file thumbnail from file ID
   def thumbnail
 
-    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 8.minutes) do
+    image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 10.minutes) do
       puts "miss!"
       user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
     end
@@ -77,13 +76,14 @@ class DashboardController < SecuredController
 
   # get preview url from file ID
   def preview
+    
     embed_url = user_client.embed_url(params[:id])
-
     redirect_to embed_url
   end
 
   # download file from file ID
   def download
+
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
     end
@@ -124,7 +124,7 @@ class DashboardController < SecuredController
     # get my folder, then move file into my folder
     myFolder = client.folder_from_path('My Files')
     client.move_file(id, myFolder)
-    flash[:notice] = "File unshared with company employee!"
+    flash[:notice] = "File moved to private folder!"
 
     redirect_to dashboard_id_path(myFolder.id)
   end

@@ -1,7 +1,7 @@
 :css
   .item {
       display: table-cell;
-      border:3px solid #f9f9f9;
+      border:3px solid #F1F3FA;
   }
 
 %h3
@@ -14,17 +14,8 @@
       %input.form-control#company{:type => "text", :name => "company", :placeholder => "Blue Insurance"}
       %label{:for => "logo"} Company Logo URL
       %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "logo.png"}
-      %label{:for => "navbar_color"} Navbar Primary Color
+      %label{:for => "navbar_color"} Navbar Background Color
       %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "ffffff"}
-      %label{:for => "navbar_text"} Navbar Secondary Color
-      %input.form-control#navbar_text{:type => "text", :name => "navbar_text", :placeholder => "000000"}
-      %label Display Company Name in Navigation Header?
-      %label#radio-inline
-        %input{:type => "radio", :name => "navbar_display_name?", :value => false, :checked => session[:navbar_display_name?]=='on'} Enable
-      %label#radio-inline
-        %input{:type => "radio", :name => "navbar_display_name?", :value => true, :checked => session[:navbar_display_name?]=='off' || session[:navbar_display_name?].nil?} Disable
-      .br
-
 
     .form-group.col-md-12.item
       %input.btn.btn-default{:type => "submit", :value => "Save"}
@@ -35,18 +26,6 @@
     %button.btn.btn-default{:type => "submit", :type => "form"} Reset
   %form.item{:action => "/", :method => "get", :role => "form"}
     %input.btn.btn-default{:type => "submit", :value => "Main Page"}
-  %form.item{:action => "/config/save_config", :method => "get", :role => "form"}
-    %input.btn.btn-default{:type =>  "submit", :value => "Store Current Configuration"}
-  .dropdown.item
-    %button#menu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
-      Restore Previous Configuration
-      %span.caret
-    %ul.dropdown-menu{"aria-labelledby" => "menu1", :role => "menu"}
-      - if @urls != nil
-        - @urls.each do |u|
-          %li{:role => "presentation"}
-            %a{:href => "/config/restore?company=#{u[0]}", :role => "menuitem", :tabindex => "-1"}
-              = u[0]
 
 %section
   %h3
@@ -69,10 +48,6 @@
           %td
             = session[:navbar_color]
         %tr
-          %td Navbar Secondary Color:
+          %td Encoded Branding URL:
           %td
-            = session[:navbar_text]
-        %tr
-          %td Navbar Display Company Name:
-          %td
-            = session[:navbar_display_name?]
+            = session[:config_url]

@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
 
+  before_action :check_config
   DO_NOT_DELETE_IDS = [ENV['EMPL_ID']]
 
   def reset_logins
@@ -31,5 +32,45 @@ end
   def logout
     reset_session
     redirect_to home_path
+  end
+
+  private
+
+  def check_config
+    # check if query string exists
+    if(params != "")
+      insert_query(params)
+    end
+
+  end
+
+  # construct configuration URL
+  def config_url
+    session[:config_url] = "#{ENV['ACTIVE_URL']}/"
+    session[:config_url] << "?company=#{session[:company]}"
+    session[:config_url] << "&logo=#{session[:logo]}"
+    if(!session[:navbar_color].nil? && session[:navbar_color] != "")
+      session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
+    end
+
+  end
+
+  # fetches config query from encoded URL and updates the config session variables
+  def insert_query(query)
+
+    puts "insert query..."
+    ap query
+
+    if query['company'] != "" and query['company'] != nil
+      session[:company] = query['company']
+    end
+    if query['logo'] != "" and query['logo'] != nil
+      session[:logo] = query['logo']
+    end
+    if query['back_color'] != "" and query['back_color'] != nil
+      session[:navbar_color] = '#' + query['back_color']
+    end
+
+    config_url
   end
 end

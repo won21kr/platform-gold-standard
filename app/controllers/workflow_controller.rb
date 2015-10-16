@@ -11,7 +11,7 @@ class WorkflowController < SecuredController
     # fetch the onboarding doc file from whichever folder it current lives in
     # also, update the current workflow status state
     @onboardDoc = get_onboarding_doc
-
+    session[:current_page] = "workflow"
 
     # perform actions based on current workflow status state
     if (@status == "toFill")
