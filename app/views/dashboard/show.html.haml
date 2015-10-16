@@ -17,7 +17,7 @@
 .col-md-3.col-sm-3.pull-left
   / SIDEBAR USERPIC
   .profile{:style => "margin: 1px 0; background: #fff"}
-    .profile-sidebar{:style => "padding: 20px 0 90px 0"}
+    .profile-sidebar{:style => "padding: 20px 0 30px 0"}
       .profile-userpic
         %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
 
@@ -55,11 +55,11 @@
   .col-md-9.col-sm-9.pull-right
     .flash
       = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
-    .panel.panel-default
+  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+    .panel.panel-default{:style => "margin-bottom: 0px"}
       .panel-heading
         .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload File
+          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload File(s)
         %h2 My Vault
         .sub-title
           = "Your personal & shared files"
@@ -101,9 +101,10 @@
                       %span.glyphicon.glyphicon-cloud-download
                     %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
                       %span.glyphicon.glyphicon-trash
-
-.footer{:style=>"text-align: right; margin-top: 20px; font-size: 10px; font-weight: 600; color: #5a7391"}
-  = "Powered by DemoEng"
+      - if @files.size == 0
+        .col-md-12
+          .h4
+            No files currently exist. Upload by clicking the "Upload File(s)" button above.
 
 :javascript
   Dropzone.options.myDropzone = {

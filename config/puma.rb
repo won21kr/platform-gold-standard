@@ -1,5 +1,5 @@
 threads 8,8
-workers 4
+workers 8
 preload_app!
 
 on_worker_boot do

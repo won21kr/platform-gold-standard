@@ -2,7 +2,7 @@
 .col-md-3.col-sm-3.pull-left
   / SIDEBAR USERPIC
   .profile{:style => "margin: 1px 0; background: #fff"}
-    .profile-sidebar{:style => "padding: 20px 0 90px 0"}
+    .profile-sidebar{:style => "padding: 20px 0 30px 0"}
       .profile-userpic
         %img.img-responsive{:alt => "", :src => "http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
 
@@ -37,7 +37,7 @@
   / END MENU
 
 .container
-  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
+  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
     = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
       %h2.form-search-heading
         Search All Resources
@@ -145,5 +145,3 @@
                     %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
                       %span.glyphicon.glyphicon-cloud-download
                   /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
-.footer{:style=>"text-align: right; margin-top: 20px; font-size: 10px; font-weight: 600; color: #5a7391;"}
-  = "Powered by DemoEng"

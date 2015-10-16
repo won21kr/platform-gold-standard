@@ -16,11 +16,11 @@ class WorkflowController < SecuredController
     # perform actions based on current workflow status state
     if (@status == "toFill")
       session[:progress] = 0
-
+      @message = "Step 1. Fill out your personal information"
     elsif(@status == "pendingApproval")
       set_preview_url(@onboardDoc.id)
       session[:progress] = 1
-
+      @message = "Step 2. Wait for contract to be reviewed by the company"
     elsif(@status == "approved" or @status == "pendingSig")
       # create docusign doc
       envelope_response = create_docusign_envelope(@onboardDoc.id)
@@ -35,11 +35,11 @@ class WorkflowController < SecuredController
 
       @url = recipient_view["url"]
       session[:progress] = 2
-
+      @message = "Step 3. Sign the onboarding contract"
     elsif(@status == "signed")
       set_preview_url(@onboardDoc.id)
       session[:progress] = 3
-
+      @message = "Onboarding process complete!"
     end
 
   end
@@ -114,15 +114,35 @@ class WorkflowController < SecuredController
 
     # get workflow folder paths
     path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
+    approvalPath = "#{path}/Pending\ Approval/"
+    sigReqPath = "#{path}/Signature\ Required/"
     completedPath = "#{path}/Completed/"
 
-    begin
-      completedFolder = client.folder_from_path(completedPath)
+    # get all workflow folders, utilize cache
+    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}", :expires_in => 20.minutes) do
+      client.folder_from_path(approvalPath)
+    end
+    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}", :expires_in => 20.minutes) do
+      client.folder_from_path(sigReqPath)
+    end
+    completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 20.minutes) do
+      client.folder_from_path(completedPath)
+    end
 
-      file = client.folder_items(completedFolder, fields: [:id]).files.first
-      client.delete_file(file)
+    begin
+      if ((file = client.folder_items(approvalFolder, fields: [:id]).files).size > 0)
+        # file exists in approval folder
+      elsif((file = client.folder_items(sigReqFolder, fields: [:id]).files).size > 0)
+        # file exists in sig required folder
+      elsif((file = client.folder_items(completedFolder, fields: [:id]).files).size > 0)
+        # file exists in completed folder
+      end
+      ap file
+
+      # delete file
+      client.delete_file(file.first)
     rescue
-      puts "Error: workflow not yet complete!"
+      puts "Error: workflow not yet started!"
     end
 
     redirect_to workflow_path
