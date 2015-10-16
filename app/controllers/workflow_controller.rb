@@ -12,14 +12,16 @@ class WorkflowController < SecuredController
     # also, update the current workflow status state
     @onboardDoc = get_onboarding_doc
     session[:current_page] = "workflow"
-
+    session[:task_status] = 1
     # perform actions based on current workflow status state
     if (@status == "toFill")
       session[:progress] = 0
+      session[:task_status] = 1
       @message = "Step 1. Fill out your personal information"
     elsif(@status == "pendingApproval")
       set_preview_url(@onboardDoc.id)
       session[:progress] = 1
+      session[:task_status] = 1
       @message = "Step 2. Wait for contract to be reviewed by the company"
     elsif(@status == "approved" or @status == "pendingSig")
       # create docusign doc
@@ -35,10 +37,12 @@ class WorkflowController < SecuredController
 
       @url = recipient_view["url"]
       session[:progress] = 2
+      session[:task_status] = 1
       @message = "Step 3. Sign the onboarding contract"
     elsif(@status == "signed")
       set_preview_url(@onboardDoc.id)
       session[:progress] = 3
+      session[:task_status] = 0
       @message = "Onboarding process complete!"
     end
 
@@ -147,7 +151,6 @@ class WorkflowController < SecuredController
 
     redirect_to workflow_path
   end
-
 
   private
 

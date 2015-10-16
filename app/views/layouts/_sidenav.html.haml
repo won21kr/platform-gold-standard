@@ -29,6 +29,9 @@
           %a{:href => "/onboarding-tasks"}
             %i.glyphicon.glyphicon-ok
             Onboarding Tasks
+            %span.badge
+              = get_task_status
+
         %li
           %a{:href => "#"}
             %i.glyphicon.glyphicon-flag

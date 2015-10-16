@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   get "/doc/:id" => "dashboard#doc", :as => 'doc'
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
-
+  
   # search page
   post "/resources" => "search#show", :as => "search"
   get "/resources" => "search#show", :as => "resources"
@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   post "/onboarding-tasks" => "workflow#form_submit", :as => "form_submit"
   get "docusign_response/:envelope_id" => "workflow#docusign_response", :as => "docusign_response"
   get "/onboarding-tasks/reset-workflow" => "workflow#reset_workflow", :as => "reset_workflow"
+
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
