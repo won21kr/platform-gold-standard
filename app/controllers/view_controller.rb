@@ -10,7 +10,6 @@ class ViewController < SecuredController
     client = user_client
     @fileId = params[:id]
     session[:fileId] = @fileId
-    session[:current_page] = "resources"
 
     @file = client.file_from_id(params[:id])
 
