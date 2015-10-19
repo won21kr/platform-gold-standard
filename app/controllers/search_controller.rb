@@ -8,7 +8,7 @@ class SearchController < SecuredController
     # get user client to make API calls
     client = user_client
     @results = nil
-    session[:current_page] = "resources"
+    session[:current_page] = "search"
 
     # get root resource folder
     @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 20.minutes) do
