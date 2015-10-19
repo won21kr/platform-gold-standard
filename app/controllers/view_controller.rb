@@ -10,6 +10,7 @@ class ViewController < SecuredController
     client = user_client
     @fileId = params[:id]
     session[:fileId] = @fileId
+    session[:current_page] = "resources"
 
     @file = client.file_from_id(params[:id])
 
@@ -38,11 +39,16 @@ class ViewController < SecuredController
   # get and return Box user avatar thumbnail URL
   def get_thumbnail(id)
 
-    user = Rails.cache.fetch("/avatar_urls/#{id}", :expires_in => 10.minutes) do
+    avatar_url = Rails.cache.fetch("/avatar_urls/#{id}", :expires_in => 10.minutes) do
       puts "cache miss"
-      Box.admin_client.user_from_id(id, fields: [:avatar_url])
+      begin
+        Box.admin_client.user_from_id(id, fields: [:avatar_url]).avatar_url
+      rescue
+        puts "own avatar..."
+        Box.admin_client.user_from_id(session[:box_id], fields: [:avatar_url]).avatar_url
+      end
     end
-    user.avatar_url
+    avatar_url
   end
 
   # download file
