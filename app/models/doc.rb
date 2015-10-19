@@ -1,4 +1,5 @@
 class Doc < SecuredController
+
   include AbstractController::Rendering
   self.view_paths = 'app/views'
 
@@ -9,7 +10,6 @@ class Doc < SecuredController
   def pdferize
 
     rendered = render_to_string(:template => 'pdfs/onboarding_googdoc.pdf.haml',
-
                                 :locals => {:info => @info})
     WickedPdf.new.pdf_from_string(rendered)
   end
@@ -31,7 +31,7 @@ class Doc < SecuredController
     pdf_in_box = client.upload_file(pdf_filename, upload_folder.id)
 
     # set metadata
-    client.create_metadata(pdf_in_box, @info, scope: :global, template: :properties)
+    # client.create_metadata(pdf_in_box, @info, scope: :global, template: :properties)
 
     # create task for uploaded customer document and assign to Company Employee
     msg = "Please review and complete the task"

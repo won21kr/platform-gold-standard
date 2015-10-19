@@ -97,7 +97,11 @@ class WorkflowController < SecuredController
         #Box.create_in_view_api(file)
         box_user.update_file(file, name: box_info[:box_doc_name])
         #box_user.update_metadata(file, [{'op' => 'add', 'path' => '/docusign_envelope_id', 'value' => params["envelope_id"]}])
+        # meta = box_user.metadata(box_info[:box_doc_id])
+        # ap meta
         box_user.delete_file(box_info[:box_doc_id])
+
+        # box_user.create_metadata(file, meta)
 
       ensure
         temp_file.delete
@@ -158,9 +162,6 @@ class WorkflowController < SecuredController
   def create_docusign_envelope(box_doc_id)
 
     box_user = user_client
-
-
-
 
     box_file = box_user.file_from_id(box_doc_id)
     raw_file = box_user.download_file(box_file)
