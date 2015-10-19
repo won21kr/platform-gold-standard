@@ -23,7 +23,7 @@
     .panel.panel-default{:style => "margin-bottom: 0px"}
       .panel-heading
         .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload File(s)
+          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
         %h2 My Vault
         .sub-title
           = "Your personal & shared files"
@@ -68,7 +68,7 @@
       - if @files.size == 0
         .col-md-12
           .h4
-            No files currently exist. Upload by clicking the "Upload File(s)" button above.
+            No files currently exist. Upload by clicking the "Upload" button above.
 
 :javascript
   Dropzone.options.myDropzone = {
