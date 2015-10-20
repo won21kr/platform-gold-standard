@@ -30,27 +30,44 @@
 
 
 
-%nav.navbar.navbar-inverse{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
+-# %nav.navbar.navbar-inverse{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
+-#   .container
+-#     .navbar-header
+-#       %a.navbar-brand{href: "/dashboard"}
+-#         - if session[:logo].nil? or session[:logo] == ""
+-#           .logo-text
+-#             %span
+-#               Platform
+-#             %span(style="font-weight: 100; margin-left: -6px;")
+-#               Standard
+-#             .trademark
+-#               &#8482;
+-#         - else
+-#           %img{:src => session[:logo], :style => "max-height:52px; margin-top: -16px"}
+-#
+-#     - if session[:userinfo]
+-#       .username
+-#         %span
+-#           %img{:src => session[:userinfo][:info][:image], :width => '30px', :class => 'img-circle'}
+-#         %span{:class => 'foop'}
+-#           = "#{session[:userinfo][:info][:name]}"
+
+.header{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
   .container
-    .navbar-header
-      %a.navbar-brand{href: "/dashboard"}
-        - if session[:logo].nil? or session[:logo] == ""
-          .logo-text
-            %span
-              Platform
-            %span(style="font-weight: 100; margin-left: -6px;")
-              Standard
-            / %span(style="font-weight: 100; font-size: 17px; margin-left: -5px; margin-top: 10px;")
-            /   &#8482;
-            .trademark
-              &#8482;
-          /%img{:src => asset_path("http://i1066.photobucket.com/albums/u418/austinringer/logo_zpswsiptltn.png"), :id => "login_logo", :height => "27"}
-          -#= ENV['DEMO_APP_NAME']
-        - else
-          %img{:src => session[:logo], :style => "max-height:52px; margin-top: -16px"}
-    - if session[:userinfo]
-      .username
+    - if session[:logo].nil? or session[:logo] == ""
+      %a.logo-text{href: "/dashboard", :style => "text-decoration: none;"}
         %span
-          %img{:src => session[:userinfo][:info][:image], :width => '30px', :class => 'img-circle'}
-        %span{:class => 'foop'}
+          Platform
+        %span(style="font-weight: 100; margin-left: -6px;")
+          Standard
+        .trademark
+          &#8482;
+    - else
+      %a.logo-text{href: "/dashboard", :style => "text-decoration: none;"}
+        %img{:src => session[:logo], :style => "max-height:75px; margin-top: -16px"}
+    - if session[:userinfo]
+      .name
+        %span
+          = image_tag (session[:userinfo][:info][:image]), :width => '40px', :class => 'img-circle'
+        %span
           = "#{session[:userinfo][:info][:name]}"
