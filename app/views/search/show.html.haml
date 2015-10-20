@@ -3,110 +3,125 @@
 
 .container
   .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-    = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
-      %h2.form-search-heading
-        Search All Resources
-      = f.input :query, placeholder: "training, onboarding, assets, etc...", input_html: { class: 'form-control', type: 'search' }
-      = f.submit 'Search', class: 'btn btn-lg btn-primary btn-block', style: 'height: 44px;width: 180px; margin-top: -44px; margin-left: 405px;'
-    .form-search
-      %h2.form-search-heading{:style => "font-size: 120%"}
-        Filter By:
-      .btn-group.btn-group-justified{:style => "margin-bottom: 40px"}
-        .btn-group{:role => "group"}
-          %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button", :method => "post"}
-            File Type
-            %span.caret
-          %ul.dropdown-menu
-            %li
-              = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
-            %li
-              = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
-            %li
-              = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
-            %li
-              = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
-        .btn-group{:role => "group"}
-          %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-            Resource Type
-            %span.caret
-          %ul.dropdown-menu
-            %li
-              = link_to "Training Materials", search_path(:filter_query => "Training Materials"), :method => :post
-            %li
-              = link_to 'Onboarding Documents', search_path(:filter_query => "Onboarding Documents"), :method => :post
-            %li
-              = link_to 'Product Features', search_path(:filter_query => "Product Features"), :method => :post
-        .btn-group{:role => "group"}
-          %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-            Product
-            %span.caret
-          %ul.dropdown-menu
-            %li
-              = link_to "Box", search_path(:filter_query => "Box"), :method => :post
-            %li
-              = link_to 'OneDrive', search_path(:filter_query => "OneDrive"), :method => :post
-            %li
-              = link_to 'Egnyte', search_path(:filter_query => "Egnyte"), :method => :post
+    .page-header{:style => "margin-top: 0px"}
+      %h1 Resources
+      %p Browse through the various resource documents provided below
+    .h3
+      Search By:
+    .col-md-5
+      .well.well-sm
+        = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
+          %h3.form-search-heading
+            %center File Name
+          = f.input :query, placeholder: "feature, mobile, search, etc...", input_html: { class: 'form-control', type: 'search' }
+          = f.submit 'Search', class: 'btn btn-md btn-primary btn-block', :style => "width: 40%; margin: 5px auto"
+    .col-md-1{:style => "margin-top: 45px"}
+      %p
+        %center
+          %i{:style => "font-size: 140%"}
+            or
+    .col-md-5
+      .well.well-sm{:style => "height: 155px"}
+        .form-search
+          %h3.form-search-heading
+            %center File Attribute
+          .btn-group.btn-group-justified{:style => "margin-bottom: 40px"}
+            .btn-group{:role => "group"}
+              %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button", :method => "post"}
+                File Type
+                %span.caret
+              %ul.dropdown-menu
+                %li
+                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
+                %li
+                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
+                %li
+                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
+                %li
+                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
+            .btn-group{:role => "group"}
+              %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                Type
+                %span.caret
+              %ul.dropdown-menu
+                %li
+                  = link_to "Training Materials", search_path(:filter_query => "Training Materials"), :method => :post
+                %li
+                  = link_to 'Onboarding Documents', search_path(:filter_query => "Onboarding Documents"), :method => :post
+                %li
+                  = link_to 'Product Features', search_path(:filter_query => "Product Features"), :method => :post
+            .btn-group{:role => "group"}
+              %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                Product
+                %span.caret
+              %ul.dropdown-menu
+                %li
+                  = link_to "Box", search_path(:filter_query => "Box"), :method => :post
+                %li
+                  = link_to 'OneDrive', search_path(:filter_query => "OneDrive"), :method => :post
+                %li
+                  = link_to 'Egnyte', search_path(:filter_query => "Egnyte"), :method => :post
     / Print out results or display resource folders
-    .results
-      %h3
-        .row
-          %ol.breadcrumb{:style => "font-size: 85%"}
-            %li
-              = link_to @resource.name, resources_path
-            - if !@subName.nil?
-              %li.active
-                = @subName
-      - if @results.nil? or @results.count == 0
-        / there were no results found for your search query
-        %h2(style='text-align: center;')
-          There were no results matching your search criteria.
-      - else
-        / either results were found for your search or were are in the resource root folder / sub-folder
+    .col-md-12
+      .results
         %h3
-          / are we in the root folder?
-          - if (@root == true)
-            - @results.each do |folder|
-              .row(style="margin-bottom: 10px;")
-                .col-md-1
-                  = image_tag("folder.png", height: '70px')
-                .col-md-9
-                  .filename{:style => "margin-top: 23px; margin-left: 10px"}
-                    = link_to folder.name, sub_resource_path(folder.id)
-          - if (!@text.nil?)
-            = "Found #{@results.count} results for '#{@text}'"
-        - if (@root != true)
-          - @results.each do |result|
-            .result
-              .row
-                .col-md-3
-                  .thumb-image-border
-                    = link_to view_doc_path(result.id) do
-                      = image_tag(thumbnail_url(result.id), :height => "90px")
-                .col-md-7
-                  .row(style = 'margin-left: -25px;')
-                    .col-md-3
-                      .result-label
-                        File Name:
-                      .result-label
-                        Date Created:
-                      .result-label
-                        Type:
-                      .result-label
-                        Product:
-                    .col-md-9
-                      .result-data
-                        = result.name
-                      .result-data
-                        = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
-                      .result-data
-                        = result.type
-                      .result-data
-                        = result.product
-                .col-md-2
-                  .btn-group.pull-right
-                    %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                      %span.glyphicon.glyphicon-eye-open
-                    %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                      %span.glyphicon.glyphicon-cloud-download
-                  /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
+          .row
+            %ol.breadcrumb{:style => "font-size: 85%"}
+              %li
+                = link_to @resource.name, resources_path
+              - if !@subName.nil?
+                %li.active
+                  = @subName
+        - if @results.nil? or @results.count == 0
+          / there were no results found for your search query
+          %h2(style='text-align: center;')
+            There were no results matching your search criteria.
+        - else
+          / either results were found for your search or were are in the resource root folder / sub-folder
+          %h3
+            / are we in the root folder?
+            - if (@root == true)
+              - @results.each do |folder|
+                .row(style="margin-bottom: 10px;")
+                  .col-md-1
+                    = image_tag("folder.png", height: '70px')
+                  .col-md-9
+                    .filename{:style => "margin-top: 23px; margin-left: 10px"}
+                      = link_to folder.name, sub_resource_path(folder.id)
+            - if (!@text.nil?)
+              = "Found #{@results.count} results for '#{@text}'"
+          - if (@root != true)
+            - @results.each do |result|
+              .result
+                .row
+                  .col-md-3
+                    .thumb-image-border
+                      = link_to view_doc_path(result.id) do
+                        = image_tag(thumbnail_url(result.id), :height => "90px")
+                  .col-md-7
+                    .row(style = 'margin-left: -25px;')
+                      .col-md-3
+                        .result-label
+                          File Name:
+                        .result-label
+                          Created On:
+                        .result-label
+                          Type:
+                        .result-label
+                          Product:
+                      .col-md-9
+                        .result-data
+                          = result.name
+                        .result-data
+                          = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                        .result-data
+                          = result.type
+                        .result-data
+                          = result.product
+                  .col-md-2
+                    .btn-group.pull-right
+                      %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                        %span.glyphicon.glyphicon-eye-open
+                      %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                        %span.glyphicon.glyphicon-cloud-download
+                    /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
