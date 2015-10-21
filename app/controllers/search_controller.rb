@@ -52,12 +52,15 @@ class SearchController < SecuredController
       end
 
       # perform Box search, get results
-      if (params[:filter] == "file_type")
+      if (!params[:search].nil?)
+        @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+      elsif (params[:filter] == "file_type")
         @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
       else
         @results = client.search(@text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
       end
 
+      ap @results
       @results = @results.files
     end
 
