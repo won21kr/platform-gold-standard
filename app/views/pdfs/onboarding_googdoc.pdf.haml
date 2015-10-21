@@ -1,91 +1,104 @@
 %form#ss-form{:action => "https://docs.google.com/forms/d/1uvzLN_vS2y9v9wgjItIG9m3qSH8Q6RB1qVgFVnEvdbU/formResponse", :method => "POST", :onsubmit => "", :target => "_self"}
+.panel.panel-primary
+  .panel-heading
+
+  .panel-title.pull-right
+  = wicked_pdf_image_tag "header.png", :width => 1050, :padding =>20
   %ol.ss-question-list{:role => "list", :style => "padding-left: 0"}
+  .panel.panel-primary
+  %h2.panel-heading.center
+    .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px;margin-top:10px; border-radius: 20px !important;"}
+      .errorbox-good{:role => "listitem"}
+        .ss-item.ss-section-header{:dir => "auto"}
+          .ss-form-entry
+            %h3.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} Basic Information
+            .ss-section-description.ss-no-ignore-whitespace
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_723124258"}
+              .ss-q-title
+                Employee Name :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_723124258.ss-q-short{"aria-label" => "Employee Name  ", :style => "margin-top: 20px;", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:username]}"}
+
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_1024831259"}
+              .ss-q-title
+                Employee ID :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_1024831259.ss-q-short{"aria-label" => "Employee ID   ", :style => "margin-top: 20px;", :dir => "auto", :name => "entry.1024831259", :title => "", :type => "text", :value => "#{@info[:id]}"}
+              #1805685622_errorMessage.error-message
+
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_1242191501"}
+              .ss-q-title
+                Address :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_1242191501.ss-q-short{"aria-label" => "Department  ", :style => "margin-top: 20px;", :dir => "auto", :name => "entry.1242191501", :title => "", :type => "text", :value => "#{@info[:address]}"}
+
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-date{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_2136360185"}
+              .ss-q-title
+                Birthday :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_2136360185.ss-q-date{"aria-label" => "Employment Date  ", :style => "margin-top: 20px;", :dir => "auto", :name => "entry.2136360185", :type => "date", :value => "#{@info[:bday]}"}
+
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-date{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_2136360185"}
+              .ss-q-title
+                Phone Number :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_2136360185.ss-q-date{"aria-label" => "Employment Date  ", :style => "margin-top: 20px;", :dir => "auto", :name => "entry.2136360185", :type => "date", :value => "#{@info[:tel]}"}
+
+
     .errorbox-good{:role => "listitem"}
-      .ss-item.ss-section-header{:dir => "auto"}
-        .ss-form-entry
-          %h2.ss-section-title Basic Information
-          .ss-section-description.ss-no-ignore-whitespace
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-text{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_723124258"}
-            .ss-q-title
-              Employee Name
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %input#entry_723124258.ss-q-short{"aria-label" => "Employee Name  ", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:username]}"}
+    .panel.panel-primary
+    .panel-heading
+      %h3.panel-title
+      .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px"}
+        .ss-item.ss-section-header{:dir => "auto"}
+          .ss-form-entry
+            %h3.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} HR Information
+            .ss-section-description.ss-no-ignore-whitespace
+        .ss-form-question.errorbox-good{:role => "listitem"}
+          .ss-item.ss-checkbox{:dir => "auto"}
+            .ss-form-entry
+              %label.ss-q-item-label{:for => "entry_1866242987"}
+                .ss-q-title
+                  Complete I-9 Form
+                .ss-q-help.ss-secondary-text{:dir => "auto"}
+              %ul.ss-choices{"aria-label" => "Complete I-9 Form  ", :role => "group"}
+                %li.ss-choice-item
+                  %label
+                    %span.ss-choice-item-control.goog-inline-block
+                      %input#group_1702008141_1.ss-q-checkbox{:name => "entry.1702008141", :role => "", :type => "checkbox", :value => "#{@info[:checkbox1]}"}/
+                    %span.ss-choice-label Done
+              #1866242987_errorMessage.error-message
 
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-text{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_1024831259"}
-            .ss-q-title
-              Employee ID
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %input#entry_1024831259.ss-q-short{"aria-label" => "Employee ID   ", :dir => "auto", :name => "entry.1024831259", :title => "", :type => "text", :value => "#{@info[:id]}"}
-            #1805685622_errorMessage.error-message
+        .ss-form-question.errorbox-good{:role => "listitem"}
+          .ss-item.ss-checkbox{:dir => "auto"}
+            .ss-form-entry
+              %label.ss-q-item-label{:for => "entry_1702343382"}
+                .ss-q-title
+                  Employee ID received from HR
+                .ss-q-help.ss-secondary-text{:dir => "auto"}
+              %ul.ss-choices{"aria-label" => "Employee ID received from HR  ", :role => "group"}
+                %li.ss-choice-item
+                  %label
+                    %span.ss-choice-item-control.goog-inline-block
+                      %input#group_1260160856_1.ss-q-checkbox{:name => "entry.1260160856", :role => "checkbox", :type => "checkbox", :value => "#{@info[:checkbox2]}"}/
+                    %span.ss-choice-label Done
+              #1702343382_errorMessage.error-message
 
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-text{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_1242191501"}
-            .ss-q-title
-              Address
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %input#entry_1242191501.ss-q-short{"aria-label" => "Department  ", :dir => "auto", :name => "entry.1242191501", :title => "", :type => "text", :value => "#{@info[:address]}"}
-
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-date{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_2136360185"}
-            .ss-q-title
-              Birthday
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %input#entry_2136360185.ss-q-date{"aria-label" => "Employment Date  ", :dir => "auto", :name => "entry.2136360185", :type => "date", :value => "#{@info[:bday]}"}
-
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-date{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_2136360185"}
-            .ss-q-title
-              Phone Number
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %input#entry_2136360185.ss-q-date{"aria-label" => "Employment Date  ", :dir => "auto", :name => "entry.2136360185", :type => "date", :value => "#{@info[:tel]}"}
-
-
-    .errorbox-good{:role => "listitem"}
-      .ss-item.ss-section-header{:dir => "auto"}
-        .ss-form-entry
-          %h2.ss-section-title HR Information
-          .ss-section-description.ss-no-ignore-whitespace
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-checkbox{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_1866242987"}
-            .ss-q-title
-              Complete I-9 Form
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %ul.ss-choices{"aria-label" => "Complete I-9 Form  ", :role => "group"}
-            %li.ss-choice-item
-              %label
-                %span.ss-choice-item-control.goog-inline-block
-                  %input#group_1702008141_1.ss-q-checkbox{:name => "entry.1702008141", :role => "checkbox", :type => "checkbox", :value => "Done"}/
-                %span.ss-choice-label Done
-          #1866242987_errorMessage.error-message
-
-    .ss-form-question.errorbox-good{:role => "listitem"}
-      .ss-item.ss-checkbox{:dir => "auto"}
-        .ss-form-entry
-          %label.ss-q-item-label{:for => "entry_1702343382"}
-            .ss-q-title
-              Employee ID received from HR
-            .ss-q-help.ss-secondary-text{:dir => "auto"}
-          %ul.ss-choices{"aria-label" => "Employee ID received from HR  ", :role => "group"}
-            %li.ss-choice-item
-              %label
-                %span.ss-choice-item-control.goog-inline-block
-                  %input#group_1260160856_1.ss-q-checkbox{:name => "entry.1260160856", :role => "checkbox", :type => "checkbox", :value => "Done"}/
-                %span.ss-choice-label Done
-          #1702343382_errorMessage.error-message
-
-.div{:style => 'margin-top: 30px;'}
-  Signature:
+%h3.panel-heading.center
+  .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px;margin-top:10px; border-radius: 20px !important;"}
+    %h2.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} Signature:
