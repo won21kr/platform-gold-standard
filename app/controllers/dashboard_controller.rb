@@ -60,7 +60,6 @@ class DashboardController < SecuredController
     respond_to do |format|
       format.json{ render :json => {} }
     end
-    sleep(5)
   end
 
   # get file thumbnail from file ID
@@ -76,7 +75,7 @@ class DashboardController < SecuredController
 
   # get preview url from file ID
   def preview
-    
+
     embed_url = user_client.embed_url(params[:id])
     redirect_to embed_url
   end
