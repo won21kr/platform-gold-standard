@@ -129,7 +129,7 @@
                           = result.product
                   .col-md-2
                     .btn-group.pull-right
-                      %a.btn.btn-default.btn-md{href: view_doc_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                      .btn.btn-default.btn-md{:onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); ", 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                         %span.glyphicon.glyphicon-eye-open
                       %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
                         %span.glyphicon.glyphicon-cloud-download
