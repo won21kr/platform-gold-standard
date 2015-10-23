@@ -17,15 +17,15 @@
     / SIDEBAR MENU
     .profile-usermenu
       %ul.nav.nav-pills.nav-stacked.appnavbtns
-        %li{:class => "#{'active' if session[:current_page] == "vault"}"}
+        %li{:class => "#{'active' if session[:current_page] == "vault"}", :id => "sidewide"}
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
-        %li{:class => "#{'active' if session[:current_page] == "search"}"}
+        %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
           %a{:href => "/resources"}
             %i.glyphicon.glyphicon-user
             Resources
-        %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
+        %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
           %a{:href => "/onboarding-tasks"}
             %i.glyphicon.glyphicon-ok
             Onboarding Tasks
@@ -33,7 +33,7 @@
               = get_task_status
 
         %li
-          %a{:href => "#"}
+          %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag
             Help
   / END MENU
