@@ -97,7 +97,7 @@
                     .filename{:style => "margin-top: 23px; margin-left: 10px"}
                       = link_to folder.name, sub_resource_path(folder.id)
             - if (!@text.nil?)
-              = "Found #{@results.count} results for '#{@text}'"
+              = "Found #{@results.count} results for #{@search_type} '#{@text}'"
           - if (@root != true)
             - @results.each do |result|
               .result
