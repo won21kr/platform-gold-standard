@@ -63,7 +63,7 @@
     - elsif (session[:progress] == 1)
       .col-md-12.col-sm-12
         %h3
-          Pending employee review...
+          Pending Employee Review:
         %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
     - elsif (session[:progress] == 2)
       .col-md-12.col-sm-12
@@ -71,7 +71,7 @@
     - elsif (session[:progress] == 3)
       .col-md-12.col-sm-12
         %h3
-          Customer onboarding process complete!
+          Signed Onboarding Form:
         %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
 
 .footer{:style=>"text-align: right; font-size: 10px;"}

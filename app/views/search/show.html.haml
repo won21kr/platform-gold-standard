@@ -13,7 +13,7 @@
   .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
     .page-header{:style => "margin-top: 0px"}
       %h1 Resources
-      %p Browse through the various resource documents provided below
+      %p Browse through the various resources provided below
     .h4
       Search By:
     .col-md-5
@@ -97,7 +97,7 @@
                     .filename{:style => "margin-top: 23px; margin-left: 10px"}
                       = link_to folder.name, sub_resource_path(folder.id)
             - if (!@text.nil?)
-              = "Found #{@results.count} results for '#{@text}'"
+              = "Found #{@results.count} results for #{@search_type} '#{@text}'"
           - if (@root != true)
             - @results.each do |result|
               .result
