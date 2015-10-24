@@ -1,8 +1,12 @@
 .footer{:style=>"text-align: right; margin-top: 20px; margin-right: 20px; font-size: 10px; font-weight: 600; color: #5a7391"}
 .footer
   .navbar.navbar-fixed-bottom.custom-footer
-    %p{:style=>"text-align: right; margin-right: 20px; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
-      = "Powered by DemoEng"
+    .col-md-6
+      %p{:style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
+        = link_to 'Settings', config_path, :style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"
+    .col-md-6
+      %p{:style=>"text-align: right; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
+        = "Powered by DemoEng"
     .col-md-12
       .logout{:style => "margin-top: -5px; margin-bottom: 8px"}
         - if session[:userinfo]
