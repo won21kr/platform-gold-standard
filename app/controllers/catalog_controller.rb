@@ -30,7 +30,7 @@ class CatalogController < SecuredController
 
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
-  
+
   # preview file
   def preview
     embed_url = user_client.embed_url(params[:id])
