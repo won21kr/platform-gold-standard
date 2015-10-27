@@ -3,7 +3,7 @@
   .profile{:style => "margin: 1px 0; background: #fff"}
     .profile-sidebar{:style => "padding: 20px 0 30px 0"}
       .profile-userpic
-        %img.img-responsive{:alt => "", :src => "http://www.haylingprint.co.uk/assets/frontend/onepage/img/people/img6-large.jpg", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
+        %img.img-responsive{:alt => "", :src => "https://platform-standard.box.com/shared/static/a3a2uag0hkt4vuixearil86li2ghlrlb.png", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
 
       / END SIDEBAR USERPIC
       / SIDEBAR USER TITLE
@@ -17,23 +17,28 @@
     / SIDEBAR MENU
     .profile-usermenu
       %ul.nav.nav-pills.nav-stacked.appnavbtns
-        %li{:class => "#{'active' if session[:current_page] == "vault"}"}
+        %li{:class => "#{'active' if session[:current_page] == "vault"}", :id => "sidewide"}
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
-        %li{:class => "#{'active' if session[:current_page] == "search"}"}
+        %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
           %a{:href => "/resources"}
             %i.glyphicon.glyphicon-user
             Resources
-        %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
+        %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
           %a{:href => "/onboarding-tasks"}
             %i.glyphicon.glyphicon-ok
             Onboarding Tasks
             %span.badge
               = get_task_status
+        %li{:class => "#{'active' if session[:current_page] == "Catalog"}"}
+          %a{:href => "/catalog"}
+            %i.glyphicon.glyphicon-picture
+            Product Catalog
 
         %li
-          %a{:href => "#"}
+          %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag
             Help
+
   / END MENU
