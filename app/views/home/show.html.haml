@@ -2,8 +2,18 @@
   = javascript_include_tag '//cdn.auth0.com/js/lock-7.1.min.js'
 
 :css
+  @font-face {
+    font-family: "junction-regular";
+    src: url(/assets/junction-regular.otf) format("truetype");
+    }
+
+  .junction-regular {
+    font-family: "Junction Regular";
+    }
+
+
   .bg {
-    background-image:url('http://i1066.photobucket.com/albums/u418/austinringer/cropped_zpsh8romcfg.jpg');
+    background-image:url('https://hostr.co/file/TEnQbFgNI1zY/huge.jpg');
     min-width: 100%;
     min-height: 790px;
     background-repeat:no-repeat;
@@ -16,14 +26,14 @@
   .one {
     position:relative; !important;
     margin-left:25%; !important;
-    border:3px solid #055388;
+    border:3px solid #49c1ff;
     padding:20px;
     font-size:0.9em;
-    color:white;
-    background-color: white; !important;
+    color:#00CD98;
+    background-color: #49c1ff; !important;
 
     font-family: 'Open Sans', sans-serif;
-    color: #055388; !important
+    color: white; !important
     font-weight:600;
     letter-spacing:5px;
     text-transform:uppercase;
@@ -34,39 +44,45 @@
 
     .one:hover {
       bottom:4px;
-        box-shadow:0px 2px 0px 0px #055388;
+        box-shadow:0px 2px 0px 0px #49c1ff;
       transition: all .01s ease-in-out;
       -moz-transition: all .01s ease-in-out;
       -webkit-transition: all .01s ease-in-out;
     }
 
     .one:active {
-      top:4px;
-      box-shadow:inset 0px 2px 0px 0px #055388;
+      -# top:4px;
+      box-shadow:inset 0px 2px 0px 0px #49c1ff; !important
       transition: all .01s ease-in-out;
       -moz-transition: all .01s ease-in-out;
       -webkit-transition: all .01s ease-in-out;
 
-      #055388;
-        transition: all .01s ease-in-out;
-        -moz-transition: all .01s ease-in-out;
-        -webkit-transition: all .01s ease-in-out;
+      -# #00CD98;
+      -#   transition: all .01s ease-in-out;
+      -#   -moz-transition: all .01s ease-in-out;
+      -#   -webkit-transition: all .01s ease-in-out;
 
 
 %body.bg{:background => "http://i1066.photobucket.com/albums/u418/austinringer/6824363551_4031f41105_o_zpsvvze0pbo.jpg"}
 
 .signin-button
-  .tagline(style="font-size: 270%; margin-top: -130px; margin-bottom: 40px; color: #fff;")
+  .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 70px; color: #8F8D8E; font-family: 'junction-regular'; letter-spacing: 2px;")
     %p
       %center
-        Welcome to the Box Platform
+        Welcome to
+    %p
+      %center(style="font-size: 215%; !important; color: #2F2F2F; letter-spacing: 3px; margin-top: -15px;")
+        The Box Platform
   .row
     .col-md-4
-    .col-md-4
-      %button.one{:onclick => 'signin()', :class => "btn btn-primary btn-lg btn-login btn-block"}
+    .col-md-4(style="margin-top: -35px;")
+      %button.one{:onclick => 'signin()'}
         Sign In
-    .col-md-4
-
+.signin-button
+  .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 200px; color: #8F8D8E; font-family: 'junction-regular', sans-serif; letter-spacing: 2px;")
+    %p
+      %center(style="font-size: 80%; !important; color: #8F8D8E; letter-spacing: 3px; margin-top: -255px;")
+        Settings | Remember Login?
 
 
 :javascript

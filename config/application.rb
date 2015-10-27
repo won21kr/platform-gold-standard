@@ -10,6 +10,7 @@ module RubyOnRailsWebapp
   class Application < Rails::Application
 
     config.autoload_paths += %W(#{config.root}/lib)
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
 
     # Set this if you want to get the error_description
     # OmniAuth.config.on_failure = Proc.new { |env|
