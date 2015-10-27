@@ -3,16 +3,18 @@
   - if (session[:current_page] == "search")
     = link_to '<< Back to Resources', '/resources/' + session[:rfolder]
   - else
-    = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
+    = link_to '<< Back to Product Catalog', dashboard_id_path(session[:current_folder])
 
 
 
 %body.transition
-  .viewer{:style=>"margin: 0px; height:700px; overflow: hidden; background: #A80000;"}
+  .viewer{:style=>"margin: 0px; height: 800px; overflow: hidden; background: #F1F3FA;"}
   .controls{:style => "position: fixed; bottom: 70px; left: 50%; margin-left: -150px; width: 300px; text-align: center;"}
     %button.pop{:style=>"background: #fafafa; border: 10", :onclick => "setMode('pop')"} Pop
     %button.carousel{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('carousel')"} Carousel
     %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('book')"} Book
+    %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('slide')"} Slide
+    %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('spin')"} Spin
 :javascript
    var viewer,
    url = 'https://view-api.box.com/1/sessions/5605a3280df141ea890811545a0fe084/assets';
@@ -27,7 +29,7 @@
 
                switch (mode) {
                    case 'pop':
-                       $('body').removeClass().addClass('crocodoc-presentation');
+                       $('body').removeClass().addClass('crocodoc-presentation-pop');
                        viewer.setLayout(Crocodoc.LAYOUT_PRESENTATION);
                        console.log(Crocodoc.LAYOUT_PRESENTATION);
                        viewer.zoom(Crocodoc.ZOOM_AUTO);
@@ -46,6 +48,18 @@
                        viewer.zoom(Crocodoc.ZOOM_AUTO);
                        $('body').removeClass().addClass('crocodoc-pageflip');
                        break;
+
+                   case 'slide':
+                       viewer.setLayout(Crocodoc.LAYOUT_PRESENTATION_TWO_PAGE);
+                       viewer.zoom(Crocodoc.ZOOM_AUTO);
+                       $('body').removeClass().addClass('crocodoc-presentation-slide');
+                       break;
+
+                   case 'spin':
+                      viewer.setLayout(Crocodoc.LAYOUT_PRESENTATION_TWO_PAGE);
+                      viewer.zoom(Crocodoc.ZOOM_AUTO);
+                      $('body').removeClass().addClass('crocodoc-presentation-spin');
+                      break;
                }
            }
 

@@ -32,9 +32,9 @@ Rails.application.routes.draw do
   get "docusign_response/:envelope_id" => "workflow#docusign_response", :as => "docusign_response"
   get "/onboarding-tasks/reset-workflow" => "workflow#reset_workflow", :as => "reset_workflow"
 
-  #Catalog ( Box View API)
+  #ProductCatalog ( Box View API)
+  get "/catalog/:id" => "catalog#home", :as => "catalog_id"
   get "/catalog" => "catalog#show", :as => "catalog"
-
 
 
   get "/auth0/failure" => "auth0#failure"
