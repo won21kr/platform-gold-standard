@@ -30,10 +30,11 @@ class WorkflowController < SecuredController
       # set up docusign view, fetch url
       recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
         envelope_id: envelope_response["envelopeId"],
-        name: "Chad Burnette",
-        email: "cburnette+docusign-test@box.com",
+        name: "Marcus Doe",
+        email: "mmitchell+standard@box.com",
         return_url: docusign_response_url(envelope_response["envelopeId"])
       )
+      ap recipient_view
 
       @url = recipient_view["url"]
       session[:progress] = 2
@@ -171,6 +172,7 @@ class WorkflowController < SecuredController
       temp_file.write(raw_file)
       temp_file.close
 
+      ap DOCUSIGN_CLIENT
       envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
         email: {
           subject: "Signature Requested",
@@ -182,8 +184,8 @@ class WorkflowController < SecuredController
         signers: [
           {
             embedded: true,
-            name: 'Chad Burnette',
-            email: 'cburnette+docusign-test@box.com',
+            name: 'Marcus Doe',
+            email: 'mmitchell+standard@box.com',
             role_name: 'Client',
             sign_here_tabs: [{anchor_string: "Signature:", anchor_x_offset: '100', anchor_y_offset: '0'}]
           }

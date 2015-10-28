@@ -1,6 +1,11 @@
 class SearchController < SecuredController
 
   skip_before_filter :verify_authenticity_token
+  BOX_CLIENT = HTTPClient.new
+  BOX_CLIENT.cookie_manager = nil
+  BOX_CLIENT.send_timeout = 3600 #one hour; needed for lengthy uploads
+  #BOX_CLIENT.agent_name = "Boxr/#{Boxr::VERSION}"
+  #BOX_CLIENT.transparent_gzip_decompression = true
 
   # main search page controller
   def show
@@ -78,7 +83,7 @@ class SearchController < SecuredController
     if (@root.nil?)
       @results.each do |r|
         class << r
-          attr_accessor :type, :product
+          attr_accessor :type, :audience
         end
 
         begin
@@ -88,14 +93,32 @@ class SearchController < SecuredController
           end
 
           r.type = meta["Type"]
-          r.product = meta["Product"]
+          r.audience = meta["Audience"]
         rescue
           r.type = ""
-          r.product = ""
+          r.audience = ""
         end
       end
     end
 
+    # test metadata search
+    headers = {"Authorization" => "Bearer #{client.access_token}"}
+    uri = "https://api.box.com/2.0/search"
+    #query = {query: "a"}
+    query = {}
+    query = {:mdfilters => {:templateKey => "resource", :scope => "enterprise"}}
+    #query[:mdfilters] = "Resource", , "Type": "Onboarding Contract"
+
+    ap query
+    response = BOX_CLIENT.get(uri, query: query, header: headers)
+    res = processed_response(response)
+    ap res
+
+  end
+
+  def processed_response(res)
+    body_json = Oj.load(res.body)
+    return BoxrMash.new(body_json)
   end
 
   private

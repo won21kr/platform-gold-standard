@@ -53,22 +53,20 @@
                 %span.caret
               %ul.dropdown-menu
                 %li
-                  = link_to "Training Materials", search_path(:filter_query => "Training Materials"), :method => :post
+                  = link_to "Training Materials", search_path(:filter_query => "Training Material"), :method => :post
                 %li
-                  = link_to 'Onboarding Documents', search_path(:filter_query => "Onboarding Documents"), :method => :post
+                  = link_to 'Onboarding Documents', search_path(:filter_query => "Onboarding Document"), :method => :post
                 %li
-                  = link_to 'Product Features', search_path(:filter_query => "Product Features"), :method => :post
+                  = link_to 'Case Studies', search_path(:filter_query => "Case Study"), :method => :post
             .btn-group{:role => "group"}
               %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-                Product
+                Audience
                 %span.caret
               %ul.dropdown-menu
                 %li
-                  = link_to "Box", search_path(:filter_query => "Box"), :method => :post
+                  = link_to "External", search_path(:filter_query => "External"), :method => :post
                 %li
-                  = link_to 'OneDrive', search_path(:filter_query => "OneDrive"), :method => :post
-                %li
-                  = link_to 'Egnyte', search_path(:filter_query => "Egnyte"), :method => :post
+                  = link_to 'Internal', search_path(:filter_query => "Internal"), :method => :post
     / Print out results or display resource folders
     .col-md-12
       .results
@@ -117,7 +115,7 @@
                         .result-label
                           Type:
                         .result-label
-                          Product:
+                          Audience:
                       .col-md-9
                         .result-data
                           = result.name
@@ -126,7 +124,7 @@
                         .result-data
                           = result.type
                         .result-data
-                          = result.product
+                          = result.audience
                   .col-md-2
                     .btn-group.pull-right
                       .btn.btn-default.btn-md{:onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); ", 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}

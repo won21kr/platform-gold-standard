@@ -59,6 +59,7 @@ class CatalogController < SecuredController
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
 
+
   private
 # create user client and return
   def user_client

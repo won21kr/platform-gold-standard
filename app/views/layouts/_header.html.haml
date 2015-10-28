@@ -1,56 +1,5 @@
-:css
-
-  /* Portrait phones and smaller */
-  @media (max-width: 480px){
-  .navbar-inverse .username img {
-    display: none;
-  }
-
-  .navbar-inverse .username span {
-    display: none;
-  }
-  }
-  /* Landscape phones and portrait tablets */
-  @media(max-width:767px){
-    .navbar-inverse .username img {
-      display: none;
-    }
-
-    .navbar-inverse .username span {
-      display: none;
-    }
-
-  }
-  /* Portrait tablets and small desktops */
-  @media(min-width:768px) and (max-width: 991px){}
-  /* Landscape tablets and medium desktops */
-  @media(min-width:992px) and (max-width: 1199px){}
-  /* Large desktops and laptops */
-  @media(min-width:1200px){}
 
 
-
--# %nav.navbar.navbar-inverse{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
--#   .container
--#     .navbar-header
--#       %a.navbar-brand{href: "/dashboard"}
--#         - if session[:logo].nil? or session[:logo] == ""
--#           .logo-text
--#             %span
--#               Platform
--#             %span(style="font-weight: 100; margin-left: -6px;")
--#               Standard
--#             .trademark
--#               &#8482;
--#         - else
--#           %img{:src => session[:logo], :style => "max-height:52px; margin-top: -16px"}
--#
--#     - if session[:userinfo]
--#       .username
--#         %span
--#           %img{:src => session[:userinfo][:info][:image], :width => '30px', :class => 'img-circle'}
--#         %span{:class => 'foop'}
--#           = "#{session[:userinfo][:info][:name]}"
 
 .header{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
   .container
