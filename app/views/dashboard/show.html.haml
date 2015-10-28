@@ -14,12 +14,12 @@
         %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
 
 .home
-  = render 'layouts/sidenav'
 .container
-  .col-md-9.col-sm-9.pull-right
+  = render 'layouts/sidenav'
+  .col-md-9.col-sm-8.col-xs-9.pull-right
     .flash
       = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
     .panel.panel-default{:style => "margin-bottom: 0px"}
       .panel-heading
         .pull-right.h4
@@ -32,7 +32,7 @@
           %tr
             %th File
             %th Name
-            %th Date Uploaded
+            %th.hidden-xs.hidden-sm Date Uploaded
             %th Actions
           %tbody
             %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
@@ -48,7 +48,7 @@
                     = image_tag(thumbnail_url(f.id), width: '30px')
                 %td
                   = f.name
-                %td
+                %td.hidden-xs.hidden-sm
                   = DateTime.strptime(f.created_at).strftime("%B %d, %Y %l:%M %p")
                 %td
                   / file action options

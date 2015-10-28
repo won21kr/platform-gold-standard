@@ -4,21 +4,23 @@
 %body.bg
 
 .signin-button
-  .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 70px; color: #8F8D8E; font-family: 'junction-regular'; letter-spacing: 2px;")
+  .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 70px; color: #8F8D8E; font-family: 'Open Sans'; letter-spacing: 2px;")
     %p
       %center
         Welcome to
     %p
       %center(style="font-size: 215%; !important; color: #2F2F2F; letter-spacing: 3px; margin-top: -15px;")
         The Box Platform
-  .row
-    .col-md-4
-    .col-md-4(style="margin-top: -35px;")
-      %button.one{:onclick => 'signin()', :style => "width: 180%; margin-left: -44px"}
-        Sign In
-.signin-button
-  .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 200px; color: #8F8D8E; font-family: 'junction-regular', sans-serif; letter-spacing: 2px;")
-
+  %button.one{:onclick => 'signin()', :style => "margin-left: 60px; margin-top: -20px"}
+    Sign In
+  -# .row
+  -#   .col-md-4
+  -#   .col-md-4(style="margin-top: -35px;")
+  -#     %button.one{:onclick => 'signin()', :style => "margin-left: -44px"}
+  -#       Sign In
+-# .signin-button
+-#   .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 200px; color: #8F8D8E; font-family: 'junction-regular', sans-serif; letter-spacing: 2px;")
+-#
 
 
 :javascript

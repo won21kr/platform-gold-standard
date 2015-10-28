@@ -15,7 +15,7 @@
       %a.logo-text{href: "/dashboard", :style => "text-decoration: none;"}
         %img{:src => session[:logo], :style => "max-height:75px; margin-top: -16px"}
     - if session[:userinfo]
-      .name
+      .name.hidden-xs
         %span
           = image_tag (session[:userinfo][:info][:image]), :width => '40px', :class => 'img-circle'
         %span
