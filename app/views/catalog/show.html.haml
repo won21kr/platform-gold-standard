@@ -2,6 +2,11 @@
 %h5(style="margin-top: -5px; font-size: 120%;")
   = link_to '<< Back to Vault', dashboard_id_path(session[:current_folder])
 
+.container
+  .col-md-12.col-sm-12.col-xs-12{:style => "padding: 2px", :class => "myvaulttable"}
+    .page-header{:style => "margin-top: 0px; border-bottom: solid grey 1px"}
+      %h1 Product Catalog
+      %p Browse through our most recent product catalog
 
 
 %body.transition
