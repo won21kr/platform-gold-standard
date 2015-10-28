@@ -33,8 +33,8 @@ Rails.application.routes.draw do
   get "/onboarding-tasks/reset-workflow" => "workflow#reset_workflow", :as => "reset_workflow"
 
   #ProductCatalog ( Box View API)
-  get "/catalog/:id" => "catalog#home", :as => "catalog_id"
-  get "/catalog" => "catalog#show", :as => "catalog"
+  # get "/catalog/:id" => "catalog#home", :as => "catalog"
+  get "/catalog" => "catalog#show", :as => "catalog_id"
 
 
   get "/auth0/failure" => "auth0#failure"
