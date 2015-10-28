@@ -31,11 +31,10 @@
             Onboarding Tasks
             %span.badge
               = get_task_status
-        %li{:class => "#{'active' if session[:current_page] == "Catalog"}"}
-          %a{:href => "/catalog"}
+        %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+          %a{:href => "/catalog/home"}
             %i.glyphicon.glyphicon-picture
             Product Catalog
-
         %li
           %a{:href => "#"}
             %i.glyphicon.glyphicon-flag
