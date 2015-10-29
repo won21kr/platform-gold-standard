@@ -32,4 +32,12 @@
         responseType: 'code',
         authParams: {scope: 'openid profile'}
     });
+    lock.show({
+      dict: {
+        signup: {
+          title: "These will be your permanent demo credentials.",
+          headerText: "Write them down!"
+        }
+      }
+    });
   }
