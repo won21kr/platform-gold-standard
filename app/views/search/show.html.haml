@@ -21,7 +21,7 @@
         = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
           %h3.form-search-heading
             %center File Name
-          = f.input :query, placeholder: "feature, mobile, search, etc...", input_html: { class: 'form-control', type: 'search' }
+          = f.input :query, placeholder: "feature, customer, search, etc...", input_html: { class: 'form-control', type: 'search' }
           = f.submit 'Search', class: 'btn btn-md btn-primary btn-block', :style => "width: 40%; margin: 5px auto"
     .col-md-1{:style => "margin-top: 45px"}
       %p
