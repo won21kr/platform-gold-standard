@@ -5,8 +5,8 @@
       .inline-block.pull-left{:style => "margin-top: -7px; margin-left: -7px"}
         %span.label{:style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
           = link_to 'Settings', config_path, :style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"
-        %a.label{href: "http://goo.gl/forms/Yg5hBHlYYi", :style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
-          Feedback
+        %span.label{:style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
+          = link_to 'Feedback', "http://goo.gl/forms/Yg5hBHlYYi", :style=>"text-align: left; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"
     .col-md-6.col-xs-6.col-sm-6.pull-right
       %p{:style=>"text-align: right; margin-top: 2px; font-size: 10px; font-weight: 600; color: #5a7391"}
         = "Powered by DemoEng"
