@@ -43,7 +43,7 @@ gem 'protected_attributes'
 gem 'fatalistic'
 
 
-gem 'boxr', '~> 0.31.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
+gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
 
 
 gem 'omniauth', '~> 1.2'
