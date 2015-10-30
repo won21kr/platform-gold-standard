@@ -1,5 +1,4 @@
-.home
-  = render 'layouts/sidenav'
+
 
 .modal.fade#viewModal1{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
   .modal-dialog{:style => "height: 800px;	width: 960px;	background-color: white"}
@@ -10,7 +9,8 @@
         Close
 
 .container
-  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+  = render 'layouts/sidenav'
+  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
     .page-header{:style => "margin-top: 0px"}
       %h1 Resources
       %p Browse through the various resources provided below
@@ -21,7 +21,7 @@
         = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
           %h3.form-search-heading
             %center File Name
-          = f.input :query, placeholder: "feature, mobile, search, etc...", input_html: { class: 'form-control', type: 'search' }
+          = f.input :query, placeholder: "feature, customer, search, etc...", input_html: { class: 'form-control', type: 'search' }
           = f.submit 'Search', class: 'btn btn-md btn-primary btn-block', :style => "width: 40%; margin: 5px auto"
     .col-md-1{:style => "margin-top: 45px"}
       %p
@@ -53,20 +53,20 @@
                 %span.caret
               %ul.dropdown-menu
                 %li
-                  = link_to "Training Materials", search_path(:filter_query => "Training Material"), :method => :post
+                  = link_to "Training Material", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
                 %li
-                  = link_to 'Onboarding Documents', search_path(:filter_query => "Onboarding Document"), :method => :post
+                  = link_to 'Onboarding Document', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
                 %li
-                  = link_to 'Case Studies', search_path(:filter_query => "Case Study"), :method => :post
+                  = link_to 'Case Study', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
             .btn-group{:role => "group"}
               %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
                 Audience
                 %span.caret
               %ul.dropdown-menu
                 %li
-                  = link_to "External", search_path(:filter_query => "External"), :method => :post
+                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
                 %li
-                  = link_to 'Internal', search_path(:filter_query => "Internal"), :method => :post
+                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
     / Print out results or display resource folders
     .col-md-12
       .results
@@ -95,7 +95,7 @@
                     .filename{:style => "margin-top: 23px; margin-left: 10px"}
                       = link_to folder.name, sub_resource_path(folder.id)
             - if (!@text.nil?)
-              = "Found #{@results.count} results for #{@search_type} '#{@text}'"
+              = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
           - if (@root != true)
             - @results.each do |result|
               .result
@@ -105,9 +105,9 @@
                       -# = link_to view_doc_path(result.id) do
                       = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
                         = image_tag(thumbnail_url(result.id), :height => "90px")
-                  .col-md-7
+                  .col-md-6.col-xs-6.col-sm-6
                     .row(style = 'margin-left: -25px;')
-                      .col-md-3
+                      .col-md-4.hidden-xs.hidden-sm
                         .result-label
                           File Name:
                         .result-label
@@ -116,7 +116,7 @@
                           Type:
                         .result-label
                           Audience:
-                      .col-md-9
+                      .col-md-8.col-sm-12.col-xs-12
                         .result-data
                           = result.name
                         .result-data
@@ -125,7 +125,7 @@
                           = result.type
                         .result-data
                           = result.audience
-                  .col-md-2
+                  .col-md-3
                     .btn-group.pull-right
                       .btn.btn-default.btn-md{:onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); ", 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                         %span.glyphicon.glyphicon-eye-open

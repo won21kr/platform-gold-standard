@@ -11,11 +11,14 @@
   %form{:action => save_config_path, :method => "post", :role => "form"}
     .form-group.col-md-7
       %label{:for => "company"} Company Name
-      %input.form-control#company{:type => "text", :name => "company", :placeholder => "Blue Insurance"}
+      %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box Platform Standard"}
       %label{:for => "logo"} Company Logo URL
       %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "logo.png"}
       %label{:for => "navbar_color"} Navbar Background Color
       %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "ffffff"}
+    -# .col-md-5.pull-right
+    -#   %a.btn.btn-primary.btn-lg.pull-right{href: "http://goo.gl/forms/Yg5hBHlYYi"}
+    -#     Cute Puppy Video Here!
 
     .form-group.col-md-12.item
       %input.btn.btn-default{:type => "submit", :value => "Save"}

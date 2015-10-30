@@ -56,6 +56,7 @@ class SearchController < SecuredController
         @text = params[:filter_query]
       end
 
+      ap params
       # perform Box search, get results
       if (!params[:search].nil?)
         @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
@@ -64,11 +65,12 @@ class SearchController < SecuredController
         @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
         @search_type = "file type"
       else
-        @results = client.search(@text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
-        @search_type = "file attribute"
+        mdfilters = {"templateKey" => "resource1", "scope" => "enterprise",
+                     "filters" => {"#{params["key"]}" => "#{params["filter_query"]}"}}
+        @results = client.search(mdfilters: mdfilters, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+        @search_type = params["key"]
       end
 
-      ap @results
       @results = @results.files
     end
 
@@ -78,6 +80,7 @@ class SearchController < SecuredController
     else
       session[:rfolder] = ""
     end
+
 
     # attach metadata to each result file if we're not in the root folder
     if (@root.nil?)
@@ -89,11 +92,16 @@ class SearchController < SecuredController
         begin
           meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 20.minutes) do
             puts "miss"
-            client.metadata(r)
+            client.all_metadata(r)["entries"]
           end
 
-          r.type = meta["Type"]
-          r.audience = meta["Audience"]
+          meta.each do |m|
+            if (m["$template"] == "resource1")
+              r.type = m["type"]
+              r.audience = m["audience"]
+            end
+          end
+
         rescue
           r.type = ""
           r.audience = ""
@@ -102,17 +110,17 @@ class SearchController < SecuredController
     end
 
     # test metadata search
-    headers = {"Authorization" => "Bearer #{client.access_token}"}
-    uri = "https://api.box.com/2.0/search"
-    #query = {query: "a"}
-    query = {}
-    query = {:mdfilters => {:templateKey => "resource", :scope => "enterprise"}}
-    #query[:mdfilters] = "Resource", , "Type": "Onboarding Contract"
-
-    ap query
-    response = BOX_CLIENT.get(uri, query: query, header: headers)
-    res = processed_response(response)
-    ap res
+    # headers = {"Authorization" => "Bearer #{client.access_token}"}
+    # uri = "https://api.box.com/2.0/search"
+    # #query = {query: "a"}
+    # query = {}
+    # query = {:mdfilters => {:templateKey => "resource", :scope => "enterprise"}}
+    # #query[:mdfilters] = "Resource", , "Type": "Onboarding Contract"
+    #
+    # ap query
+    # response = BOX_CLIENT.get(uri, query: query, header: headers)
+    # res = processed_response(response)
+    # ap res
 
   end
 
