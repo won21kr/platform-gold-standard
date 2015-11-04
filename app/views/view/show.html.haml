@@ -28,12 +28,12 @@
             %p
               = c.message
             %span.date.sub-text
-              = DateTime.strptime(c.created_at).strftime("%m /%d/%y at %l:%M %p")
+              = DateTime.strptime(c.created_at).strftime("%m/%d/%y at %l:%M %p")
     / allow user to enter new comment attached to file
     %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
       = token_tag
       .form-group{:style => "width: 100%"}
-        %textarea.form-control{:style => "width: 100%", :rows=>"4", :placeholder => "Add a comment", :type => "text", :name => "comment"}
+        %textarea.form-control{:style => "width: 100%", :rows=>"4", :placeholder => "Add a comment", :type => "text", :name => "comment", :required => true}
       .form-group{:style => "margin-bottom: 30px"}
         %button.btn.btn-default{:style => "margin-top: 5px"} Post
 

@@ -32,7 +32,7 @@
           %tr
             %th File
             %th Name
-            %th.hidden-xs.hidden-sm Date Uploaded
+            %th.hidden-xs.hidden-sm Date Modified
             %th Actions
           %tbody
             %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
@@ -49,7 +49,7 @@
                 %td
                   = f.name
                 %td.hidden-xs.hidden-sm
-                  = DateTime.strptime(f.created_at).strftime("%B %d, %Y %l:%M %p")
+                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
                 %td
                   / file action options
                   .btn-group
