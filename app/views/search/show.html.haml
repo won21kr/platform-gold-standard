@@ -90,9 +90,9 @@
               - @results.each do |folder|
                 .row(style="margin-bottom: 10px;")
                   .col-md-1
-                    = image_tag("folder.png", height: '70px')
+                    = image_tag("folder.png", height: '50px')
                   .col-md-9
-                    .filename{:style => "margin-top: 23px; margin-left: 10px"}
+                    .filename{:style => "margin-top: 16px; margin-left: 8px; font-size: 80%"}
                       = link_to folder.name, sub_resource_path(folder.id)
             - if (!@text.nil?)
               = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
