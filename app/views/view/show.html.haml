@@ -23,7 +23,10 @@
       - @comments.each do |c|
         %li
           .commenterImage
-            %img{:src => get_thumbnail(c.created_by.id)}
+            - if (c.created_by.id == ENV['EMPL_ID'])
+              = image_tag "employee.png"
+            - else
+              = image_tag "customer.png"
           .commentText
             %p
               = c.message
