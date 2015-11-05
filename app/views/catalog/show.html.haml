@@ -1,16 +1,16 @@
 / back to previous page
-%h5(style="margin-top: -5px; font-size: 120%;")
+%h5(style="margin-top: -5px; font-size: 90%;")
   = link_to '<< Back to Vault', dashboard_id_path(session[:current_folder])
 
 .container
-  .col-md-12.col-sm-12.col-xs-12{:style => "padding: 2px", :class => "myvaulttable"}
-    .page-header{:style => "margin-top: 0px; border-bottom: solid grey 1px"}
+  .col-md-12.col-sm-12.col-xs-12{:style => "padding: 1px", :class => "myvaulttable"}
+    .page-header{:style => "margin-top: -30px; border-bottom: solid grey 1px"}
       %h1 Product Catalog
       %p Browse through our most recent product catalog
 
 
 %body.transition
-  .viewer{:style=>"margin: 0px; height: 650px; overflow: hidden; background: #fff;"}
+  .viewer{:style=>"margin: 0px 0px 30px 30px; height: 550px; overflow: hidden; background: #fff;"}
   .controls{:style => "position: fixed; bottom: 70px; left: 50%; margin-left: -150px; width: 300px; text-align: center;"}
     %button.pop{:style=>"background: #fafafa; border: 10", :onclick => "setMode('pop')"} Pop
     %button.carousel{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('carousel')"} Carousel
