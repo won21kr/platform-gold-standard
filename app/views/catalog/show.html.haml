@@ -10,11 +10,10 @@
 
 
 %body.transition
-  .viewer{:style=>"margin: 0px; height: 700px; overflow: hidden; background: #F1F3FA;"}
+  .viewer{:style=>"margin: 0px; height: 650px; overflow: hidden; background: #fff;"}
   .controls{:style => "position: fixed; bottom: 70px; left: 50%; margin-left: -150px; width: 300px; text-align: center;"}
     %button.pop{:style=>"background: #fafafa; border: 10", :onclick => "setMode('pop')"} Pop
     %button.carousel{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('carousel')"} Carousel
-    %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('book')"} Book
     %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('slide')"} Slide
     %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('spin')"} Spin
 :javascript
@@ -43,12 +42,6 @@
                        viewer.zoom(Crocodoc.ZOOM_OUT);
                        $('body').removeClass().addClass('crocodoc-presentation-carousel');
                        console.log('crocodoc-carousel');
-                       break;
-
-                   case 'book':
-                       viewer.setLayout(Crocodoc.LAYOUT_PRESENTATION_TWO_PAGE);
-                       viewer.zoom(Crocodoc.ZOOM_AUTO);
-                       $('body').removeClass().addClass('crocodoc-pageflip');
                        break;
 
                    case 'slide':
