@@ -14,11 +14,11 @@ class ViewController < SecuredController
     @file = client.file_from_id(params[:id])
 
     # fetch and reorder file comments
-    comments = client.file_comments(@file)
-    @comments = Array.new
-    while (comments.size != 0)
-      @comments.push(comments.pop)
-    end
+    @comments = client.file_comments(@file)
+    # @comments = Array.new
+    # while (comments.size != 0)
+    #   @comments.push(comments.pop)
+    # end
 
   end
 
@@ -28,9 +28,11 @@ class ViewController < SecuredController
     client = user_client
     comment = params[:comment]
 
-    # get file and add comment
-    file = client.file_from_id(session[:fileId])
-    client.add_comment_to_file(file, message: comment)
+    if (comment != "")
+      # get file and add comment
+      file = client.file_from_id(session[:fileId])
+      client.add_comment_to_file(file, message: comment)
+    end
 
     redirect_to view_doc_path(session[:fileId])
   end
