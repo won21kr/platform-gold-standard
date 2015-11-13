@@ -48,9 +48,9 @@ class DashboardController < SecuredController
 
     begin
       client.update_file(file, name: newName)
-      flash[:notice] = "File name changed to #{params[:fileName]}!"
+      flash[:notice] = "File name changed to \"#{params[:fileName]}\""
     rescue
-      flash[:error] = "Error: File name already exists!"
+      flash[:error] = "Error: Could not change file name"
       puts "file name exists!"
     end
 
