@@ -1,7 +1,10 @@
 class HomeController < ApplicationController
 
   before_action :check_config
-  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID']]
+
+  # List of DO NOT DELETEs
+  # Matt, Juihee
+  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677']
 
   def reset_logins
   @message = "This feature is currently disabled"

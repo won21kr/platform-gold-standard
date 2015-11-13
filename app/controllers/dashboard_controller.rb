@@ -36,22 +36,17 @@ class DashboardController < SecuredController
 
   # post to edit filename
   def edit_filename
-    ap params
+
     client = user_client
-    #
-    # folder = client.folder_from_id(params[:folder_id])
-    # files = client.folder_items(folder)
 
     file = client.file_from_id(params[:fileId])
     newName = params[:fileName] + '.' + params[:fileExt]
-    puts newName
 
     begin
       client.update_file(file, name: newName)
       flash[:notice] = "File name changed to \"#{params[:fileName]}\""
     rescue
       flash[:error] = "Error: Could not change file name"
-      puts "file name exists!"
     end
 
     redirect_to dashboard_path

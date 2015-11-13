@@ -1,3 +1,10 @@
+
+:css
+
+  .popover {
+    max-width: 330px
+  }
+
 #myModal.modal.fade{:role => "dialog"}
   .modal-dialog.modal-md
     .modal-content
@@ -50,17 +57,16 @@
                   %span{:style => "inline"}
                     = f.name
                     - puts f.name
-                    -# %a{"data-placement" => "left", :onclick => "$('#name').attr('placeholder','asdfasdf');", :href => "#", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey"}
                     = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
                       %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
                     #popover-content.hide
-                      %form.form-inline{:role => "form", :method => "post", :action => edit_name_path(@currentFolder)}
-                        .form-group
-                          %input#name.form-control{:type => "text", :name => "fileName"}
-                          %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-                          %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                        .form-group
-                          %button.btn.btn-primary.btn-md{:type => "submit"} Save
+                      %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
+                        %input#name.form-control{:type => "text", :name => "fileName"}
+                        %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+                        %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
+                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+
                 %td.hidden-xs.hidden-sm
                   = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
                 %td
@@ -93,14 +99,14 @@
   };
 
   $(document).ready(function() {
-    $('[rel=popover]').popover({
+
+    $('[data-toggle=popover]').popover({
         html: 'true',
     placement: 'right',
     title: "Edit File Name",
     content : function() {
         return $('#popover-content').html();
     }
-
   })
 
 
