@@ -13,13 +13,17 @@
           &#8482;
     - else
       %a.logo-text{href: "/dashboard", :style => "text-decoration: none;"}
-        %img{:src => session[:logo], :style => "max-height:75px; margin-top: -16px"}
+        %img{:src => session[:logo], :style => "max-height:70px; margin-top: -13px"}
     - if session[:userinfo]
       .name.hidden-xs
         %span
           = image_tag (session[:userinfo][:info][:image]), :width => '40px', :class => 'img-circle'
-        %span
-          = "#{session[:userinfo][:info][:name]}"
+        - if session[:navbar_color] == "#FFFFFF" or session[:navbar_color] == "#FFF"
+          %span{:style => "color: black;"}
+            = "#{session[:userinfo][:info][:name]}"
+        - else
+          %span
+            = "#{session[:userinfo][:info][:name]}"
 
 
 :javascript
