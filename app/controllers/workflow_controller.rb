@@ -3,7 +3,7 @@ class WorkflowController < SecuredController
   skip_before_filter :verify_authenticity_token
   DOCUSIGN_CLIENT = DocusignRest::Client.new
 
-  # main controller for onboarding workflow
+  # main controller for onboarding workflow.
   def show
 
     client = user_client
