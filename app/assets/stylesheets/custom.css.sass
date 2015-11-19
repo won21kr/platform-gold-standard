@@ -20,11 +20,19 @@ body
 
 @media only screen and (min-height: 900px)
   .signin-button
-    margin: 35% 25% 0% 25% !important
+    margin-top: 35% !important
 
 @media only screen and (min-height: 1100px)
   .signin-button
-    margin: 45% 25% 0% 25% !important
+    margin-top: 45% !important
+
+@media(max-width: 1200px) and (min-width: 992px)
+  .signin-button
+    margin-top: 35% !important
+
+@media(max-width: 992px)
+  .signin-button
+    margin-top: 45% !important
 
 .alert
   text-align: center
@@ -72,8 +80,8 @@ body
   border-color: $box_blue
 
 .signin-button
-  width: 50%
-  margin: 30% 25% 0% 25%
+  width: 100%
+  margin-top: 30%
 
 h1
   font-weight: 300
