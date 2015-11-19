@@ -3,25 +3,16 @@
 
 %body.bg
 
-.signin-button
-  .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 70px; color: #8F8D8E; font-family: 'Open Sans'; letter-spacing: 2px;")
-    %p
-      %center
-        Welcome to
-    %p
-      %center(style="font-size: 215%; !important; color: #2F2F2F; letter-spacing: 3px; margin-top: -15px;")
+  .signin-button
+    %center(style="font-size: 140%; margin-top: -170px; margin-bottom: -5px; color: #8F8D8E; font-family: 'Open Sans'; letter-spacing: 2px;")
+      Welcome to
+    %center(style="font-size: 300%; !important; color: #2F2F2F; letter-spacing: 2px;")
+      - if session[:home_message] == nil or session[:home_message] == ""
         The Box Platform
-  %button.one{:onclick => 'signin()', :style => "margin-left: 60px; margin-top: -20px"}
-    Sign In
-  -# .row
-  -#   .col-md-4
-  -#   .col-md-4(style="margin-top: -35px;")
-  -#     %button.one{:onclick => 'signin()', :style => "margin-left: -44px"}
-  -#       Sign In
--# .signin-button
--#   .tagline(style="font-size: 140%; margin-top: -170px; margin-bottom: 200px; color: #8F8D8E; font-family: 'junction-regular', sans-serif; letter-spacing: 2px;")
--#
-
+      - else
+        = session[:home_message]
+    %button.one{:onclick => 'signin()', :style => "margin: 50px 30%; width: 40%; position: relative"}
+      Sign In
 
 :javascript
   var lock = new Auth0Lock('#{ENV["AUTH0_CLIENT_ID"]}', '#{ENV["AUTH0_DOMAIN"]}');
@@ -31,19 +22,5 @@
         callbackURL: '#{ENV["AUTH0_CALLBACK"]}',
         responseType: 'code',
         authParams: {scope: 'openid profile'},
-        dict: {
-          signup: {
-            // title: "These will be your permanent demo credentials.",
-            // headerText: "Write them down!"
-          }
-        }
     });
-    // lock.show({
-    //   dict: {
-    //     signup: {
-    //       title: "These will be your permanent demo credentials.",
-    //       headerText: "Write them down!"
-    //     }
-    //   }
-    // });
   }

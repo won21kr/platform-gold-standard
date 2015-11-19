@@ -10,8 +10,8 @@
 %section#config-form
   %form{:action => save_config_path, :method => "post", :role => "form"}
     .form-group.col-md-7
-      %label{:for => "company"} Company Name
-      %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box Platform Standard"}
+      %label{:for => "message"} Home Page Message
+      %input.form-control#message{:type => "text", :name => "message", :placeholder => "The Box Platform"}
       %label{:for => "logo"} Company Logo URL
       %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "logo.png"}
       %label{:for => "navbar_color"} Navbar Background Color
@@ -44,7 +44,7 @@
         %tr
           %td Company Name:
           %td
-            = session[:company]
+            = session[:home_message]
         %tr
           %td Logo:
           %td

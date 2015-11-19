@@ -11,8 +11,8 @@ class ConfigController < ApplicationController
 
 
     # check if new branding parameters were saved
-    if !params[:company].nil? and params[:company] != ""
-      session[:company] = params[:company]
+    if !params[:message].nil? and params[:message] != ""
+      session[:home_message] = params[:message]
     end
     if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
@@ -45,7 +45,7 @@ class ConfigController < ApplicationController
   # construct configuration URL
   def config_url
     session[:config_url] = "#{ENV['ACTIVE_URL']}/"
-    session[:config_url] << "?company=#{session[:company]}"
+    session[:config_url] << "?message=#{session[:home_message]}"
     session[:config_url] << "&logo=#{session[:logo]}"
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
@@ -59,8 +59,8 @@ class ConfigController < ApplicationController
     puts "insert query..."
     ap query
 
-    if query['company'] != "" and query['company'] != nil
-      session[:company] = query['company']
+    if query['message'] != "" and query['message'] != nil
+      session[:home_message] = query['message']
     end
     if query['logo'] != "" and query['logo'] != nil
       session[:logo] = query['logo']

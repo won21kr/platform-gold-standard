@@ -3,8 +3,10 @@ class HomeController < ApplicationController
   before_action :check_config
 
   # List of DO NOT DELETEs
-  # Matt, Juihee
-  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677']
+  # Matt - "CUSTOMER ID"
+  # Juihee = 254291677, juihee1@test.com
+  # Matt Marque = 257524801, wolterskluwer@box.com
+  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677', '257524801']
 
   def reset_logins
   @message = "This feature is currently disabled"
@@ -50,7 +52,7 @@ end
   # construct configuration URL
   def config_url
     session[:config_url] = "#{ENV['ACTIVE_URL']}/"
-    session[:config_url] << "?company=#{session[:company]}"
+    session[:config_url] << "?message=#{session[:home_message]}"
     session[:config_url] << "&logo=#{session[:logo]}"
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
@@ -64,8 +66,8 @@ end
     puts "insert query..."
     ap query
 
-    if query['company'] != "" and query['company'] != nil
-      session[:company] = query['company']
+    if query['message'] != "" and query['message'] != nil
+      session[:home_message] = query['message']
     end
     if query['logo'] != "" and query['logo'] != nil
       session[:logo] = query['logo']
