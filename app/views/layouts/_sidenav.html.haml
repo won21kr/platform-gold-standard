@@ -21,22 +21,23 @@
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
-        %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
-          %a{:href => "/resources"}
-            %i.glyphicon.glyphicon-user
-            Resources
-        %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
-          %a{:href => "/onboarding-tasks"}
-            %i.glyphicon.glyphicon-ok
-            Onboarding Tasks
-            %span.badge
-              = get_task_status
-
-        %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-          %a{:href => "/catalog"}
-            %i.glyphicon.glyphicon-picture
-            Product Catalog
-
+        - if session[:resources] == 'on'
+          %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
+            %a{:href => "/resources"}
+              %i.glyphicon.glyphicon-user
+              Resources
+        - if session[:onboarding] == 'on'
+          %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
+            %a{:href => "/onboarding-tasks"}
+              %i.glyphicon.glyphicon-ok
+              Onboarding Tasks
+              %span.badge
+                = get_task_status
+        - if session[:catalog] == 'on'
+          %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+            %a{:href => "/catalog"}
+              %i.glyphicon.glyphicon-picture
+              Product Catalog
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag

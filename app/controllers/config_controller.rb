@@ -4,6 +4,32 @@ class ConfigController < ApplicationController
 
   def show
 
+    puts "config page get..."
+
+    # check if the tabs have been configured yet
+    started = true
+
+    if session[:vault].nil?
+      session[:vault] = 'on'
+      started = false
+    end
+
+    if(started == false)
+      session[:vault] = 'on'
+      session[:resources] = 'on'
+      session[:onboarding] = 'on'
+      session[:catalog] = 'on'
+    end
+    # ap session
+
+    config_url
+
+  end
+
+  def post_config
+
+    puts 'posting configuration page....'
+
     # check if reset
     if !params[:reset].nil?
       session.clear
@@ -21,15 +47,32 @@ class ConfigController < ApplicationController
       session[:navbar_color] = '#' + params[:navbar_color]
     end
 
-    config_url
-    #ap session
+    # check feature tab configuration
+    if !params[:resources].nil?
+      session[:resources] = 'on'
+    else
+      session[:resources] = 'off'
+    end
+    if !params[:onboarding].nil?
+      session[:onboarding] = 'on'
+    else
+      session[:onboarding] = 'off'
+    end
+    if !params[:catalog].nil?
+      session[:catalog] = 'on'
+    else
+      session[:catalog] = 'off'
+    end
+
+    redirect_to config_path
   end
 
 
   def reset_config
     session.clear
     puts "session reset..."
-    redirect_to config_url
+    ap session
+    redirect_to config_path
   end
 
   private
@@ -50,6 +93,10 @@ class ConfigController < ApplicationController
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
+    session[:config_url] << "&vault=#{session[:vault]}"
+    session[:config_url] << "&resources=#{session[:resources]}"
+    session[:config_url] << "&onboarding=#{session[:onboarding]}"
+    session[:config_url] << "&catalog=#{session[:catalog]}"
 
   end
 
@@ -68,7 +115,18 @@ class ConfigController < ApplicationController
     if query['back_color'] != "" and query['back_color'] != nil
       session[:navbar_color] = '#' + query['back_color']
     end
-
+    if query['vault'] != "" and query['vault'] != nil
+      session[:vault] = query['vault']
+    end
+    if query['resources'] != "" and query['resources'] != nil
+      session[:resources] = query['resources']
+    end
+    if query['onboarding'] != "" and query['onboarding'] != nil
+      session[:onboarding] = query['onboarding']
+    end
+    if query['catalog'] != "" and query['catalog'] != nil
+      session[:catalog] = query['catalog']
+    end
     config_url
   end
 

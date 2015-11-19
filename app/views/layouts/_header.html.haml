@@ -18,7 +18,7 @@
       .name.hidden-xs
         %span
           = image_tag (session[:userinfo][:info][:image]), :width => '40px', :class => 'img-circle'
-        - if session[:navbar_color].upcase == "#FFFFFF" or session[:navbar_color].upcase == "#FFF"
+        - if  (!session[:navbar_color].nil?) and (session[:navbar_color].upcase == "#FFFFFF" or session[:navbar_color].upcase == "#FFF")
           %span{:style => "color: black;"}
             = "#{session[:userinfo][:info][:name]}"
         - else

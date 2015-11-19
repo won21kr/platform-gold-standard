@@ -35,7 +35,6 @@ class HomeController < ApplicationController
 end
 
   def logout
-    reset_session
     redirect_to home_path
   end
 
@@ -57,6 +56,10 @@ end
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
+    session[:config_url] << "&vault=#{session[:vault]}"
+    session[:config_url] << "&resources=#{session[:resources]}"
+    session[:config_url] << "&onboarding=#{session[:onboarding]}"
+    session[:config_url] << "&catalog=#{session[:catalog]}"
 
   end
 
@@ -74,6 +77,18 @@ end
     end
     if query['back_color'] != "" and query['back_color'] != nil
       session[:navbar_color] = '#' + query['back_color']
+    end
+    if query['vault'] != "" and query['vault'] != nil
+      session[:vault] = query['vault']
+    end
+    if query['resources'] != "" and query['resources'] != nil
+      session[:resources] = query['resources']
+    end
+    if query['onboarding'] != "" and query['onboarding'] != nil
+      session[:onboarding] = query['onboarding']
+    end
+    if query['catalog'] != "" and query['catalog'] != nil
+      session[:catalog] = query['catalog']
     end
 
     config_url
