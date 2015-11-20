@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
 
   get '/config' => "config#show", :as => 'config'
-  get '/config/:reset' => "config#show", :as => "reset_config"
-  post '/config' => "config#show", :as => "save_config"
+  get '/config-reset' => "config#reset_config", :as => "reset_config"
+  post '/config' => "config#post_config", :as => "save_config"
 
 end
