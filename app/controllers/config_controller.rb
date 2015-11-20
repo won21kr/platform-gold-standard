@@ -43,6 +43,9 @@ class ConfigController < ApplicationController
     if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
     end
+    if !params[:backgroud].nil? and params[:background] != ""
+      session[:background] = params[:background]
+    end
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
@@ -97,6 +100,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
+    session[:config_url] << "&background=#{session[:background]}"
 
   end
 
@@ -126,6 +130,9 @@ class ConfigController < ApplicationController
     end
     if query['catalog'] != "" and query['catalog'] != nil
       session[:catalog] = query['catalog']
+    end
+    if query['background'] != "" and query['background'] != nil
+      session[:background] = query['background']
     end
     config_url
   end

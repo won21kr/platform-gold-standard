@@ -14,6 +14,9 @@
       %label.label-div{:for => "navbar_color"} Navbar Background Color
       %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1]}
 
+      %label.label-div{:for => "background"} Background Image URL
+      %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background]}
+
       %label.label-div{:for => "tab_select"} Active Feature Tabs
       %label.checkbox
         %input#vault{:type => "checkbox", :name => "vault", :checked => true, :disabled => "on"} My Vault

@@ -8,6 +8,7 @@ class HomeController < ApplicationController
   # Matt Marque = 257524801, wolterskluwer@box.com
   DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677', '257524801']
 
+
   def reset_logins
   @message = "This feature is currently disabled"
   begin
@@ -60,6 +61,7 @@ end
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
+    session[:config_url] << "&background=#{session[:background]}"
 
   end
 
@@ -90,7 +92,9 @@ end
     if query['catalog'] != "" and query['catalog'] != nil
       session[:catalog] = query['catalog']
     end
-
+    if query['background'] != "" and query['background'] != nil
+      session[:background] = query['background']
+    end
     config_url
   end
 end
