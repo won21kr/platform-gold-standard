@@ -36,6 +36,7 @@ class HomeController < ApplicationController
 end
 
   def logout
+    session[:userinfo] = nil
     redirect_to home_path
   end
 
