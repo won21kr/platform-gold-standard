@@ -49,6 +49,7 @@ end
     session[:config_url] = "#{ENV['ACTIVE_URL']}/"
     session[:config_url] << "?company=#{session[:company]}"
     session[:config_url] << "&logo=#{session[:logo]}"
+    session[:config_url] <<"&catalog=#{session[:catalog]}"
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
@@ -69,6 +70,9 @@ end
     end
     if query['back_color'] != "" and query['back_color'] != nil
       session[:navbar_color] = '#' + query['back_color']
+    end
+    if query['catalog'] != "" and query['catalog'] != nil
+      session[:catalog_file] = query['catalog']
     end
 
     config_url
