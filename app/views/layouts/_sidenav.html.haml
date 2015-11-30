@@ -21,19 +21,19 @@
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
-        - if session[:resources] == 'on'
+        - if session[:resources] == 'on' or session[:resources].nil?
           %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
             %a{:href => "/resources"}
               %i.glyphicon.glyphicon-user
               Resources
-        - if session[:onboarding] == 'on'
+        - if session[:onboarding] == 'on' or session[:onboarding].nil?
           %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
             %a{:href => "/onboarding-tasks"}
               %i.glyphicon.glyphicon-ok
               Onboarding Tasks
               %span.badge
                 = get_task_status
-        - if session[:catalog] == 'on'
+        - if session[:catalog] == 'on' or session[:catalog].nil?
           %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
             %a{:href => "/catalog"}
               %i.glyphicon.glyphicon-picture
