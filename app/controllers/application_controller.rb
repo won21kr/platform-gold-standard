@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
       path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
       completedPath = "#{path}/Completed/"
 
-      completedFolder = Rails.cache.fetch("/staging/folder/#{completedPath}", :expires_in => 20.minutes) do
+      completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 15.minutes) do
         client.folder_from_path(completedPath)
       end
 
