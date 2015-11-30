@@ -16,7 +16,7 @@ class SearchController < SecuredController
     session[:current_page] = "search"
 
     # get root resource folder
-    @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 20.minutes) do
+    @resource = Rails.cache.fetch("/staging/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 20.minutes) do
       puts "miss"
       client.folder_from_id(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :size])
     end
@@ -30,7 +30,7 @@ class SearchController < SecuredController
         # in root resource folder
 
         # get resource subfolder objects
-        @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/subfolers", :expires_in => 20.minutes) do
+        @results = Rails.cache.fetch("/staging/resource_folder/#{ENV['RESOURCE_FOLDER']}/subfolers", :expires_in => 20.minutes) do
           client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :created_at, :size])
         end
 
@@ -90,7 +90,7 @@ class SearchController < SecuredController
         end
 
         begin
-          meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 20.minutes) do
+          meta = Rails.cache.fetch("/staging/metadata/#{r.id}", :expires_in => 20.minutes) do
             puts "miss"
             client.all_metadata(r)["entries"]
           end
