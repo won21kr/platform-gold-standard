@@ -1,6 +1,6 @@
 class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_action :check_config
+  # before_action :check_config
 
   def show
 
@@ -20,21 +20,13 @@ class ConfigController < ApplicationController
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
     end
-    # ap session
 
     config_url
-
   end
 
   def post_config
 
     puts 'posting configuration page....'
-
-    # check if reset
-    if !params[:reset].nil?
-      session.clear
-    end
-
 
     # check if new branding parameters were saved
     if !params[:message].nil? and params[:message] != ""
@@ -70,7 +62,7 @@ class ConfigController < ApplicationController
     redirect_to config_path
   end
 
-
+  # clear session
   def reset_config
     session.clear
     puts "session reset..."
@@ -79,14 +71,6 @@ class ConfigController < ApplicationController
   end
 
   private
-
-  def check_config
-    # check if query string exists
-    if(params != "")
-      insert_query(params)
-    end
-
-  end
 
   # construct configuration URL
   def config_url
@@ -104,37 +88,5 @@ class ConfigController < ApplicationController
 
   end
 
-  # fetches config query from encoded URL and updates the config session variables
-  def insert_query(query)
-
-    puts "insert query..."
-    ap query
-
-    if query['message'] != "" and query['message'] != nil
-      session[:home_message] = query['message']
-    end
-    if query['logo'] != "" and query['logo'] != nil
-      session[:logo] = query['logo']
-    end
-    if query['back_color'] != "" and query['back_color'] != nil
-      session[:navbar_color] = '#' + query['back_color']
-    end
-    if query['vault'] != "" and query['vault'] != nil
-      session[:vault] = query['vault']
-    end
-    if query['resources'] != "" and query['resources'] != nil
-      session[:resources] = query['resources']
-    end
-    if query['onboarding'] != "" and query['onboarding'] != nil
-      session[:onboarding] = query['onboarding']
-    end
-    if query['catalog'] != "" and query['catalog'] != nil
-      session[:catalog] = query['catalog']
-    end
-    if query['background'] != "" and query['background'] != nil
-      session[:background] = query['background']
-    end
-    config_url
-  end
 
 end

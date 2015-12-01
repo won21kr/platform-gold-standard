@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper :all
   helper_method :get_task_status
+  before_action :check_config
 
   def get_task_status
 
@@ -26,6 +27,49 @@ class ApplicationController < ActionController::Base
     end
 
     session[:task_status]
+  end
+
+
+  private
+
+  def check_config
+    # check if query string exists
+    if(params != "")
+      insert_query(params)
+    end
+
+  end
+
+  # fetches config query from encoded URL and updates the config session variables
+  def insert_query(query)
+
+    puts "insert query..."
+    ap query
+
+    if query['message'] != "" and query['message'] != nil
+      session[:home_message] = query['message']
+    end
+    if query['logo'] != "" and query['logo'] != nil
+      session[:logo] = query['logo']
+    end
+    if query['back_color'] != "" and query['back_color'] != nil
+      session[:navbar_color] = '#' + query['back_color']
+    end
+    if query['vault'] != "" and query['vault'] != nil
+      session[:vault] = query['vault']
+    end
+    if query['resources'] != "" and query['resources'] != nil
+      session[:resources] = query['resources']
+    end
+    if query['onboarding'] != "" and query['onboarding'] != nil
+      session[:onboarding] = query['onboarding']
+    end
+    if query['catalog'] != "" and query['catalog'] != nil
+      session[:catalog] = query['catalog']
+    end
+    if query['background'] != "" and query['background'] != nil
+      session[:background] = query['background']
+    end
   end
 
 end
