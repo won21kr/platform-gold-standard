@@ -96,7 +96,7 @@ class SearchController < SecuredController
           end
 
           meta.each do |m|
-            if (m["$template"] == "resource1")
+            if (m["$template"] == "#{ENV['METADATA_KEY']}")
               r.type = m["type"]
               r.audience = m["audience"]
             end
