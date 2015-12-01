@@ -49,7 +49,7 @@ class DashboardController < SecuredController
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to dashboard_path
+    redirect_to dashboard_id_path(session[:current_folder])
   end
 
   # upload files to parameter specified folder ID

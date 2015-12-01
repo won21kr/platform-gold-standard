@@ -34,6 +34,7 @@ class ViewController < SecuredController
       client.add_comment_to_file(file, message: comment)
     end
 
+    puts session[:fileId]
     redirect_to view_doc_path(session[:fileId])
   end
 
