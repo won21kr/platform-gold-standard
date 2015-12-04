@@ -161,7 +161,7 @@ class UploadsignController < SecuredController
 
       @url = recipient_view["url"]
       session[:progress] = 2
-    if(@status == "signed")
+    if(session[:progress] == 3)
       set_preview_url(@onboardDoc.id)
       session[:progress] = 3
       @message = "Onboarding process complete!"
@@ -201,7 +201,9 @@ class UploadsignController < SecuredController
       ensure
         temp_file.delete
       end
-      
+
+      session[:progress] = 3
+      puts session[:progress]
       flash[:notice] = "Thanks! Document successfully signed."
      render :text => utility.breakout_path(start_docusign_path), content_type: 'text/html'
   end
