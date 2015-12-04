@@ -29,12 +29,18 @@ class ApplicationController < ActionController::Base
     session[:task_status]
   end
 
+  # Get user client obj using App User ID
+  def user_client
+    Box.user_client(session[:box_id])
+  end
+
 
   private
 
   def check_config
     # check if query string exists
     if(params != "")
+      puts "params not nil, insert query if it exists"
       insert_query(params)
     end
 
@@ -42,9 +48,6 @@ class ApplicationController < ActionController::Base
 
   # fetches config query from encoded URL and updates the config session variables
   def insert_query(query)
-
-    puts "insert query..."
-    ap query
 
     if query['message'] != "" and query['message'] != nil
       session[:home_message] = query['message']

@@ -1,8 +1,8 @@
 
 / back to previous page
 %h5(style="margin-top: -5px; font-size: 120%;")
-  - if (session[:current_page] == "search")
-    = link_to '<< Back to Resources', '/resources/' + session[:rfolder]
+  - if (session[:current_page] == "medical_credentialing")
+    = link_to '<< Back to Medical Credentialing Page', '/medical-credentialing'
   - else
     = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
 
@@ -28,6 +28,8 @@
           .commenterImage
             - if (c.created_by.id == ENV['EMPL_ID'])
               = image_tag "employee.png"
+            - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
+              = image_tag "credentialist.png"
             - else
               = image_tag "customer.png"
           .commentText

@@ -140,11 +140,4 @@ class DashboardController < SecuredController
     redirect_to dashboard_id_path(myFolder.id)
   end
 
-  private
-
-  # Get user client obj using App User ID
-  def user_client
-    Box.user_client(session[:box_id])
-  end
-
 end

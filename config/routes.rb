@@ -37,6 +37,15 @@ Rails.application.routes.draw do
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
   get "/catalog" => "catalog#show", :as => "catalog_id"
 
+  # medical credentialing
+  get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"
+  post "/medical-credentialing" => "medical_credentialing#medical_form_submit", :as => "medical_submit"
+  get "/medical-credentialing-submit-upload" => "medical_credentialing#medical_upload", :as => "medical_upload"
+  post "/medical-upload/:folder_id" => "medical_credentialing#med_upload", :as => "med_upload"
+  get "/reset-medical" => "medical_credentialing#reset_workflow", :as => "reset_medical_flow"
+  get "/medical-credentialist" => "medical_credentialing#credentialist", :as => "credentialist"
+  get "/credentialist-approve/:folder_id" => "medical_credentialing#approve_request", :as => "approve_request"
+
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"

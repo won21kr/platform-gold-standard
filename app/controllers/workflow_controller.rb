@@ -67,7 +67,7 @@ class WorkflowController < SecuredController
 
 
       path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Pending\ Approval"
-      doc.configure_pdf(client, filename, path)
+      doc.configure_pdf(client, filename, path, ENV['ONBOARDING_FORM'])
     end
 
     flash[:notice] = "Thanks for filling out your information! Your contract is now under review."
@@ -272,11 +272,6 @@ class WorkflowController < SecuredController
 
   def set_preview_url(id)
     @previewURL = user_client.embed_url(id)
-  end
-
-  # Get user client obj using App User ID
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end
