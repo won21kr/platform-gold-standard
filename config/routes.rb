@@ -9,13 +9,14 @@ Rails.application.routes.draw do
   get "/share/:id" => "dashboard#share_file", :as => "share_file"
   get "/unshare/:id" => "dashboard#unshare_file", :as => "unshare_file"
   post "/upload/:folder_id" => "dashboard#upload", :as => "upload"
+  post "/edit_name/:folder_id" => "dashboard#edit_filename", :as => "edit_name"
 
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"
   get "/download_file/:id" => 'view#download', :as => "download_file"
   post "/comment/:id" => "view#comment", :as => "comment"
-  get "/preview/:id" => 'dashboard#preview', :as => "preview"
-
+  get "/preview/:id" => 'view#preview', :as => "preview"
+  get "/no_support" => 'view#no_support', :as => "no_support"
 
   get "/doc/:id" => "dashboard#doc", :as => 'doc'
   get "/thumbnail/:id" => 'dashboard#thumbnail', :as => "thumbnail"
@@ -45,7 +46,7 @@ Rails.application.routes.draw do
 
 
   get '/config' => "config#show", :as => 'config'
-  get '/config/:reset' => "config#show", :as => "reset_config"
-  post '/config' => "config#show", :as => "save_config"
+  get '/config-reset' => "config#reset_config", :as => "reset_config"
+  post '/config' => "config#post_config", :as => "save_config"
 
 end

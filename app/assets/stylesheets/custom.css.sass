@@ -18,19 +18,21 @@ body
     background-color: #FFF
     color: #000
 
-// .navbar-inverse
-//   background-color: #00325B
-//   border-color: #00325B
-//   border-radius: 0px
-//   .navbar-brand
-//     font-size: 150%
-//     color: white
-//   .username
-//     margin-top: 14px
-//     text-align: right
-//     color: white
-//     img
-//       margin-top: -3px
+@media only screen and (min-height: 900px)
+  .signin-button
+    margin-top: 35% !important
+
+@media only screen and (min-height: 1100px)
+  .signin-button
+    margin-top: 45% !important
+
+@media(max-width: 1200px) and (min-width: 992px)
+  .signin-button
+    margin-top: 35% !important
+
+@media(max-width: 992px)
+  .signin-button
+    margin-top: 45% !important
 
 .alert
   text-align: center
@@ -78,12 +80,11 @@ body
   border-color: $box_blue
 
 .signin-button
-  // margin-top: 300px
-  position: fixed
-  top: 50%
-  left: 50%
-  margin-top: 30px
-  margin-left: -196px
+  width: 50%
+  margin-top: 30%
+  // background: #FFF
+  margin-left: 25%
+  // border-radius: 25px
 
 h1
   font-weight: 300

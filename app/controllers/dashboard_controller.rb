@@ -1,5 +1,6 @@
 class DashboardController < SecuredController
 
+  skip_before_filter :verify_authenticity_token
   # main controller for customer vault
   def show
 
@@ -31,6 +32,24 @@ class DashboardController < SecuredController
       @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
     end
 
+  end
+
+  # post to edit filename
+  def edit_filename
+
+    client = user_client
+
+    file = client.file_from_id(params[:fileId])
+    newName = params[:fileName] + '.' + params[:fileExt]
+
+    begin
+      client.update_file(file, name: newName)
+      flash[:notice] = "File name changed to \"#{params[:fileName]}\""
+    rescue
+      flash[:error] = "Error: Could not change file name"
+    end
+
+    redirect_to dashboard_path
   end
 
   # upload files to parameter specified folder ID
@@ -71,13 +90,6 @@ class DashboardController < SecuredController
     end
 
     send_data image, :type => 'image/png', :disposition => 'inline'
-  end
-
-  # get preview url from file ID
-  def preview
-
-    embed_url = user_client.embed_url(params[:id])
-    redirect_to embed_url
   end
 
   # download file from file ID

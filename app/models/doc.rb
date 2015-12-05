@@ -31,7 +31,7 @@ class Doc < SecuredController
     pdf_in_box = client.upload_file(pdf_filename, upload_folder.id)
 
     # set metadata
-    # client.create_metadata(pdf_in_box, @info, scope: :global, template: :properties)
+    client.create_metadata(pdf_in_box, @info, scope: :global, template: :properties)
 
     # create task for uploaded customer document and assign to Company Employee
     msg = "Please review and complete the task"

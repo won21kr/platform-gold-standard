@@ -109,19 +109,6 @@ class SearchController < SecuredController
       end
     end
 
-    # test metadata search
-    # headers = {"Authorization" => "Bearer #{client.access_token}"}
-    # uri = "https://api.box.com/2.0/search"
-    # #query = {query: "a"}
-    # query = {}
-    # query = {:mdfilters => {:templateKey => "resource", :scope => "enterprise"}}
-    # #query[:mdfilters] = "Resource", , "Type": "Onboarding Contract"
-    #
-    # ap query
-    # response = BOX_CLIENT.get(uri, query: query, header: headers)
-    # res = processed_response(response)
-    # ap res
-
   end
 
   def processed_response(res)

@@ -1,7 +1,14 @@
 class HomeController < ApplicationController
 
   before_action :check_config
-  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID']]
+
+  # List of DO NOT DELETEs
+  # Matt - "CUSTOMER ID"
+  # Juihee = 254291677, juihee1@test.com
+  # Matt Marque = 257524801, wolterskluwer@box.com
+  # Sam Peters = 258215985,  speters+demo@box.com
+  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677', '257524801', '258215985']
+
 
   def reset_logins
   @message = "This feature is currently disabled"
@@ -30,7 +37,7 @@ class HomeController < ApplicationController
 end
 
   def logout
-    reset_session
+    session[:userinfo] = nil
     redirect_to home_path
   end
 
@@ -47,12 +54,17 @@ end
   # construct configuration URL
   def config_url
     session[:config_url] = "#{ENV['ACTIVE_URL']}/"
-    session[:config_url] << "?company=#{session[:company]}"
+    session[:config_url] << "?message=#{session[:home_message]}"
     session[:config_url] << "&logo=#{session[:logo]}"
     session[:config_url] <<"&catalog=#{session[:catalog]}"
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
+    session[:config_url] << "&vault=#{session[:vault]}"
+    session[:config_url] << "&resources=#{session[:resources]}"
+    session[:config_url] << "&onboarding=#{session[:onboarding]}"
+    session[:config_url] << "&catalog=#{session[:catalog]}"
+    session[:config_url] << "&background=#{session[:background]}"
 
   end
 
@@ -62,8 +74,8 @@ end
     puts "insert query..."
     ap query
 
-    if query['company'] != "" and query['company'] != nil
-      session[:company] = query['company']
+    if query['message'] != "" and query['message'] != nil
+      session[:home_message] = query['message']
     end
     if query['logo'] != "" and query['logo'] != nil
       session[:logo] = query['logo']
@@ -71,10 +83,24 @@ end
     if query['back_color'] != "" and query['back_color'] != nil
       session[:navbar_color] = '#' + query['back_color']
     end
-    if query['catalog'] != "" and query['catalog'] != nil
-      session[:catalog_file] = query['catalog']
+    if query['catalog1'] != "" and query['catalog1'] != nil
+      session[:catalog_file] = query['catalog1']
     end
-
+    if query['vault'] != "" and query['vault'] != nil
+      session[:vault] = query['vault']
+    end
+    if query['resources'] != "" and query['resources'] != nil
+      session[:resources] = query['resources']
+    end
+    if query['onboarding'] != "" and query['onboarding'] != nil
+      session[:onboarding] = query['onboarding']
+    end
+    if query['catalog'] != "" and query['catalog'] != nil
+      session[:catalog] = query['catalog']
+    end
+    if query['background'] != "" and query['background'] != nil
+      session[:background] = query['background']
+    end
     config_url
   end
 end

@@ -1,8 +1,3 @@
-:css
-  .item {
-      display: table-cell;
-      border:3px solid #F1F3FA;
-  }
 
 %h3
   Set header config options:
@@ -10,30 +5,47 @@
 %section#config-form
   %form{:action => save_config_path, :method => "post", :role => "form"}
     .form-group.col-md-7
-      %label{:for => "company"} Company Name
-      %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box Platform Standard"}
-      %label{:for => "logo"} Company Logo URL
-      %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "logo.png"}
-      %label{:for => "navbar_color"} Navbar Background Color
-      %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "ffffff"}
+      %label.label-div{:for => "message"} Home Page Message
+      %input.form-control#message{:type => "text", :name => "message", :placeholder => session[:home_message].nil? ? "The Box Platform" : session[:home_message]}
+
+      %label.label-div{:for => "logo"} Company Logo URL
+      %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo]}
+
+      %label.label-div{:for => "navbar_color"} Navbar Background Color
+      %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1]}
+
+      %label.label-div{:for => "background"} Background Image URL
+      %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background]}
+
+      %label.label-div{:for => "tab_select"} Active Feature Tabs
+      %label.checkbox
+        %input#vault{:type => "checkbox", :name => "vault", :checked => true, :disabled => "on"} My Vault
+      %label.checkbox
+        %input#resources{:type => "checkbox", :name => "resources", :checked => session[:resources] == 'on'} Resources
+      %label.checkbox
+        %input#onbaording{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'} Onboarding Tasks
+      %label.checkbox
+        %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'} Product Catalog
       %label{:for => "catalog_file"} Choose Product Catalog
       %select{:name => "catalog_file"}
         %option{:value => "Healthcare"} Healthcare
         %option{:value => "Retail"} Retail
         %option{:value => "Financial Services"} Financial Services
         %option{:value => "AEC"} AEC
-    -# .col-md-5.pull-right
-    -#   %a.btn.btn-primary.btn-lg.pull-right{href: "http://goo.gl/forms/Yg5hBHlYYi"}
-    -#     Cute Puppy Video Here!
+
+    .col-md-5.pull-right
+      %a.btn.btn-primary.btn-lg.pull-right{href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
+        Demo Feedback
+
 
     .form-group.col-md-12.item
       %input.btn.btn-default{:type => "submit", :value => "Save"}
 
 %container.col-md-12{:role => "group"}
 
-  %form.item{:action => reset_config_path(reset: 'reset'), :method => "get"}
+  %form.item{:action => reset_config_path, :method => "get"}
     %button.btn.btn-default{:type => "submit", :type => "form"} Reset
-  %form.item{:action => "/", :method => "get", :role => "form"}
+  %form.item{:action => "/dashboard", :method => "get", :role => "form"}
     %input.btn.btn-default{:type => "submit", :value => "Main Page"}
 
 
@@ -51,17 +63,27 @@
         %tr
           %td Company Name:
           %td
-            = session[:company]
+            = session[:home_message]
         %tr
           %td Logo:
           %td
             %img{:src => session[:logo], :style => "max-height:100px"}
         %tr
-          %td Navbar Primary Color:
+          %td Navbar Background Color:
           %td
             = session[:navbar_color]
         %tr
-          %td Encoded Branding URL:
+          %td Active Feature Tabs
+          %td
+            = "My Vault"
+            - if (session[:resources] == 'on')
+              = ", Resources"
+            - if (session[:onboarding] == 'on')
+              = ", Onboarding Tasks"
+            - if (session[:catalog] == 'on')
+              = ", Product Catalog"
+        %tr
+          %td Encoded Configuration URL:
           %td
             = session[:config_url]
         %tr

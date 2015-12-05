@@ -1,5 +1,5 @@
 .col-md-3.col-sm-4.col-xs-3.pull-left
-  / SIDEBAR USERPIC
+  / SIDEBAR USERPICTURE
   .profile{:style => "margin: 1px 0; background: #fff"}
     .profile-sidebar{:style => "padding: 20px 0 30px 0"}
       .profile-userpic
@@ -21,22 +21,23 @@
           %a{:href => "/dashboard"}
             %i.glyphicon.glyphicon-home
             My Vault
-        %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
-          %a{:href => "/resources"}
-            %i.glyphicon.glyphicon-user
-            Resources
-        %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
-          %a{:href => "/onboarding-tasks"}
-            %i.glyphicon.glyphicon-ok
-            Onboarding Tasks
-            %span.badge
-              = get_task_status
-
-        %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-          %a{:href => "/catalog"}
-            %i.glyphicon.glyphicon-picture
-            Product Catalog
-
+        - if session[:resources] == 'on' or session[:resources].nil?
+          %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
+            %a{:href => "/resources"}
+              %i.glyphicon.glyphicon-user
+              Resources
+        - if session[:onboarding] == 'on' or session[:onboarding].nil?
+          %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
+            %a{:href => "/onboarding-tasks"}
+              %i.glyphicon.glyphicon-ok
+              Onboarding Tasks
+              %span.badge
+                = get_task_status
+        - if session[:catalog] == 'on' or session[:catalog].nil?
+          %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+            %a{:href => "/catalog"}
+              %i.glyphicon.glyphicon-picture
+              Product Catalog
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag

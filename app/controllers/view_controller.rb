@@ -12,7 +12,7 @@ class ViewController < SecuredController
     session[:fileId] = @fileId
 
     @file = client.file_from_id(params[:id])
-
+    ap params
     # fetch and reorder file comments
     @comments = client.file_comments(@file)
     # @comments = Array.new
@@ -61,9 +61,20 @@ class ViewController < SecuredController
     download_url
   end
 
-  # preview file
+  # get preview url from file ID
   def preview
-    embed_url = user_client.embed_url(params[:id])
+
+    begin
+      embed_url = user_client.embed_url(params[:id])
+      redirect_to embed_url
+    rescue
+      redirect_to no_support_url
+    end
+
+  end
+
+  def no_support
+
   end
 
   private
