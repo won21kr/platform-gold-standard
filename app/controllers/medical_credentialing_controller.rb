@@ -46,9 +46,7 @@ class MedicalCredentialingController < SecuredController
 
         when "pendingApproval"
           # wait for cred specialist approval
-          @medFiles = Rails.cache.fetch("/#{session[:box_id]}/medical_credential_files", :expires_in => 15.minutes) do
-            client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
-          end
+          @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
           session[:progress] = 2
           session[:med_task_status] = 1
           @message = "Step 3. Wait for credentialing specialist's approval"
@@ -57,9 +55,7 @@ class MedicalCredentialingController < SecuredController
           # submission approved
           session[:progress] = 3
           session[:med_task_status] = 0
-          @medFiles = Rails.cache.fetch("/#{session[:box_id]}/medical_credential_files", :expires_in => 15.minutes) do
-            client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
-          end
+          @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
           @message = "Medical credentialingfolder request approved! Process complete."
         else
           puts "Error: Something went wrong..."
