@@ -94,6 +94,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
+    session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
     session[:config_url] << "&background=#{session[:background]}"
 
   end

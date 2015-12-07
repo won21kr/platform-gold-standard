@@ -33,19 +33,19 @@ class MedicalCredentialingController < SecuredController
       case @status
 
         when "toFill"
+          # wait for form submission
           session[:progress] = 0
           session[:med_task_status] = 1
           @message = "Step 1. Fill out your personal information"
 
         when "toUpload"
           # Upload medical documents
-
           session[:progress] = 1
           session[:med_task_status] = 1
           @message = "Step 2. Upload Documents"
 
         when "pendingApproval"
-          # set_preview_url(@onboardDoc.id)
+          # wait for cred specialist approval
           @medFiles = Rails.cache.fetch("/#{session[:box_id]}/medical_credential_files", :expires_in => 15.minutes) do
             client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
           end
@@ -54,6 +54,7 @@ class MedicalCredentialingController < SecuredController
           @message = "Step 3. Wait for credentialing specialist's approval"
 
         when "approved"
+          # submission approved
           session[:progress] = 3
           session[:med_task_status] = 0
           @medFiles = Rails.cache.fetch("/#{session[:box_id]}/medical_credential_files", :expires_in => 15.minutes) do
@@ -111,18 +112,15 @@ class MedicalCredentialingController < SecuredController
     redirect_to medical_path
   end
 
-  # TODO!!!!!!!!
+  # reset credentialing workflow, delete credentialing folder
   def reset_workflow
 
     puts "reset workflow..."
     client = user_client
 
-    # get workflow folder paths
+    # get workflow folder paths, delete folder
     path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
     folder = client.folder_from_path(path)
-
-    ap folder
-
     client.delete_folder(folder, recursive: true)
 
     redirect_to medical_path
@@ -143,7 +141,6 @@ class MedicalCredentialingController < SecuredController
       temp_file.close
 
       box_user = Box.user_client(session[:box_id])
-
       box_file = box_user.upload_file(temp_file.path, folder)
       #box_user.create_metadata(box_file, session[:meta])
 
@@ -162,22 +159,18 @@ class MedicalCredentialingController < SecuredController
   # page for the medical credentialist
   def credentialist
 
-    puts "credentialist controller!"
     client = user_client
     session[:current_page] = "medical_credentialing"
     @medicalArray = Hash.new
 
-    #rootFolders = Rails.cache.fetch("/#{session[:box_id]}/root_folder_items", :expires_in => 15.minutes) do
     rootFolders = client.root_folder_items(fields: [:id, :name])
-    #end
 
+    # fill array with files!!!
     rootFolders.each do |folder|
       if (folder.name.include? "Medical Credentialing")
-        ## fill array with files!!!
         files = client.folder_items(folder, fields: [:name, :id, :created_at, :modified_at, :parent])
         @medicalArray.store(folder.name, files)
       end
-
     end
 
   end
@@ -188,17 +181,19 @@ class MedicalCredentialingController < SecuredController
 
     client = user_client
 
-    folder = client.folder_from_id(params[:folder_id], fields: [:name])
+    # get credential folder from id and get Med application file
+    folder = Rails.cache.fetch("/#{session[:box_id]}/#{params[:folder_id]}/request_folder", :expires_in => 15.minutes) do
+      client.folder_from_id(params[:folder_id], fields: [:name])
+    end
     file = client.file_from_path("#{folder.name}/Medical Application Form.pdf")
     clientName = folder.name.split(" ").first
     task = client.file_tasks(file).first
 
+    # complete file task assignment and remove collaboration from folder
     assignment = client.task_assignments(task).first
     client.update_task_assignment(assignment, resolution_state: :completed)
-
     collab = client.folder_collaborations(folder).first
     client.remove_collaboration(collab)
-    # ap collab
 
     flash[:notice] = "Medical credentialing for #{clientName} approved!"
     redirect_to medical_path

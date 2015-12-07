@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   helper :all
-  helper_method :get_task_status
+  helper_method :get_task_status, :get_med_task_status
   before_action :check_config
 
   def get_task_status
@@ -27,6 +27,33 @@ class ApplicationController < ActionController::Base
     end
 
     session[:task_status]
+  end
+
+  # get med credential workflow status
+  def get_med_task_status
+
+    client = user_client
+
+    # if the medical credentialing form doc has been generated, check if the task has been approved
+    begin
+      taskFile = client.file_from_path("#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing/Medical\ Application\ Form.pdf")
+      task = client.file_tasks(taskFile, fields: [:is_completed])
+    rescue
+      puts "file doesn't exist yet..."
+    end
+    ap task
+
+    if(task.nil?)
+      session[:med_task_status] = 1
+    elsif(task.first.is_completed == false)
+      session[:med_task_status] = 1
+    elsif(task.first.is_completed == true)
+      session[:med_task_status] = 0
+    else
+      session[:med_task_status] = 1
+    end
+
+    session[:med_task_status]
   end
 
   # Get user client obj using App User ID
@@ -69,6 +96,9 @@ class ApplicationController < ActionController::Base
     end
     if query['catalog'] != "" and query['catalog'] != nil
       session[:catalog] = query['catalog']
+    end
+    if query['med_credentialing'] != "" and query['med_credentialing'] != nil
+      session[:medical_credentialing] = query['med_credentialing']
     end
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']

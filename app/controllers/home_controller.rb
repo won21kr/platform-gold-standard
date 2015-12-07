@@ -40,6 +40,8 @@ end
 
   def logout
     session[:userinfo] = nil
+    session[:task_status] = nil
+    session[:med_task_status] = nil
     redirect_to home_path
   end
 

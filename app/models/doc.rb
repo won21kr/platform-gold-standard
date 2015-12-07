@@ -41,7 +41,7 @@ class Doc < SecuredController
     # if using the medical form, invite the credentialing specialist
     elsif(form == ENV['MEDICAL_FORM'])
       msg = "Please review and approve the medical credential submission"
-      client.add_collaboration(pdf_in_box, {id: ENV['CRED_SPECIALIST'], type: :user}, :editor)
+      # client.add_collaboration(pdf_in_box, {id: ENV['CRED_SPECIALIST'], type: :user}, :editor)
       task = client.create_task(pdf_in_box, action: :review, message: msg)
       client.create_task_assignment(task, assign_to: ENV['CRED_SPECIALIST'])
     end

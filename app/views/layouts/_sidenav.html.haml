@@ -40,7 +40,7 @@
               %i.glyphicon.glyphicon-ok
               Onboarding Tasks
               %span.badge
-                = get_task_status
+                = session[:task_status].nil? ? get_task_status : session[:task_status]
         - if session[:catalog] == 'on' or session[:catalog].nil?
           %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
             %a{:href => "/catalog"}
@@ -51,8 +51,9 @@
             %a{:href => "/medical-credentialing"}
               %i.glyphicon.glyphicon-heart-empty
               Medical Credentialing
-              %span.badge
-                = session[:med_task_status]
+              - if session[:box_id] != ENV['CRED_SPECIALIST']
+                %span.badge
+                  = session[:med_task_status].nil? ? get_med_task_status : session[:med_task_status]
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag
