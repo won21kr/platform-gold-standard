@@ -1,0 +1,128 @@
+
+:css
+
+  .popover {
+    max-width: 330px
+  }
+
+#myModal.modal.fade{:role => "dialog"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header-primary
+        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
+        %h4.modal-title
+          Upload a File
+      .modal-body
+        .drop-area
+          .row
+            .col-md-12
+              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
+.home
+.container
+  = render 'layouts/sidenav'
+  .col-md-9.col-sm-8.col-xs-9.pull-right
+    .flash
+      = render partial: "shared/flash_messages", flash: flash
+  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+    .panel.panel-default{:style => "margin-bottom: 0px"}
+      .panel-heading
+        .pull-right.h4
+          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
+        %h2 My Vault for Uploads
+        .sub-title
+          = "Personal & shared files"
+      %table.table
+        %thead
+          %tr
+            %th File
+            %th Name
+            %th.hidden-xs.hidden-sm Date Modified
+            %th Actions
+          %tbody
+            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
+              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
+                = link_to @myFolder.name, uploadsign_id_path(@myFolder.id)
+              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
+                = link_to @sharedFolder.name, uploadsign_id_path(@sharedFolder.id)
+            / list file contents
+            - @files.each do |f|
+              %tr
+                %td
+                  = link_to view_doc_path(f.id) do
+                    = image_tag(thumbnail_url(f.id), width: '30px')
+                %td
+                  %span{:style => "inline"}
+                    = f.name
+                    - puts f.name
+                    = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
+                    #popover-content.hide
+                      %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
+                        %input#name.form-control{:type => "text", :name => "fileName"}
+                        %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+                        %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
+                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+
+                %td.hidden-xs.hidden-sm
+                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+                %td
+                  / file action options
+                  .btn-group
+                    %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                      %span.glyphicon.glyphicon-eye-open
+                    - if (@currentFolder == @myFolder.id)
+                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
+                        %span.glyphicon.glyphicon-share
+                    - elsif (@currentFolder == @sharedFolder.id)
+                      %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
+                        %span.glyphicon.glyphicon-share
+                    %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                      %span.glyphicon.glyphicon-cloud-download
+                    %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
+                      %span.glyphicon.glyphicon-trash
+                    %a.btn.btn-default.btn-md{href: start_docusign_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Docusign'}
+                      %span.glyphicon.glyphicon-check
+      - if @files.size == 0
+        .col-md-12
+          .h4
+            No files currently exist. Upload by clicking the "Upload" button above.
+
+      - if (session[:progress] == 2)
+        .col-md-12.col-sm-12
+          %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+      - if (session[:progress] == 3)
+        .col-md-12.col-sm-12
+          %h3
+            Completed Onboarding Form:
+          %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+
+:javascript
+  Dropzone.options.myDropzone = {
+    init: function() {
+      this.on("queuecomplete", function(file) {
+        setTimeout(function() {location.reload();}, 2000);
+      });
+    }
+  };
+
+  $(document).ready(function() {
+
+    $('[data-toggle=popover]').popover({
+        html: 'true',
+    placement: 'right',
+    title: "Edit File Name",
+    content : function() {
+        return $('#popover-content').html();
+    }
+  })
+
+
+  })
+
+
+:javascript
+  $(function () {$('[data-toggle="tooltip"]').tooltip()})

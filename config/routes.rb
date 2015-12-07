@@ -37,6 +37,12 @@ Rails.application.routes.draw do
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
   get "/catalog" => "catalog#show", :as => "catalog_id"
 
+  # upload and sign
+  get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
+  get "/upload-sign/:id" => "uploadsign#show", :as => "uploadsign_id"
+  get "/docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
+  get "/docusign" => "uploadsign#start_docusign", :as => "start_docusign"
+  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadsign_docusign_response", :as => "uploadsign_docusign_response"
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
