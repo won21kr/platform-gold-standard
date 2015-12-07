@@ -11,8 +11,10 @@ class ViewController < SecuredController
     @fileId = params[:id]
     session[:fileId] = @fileId
 
-    @file = client.file_from_id(params[:id])
     ap params
+
+    @file = client.file_from_id(params[:id])
+
     # fetch and reorder file comments
     @comments = client.file_comments(@file)
     # @comments = Array.new
