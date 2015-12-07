@@ -19,6 +19,10 @@ class ConfigController < ApplicationController
       session[:resources] = 'on'
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
+
+      # BETA FEATURES
+      session[:medical_credentialing] = "off"
+
     end
 
     config_url
@@ -58,6 +62,12 @@ class ConfigController < ApplicationController
     else
       session[:catalog] = 'off'
     end
+    if !params[:medical_credentialing].nil?
+      session[:medical_credentialing] = 'on'
+    else
+      session[:medical_credentialing] = 'off'
+    end
+
 
     redirect_to config_path
   end
@@ -84,6 +94,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
+    session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
     session[:config_url] << "&background=#{session[:background]}"
 
   end

@@ -49,7 +49,7 @@ class DashboardController < SecuredController
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to dashboard_path
+    redirect_to dashboard_id_path(session[:current_folder])
   end
 
   # upload files to parameter specified folder ID
@@ -138,13 +138,6 @@ class DashboardController < SecuredController
     flash[:notice] = "File moved to private folder!"
 
     redirect_to dashboard_id_path(myFolder.id)
-  end
-
-  private
-
-  # Get user client obj using App User ID
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end

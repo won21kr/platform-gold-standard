@@ -57,11 +57,4 @@ def show
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
 
-
-  private
-# create user client and return
-  def user_client
-    Box.user_client(session[:box_id])
-  end
-
 end

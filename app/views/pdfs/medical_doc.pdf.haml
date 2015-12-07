@@ -1,0 +1,98 @@
+%form#ss-form{:action => "https://docs.google.com/forms/d/1uvzLN_vS2y9v9wgjItIG9m3qSH8Q6RB1qVgFVnEvdbU/formResponse", :method => "POST", :onsubmit => "", :target => "_self"}
+.panel.panel-primary
+  .panel-heading
+
+  .panel-title.pull-right
+  = wicked_pdf_image_tag "medical.png", :width => 1050, :padding =>20, :style => "border-bottom: 3px solid black;  width:1100px;"
+  %ol.ss-question-list{:role => "list", :style => "padding-left: 0"}
+  .panel.panel-primary
+  %h2.panel-heading.center
+    .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px;margin-top:10px; border-radius: 20px !important;"}
+      .errorbox-good{:role => "listitem"}
+        .ss-item.ss-section-header{:dir => "auto"}
+          .ss-form-entry
+            %h3.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} Basic Medical Information
+            .ss-section-description.ss-no-ignore-whitespace
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_723124258"}
+              .ss-q-title{:style =>"margin-top: 30px"}
+                Name :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_723124258.ss-q-long{"aria-label" => "Employee Name  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:name]}"}
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_723124258"}
+              .ss-q-title{:style =>"margin-top: 30px"}
+                Date of Birth :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_723124258.ss-q-long{"aria-label" => "Employee Name  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:date]}"}
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_723124258"}
+              .ss-q-title{:style =>"margin-top: 30px"}
+                Email :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_723124258.ss-q-long{"aria-label" => "Employee Name  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:username]}"}
+
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_1024831259"}
+              .ss-q-title{:style =>"margin-top: 30px"}
+                Medical License Number :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            .col-sm-6
+            %input#entry_1024831259.ss-q-long{"aria-label" => "Customer ID   ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.1024831259", :title => "", :type => "text", :value => "#{@info[:id]}"}
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_723124258"}
+              .ss-q-title{:style =>"margin-top: 30px"}
+                Specialty :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_723124258.ss-q-long{"aria-label" => "Employee Name  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:specialty]}"}
+      .ss-form-question.errorbox-good{:role => "listitem"}
+        .ss-item.ss-text{:dir => "auto"}
+          .ss-form-entry
+            %label.ss-q-item-label{:for => "entry_723124258"}
+              .ss-q-title{:style =>"margin-top: 30px"}
+                Degree Type :
+              .ss-q-help.ss-secondary-text{:dir => "auto"}
+            %input#entry_723124258.ss-q-long{"aria-label" => "Employee Name  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.723124258", :title => "", :type => "text", :value => "#{@info[:degree]}"}
+
+
+      -# .ss-form-question.errorbox-good{:role => "listitem"}
+      -#   .ss-item.ss-text{:dir => "auto"}
+      -#     .ss-form-entry
+      -#       %label.ss-q-item-label{:for => "entry_1242191501"}
+      -#         .ss-q-title{:style =>"margin-top: 30px"}
+      -#           Address :
+      -#         .ss-q-help.ss-secondary-text{:dir => "auto"}
+      -#       %input#entry_1242191501.ss-q-long{"aria-label" => "Department  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.1242191501", :title => "", :type => "text", :value => "#{@info[:address]}"}
+      -#
+      -# .ss-form-question.errorbox-good{:role => "listitem"}
+      -#   .ss-item.ss-date{:dir => "auto"}
+      -#     .ss-form-entry
+      -#       %label.ss-q-item-label{:for => "entry_2136360185"}
+      -#         .ss-q-title{:style =>"margin-top: 30px"}
+      -#           Birthday :
+      -#         .ss-q-help.ss-secondary-text{:dir => "auto"}
+      -#       %input#entry_2136360185.ss-q-date{"aria-label" => "Employment Date  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.2136360185", :type => "date", :value => "#{@info[:bday]}"}
+      -#
+      -# .ss-form-question.errorbox-good{:role => "listitem"}
+      -#   .ss-item.ss-date{:dir => "auto"}
+      -#     .ss-form-entry
+      -#       %label.ss-q-item-label{:for => "entry_2136360185"}
+      -#         .ss-q-title{:style =>"margin-top: 30px"}
+      -#           Phone Number :
+      -#         .ss-q-help.ss-secondary-text{:dir => "auto"}
+      -#       %input#entry_2136360185.ss-q-date{"aria-label" => "Employment Date  ", :style => "margin-top: 0px; width:350px; height:50px", :dir => "auto", :name => "entry.2136360185", :type => "date", :value => "#{@info[:tel]}"}
+      -#
+-#
+-# %h3.panel-heading.center
+-#   .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px;margin-top:10px; border-radius: 20px !important;"}
+-#     %h2.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} Signature:

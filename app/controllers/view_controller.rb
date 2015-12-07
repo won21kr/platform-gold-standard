@@ -77,10 +77,4 @@ class ViewController < SecuredController
 
   end
 
-  private
-
-  def user_client
-    Box.user_client(session[:box_id])
-  end
-
 end

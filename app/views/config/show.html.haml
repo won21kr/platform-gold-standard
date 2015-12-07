@@ -26,6 +26,8 @@
         %input#onbaording{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'} Onboarding Tasks
       %label.checkbox
         %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'} Product Catalog
+      %label.checkbox
+        %input#catalog{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'} Medical Credentialing (Beta)
 
     .col-md-5.pull-right
       %a.btn.btn-primary.btn-lg.pull-right{href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}

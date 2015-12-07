@@ -3,11 +3,13 @@ class HomeController < ApplicationController
   # before_action :check_config
 
   # List of DO NOT DELETEs
+  # Credentialing Specialist - "CRED_SPECIALIST"
   # Matt - "CUSTOMER ID"
   # Juihee = 254291677, juihee1@test.com
   # Matt Marque = 257524801, wolterskluwer@box.com
   # Sam Peters = 258215985,  speters+demo@box.com
-  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677', '257524801', '258215985']
+  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], ENV['CRED_SPECIALIST'],
+                      '254291677', '257524801', '258215985']
 
 
   def reset_logins
@@ -38,6 +40,8 @@ end
 
   def logout
     session[:userinfo] = nil
+    session[:task_status] = nil
+    session[:med_task_status] = nil
     redirect_to home_path
   end
 

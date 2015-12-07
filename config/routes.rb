@@ -37,12 +37,24 @@ Rails.application.routes.draw do
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
   get "/catalog" => "catalog#show", :as => "catalog_id"
 
+<<<<<<< HEAD
   # upload and sign
   get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
   get "/upload-sign/:id" => "uploadsign#show", :as => "uploadsign_id"
   get "/docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
   get "/docusign" => "uploadsign#start_docusign", :as => "start_docusign"
   get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadsign_docusign_response", :as => "uploadsign_docusign_response"
+=======
+  # medical credentialing
+  get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"
+  post "/medical-credentialing" => "medical_credentialing#medical_form_submit", :as => "medical_submit"
+  get "/medical-credentialing-submit-upload" => "medical_credentialing#medical_upload", :as => "medical_upload"
+  post "/medical-upload/:folder_id" => "medical_credentialing#med_upload", :as => "med_upload"
+  get "/reset-medical" => "medical_credentialing#reset_workflow", :as => "reset_medical_flow"
+  get "/medical-credentialist" => "medical_credentialing#credentialist", :as => "credentialist"
+  get "/credentialist-approve/:folder_id" => "medical_credentialing#approve_request", :as => "approve_request"
+
+>>>>>>> medical-credentialing-tab
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
