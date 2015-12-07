@@ -22,7 +22,8 @@ class HomeController < ApplicationController
 
       unless DO_NOT_DELETE_IDS.include? box_user_id
         begin
-          box_admin.delete_user(box_user_id, notify: false, force: true)
+          deleted = box_admin.delete_user(box_user_id, notify: false, force: true)
+          puts "deleting user #{box_user_id}"
           Auth0API.client.delete_user(login["user_id"])
           num_deleted_logins += 1
         rescue
