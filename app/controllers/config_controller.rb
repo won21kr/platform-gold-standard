@@ -2,6 +2,7 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_action :check_config
 
+
   def show
 
     puts "config page get..."
@@ -49,6 +50,9 @@ class ConfigController < ApplicationController
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
+    if !params[:catalog_file].nil? and params[:catalog_file] !=""
+      session[:catalog_file] = params[:catalog_file]
+    end
 
     # check feature tab configuration
     if !params[:resources].nil?
@@ -93,6 +97,7 @@ class ConfigController < ApplicationController
     session[:config_url] = "#{ENV['ACTIVE_URL']}/"
     session[:config_url] << "?message=#{session[:home_message]}"
     session[:config_url] << "&logo=#{session[:logo]}"
+    session[:config_url] << "&catalog=#{session[:catalog_file]}"
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
@@ -105,10 +110,13 @@ class ConfigController < ApplicationController
   end
 
   # fetches config query from encoded URL and updates the config session variables
+  # for the Use Case of sending over a pre-populated config URL without having created a session
   def insert_query(query)
 
     puts "insert query..."
     ap query
+    ap session[:catalog_file]
+    ap session[:navbar_color]
 
     if query['message'] != "" and query['message'] != nil
       session[:home_message] = query['message']
@@ -118,6 +126,9 @@ class ConfigController < ApplicationController
     end
     if query['back_color'] != "" and query['back_color'] != nil
       session[:navbar_color] = '#' + query['back_color']
+    end
+    if query['catalog1'] != "" and query['catalog1'] != nil
+      session[:catalog_file] = query['catalog1']
     end
     if query['vault'] != "" and query['vault'] != nil
       session[:vault] = query['vault']
@@ -135,6 +146,16 @@ class ConfigController < ApplicationController
       session[:background] = query['background']
     end
     config_url
+    set_gon
   end
+
+  def set_gon
+    gon.push
+      puts "In GON............"
+      current_catalog_file = session[:catalog_file]
+      ap gon.current_catalog_file
+
+  end
+
 
 end

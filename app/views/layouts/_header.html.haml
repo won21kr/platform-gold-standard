@@ -2,6 +2,7 @@
 
 
 .header{:style => "background-color: #{session[:navbar_color]}; border-color: #{session[:navbar_color]};"}
+  = include_gon
   .container
     - if session[:logo].nil? or session[:logo] == ""
       %a.logo-text{href: "/dashboard", :style => "text-decoration: none;"}

@@ -26,10 +26,17 @@
         %input#onbaording{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'} Onboarding Tasks
       %label.checkbox
         %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'} Product Catalog
+      %label{:for => "catalog_file"} Choose Product Catalog
+      %select{:name => "catalog_file"}
+        %option{:value => "Healthcare"} Healthcare
+        %option{:value => "Retail"} Retail
+        %option{:value => "Financial Services"} Financial Services
+        %option{:value => "AEC"} AEC
 
     .col-md-5.pull-right
       %a.btn.btn-primary.btn-lg.pull-right{href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
         Demo Feedback
+
 
     .form-group.col-md-12.item
       %input.btn.btn-default{:type => "submit", :value => "Save"}
@@ -40,6 +47,7 @@
     %button.btn.btn-default{:type => "submit", :type => "form"} Reset
   %form.item{:action => "/dashboard", :method => "get", :role => "form"}
     %input.btn.btn-default{:type => "submit", :value => "Main Page"}
+
 
 %section
   %h3
@@ -78,3 +86,7 @@
           %td Encoded Configuration URL:
           %td
             = session[:config_url]
+        %tr
+          %td Customized Product Catalog:
+          %td
+            = session[:catalog_file]
