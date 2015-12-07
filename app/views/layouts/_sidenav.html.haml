@@ -38,11 +38,11 @@
             %a{:href => "/catalog"}
               %i.glyphicon.glyphicon-picture
               Product Catalog
-        - if session[:uploadsign] == 'on' or session[:uploadsign].nil?
-          %li{:class => "#{'active' if session[:current_page] == "upload-sign"}", :id => "sidewide"}
-            %a{:href => "/upload-sign"}
-              %i.glyphicon.glyphicon-user
-              Upload and Sign
+        -# - if session[:uploadsign] == 'on' or session[:uploadsign].nil?
+        -#   %li{:class => "#{'active' if session[:current_page] == "upload-sign"}", :id => "sidewide"}
+        -#     %a{:href => "/upload-sign"}
+        -#       %i.glyphicon.glyphicon-user
+        -#       Upload and Sign
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag
