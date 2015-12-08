@@ -67,6 +67,11 @@ class ConfigController < ApplicationController
     else
       session[:medical_credentialing] = 'off'
     end
+    if !params[:loan_docs].nil?
+      session[:loan_docs] = 'on'
+    else
+      session[:loan_docs] = 'off'
+    end
 
 
     redirect_to config_path

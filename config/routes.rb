@@ -53,6 +53,10 @@ Rails.application.routes.draw do
   get "/medical-credentialist" => "medical_credentialing#credentialist", :as => "credentialist"
   get "/credentialist-approve/:folder_id" => "medical_credentialing#approve_request", :as => "approve_request"
 
+  # loan docs
+  get "/loan-documents" => "loan_documents#show", :as => "loan_docs"
+  post "/loan-documents/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
+
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
 
