@@ -18,8 +18,11 @@
           - else
             Marcus Doe
         .profile-usertitle-job{:style => " text-transform: uppercase; color: #5b9bd1; font-size: 12px; font-weight: 600; margin-bottom: 15px;"}
-          - if session[:box_id] != ENV['CRED_SPECIALIST']
+          - if session[:medical_credentialing] == "on" and session[:box_id] != ENV['CRED_SPECIALIST']
+            Applicant
+          - elsif session[:box_id] != ENV['CRED_SPECIALIST']
             Customer
+
       / END SIDEBAR USER TITLE
 
     / SIDEBAR MENU

@@ -56,7 +56,7 @@ class MedicalCredentialingController < SecuredController
           session[:progress] = 3
           session[:med_task_status] = 0
           @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
-          @message = "Medical credentialing request approved! Process complete."
+          @message = "Medical credentialing request approved! Approval documents will now be sent."
         else
           puts "Error: Something went wrong..."
       end
@@ -158,6 +158,7 @@ class MedicalCredentialingController < SecuredController
     client = user_client
     session[:current_page] = "medical_credentialing"
     @medicalArray = Hash.new
+    @empty = true
 
     rootFolders = client.root_folder_items(fields: [:id, :name])
 
@@ -166,6 +167,10 @@ class MedicalCredentialingController < SecuredController
       if (folder.name.include? "Medical Credentialing")
         files = client.folder_items(folder, fields: [:name, :id, :created_at, :modified_at, :parent])
         @medicalArray.store(folder.name, files)
+
+        if (files.size > 0)
+          @empty = false
+        end
       end
     end
 
