@@ -2,14 +2,16 @@
 / back to previous page
 %h5(style="margin-top: -5px; font-size: 120%;")
   - if (session[:current_page] == "medical_credentialing")
-    = link_to '<< Back to Medical Credentialing Page', '/medical-credentialing'
+    = link_to '<< Back to Medical Credentialing', '/medical-credentialing'
+  - elsif (session[:current_page] == "loan_docs")
+    = link_to '<< Back to Loan Documents', '/loan-documents'
   - else
     = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
 
 .container
   .col-md-9
     %h3
-      Document View
+      = @file.name.split(".").first
     / create iframe for viewing document
     - if @file.name.downcase.end_with?('.png') or @file.name.downcase.end_with?('.jpg') or @file.name.downcase.end_with?('.jpeg')
       %img{:id => 'image_preview', :width => '100%', :src => download_file_url(@fileId), :allowfullscreen => 'allowfullscreen'}
@@ -27,7 +29,7 @@
         %li
           .commenterImage
             - if (c.created_by.id == ENV['EMPL_ID'])
-              = image_tag "employee.png"
+              = image_tag "empl.png"
             - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
               = image_tag "credentialist.png"
             - else
