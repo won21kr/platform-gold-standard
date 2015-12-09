@@ -1,5 +1,6 @@
 class LoanDocumentsController < SecuredController
 
+  DOCUSIGN_CLIENT = DocusignRest::Client.new
 
   def show
 
@@ -35,18 +36,29 @@ class LoanDocumentsController < SecuredController
       searchName = name.split(" ").first
       task = client.file_tasks(file, fields: [:is_completed]).first
 
-      if(task != nil and task.is_completed)
-        # task completed
-        @docStatus[name] = "Accepted"
-        @docStatus[imageName] = "file_success.png"
-        @fileId[name] = file.id
-      elsif(task != nil and !task.is_completed)
-        #task not completed yet
-        @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; In review"
+
+      if (name == "Loan Agreement - Signature Needed")
+        @docStatus["Loan Agreement"] = "Signature Needed"
         @docStatus[imageName] = "file_process.png"
-        @fileId[name] = file.id
+        @fileId["Loan Agreement"] = file.id
+      elsif(name == "Loan Agreement - Signed")
+        @docStatus["Loan Agreement"] = "Signed"
+        @docStatus[imageName] = "file_success.png"
+        @fileId["Loan Agreement"] = file.id
       else
-        puts  "Error: should never be here!"
+        if(task != nil and task.is_completed)
+          # task completed
+          @docStatus[name] = "Accepted"
+          @docStatus[imageName] = "file_success.png"
+          @fileId[name] = file.id
+        elsif(task != nil and !task.is_completed)
+          #task not completed yet
+          @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; In review"
+          @docStatus[imageName] = "file_process.png"
+          @fileId[name] = file.id
+        else
+          puts  "Error: should never be here!"
+        end
       end
 
     end
@@ -147,6 +159,145 @@ class LoanDocumentsController < SecuredController
     redirect_to loan_docs_path
 
   end
+
+  def loan_docusign
+
+    fileId = params[:file_id]
+
+    envelope_response = create_docusign_envelope(fileId)
+
+    # set up docusign view, fetch url
+    recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
+      envelope_id: envelope_response["envelopeId"],
+      name: "Marcus Doe",
+      email: "mmitchell+standard@box.com",
+      return_url: docusign_response_loan_url(envelope_response["envelopeId"])
+    )
+    # ap recipient_view
+
+    @url = recipient_view["url"]
+
+  end
+
+  def create_docusign_envelope(box_doc_id)
+
+    box_user = user_client
+    #
+    # puts "#{box_doc_id} box file id"
+
+    box_file = box_user.file_from_id(box_doc_id)
+    raw_file = box_user.download_file(box_file)
+    temp_file = Tempfile.open("box_doc_", Rails.root.join('tmp'), :encoding => 'ascii-8bit')
+
+    begin
+      temp_file.write(raw_file)
+      temp_file.close
+
+      puts "doc client"
+      ap DOCUSIGN_CLIENT
+      envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
+        email: {
+          subject: "Signature Requested",
+          body: "Please electronically sign this document."
+        },
+        # If embedded is set to true in the signers array below, emails
+        # don't go out to the signers and you can embed the signature page in an
+        # iFrame by using the client.get_recipient_view method
+        signers: [
+          {
+            embedded: true,
+            name: 'Marcus Doe',
+            email: 'mmitchell+standard@box.com',
+            role_name: 'Client',
+            # signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
+            sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
+          }
+        ],
+        files: [
+          {path: temp_file.path, name: "#{box_file.name}"}
+        ],
+        status: 'sent'
+      )
+
+      # no anchor string found!
+      if (envelope['errorCode'] == "ANCHOR_TAB_STRING_NOT_FOUND")
+        envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
+          email: {
+            subject: "Signature Requested",
+            body: "Please electronically sign this document."
+          },
+          # If embedded is set to true in the signers array below, emails
+          # don't go out to the signers and you can embed the signature page in an
+          # iFrame by using the client.get_recipient_view method
+          signers: [
+            {
+              embedded: true,
+              name: 'Marcus Doe',
+              email: 'mmitchell+standard@box.com',
+              role_name: 'Client',
+              signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
+              # sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
+            }
+          ],
+          files: [
+            {path: temp_file.path, name: "#{box_file.name}"}
+          ],
+          status: 'sent'
+        )
+      end
+
+
+      #stash stuff in the session for the end of the docusign flow
+      session[envelope["envelopeId"]] = {box_doc_id: box_file.id, box_doc_name: box_file.name}
+    rescue => ex
+      puts "Error in creating envo"
+    ensure
+      temp_file.delete
+    end
+
+    envelope
+  end
+
+  def docusign_response_loan
+    utility = DocusignRest::Utility.new
+
+    if params[:event] == "signing_complete"
+      temp_file = Tempfile.open(["docusign_response_",".pdf"], Rails.root.join('tmp'), :encoding => 'ascii-8bit')
+
+      begin
+        DOCUSIGN_CLIENT.get_document_from_envelope(
+          envelope_id: params["envelope_id"],
+          document_id: 1,
+          local_save_path: temp_file.path
+        )
+
+        box_info = session[params["envelope_id"]]
+
+        box_user = user_client
+        completedPath = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Loan\ Documents"
+        signed_folder = box_user.folder_from_path(completedPath)
+        file = box_user.upload_file(temp_file.path, signed_folder)
+        #Box.create_in_view_api(file)
+        box_user.update_file(file, name: "Loan Agreement - Signed.pdf")
+        #box_user.update_metadata(file, [{'op' => 'add', 'path' => '/docusign_envelope_id', 'value' => params["envelope_id"]}])
+        # meta = box_user.metadata(box_info[:box_doc_id])
+        # ap meta
+        box_user.delete_file(box_info[:box_doc_id])
+
+        # box_user.create_metadata(file, meta)
+
+      ensure
+        temp_file.delete
+      end
+
+      flash[:notice] = "Thanks! Loan agreement successfully signed."
+      render :text => utility.breakout_path(loan_docs_path), content_type: 'text/html'
+    else
+      flash[:error] = "You chose not to sign the document."
+      render :text => utility.breakout_path(loan_docs_path), content_type: 'text/html'
+    end
+  end
+
 
 
 end
