@@ -63,6 +63,11 @@
               - if session[:box_id] != ENV['CRED_SPECIALIST']
                 %span.badge
                   = session[:med_task_status].nil? ? get_med_task_status : session[:med_task_status]
+        - if session[:loan_docs] == 'on' or session[:loan_docs].nil?
+          %li{:class => "#{'active' if session[:current_page] == "loan_docs"}", :id => "sidewide"}
+            %a{:href => "/loan-documents"}
+              %i.glyphicon.glyphicon-folder-open{:style => "margin-right: 2px"}
+              Loan Documents
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag
