@@ -63,8 +63,6 @@ class LoanDocumentsController < SecuredController
       @searchFiles["Tax"] = client.search("Tax", content_types: :name, ancestor_folder_ids: vaultId)
     end
 
-    ap @searchFiles
-
   end
 
   # upload files to parameter specified folder ID
