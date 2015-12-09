@@ -63,7 +63,7 @@
         - if session[:loan_docs] == 'on' or session[:loan_docs].nil?
           %li{:class => "#{'active' if session[:current_page] == "loan_docs"}", :id => "sidewide"}
             %a{:href => "/loan-documents"}
-              %i.glyphicon.glyphicon-folder-open
+              %i.glyphicon.glyphicon-folder-open{:style => "margin-right: 2px"}
               Loan Documents
         %li
           %a{:href => "#", :id => "sidewide"}

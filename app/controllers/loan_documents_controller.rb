@@ -7,6 +7,7 @@ class LoanDocumentsController < SecuredController
     session[:current_page] = "loan_docs"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
     docStatus = Hash.new
+    # intitialize doc hash maps
     @docStatus = {"Loan Agreement" => "Missing", "W2 Form" => "Missing",
                   "Tax Return" => "Missing", "Loan Image" => "file_toupload.png",
                   "W2 Image" => "file_toupload.png", "Tax Image" => "file_toupload.png"}
@@ -20,22 +21,22 @@ class LoanDocumentsController < SecuredController
     rescue
       parent = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
       @loanFolder = client.create_folder("Loan Documents", parent)
-      # client.add_collaboration(@loanFolder, {id: ENV['EMPL_ID'], type: :user}, :viewer)
       puts "created new loan docs folder..."
     end
 
     @loanItems = client.folder_items(@loanFolder, fields: [:id, :name, :modified_at])
 
-    # iterate throug loan folder to check out documents
+    # iterate through loan folder to check out documents
     @loanItems.each do |file|
 
+      # configure names and get file task if exists
       name = file.name.split(".").first
       imageName = name.split(" ").first + " Image"
       searchName = name.split(" ").first
-
       task = client.file_tasks(file, fields: [:is_completed]).first
 
       if(task != nil and task.is_completed)
+        # task completed
         @docStatus[name] = "Accepted"
         @docStatus[imageName] = "file_success.png"
         @fileId[name] = file.id
@@ -44,14 +45,12 @@ class LoanDocumentsController < SecuredController
         @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; In review"
         @docStatus[imageName] = "file_process.png"
         @fileId[name] = file.id
-
       else
         puts  "Error: should never be here!"
-
       end
 
     end
-    # get vault folder and search for items
+    # get vault folder and search for items by name
     vaultId = client.folder_from_path("My Files").id
 
     if (@docStatus["Loan Agreement"] == "Missing")
@@ -113,13 +112,13 @@ class LoanDocumentsController < SecuredController
     end
   end
 
+  # copy over a document from the user's vault to Loan Docs folder
   def copy_from_vault
 
     puts "copy from vault"
     fileId = params[:file_id]
     oldName = params[:old_name].split(".")
     newName = params[:new_name] + "." + oldName.last
-
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
 
     # get loan docs folder, copy vault file into it
@@ -128,8 +127,8 @@ class LoanDocumentsController < SecuredController
     toCopy = client.file_from_id(fileId, fields: [:name, :id])
 
     copiedFile = client.copy_file(toCopy, folder, name: newName)
-    # client.create_metadata(uploadedFile, "Status" => "In Review")
 
+    # assign task to Box managed user
     msg = "Please review and complete the task"
     task = client.create_task(copiedFile, action: :review, message: msg)
     client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
@@ -138,6 +137,7 @@ class LoanDocumentsController < SecuredController
     redirect_to loan_docs_path
   end
 
+  # delete folder, reset loan process
   def reset_loan
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
 
