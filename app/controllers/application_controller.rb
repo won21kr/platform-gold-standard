@@ -100,6 +100,9 @@ class ApplicationController < ActionController::Base
     if query['med_credentialing'] != "" and query['med_credentialing'] != nil
       session[:medical_credentialing] = query['med_credentialing']
     end
+    if query['loan_docs'] != "" and query['loan_docs'] != nil
+      session[:loan_docs] = query['loan_docs']
+    end
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end

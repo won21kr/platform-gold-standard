@@ -22,6 +22,7 @@ class ConfigController < ApplicationController
 
       # BETA FEATURES
       session[:medical_credentialing] = "off"
+      session[:loan_docs] = "off"
 
     end
 
@@ -100,6 +101,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
     session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
+    session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
     session[:config_url] << "&background=#{session[:background]}"
 
   end
