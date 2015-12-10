@@ -16,17 +16,22 @@ class LoanDocumentsController < SecuredController
                "Tax Return" => nil}
     @searchFiles = {"Loan" => nil, "W2" => nil, "Tax" => nil}
 
+    puts "1"
     # get loan documents folder, if it doesn't exist create one
     begin
       @loanFolder = client.folder_from_path(path)
     rescue
-      parent = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+      parent = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+      end
       @loanFolder = client.create_folder("Loan Documents", parent)
       puts "created new loan docs folder..."
     end
 
+    puts "2"
     @loanItems = client.folder_items(@loanFolder, fields: [:id, :name, :modified_at])
-
+    puts "3"
     # iterate through loan folder to check out documents
     @loanItems.each do |file|
 
@@ -34,8 +39,10 @@ class LoanDocumentsController < SecuredController
       name = file.name.split(".").first
       imageName = name.split(" ").first + " Image"
       searchName = name.split(" ").first
-      task = client.file_tasks(file, fields: [:is_completed]).first
-
+      task = Rails.cache.fetch("/loans/#{session[:box_id]}/#{file.id}", :expires_in => 10.minutes) do
+        puts "miss"
+        client.file_tasks(file, fields: [:is_completed]).first
+      end
 
       if (name == "Loan Agreement - Signature Needed")
         @docStatus["Loan Agreement"] = "Signature Needed"
@@ -62,18 +69,35 @@ class LoanDocumentsController < SecuredController
       end
 
     end
+    puts "4"
     # get vault folder and search for items by name
-    vaultId = client.folder_from_path("My Files").id
+    # vaultId = client.folder_from_path("My Files").id
+    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      puts "miss"
+      client.folder_from_path("My Files")
+    end
 
     if (@docStatus["Loan Agreement"] == "Missing")
-      @searchFiles["Loan"] = client.search("Loan", content_types: :name, ancestor_folder_ids: vaultId)
+      @searchFiles["Loan"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/loan", :expires_in => 3.minutes) do
+        puts "miss"
+        client.search("Loan", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+      end
     end
+    puts "5"
     if (@docStatus["W2 Form"] == "Missing")
-      @searchFiles["W2"] = client.search("W2", content_types: :name, ancestor_folder_ids: vaultId)
+      @searchFiles["W2"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/w2", :expires_in => 3.minutes) do
+        puts "miss"
+        client.search("W2", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+      end
     end
+    puts "6"
     if (@docStatus["Tax Return"] == "Missing")
-      @searchFiles["Tax"] = client.search("Tax", content_types: :name, ancestor_folder_ids: vaultId)
+      @searchFiles["Tax"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/tax", :expires_in => 3.minutes) do
+        puts "miss"
+        client.search("Tax", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+      end
     end
+    puts "7"
 
   end
 
