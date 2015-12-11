@@ -8,6 +8,8 @@ class LoanDocumentsController < SecuredController
     session[:current_page] = "loan_docs"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
     docStatus = Hash.new
+    threads = []
+
     # intitialize doc hash maps
     @docStatus = {"Loan Agreement" => "Missing", "W2 Form" => "Missing",
                   "Tax Return" => "Missing", "Loan Image" => "file_toupload.png",
@@ -15,6 +17,7 @@ class LoanDocumentsController < SecuredController
     @fileId = {"Loan Agreement" => nil, "W2 Form" => nil,
                "Tax Return" => nil}
     @searchFiles = {"Loan" => nil, "W2" => nil, "Tax" => nil}
+    @fileComments = {"Loan" => nil, "W2" => nil, "Tax" => nil}
 
     puts "1"
     # get loan documents folder, if it doesn't exist create one
@@ -28,48 +31,55 @@ class LoanDocumentsController < SecuredController
       @loanFolder = client.create_folder("Loan Documents", parent)
       puts "created new loan docs folder..."
     end
-
     puts "2"
+
     @loanItems = client.folder_items(@loanFolder, fields: [:id, :name, :modified_at])
     puts "3"
+
     # iterate through loan folder to check out documents
     @loanItems.each do |file|
 
-      # configure names and get file task if exists
-      name = file.name.split(".").first
-      imageName = name.split(" ").first + " Image"
-      searchName = name.split(" ").first
-      task = Rails.cache.fetch("/loans/#{session[:box_id]}/#{file.id}", :expires_in => 10.minutes) do
-        puts "miss"
-        client.file_tasks(file, fields: [:is_completed]).first
-      end
+      threads << Thread.new do
+        # configure names and get file task if exists
+        name = file.name.split(".").first
+        imageName = name.split(" ").first + " Image"
+        searchName = name.split(" ").first
+        task = Rails.cache.fetch("/loans/#{session[:box_id]}/#{file.id}", :expires_in => 10.minutes) do
+          puts "miss"
+          client.file_tasks(file, fields: [:is_completed]).first
+        end
 
-      if (name == "Loan Agreement - Signature Needed")
-        @docStatus["Loan Agreement"] = "Signature Needed"
-        @docStatus[imageName] = "file_process.png"
-        @fileId["Loan Agreement"] = file.id
-      elsif(name == "Loan Agreement - Signed")
-        @docStatus["Loan Agreement"] = "Signed"
-        @docStatus[imageName] = "file_success.png"
-        @fileId["Loan Agreement"] = file.id
-      else
-        if(task != nil and task.is_completed)
-          # task completed
-          @docStatus[name] = "Accepted"
-          @docStatus[imageName] = "file_success.png"
-          @fileId[name] = file.id
-        elsif(task != nil and !task.is_completed)
-          #task not completed yet
-          @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; In review"
+        if (name == "Loan Agreement - Signature Needed")
+          @docStatus["Loan Agreement"] = "Signature Needed"
           @docStatus[imageName] = "file_process.png"
-          @fileId[name] = file.id
+          @fileId["Loan Agreement"] = file.id
+          @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
+        elsif(name == "Loan Agreement - Completed")
+          @docStatus["Loan Agreement"] = "Completed"
+          @docStatus[imageName] = "file_success.png"
+          @fileId["Loan Agreement"] = file.id
+          @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
         else
-          puts  "Error: should never be here!"
+          @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
+          if(task != nil and task.is_completed)
+            # task completed
+            @docStatus[name] = "Accepted"
+            @docStatus[imageName] = "file_success.png"
+            @fileId[name] = file.id
+          elsif(task != nil and !task.is_completed)
+            #task not completed yet
+            @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; In review"
+            @docStatus[imageName] = "file_process.png"
+            @fileId[name] = file.id
+          else
+            puts  "Error: should never be here!"
+          end
         end
       end
-
     end
-    puts "4"
+
+    threads.each { |thr| thr.join }
+
     # get vault folder and search for items by name
     # vaultId = client.folder_from_path("My Files").id
     vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
@@ -78,26 +88,35 @@ class LoanDocumentsController < SecuredController
     end
 
     if (@docStatus["Loan Agreement"] == "Missing")
-      @searchFiles["Loan"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/loan", :expires_in => 3.minutes) do
-        puts "miss"
-        client.search("Loan", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+      threads << Thread.new do
+        @searchFiles["Loan"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/loan", :expires_in => 4.minutes) do
+          puts "miss"
+          client.search("Loan", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+        end
+      end
+    end
+
+    if (@docStatus["W2 Form"] == "Missing")
+      threads << Thread.new do
+        @searchFiles["W2"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/w2", :expires_in => 4.minutes) do
+          puts "miss"
+          client.search("W2", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+        end
+      end
+    end
+
+    if (@docStatus["Tax Return"] == "Missing")
+      threads << Thread.new do
+        @searchFiles["Tax"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/tax", :expires_in => 4.minutes) do
+          puts "miss"
+          client.search("Tax", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+        end
       end
     end
     puts "5"
-    if (@docStatus["W2 Form"] == "Missing")
-      @searchFiles["W2"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/w2", :expires_in => 3.minutes) do
-        puts "miss"
-        client.search("W2", content_types: :name, ancestor_folder_ids: vaultFolder.id)
-      end
-    end
-    puts "6"
-    if (@docStatus["Tax Return"] == "Missing")
-      @searchFiles["Tax"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/tax", :expires_in => 3.minutes) do
-        puts "miss"
-        client.search("Tax", content_types: :name, ancestor_folder_ids: vaultFolder.id)
-      end
-    end
-    puts "7"
+
+    #  rejoins threads
+    threads.each { |thr| thr.join }
 
   end
 
@@ -302,7 +321,7 @@ class LoanDocumentsController < SecuredController
         signed_folder = box_user.folder_from_path(completedPath)
         file = box_user.upload_file(temp_file.path, signed_folder)
         #Box.create_in_view_api(file)
-        box_user.update_file(file, name: "Loan Agreement - Signed.pdf")
+        box_user.update_file(file, name: "Loan Agreement - Completed.pdf")
         #box_user.update_metadata(file, [{'op' => 'add', 'path' => '/docusign_envelope_id', 'value' => params["envelope_id"]}])
         # meta = box_user.metadata(box_info[:box_doc_id])
         # ap meta

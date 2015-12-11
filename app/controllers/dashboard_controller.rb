@@ -34,6 +34,23 @@ class DashboardController < SecuredController
 
   end
 
+  def search_vault(name)
+
+    puts "search vault!!!!"
+
+    client = user_client
+
+    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      puts "miss"
+      client.folder_from_path("My Files")
+    end
+
+    results = client.search(name, content_types: :name, ancestor_folder_ids: vaultFolder.id)
+
+    ap results
+    results
+  end
+  
   # post to edit filename
   def edit_filename
 
