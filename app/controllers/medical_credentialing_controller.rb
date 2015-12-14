@@ -5,6 +5,7 @@ class MedicalCredentialingController < SecuredController
   # main controller for onboarding workflow
   def show
 
+    # determine if the credentialist is logged in, if so, redirect to their own page
     if session[:box_id] == ENV['CRED_SPECIALIST']
       puts "credentialist logged in..."
       redirect_to credentialist_path
@@ -12,14 +13,12 @@ class MedicalCredentialingController < SecuredController
 
       client = user_client
       session[:current_page] = "medical_credentialing"
-
       # get medical folder path
       path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
 
       # get medical credentialing folder, if it doesn't exist we're still on step 1
       begin
         @medFolder = client.folder_from_path(path)
-
       rescue
         @medFolder = client.create_folder("#{session[:userinfo]['info']['name']} - Medical Credentialing", Boxr::ROOT)
         client.add_collaboration(@medFolder, {id: ENV['CRED_SPECIALIST'], type: :user}, :editor)

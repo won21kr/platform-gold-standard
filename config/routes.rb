@@ -60,8 +60,6 @@ Rails.application.routes.draw do
   get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"
   get "/loan-agreement-sign/:file_id" => "loan_documents#loan_docusign", :as => "loan_docusign"
   get "docusign_response_loan/:envelope_id" => "loan_documents#docusign_response_loan", :as => "docusign_response_loan"
-  # get "/search_vault/:name" => 'loan_documents#search_vault', :as => "search_vault"
-
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
@@ -69,7 +67,7 @@ Rails.application.routes.draw do
   get '/logout' => 'home#logout', :as => "logout"
   get '/reset-logins' => 'home#reset_logins', :as => "reset_logins"
 
-
+  # config page
   get '/config' => "config#show", :as => 'config'
   get '/config-reset' => "config#reset_config", :as => "reset_config"
   post '/config' => "config#post_config", :as => "save_config"
