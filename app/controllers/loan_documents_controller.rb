@@ -31,10 +31,8 @@ class LoanDocumentsController < SecuredController
       @loanFolder = client.create_folder("Loan Documents", parent)
       puts "created new loan docs folder..."
     end
-    puts "2"
 
     @loanItems = client.folder_items(@loanFolder, fields: [:id, :name, :modified_at])
-    puts "3"
 
     # iterate through loan folder to check out documents
     @loanItems.each do |file|
@@ -44,10 +42,7 @@ class LoanDocumentsController < SecuredController
         name = file.name.split(".").first
         imageName = name.split(" ").first + " Image"
         searchName = name.split(" ").first
-        task = Rails.cache.fetch("/loans/#{session[:box_id]}/#{file.id}", :expires_in => 10.minutes) do
-          puts "miss"
-          client.file_tasks(file, fields: [:is_completed]).first
-        end
+        task = client.file_tasks(file, fields: [:is_completed]).first
 
         if (name == "Loan Agreement - Signature Needed")
           @docStatus["Loan Agreement"] = "Signature Needed"

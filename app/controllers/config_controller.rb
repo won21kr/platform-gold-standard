@@ -20,7 +20,7 @@ class ConfigController < ApplicationController
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
 
-      # BETA FEATURES
+      # NEW BETA FEATURES
       session[:medical_credentialing] = "off"
       session[:loan_docs] = "off"
 
@@ -81,8 +81,6 @@ class ConfigController < ApplicationController
   # clear session
   def reset_config
     session.clear
-    puts "session reset..."
-    ap session
     redirect_to config_path
   end
 

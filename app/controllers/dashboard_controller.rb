@@ -36,7 +36,6 @@ class DashboardController < SecuredController
 
   def search_vault(name)
 
-    puts "search vault!!!!"
 
     client = user_client
 
@@ -47,10 +46,9 @@ class DashboardController < SecuredController
 
     results = client.search(name, content_types: :name, ancestor_folder_ids: vaultFolder.id)
 
-    ap results
     results
   end
-  
+
   # post to edit filename
   def edit_filename
 
