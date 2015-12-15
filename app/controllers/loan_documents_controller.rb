@@ -10,7 +10,7 @@ class LoanDocumentsController < SecuredController
     docStatus = Hash.new
     threads = []
 
-    # intitialize doc hash maps
+    # intitialize doc hash maps to be referenced in the view
     @docStatus = {"Loan Agreement" => "Missing", "W2 Form" => "Missing",
                   "Tax Return" => "Missing", "Loan Image" => "file_toupload.png",
                   "W2 Image" => "file_toupload.png", "Tax Image" => "file_toupload.png"}
@@ -19,7 +19,6 @@ class LoanDocumentsController < SecuredController
     @searchFiles = {"Loan" => nil, "W2" => nil, "Tax" => nil}
     @fileComments = {"Loan" => nil, "W2" => nil, "Tax" => nil}
 
-    puts "1"
     # get loan documents folder, if it doesn't exist create one
     begin
       @loanFolder = client.folder_from_path(path)
@@ -29,12 +28,12 @@ class LoanDocumentsController < SecuredController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
       end
       @loanFolder = client.create_folder("Loan Documents", parent)
-      puts "created new loan docs folder..."
     end
 
+    # get all loan doc folder items
     @loanItems = client.folder_items(@loanFolder, fields: [:id, :name, :modified_at])
 
-    # iterate through loan folder to check out documents
+    # iterate through loan folder to check out documents w/ multithreading
     @loanItems.each do |file|
 
       threads << Thread.new do
@@ -108,11 +107,9 @@ class LoanDocumentsController < SecuredController
         end
       end
     end
-    puts "5"
 
     #  rejoins threads
     threads.each { |thr| thr.join }
-
   end
 
   # upload files to parameter specified folder ID
@@ -173,7 +170,6 @@ class LoanDocumentsController < SecuredController
     client = user_client
     folder = client.folder_from_path(path)
     toCopy = client.file_from_id(fileId, fields: [:name, :id])
-
     copiedFile = client.copy_file(toCopy, folder, name: newName)
 
     # assign task to Box managed user
@@ -195,13 +191,12 @@ class LoanDocumentsController < SecuredController
     client.delete_folder(folder, recursive: true)
 
     redirect_to loan_docs_path
-
   end
 
+  # start loan agreement docusign process
   def loan_docusign
 
     fileId = params[:file_id]
-
     envelope_response = create_docusign_envelope(fileId)
 
     # set up docusign view, fetch url
@@ -211,12 +206,11 @@ class LoanDocumentsController < SecuredController
       email: "mmitchell+standard@box.com",
       return_url: docusign_response_loan_url(envelope_response["envelopeId"])
     )
-    # ap recipient_view
 
     @url = recipient_view["url"]
-
   end
 
+  # create docusign envelope for loan agreement
   def create_docusign_envelope(box_doc_id)
 
     box_user = user_client
@@ -283,9 +277,6 @@ class LoanDocumentsController < SecuredController
           status: 'sent'
         )
       end
-
-
-      #stash stuff in the session for the end of the docusign flow
       session[envelope["envelopeId"]] = {box_doc_id: box_file.id, box_doc_name: box_file.name}
     rescue => ex
       puts "Error in creating envo"
@@ -296,6 +287,7 @@ class LoanDocumentsController < SecuredController
     envelope
   end
 
+  # docusign response for loan agreement
   def docusign_response_loan
     utility = DocusignRest::Utility.new
 

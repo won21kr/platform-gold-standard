@@ -16,7 +16,7 @@ class MedicalCredentialingController < SecuredController
       # get medical folder path
       path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
 
-      # get medical credentialing folder, if it doesn't exist we're still on step 1
+      # get medical credentialing folder, if it doesn't exist create one + add collaboration
       begin
         @medFolder = client.folder_from_path(path)
       rescue
@@ -31,27 +31,27 @@ class MedicalCredentialingController < SecuredController
       # perform actions based on current workflow status state
       case @status
 
+        # wait for form submission
         when "toFill"
-          # wait for form submission
           session[:progress] = 0
           session[:med_task_status] = 1
           @message = "Step 1. Fill out your personal information"
 
+        # Upload medical documents
         when "toUpload"
-          # Upload medical documents
           session[:progress] = 1
           session[:med_task_status] = 1
           @message = "Step 2. Upload Documents"
 
+        # wait for cred specialist approval
         when "pendingApproval"
-          # wait for cred specialist approval
           @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
           session[:progress] = 2
           session[:med_task_status] = 1
           @message = "Step 3. Wait for credentialing specialist's approval"
 
+        # submission approved
         when "approved"
-          # submission approved
           session[:progress] = 3
           session[:med_task_status] = 0
           @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
@@ -60,9 +60,9 @@ class MedicalCredentialingController < SecuredController
           puts "Error: Something went wrong..."
       end
     end
-
   end
 
+  # submit medical form data
   def medical_form_submit
 
     puts "submitting form"
@@ -86,9 +86,9 @@ class MedicalCredentialingController < SecuredController
 
     flash[:notice] = "Thanks for filling out your information! Now upload relevant medical credentials."
     redirect_to medical_path
-
   end
 
+  # upload medical credentialing documents
   def medical_upload
 
     client = user_client
@@ -137,8 +137,6 @@ class MedicalCredentialingController < SecuredController
 
       box_user = Box.user_client(session[:box_id])
       box_file = box_user.upload_file(temp_file.path, folder)
-      #box_user.create_metadata(box_file, session[:meta])
-
     rescue => ex
       puts ex.message
     ensure
