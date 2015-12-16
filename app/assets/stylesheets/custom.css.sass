@@ -5,11 +5,23 @@ body
   font-family: 'Open Sans', sans-serif
   background-color: #F1F3FA
 
-// li
-//   .active
-//     color: #5b9bd1
-//     background-color: #93a3b5
-//     margin-left: -2px
+// GENERAL CSS
+.unread-count:after
+  content: attr(data-count)
+  position: relative
+  left: -6px
+  top: -7px
+  font-size: 10px
+  text-align: center
+  border: 1px solid #890405
+  color: #fff
+  font-weight: bold
+  min-width: 20px
+  -webkit-border-radius: 4px
+  -moz-border-radius: 4px
+  border-radius: 4px
+  background: #c91106
+  padding: 1px 2px
 
 .progress
   .progress-bar
@@ -66,11 +78,8 @@ body
 
 .modal-dialog
   height: 300px
-  // width: 960px
-  //background-color: white
   .modal-body
     height: 300px
-    // width: 960px
   .modal-footer
     .btn
       font-size: 100%
@@ -80,11 +89,9 @@ body
   border-color: $box_blue
 
 .signin-button
-  width: 50%
+  width: 44%
   margin-top: 30%
-  // background: #FFF
-  margin-left: 25%
-  // border-radius: 25px
+  margin-left: 28%
 
 h1
   font-weight: 300
@@ -113,9 +120,6 @@ h3
   background-color: #00325B
   height: 75px
   width: 100%
-  //background: url(header.jpg)
-  //background-size: cover
-  //border-bottom: 1px solid #ccc
   margin-bottom: 15px
   .content
     margin-left: 135px
@@ -176,7 +180,6 @@ h3
     .gen-tab-label2
       width: 290px
 
-
 .new-bookshelf
   text-align: left
   margin-bottom: 50px
@@ -233,3 +236,162 @@ h3
   -moz-border-radius-topright: 5px
   border-top-left-radius: 5px
   border-top-right-radius: 5px
+
+
+// SEARCH CSS
+.results
+  .result-label
+    font-size: 85%
+  .result-data
+    font-size: 85%
+
+.form-search
+  padding: 0px
+  margin: 0
+
+.form-search .form-signin-heading,
+.form-search .checkbox
+  margin-bottom: 10px
+
+.form-search .checkbox
+  font-weight: normal
+
+.form-search .form-control
+  position: relative
+  height: auto
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+  // padding: 10px
+  font-size: 16px
+
+.form-search .form-control:focus
+  z-index: 2
+
+.form-search input[type="search"]
+  margin-top: 0px
+  border-bottom-right-radius: 0
+  border-bottom-left-radius: 0
+
+
+
+
+// SEARCH RESULTS CSS
+.results
+  .result
+    padding: 10px
+    height: 110px
+    background-color: white
+    border-color: #444
+    border-width: 1px
+    margin-bottom: 15px
+    margin-top: 5px
+    box-shadow: 3px 3px 8px 0px rgba(0, 0, 0, .2)
+    border-radius: 3px
+    font-size: 16px
+
+  .date
+    text-align: right
+
+  .thumb-image
+    img
+      border: 0px solid #ccc
+
+  .result-label
+    font-weight: bold
+    margin-bottom: 1px
+    text-align: left
+    font-size: 90%
+
+  .result-data
+    margin-bottom: 1px
+    font-size: 90%
+
+  .premium-image
+    margin-top: -60px
+    margin-left: 0px
+    pointer-events: none
+    opacity: 0.9
+
+  .premium
+    opacity: 0.8
+    margin-top: 50px
+    margin-left: -50px
+
+// LOGIN PAGE CSS
+.bg
+  background: url(background.jpg) no-repeat center center fixed
+  background-size: cover
+
+.one
+  border: 3px solid #49c1ff
+  width: 250px
+  padding: 20px
+  font-size: 0.9em
+  color: #00CD98
+  background-color: #49c1ff  !important
+
+  font-family: 'Open Sans', sans-serif
+  color: white  !important
+  font-weight: 600
+  letter-spacing: 5px
+  text-transform: uppercase
+  border-radius: 5px
+
+  .one:hover
+    bottom: 4px
+    box-shadow: 0px 2px 0px 0px #49c1ff
+    transition: all .01s ease-in-out
+    -moz-transition: all .01s ease-in-out
+    -webkit-transition: all .01s ease-in-out
+
+  .one:active
+    box-shadow: inset 0px 2px 0px 0px #49c1ff  !important
+    transition: all .01s ease-in-out
+    -moz-transition: all .01s ease-in-out
+    -webkit-transition: all .01s ease-in-out
+
+
+// CONFIG PAGE CSS
+.item
+  display: table-cell
+  border: 3px solid #F1F3FA
+
+.label-div
+  margin-top: 15px
+
+.checkbox
+  margin-left: 22px
+
+
+// COMMENTS CSS
+.commentList
+  padding: 0
+  list-style: none
+  max-height: 500px
+  overflow: auto
+
+.commentList li
+  margin: 0
+  margin-top: 10px
+
+.commentList li > div
+  display: table-cell
+
+.commenterImage
+  width: 30px
+  margin-right: 5px
+  height: 100%
+  float: left
+
+.commenterImage img
+  width: 100%
+  border-radius: 50%
+
+.commentText p
+  margin: 0
+
+.sub-text
+  color: #aaa
+  font-family: verdana
+  font-size: 11px

@@ -19,7 +19,7 @@ module Box
   end
 
   def self.admin_token
-    access_token = Rails.cache.fetch("box_tokens/enterprise/#{ENV['BOX_ENTERPRISE_ID']}", :expires_in => TOKEN_TTL) do
+    access_token = Rails.cache.fetch("/box_tokens/enterprise/#{ENV['BOX_ENTERPRISE_ID']}", :expires_in => TOKEN_TTL) do
       puts "getting new enterprise token"
       response = Boxr::get_enterprise_token(private_key: PRIVATE_KEY, private_key_password: ENV['JWT_PRIVATE_KEY_PASSWORD'])
       response.access_token
@@ -27,7 +27,7 @@ module Box
   end
 
   def self.user_token(user_id)
-    access_token = Rails.cache.fetch("box_tokens/user/#{user_id}", :expires_in => TOKEN_TTL) do
+    access_token = Rails.cache.fetch("/box_tokens/user/#{user_id}", :expires_in => TOKEN_TTL) do
       puts "getting new user token"
 
       response = Boxr::get_user_token(user_id, private_key: PRIVATE_KEY, private_key_password: ENV['JWT_PRIVATE_KEY_PASSWORD'])

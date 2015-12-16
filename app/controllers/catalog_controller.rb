@@ -9,10 +9,10 @@ class CatalogController < SecuredController
  #    session[:current_page] = "catalog"
  #
  #    # Get root Product Catalog Folder from cache
- #    @product_catalog = Rails.cache.fetch("/product_catalog_folder/#{ENV['PRODUCT_CATALOG_FOLDER']}", :expires_in => 20.minutes) do
+ #    @product_catalog = Rails.cache.fetch("/product_catalog_folder/#{ENV['PRODUCT_CATALOG_FOLDER']}", :expires_in => 15.minutes) do
  #      client.folder_from_id(ENV['PRODUCT_CATALOG_FOLDER'], fields: [:id, :name, :size])
  #
- #      @file1 = Rails.cache.fetch("/product_catalog_folder/file/#{ENV['PRODUCT_CATALOG_FILE1']}", :expires_in => 20.minutes) do
+ #      @file1 = Rails.cache.fetch("/product_catalog_folder/file/#{ENV['PRODUCT_CATALOG_FILE1']}", :expires_in => 15.minutes) do
  #        client.file_from_id(ENV['PRODUCT_CATALOG_FILE1'], fields: [:id])
  #      end
  #
@@ -36,7 +36,7 @@ def show
     session[:current_page] = "catalog"
 
 
-    @product_catalog = Rails.cache.fetch("/product_catalog_folder/#{ENV['PRODUCT_CATALOG_FOLDER']}", :expires_in => 20.minutes) do
+    @product_catalog = Rails.cache.fetch("/product_catalog_folder/#{ENV['PRODUCT_CATALOG_FOLDER']}", :expires_in => 15.minutes) do
       client.folder_from_id(ENV['PRODUCT_CATALOG_FOLDER'], fields: [:id, :name, :size])
     end
 
@@ -57,13 +57,6 @@ def show
     end
 
     send_data image, :type => 'image/png', :disposition => 'inline'
-  end
-
-
-  private
-# create user client and return
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end
