@@ -47,9 +47,9 @@ class ConfigController < ApplicationController
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
-    if !params[:catalog_file].nil? and params[:catalog_file] !=""
-      session[:catalog_file] = params[:catalog_file]
-    end
+    # if !params[:catalog_file].nil? and params[:catalog_file] !=""
+    #   session[:catalog_file] = params[:catalog_file]
+    # end
 
     # check feature tab configuration
     if !params[:resources].nil?
@@ -90,32 +90,13 @@ class ConfigController < ApplicationController
 
   private
 
-  # construct configuration URL
-  def config_url
-    session[:config_url] = "#{ENV['ACTIVE_URL']}/"
-    session[:config_url] << "?message=#{session[:home_message]}"
-    session[:config_url] << "&logo=#{session[:logo]}"
-    session[:config_url] << "&catalog=#{session[:catalog_file]}"
-    if(!session[:navbar_color].nil? && session[:navbar_color] != "")
-      session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
-    end
-    session[:config_url] << "&vault=#{session[:vault]}"
-    session[:config_url] << "&resources=#{session[:resources]}"
-    session[:config_url] << "&onboarding=#{session[:onboarding]}"
-    session[:config_url] << "&catalog=#{session[:catalog]}"
-    session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
-    session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
-    session[:config_url] << "&background=#{session[:background]}"
-
-  end
-
-  def set_gon
-    gon.push
-      puts "In GON............"
-      current_catalog_file = session[:catalog_file]
-      ap gon.current_catalog_file
-
-  end
+  # def set_gon
+  #   gon.push
+  #     puts "In GON............"
+  #     current_catalog_file = session[:catalog_file]
+  #     ap gon.current_catalog_file
+  #
+  # end
 
 
 end

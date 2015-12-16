@@ -17,6 +17,15 @@
       %label.label-div{:for => "background"} Background Image URL
       %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background]}
 
+      -# Choose a product catalog
+      -# %label.label-div{:for => "catalog_file"} Choose Product Catalog
+      -# %select{:name => "catalog_file"}
+      -#   %option{:value => "Retail"} Retail
+      -#   %option{:value => "Healthcare"} Healthcare
+      -#   %option{:value => "Financial Services"} Financial Services
+      -#   %option{:value => "AEC"} AEC
+      -# .br
+
       -# Activate / Deactivate feature tabs
       %label.label-div{:for => "tab_select"} Active Feature Tabs
       %label.checkbox
@@ -31,14 +40,6 @@
         %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'} Medical Credentialing (Healthcare)
       %label.checkbox
         %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'} Loan Documents (Financial Services)
-
-      -# Choose a product catalog
-      %label{:for => "catalog_file"} Choose Product Catalog
-      %select{:name => "catalog_file"}
-        %option{:value => "Healthcare"} Healthcare
-        %option{:value => "Retail"} Retail
-        %option{:value => "Financial Services"} Financial Services
-        %option{:value => "AEC"} AEC
 
     .col-md-5.pull-right
       %a.btn.btn-primary.btn-lg.pull-right{:style => "margin-left: 20px", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
@@ -99,7 +100,7 @@
           %td Encoded Configuration URL:
           %td
             = session[:config_url]
-        %tr
-          %td Customized Product Catalog:
-          %td
-            = session[:catalog_file]
+        -# %tr
+        -#   %td Customized Product Catalog:
+        -#   %td
+        -#     = session[:catalog_file]

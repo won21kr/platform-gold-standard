@@ -19,15 +19,14 @@
         %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('spin')"} Spin
 :javascript
    var viewer,
-    url = 'https://view-api.box.com/1/sessions/4b569cfa8e324401986b8f51e78de5e5/assets';
-    
+    url = 'https://view-api.box.com/1/sessions/738d5d665d8e487b95f3d61e388d9f2b/assets';
+
     console.log(gon.current_catalog_file);
            function setMode(mode) {
                console.log(mode);
                $('.controls button').removeClass('selected');
 
                $('.controls button.' + mode).addClass('selected');
-
 
                switch (mode) {
                    case 'pop':
@@ -41,7 +40,6 @@
                        viewer.zoom(Crocodoc.ZOOM_AUTO);
                        viewer.zoom(Crocodoc.ZOOM_OUT);
                        $('body').removeClass().addClass('crocodoc-presentation-carousel');
-
                        break;
 
                    case 'slide':
