@@ -8,8 +8,9 @@ class HomeController < ApplicationController
   # Juihee = 254291677, juihee1@test.com
   # Matt Marque = 257524801, wolterskluwer@box.com
   # Sam Peters = 258215985,  speters+demo@box.com
+  # Credentialing Specialist = 260539217, cred-specialist@box.com
   DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], ENV['CRED_SPECIALIST'],
-                      '254291677', '257524801', '258215985']
+                      '254291677', '257524801', '258215985', '260539217']
 
 
   def reset_logins
