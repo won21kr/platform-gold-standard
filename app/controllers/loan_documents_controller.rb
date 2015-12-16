@@ -85,7 +85,7 @@ class LoanDocumentsController < SecuredController
       threads << Thread.new do
         @searchFiles["Loan"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/loan", :expires_in => 4.minutes) do
           puts "miss"
-          client.search("Loan", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+          client.search("Loan", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
         end
       end
     end
@@ -94,7 +94,7 @@ class LoanDocumentsController < SecuredController
       threads << Thread.new do
         @searchFiles["W2"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/w2", :expires_in => 4.minutes) do
           puts "miss"
-          client.search("W2", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+          client.search("W2", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
         end
       end
     end
@@ -103,7 +103,7 @@ class LoanDocumentsController < SecuredController
       threads << Thread.new do
         @searchFiles["Tax"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/tax", :expires_in => 4.minutes) do
           puts "miss"
-          client.search("Tax", content_types: :name, ancestor_folder_ids: vaultFolder.id)
+          client.search("Tax", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
         end
       end
     end
