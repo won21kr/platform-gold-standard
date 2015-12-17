@@ -38,6 +38,12 @@
             %a{:href => "/catalog"}
               %i.glyphicon.glyphicon-picture
               Product Catalog
+        - if session[:salesforce] == 'on' or session[:salesforce].nil?
+          %li{:class => "#{'active' if session[:current_page] == "salesforce"}"}
+            %a{:href => "/salesforce"}
+              %i.glyphicon.glyphicon-transfer
+              Pending Loan Documents
+
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag

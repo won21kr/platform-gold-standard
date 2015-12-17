@@ -64,6 +64,7 @@ end
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
     session[:config_url] << "&background=#{session[:background]}"
+    session[:config_url] << "&salesforce=#{session[:salesforce]}"
 
   end
 
@@ -97,6 +98,8 @@ end
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
+    if query['background'] != "" and query['salesforce'] != nil
+      session[:salesforce] = query['salesforce']
     config_url
   end
 end
