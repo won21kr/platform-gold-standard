@@ -276,7 +276,7 @@ class LoanDocumentsController < SecuredController
       #     ],
       #     status: 'sent'
       #   )
-      end
+      # end
       session[envelope["envelopeId"]] = {box_doc_id: box_file.id, box_doc_name: box_file.name}
     rescue => ex
       puts "Error in creating envo"
