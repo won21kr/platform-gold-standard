@@ -103,7 +103,11 @@ class LoanDocumentsController < SecuredController
       threads << Thread.new do
         @searchFiles["Tax"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/tax", :expires_in => 4.minutes) do
           puts "miss"
+<<<<<<< HEAD
           client.search("Tax", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
+=======
+        client.search("Tax", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
+>>>>>>> staging
         end
       end
     end
@@ -241,8 +245,8 @@ class LoanDocumentsController < SecuredController
             name: 'Marcus Doe',
             email: 'mmitchell+standard@box.com',
             role_name: 'Client',
-            # signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
-            sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
+            signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
+            # sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
           }
         ],
         files: [
@@ -251,31 +255,31 @@ class LoanDocumentsController < SecuredController
         status: 'sent'
       )
 
-      # no anchor string found!
-      if (envelope['errorCode'] == "ANCHOR_TAB_STRING_NOT_FOUND")
-        envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
-          email: {
-            subject: "Signature Requested",
-            body: "Please electronically sign this document."
-          },
-          # If embedded is set to true in the signers array below, emails
-          # don't go out to the signers and you can embed the signature page in an
-          # iFrame by using the client.get_recipient_view method
-          signers: [
-            {
-              embedded: true,
-              name: 'Marcus Doe',
-              email: 'mmitchell+standard@box.com',
-              role_name: 'Client',
-              signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
-              # sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
-            }
-          ],
-          files: [
-            {path: temp_file.path, name: "#{box_file.name}"}
-          ],
-          status: 'sent'
-        )
+      # # no anchor string found!
+      # if (envelope['errorCode'] == "ANCHOR_TAB_STRING_NOT_FOUND")
+      #   envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
+      #     email: {
+      #       subject: "Signature Requested",
+      #       body: "Please electronically sign this document."
+      #     },
+      #     # If embedded is set to true in the signers array below, emails
+      #     # don't go out to the signers and you can embed the signature page in an
+      #     # iFrame by using the client.get_recipient_view method
+      #     signers: [
+      #       {
+      #         embedded: true,
+      #         name: 'Marcus Doe',
+      #         email: 'mmitchell+standard@box.com',
+      #         role_name: 'Client',
+      #         signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
+      #         # sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
+      #       }
+      #     ],
+      #     files: [
+      #       {path: temp_file.path, name: "#{box_file.name}"}
+      #     ],
+      #     status: 'sent'
+      #   )
       end
       session[envelope["envelopeId"]] = {box_doc_id: box_file.id, box_doc_name: box_file.name}
     rescue => ex
