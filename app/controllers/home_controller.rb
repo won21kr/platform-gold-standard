@@ -1,13 +1,16 @@
 class HomeController < ApplicationController
 
-  before_action :check_config
+  # before_action :check_config
 
   # List of DO NOT DELETEs
+  # Credentialing Specialist - "CRED_SPECIALIST"
   # Matt - "CUSTOMER ID"
   # Juihee = 254291677, juihee1@test.com
   # Matt Marque = 257524801, wolterskluwer@box.com
   # Sam Peters = 258215985,  speters+demo@box.com
-  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], '254291677', '257524801', '258215985']
+  # Credentialing Specialist = 260539217, cred-specialist@box.com
+  DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], ENV['CRED_SPECIALIST'],
+                      '254291677', '257524801', '258215985', '260539217']
 
 
   def reset_logins
@@ -22,7 +25,8 @@ class HomeController < ApplicationController
 
       unless DO_NOT_DELETE_IDS.include? box_user_id
         begin
-          box_admin.delete_user(box_user_id, notify: false, force: true)
+          deleted = box_admin.delete_user(box_user_id, notify: false, force: true)
+          puts "deleting user #{box_user_id}"
           Auth0API.client.delete_user(login["user_id"])
           num_deleted_logins += 1
         rescue
@@ -38,6 +42,8 @@ end
 
   def logout
     session[:userinfo] = nil
+    session[:task_status] = nil
+    session[:med_task_status] = nil
     redirect_to home_path
   end
 
@@ -51,6 +57,7 @@ end
 
   end
 
+<<<<<<< HEAD
   # construct configuration URL
   def config_url
     session[:config_url] = "#{ENV['ACTIVE_URL']}/"
@@ -98,8 +105,4 @@ end
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
-    if query['background'] != "" and query['salesforce'] != nil
-      session[:salesforce] = query['salesforce']
-    config_url
-  end
 end

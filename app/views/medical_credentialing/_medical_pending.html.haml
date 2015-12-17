@@ -1,0 +1,32 @@
+.col-md-12.col-sm-12
+  .panel.panel-default{:style => "margin-bottom: 0px"}
+    .panel-heading
+      %h2 Shared Medical Credential Documents
+      .sub-title
+        = "Medical documents vault shared with credentialing specialist"
+    %table.table
+      %thead
+        %tr
+          %th File
+          %th Name
+          %th.hidden-xs.hidden-sm Date Modified
+          %th Actions
+        %tbody
+          / list file contents
+          - @medFiles.each do |f|
+            %tr
+              %td
+                = link_to view_doc_path(f.id) do
+                  = image_tag(thumbnail_url(f.id), width: '30px')
+              %td
+                %span{:style => "inline"}
+                  = f.name
+              %td.hidden-xs.hidden-sm
+                = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+              %td
+                / file action options
+                .btn-group
+                  %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                    %span.glyphicon.glyphicon-eye-open
+                  %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+                    %span.glyphicon.glyphicon-cloud-download

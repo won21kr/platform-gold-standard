@@ -3,15 +3,26 @@
   .profile{:style => "margin: 1px 0; background: #fff"}
     .profile-sidebar{:style => "padding: 20px 0 30px 0"}
       .profile-userpic
-        = image_tag "customer.png", :style => "float: none; margin: 0 15%; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important"
+        - if session[:box_id] == ENV['CRED_SPECIALIST']
+          = image_tag "credentialist.png", :style => "float: none; margin: 0 15%; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important"
+        -else
+          = image_tag "customer.png", :style => "float: none; margin: 0 15%; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important"
+
         -# %img.img-responsive{:alt => "", :src => "https://platform-standard.box.com/shared/static/a3a2uag0hkt4vuixearil86li2ghlrlb.png", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
       / END SIDEBAR USERPIC
       / SIDEBAR USER TITLE
       .profile-usertitle{:style => "text-align: center; margin-top: 20px;"}
         .profile-usertitle-name{:style => "color: #5a7391; font-size: 16px; font-weight: 600; margin-bottom: 7px"}
-          Marcus Doe
+          - if session[:box_id] == ENV['CRED_SPECIALIST']
+            Credentialing Specialist
+          - else
+            Marcus Doe
         .profile-usertitle-job{:style => " text-transform: uppercase; color: #5b9bd1; font-size: 12px; font-weight: 600; margin-bottom: 15px;"}
-          Customer
+          - if session[:medical_credentialing] == "on" and session[:box_id] != ENV['CRED_SPECIALIST']
+            Applicant
+          - elsif session[:box_id] != ENV['CRED_SPECIALIST']
+            Customer
+
       / END SIDEBAR USER TITLE
 
     / SIDEBAR MENU
@@ -32,18 +43,31 @@
               %i.glyphicon.glyphicon-ok
               Onboarding Tasks
               %span.badge
-                = get_task_status
+                = session[:task_status].nil? ? get_task_status : session[:task_status]
         - if session[:catalog] == 'on' or session[:catalog].nil?
-          %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+          %li{:class => "#{'active' if session[:current_page] == "catalog"}", :id => "sidewide"}
             %a{:href => "/catalog"}
               %i.glyphicon.glyphicon-picture
               Product Catalog
-        - if session[:salesforce] == 'on' or session[:salesforce].nil?
-          %li{:class => "#{'active' if session[:current_page] == "salesforce"}"}
-            %a{:href => "/salesforce"}
-              %i.glyphicon.glyphicon-transfer
-              Pending Loan Documents
-
+        -# UPLOAD AND SIGN TAB
+        -# - if session[:uploadsign] == 'on' or session[:uploadsign].nil?
+        -#   %li{:class => "#{'active' if session[:current_page] == "upload-sign"}", :id => "sidewide"}
+        -#     %a{:href => "/upload-sign"}
+        -#       %i.glyphicon.glyphicon-user
+        -#       Upload and Sign
+        - if session[:medical_credentialing] == 'on'
+          %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
+            %a{:href => "/medical-credentialing"}
+              %i.glyphicon.glyphicon-heart-empty
+              Medical Credentialing
+              - if session[:box_id] != ENV['CRED_SPECIALIST']
+                %span.badge
+                  = session[:med_task_status].nil? ? get_med_task_status : session[:med_task_status]
+        - if session[:loan_docs] == 'on'
+          %li{:class => "#{'active' if session[:current_page] == "loan_docs"}", :id => "sidewide"}
+            %a{:href => "/loan-documents"}
+              %i.glyphicon.glyphicon-folder-open{:style => "margin-right: 2px"}
+              Loan Documents
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag

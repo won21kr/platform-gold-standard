@@ -1,6 +1,7 @@
 class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  before_action :check_config
+  # before_action :check_config
+
 
   def show
 
@@ -19,22 +20,19 @@ class ConfigController < ApplicationController
       session[:resources] = 'on'
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
+
+      # NEW BETA FEATURES
+      session[:medical_credentialing] = "off"
+      session[:loan_docs] = "off"
+
     end
-    # ap session
 
     config_url
-
   end
 
   def post_config
 
     puts 'posting configuration page....'
-
-    # check if reset
-    if !params[:reset].nil?
-      session.clear
-    end
-
 
     # check if new branding parameters were saved
     if !params[:message].nil? and params[:message] != ""
@@ -49,6 +47,9 @@ class ConfigController < ApplicationController
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
+    # if !params[:catalog_file].nil? and params[:catalog_file] !=""
+    #   session[:catalog_file] = params[:catalog_file]
+    # end
 
     # check feature tab configuration
     if !params[:resources].nil?
@@ -66,75 +67,36 @@ class ConfigController < ApplicationController
     else
       session[:catalog] = 'off'
     end
+    if !params[:medical_credentialing].nil?
+      session[:medical_credentialing] = 'on'
+    else
+      session[:medical_credentialing] = 'off'
+    end
+    if !params[:loan_docs].nil?
+      session[:loan_docs] = 'on'
+    else
+      session[:loan_docs] = 'off'
+    end
+
 
     redirect_to config_path
   end
 
-
+  # clear session
   def reset_config
     session.clear
-    puts "session reset..."
-    ap session
     redirect_to config_path
   end
 
   private
 
-  def check_config
-    # check if query string exists
-    if(params != "")
-      insert_query(params)
-    end
+  # def set_gon
+  #   gon.push
+  #     puts "In GON............"
+  #     current_catalog_file = session[:catalog_file]
+  #     ap gon.current_catalog_file
+  #
+  # end
 
-  end
-
-  # construct configuration URL
-  def config_url
-    session[:config_url] = "#{ENV['ACTIVE_URL']}/"
-    session[:config_url] << "?message=#{session[:home_message]}"
-    session[:config_url] << "&logo=#{session[:logo]}"
-    if(!session[:navbar_color].nil? && session[:navbar_color] != "")
-      session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
-    end
-    session[:config_url] << "&vault=#{session[:vault]}"
-    session[:config_url] << "&resources=#{session[:resources]}"
-    session[:config_url] << "&onboarding=#{session[:onboarding]}"
-    session[:config_url] << "&catalog=#{session[:catalog]}"
-    session[:config_url] << "&background=#{session[:background]}"
-
-  end
-
-  # fetches config query from encoded URL and updates the config session variables
-  def insert_query(query)
-
-    puts "insert query..."
-    ap query
-
-    if query['message'] != "" and query['message'] != nil
-      session[:home_message] = query['message']
-    end
-    if query['logo'] != "" and query['logo'] != nil
-      session[:logo] = query['logo']
-    end
-    if query['back_color'] != "" and query['back_color'] != nil
-      session[:navbar_color] = '#' + query['back_color']
-    end
-    if query['vault'] != "" and query['vault'] != nil
-      session[:vault] = query['vault']
-    end
-    if query['resources'] != "" and query['resources'] != nil
-      session[:resources] = query['resources']
-    end
-    if query['onboarding'] != "" and query['onboarding'] != nil
-      session[:onboarding] = query['onboarding']
-    end
-    if query['catalog'] != "" and query['catalog'] != nil
-      session[:catalog] = query['catalog']
-    end
-    if query['background'] != "" and query['background'] != nil
-      session[:background] = query['background']
-    end
-    config_url
-  end
 
 end
