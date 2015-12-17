@@ -72,5 +72,7 @@ Rails.application.routes.draw do
   get '/config-reset' => "config#reset_config", :as => "reset_config"
   post '/config' => "config#post_config", :as => "save_config"
 
+  # salesforce shared vault
+  get "salesforce" => "salesforce#show", :as => 'salesforce'
 
 end
