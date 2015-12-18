@@ -12,7 +12,7 @@ class SalesforceController < SecuredController
     # @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
     #   client.folder_from_path('My Files')
     # end
-    @salesforceFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
+    @salesforceFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/salesforce_folder", :expires_in => 10.minutes) do
       client.folder_from_id('4557544342')
     end
     @salesforceFolder.name = "Pending Review"
