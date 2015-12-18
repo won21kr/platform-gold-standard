@@ -73,7 +73,7 @@
                     %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                       %span.glyphicon.glyphicon-eye-open
                     - if (@currentFolder == @salesforceFolder.id)
-                      -# %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
+                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
                         %span.glyphicon.glyphicon-share
                     - elsif (@currentFolder == @salesforceFolder.id)
                       %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
