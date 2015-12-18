@@ -8,6 +8,7 @@ class DashboardController < SecuredController
     client = user_client
     session[:current_page] = "vault"
 
+
     # get "My Files" and "Shared Files" folder objects
     @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
       client.folder_from_path('My Files')

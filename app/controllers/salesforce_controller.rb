@@ -6,32 +6,45 @@ class SalesforceController < SecuredController
 
     # get user client obj for Box API calls
     client = user_client
-    session[:current_page] = "vault"
+    session[:current_page] = "salesforce"
 
     # get "My Files" and "Shared Files" folder objects
-    @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
-      client.folder_from_path('My Files')
+    # @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+    #   client.folder_from_path('My Files')
+    # end
+    @salesforceFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
+      client.folder_from_id('4557544342')
     end
-    @sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
-      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
-    end
-    @sharedFolder.name = "Shared Files"
+    @salesforceFolder.name = "Pending Review"
 
     # set active folder ID, either "My Files" or "Shared Files" folder
     if(params[:id])
       @currentFolder = params[:id]
     else
-      @currentFolder = @myFolder.id
+      @currentFolder = '4557544342'
     end
     session[:current_folder] = @currentFolder
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    if(@currentFolder == @myFolder.id)
-      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    elsif(@currentFolder == @sharedFolder.id)
-      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
+    if(@currentFolder == @salesforceFolder.id)
+      @files = client.folder_items(@salesforceFolder, fields: [:name, :id, :created_at, :modified_at]).files
     end
 
+  end
+
+  def search_vault(name)
+
+
+    client = user_client
+
+    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      puts "miss"
+      client.folder_from_path("My Files")
+    end
+
+    results = client.search(name, content_types: :name, ancestor_folder_ids: vaultFolder.id)
+
+    results
   end
 
   # post to edit filename
@@ -49,7 +62,7 @@ class SalesforceController < SecuredController
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to salesforce_path
+    redirect_to salesforce_id_path(session[:current_folder])
   end
 
   # upload files to parameter specified folder ID
@@ -109,7 +122,7 @@ class SalesforceController < SecuredController
     client.delete_file(id)
     flash[:notice] = "File successfully deleted!"
 
-    redirect_to dashboard_id_path(session[:current_folder])
+    redirect_to salesforce_path(session[:current_folder])
   end
 
   # move file from personal vault to "Shared Files" folder
@@ -119,11 +132,11 @@ class SalesforceController < SecuredController
     client = user_client
 
     # get shared folder, then move file into shared folder
-    sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
-    client.move_file(id, sharedFolder)
+    salesforceFolder = client.folder_from_id('4557544342')
+    client.move_file(id, salesforceFolder)
     flash[:notice] = "File shared with company employee!"
 
-    redirect_to dashboard_id_path(sharedFolder.id)
+    redirect_to salesforce_path(salesforceFolder.id)
   end
 
   # move file from "Shared Files" folder to personal vault
@@ -131,20 +144,6 @@ class SalesforceController < SecuredController
 
     id = params[:id]
     client = user_client
-
-    # get my folder, then move file into my folder
-    myFolder = client.folder_from_path('My Files')
-    client.move_file(id, myFolder)
-    flash[:notice] = "File moved to private folder!"
-
-    redirect_to dashboard_id_path(myFolder.id)
-  end
-
-  private
-
-  # Get user client obj using App User ID
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end

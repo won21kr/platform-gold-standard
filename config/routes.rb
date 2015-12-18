@@ -74,5 +74,7 @@ Rails.application.routes.draw do
 
   # salesforce shared vault
   get "salesforce" => "salesforce#show", :as => 'salesforce'
+  get "/salesforce/:id" => "salesforce#show", :as => 'salesforce_id'
+
 
 end

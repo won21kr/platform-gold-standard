@@ -8,8 +8,9 @@ class HomeController < ApplicationController
   # Juihee = 254291677, juihee1@test.com
   # Matt Marque = 257524801, wolterskluwer@box.com
   # Sam Peters = 258215985,  speters+demo@box.com
+  # Credentialing Specialist = 260539217, cred-specialist@box.com
   DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], ENV['CRED_SPECIALIST'],
-                      '254291677', '257524801', '258215985']
+                      '254291677', '257524801', '258215985', '260539217']
 
 
   def reset_logins
@@ -24,7 +25,8 @@ class HomeController < ApplicationController
 
       unless DO_NOT_DELETE_IDS.include? box_user_id
         begin
-          box_admin.delete_user(box_user_id, notify: false, force: true)
+          deleted = box_admin.delete_user(box_user_id, notify: false, force: true)
+          puts "deleting user #{box_user_id}"
           Auth0API.client.delete_user(login["user_id"])
           num_deleted_logins += 1
         rescue
@@ -102,8 +104,9 @@ end
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
-    if query['background'] != "" and query['salesforce'] != nil
+    if query['salesforce'] != "" and query['salesforce'] != nil
       session[:salesforce] = query['salesforce']
+    end
     config_url
   end
 end
