@@ -2,6 +2,7 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
+
   def show
 
     puts "config page get..."
@@ -46,6 +47,9 @@ class ConfigController < ApplicationController
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
+    # if !params[:catalog_file].nil? and params[:catalog_file] !=""
+    #   session[:catalog_file] = params[:catalog_file]
+    # end
 
     # check feature tab configuration
     if !params[:resources].nil?
@@ -103,6 +107,14 @@ class ConfigController < ApplicationController
     session[:config_url] << "&background=#{session[:background]}"
 
   end
+
+  # def set_gon
+  #   gon.push
+  #     puts "In GON............"
+  #     current_catalog_file = session[:catalog_file]
+  #     ap gon.current_catalog_file
+  #
+  # end
 
 
 end

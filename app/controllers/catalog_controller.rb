@@ -1,4 +1,5 @@
 class CatalogController < SecuredController
+  before_action :set_gon
   # main catalog controller
 
   # HOME PAGE CODE - Commenting out due to design decision
@@ -34,17 +35,18 @@ def show
     client = user_client
     session[:current_page] = "catalog"
 
+
     @product_catalog = Rails.cache.fetch("/product_catalog_folder/#{ENV['PRODUCT_CATALOG_FOLDER']}", :expires_in => 15.minutes) do
       client.folder_from_id(ENV['PRODUCT_CATALOG_FOLDER'], fields: [:id, :name, :size])
     end
-    #
-    # @files = client.folder_items(@myFolder, fields: [:name, :id]).files
-    #
 
-    # @fileId = '41372508334'
-    # session[:fileId] = @fileId
-    #
-    # @file = client.file_from_id(@fileId)
+ end
+
+ def set_gon
+     puts "In GON Product Catalog controller............"
+     gon.current_catalog_file = session[:catalog_file]
+     ap gon.current_catalog_file
+
  end
 
   def thumbnail

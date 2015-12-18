@@ -1,12 +1,15 @@
 / back to previous page
+= Gon::Base.render_data({})
 %h5(style="margin-top: -5px; font-size: 110%;")
   = link_to '<< Back to Vault', dashboard_id_path(session[:current_folder])
+
 
 .container
   .col-md-12.col-sm-12.col-xs-12{:style => "padding: 1px", :class => "myvaulttable"}
     .page-header{:style => "margin-top: -30px; border-bottom: solid grey 1px"}
       %h1 Product Catalog
       %p Browse through our most recent product catalog
+
     %body.transition
       .viewer{:style=>"margin: 0px 15px 30px 15px; height: 550px; overflow: hidden; background: #f5f5f5; border:solid white 5px"}
       .controls{:style => "position: float; bottom: 60px; margin: 0 38%; width 300px; text-align: center;"}
@@ -16,21 +19,19 @@
         %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('spin')"} Spin
 :javascript
    var viewer,
-   url = 'https://view-api.box.com/1/sessions/738d5d665d8e487b95f3d61e388d9f2b/assets';
+    url = 'https://view-api.box.com/1/sessions/738d5d665d8e487b95f3d61e388d9f2b/assets';
 
-
+    console.log(gon.current_catalog_file);
            function setMode(mode) {
                console.log(mode);
                $('.controls button').removeClass('selected');
 
                $('.controls button.' + mode).addClass('selected');
-               console.log('JS');
 
                switch (mode) {
                    case 'pop':
                        $('body').removeClass().addClass('crocodoc-presentation-pop');
                        viewer.setLayout(Crocodoc.LAYOUT_PRESENTATION);
-                       console.log(Crocodoc.LAYOUT_PRESENTATION);
                        viewer.zoom(Crocodoc.ZOOM_AUTO);
                        break;
 
@@ -39,7 +40,6 @@
                        viewer.zoom(Crocodoc.ZOOM_AUTO);
                        viewer.zoom(Crocodoc.ZOOM_OUT);
                        $('body').removeClass().addClass('crocodoc-presentation-carousel');
-                       console.log('crocodoc-carousel');
                        break;
 
                    case 'slide':
@@ -57,8 +57,10 @@
            }
 
            viewer = Crocodoc.createViewer('.viewer', {
+
                url: url,
-               layout: Crocodoc.LAYOUT_PRESENTATION
+               layout: Crocodoc.LAYOUT_PRESENTATION,
+
            });
            viewer.load();
 
