@@ -23,18 +23,19 @@
 .home
 .container
   = render 'layouts/sidenav'
-  .col-md-9.col-sm-8.col-xs-9.pull-right
+  .col-md-9.pull-right
     .flash
       = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+  .col-md-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
     .panel.panel-default{:style => "margin-bottom: 0px"}
       .panel-heading
         .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
-        %h2 My Vault
+          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
+            Upload
+        %h4 My Vault
         .sub-title
           = "Personal & shared files"
-      %table.table
+      %table.table.striped
         %thead
           %tr
             %th File
@@ -89,6 +90,9 @@
             No files currently exist. Upload by clicking the "Upload" button above.
 
 :javascript
+
+  $(".button-collapse").sideNav();
+
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
