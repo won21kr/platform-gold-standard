@@ -68,6 +68,11 @@
             %a{:href => "/loan-documents"}
               %i.glyphicon.glyphicon-folder-open{:style => "margin-right: 2px"}
               Loan Documents
+        - if session[:salesforce] == 'on'
+          %li{:class => "#{'active' if session[:current_page] == "salesforce"}"}
+            %a{:href => "/salesforce"}
+              %i.glyphicon.glyphicon-transfer
+              Pending Loan Documents
         %li
           %a{:href => "#", :id => "sidewide"}
             %i.glyphicon.glyphicon-flag

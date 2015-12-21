@@ -106,6 +106,9 @@ class ApplicationController < ActionController::Base
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
+    if query['salesforce'] != "" and query['salesforce'] != nil
+      session[:salesforce] = query['salesforce']
+    end
   end
 
 end
