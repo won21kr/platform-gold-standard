@@ -10,17 +10,25 @@ class UploadsignController < SecuredController
     client = user_client
     session[:current_page] = "upload-sign"
 
+    # get signed and pending signature folders, create them if they dont exist
     begin
-      @signFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}", :expires_in => 10.minutes) do
+      @pendingFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}/pending", :expires_in => 10.minutes) do
         puts "miss"
-        client.folder_from_path("Upload & Sign")
+        client.folder_from_path("Upload\ &\ Sign/Pending\ Signature")
+      end
+      @signedFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}/signed", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("Upload\ &\ Sign/Signed")
       end
     rescue
-      @signFolder = client.create_folder("Upload & Sign", Boxr::ROOT)
+      signFolder = client.create_folder("Upload & Sign", Boxr::ROOT)
+      @pendingFolder = client.create_folder("Pending Signature", signFolder)
+      @signedFolder = client.create_folder("Signed", signFolder)
     end
 
-    ap @signFolder
-    @files = client.folder_items(@signFolder)
+    # get signed/pending files
+    @pendingFiles = client.folder_items(@pendingFolder, fields: [:name, :id])
+    @signedFiles = client.folder_items(@signedFolder, fields: [:name, :id])
 
   end
 
@@ -33,27 +41,29 @@ class UploadsignController < SecuredController
     #http://www.dropzonejs.com/
     uploaded_file = params[:file]
     folder = params[:folder_id]
-    ap folder
+    ext = uploaded_file.original_filename.split('.').last
 
-    meta = {"Signature Status" => "Pending"}
+    if (ext == "pdf")
+      temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
+      begin
+        temp_file.write(uploaded_file.read)
+        temp_file.close
 
-    temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
-    begin
-      temp_file.write(uploaded_file.read)
-      temp_file.close
+        box_user = Box.user_client(session[:box_id])
 
-      box_user = Box.user_client(session[:box_id])
+        box_file = box_user.upload_file(temp_file.path, folder)
+        # box_user.create_metadata(box_file, meta)
 
-      box_file = box_user.upload_file(temp_file.path, folder)
-      box_user.create_metadata(box_file, meta)
+      rescue => ex
+        puts ex.message
+      ensure
+        File.delete(temp_file)
+      end
 
-    rescue => ex
-      puts ex.message
-    ensure
-      File.delete(temp_file)
+      flash[:notice] = "Successfully Uploaded!"
+    else
+      flash[:error] = "Error: File not uploaded. Must upload a PDF."
     end
-
-    flash[:notice] = "Successfully Uploaded!"
     respond_to do |format|
       format.json{ render :json => {} }
     end
@@ -73,14 +83,35 @@ class UploadsignController < SecuredController
 
 
   # delete file
-  def delete_file
+  def reset_uploadnsign
 
-    id = params[:id]
     client = user_client
-    client.delete_file(id)
-    flash[:notice] = "File successfully deleted!"
+    begin
+      pendingFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}/pending", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("Upload\ &\ Sign/Pending\ Signature")
+      end
+      signedFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}/signed", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("Upload\ &\ Sign/Signed")
+      end
 
-    redirect_to dashboard_id_path(session[:current_folder])
+      # get signed/pending files, and delete all
+      pendingFiles = client.folder_items(pendingFolder, fields: [:id])
+      pendingFiles.each do |f|
+        client.delete_file(f)
+      end
+
+      signedFiles = client.folder_items(signedFolder, fields: [:id])
+      signedFiles.each do |f|
+        client.delete_file(f)
+      end
+
+    rescue
+      puts "Error: Can't delete folder items"
+    end
+
+    redirect_to uploadsign_path
   end
 
 
@@ -88,27 +119,26 @@ class UploadsignController < SecuredController
     # fetch the onboarding doc file from whichever folder it current lives in
     # also, update the current workflow status state
     id = params[:id]
-    @onboardDoc = get_onboarding_doc
 
   # perform actions based on current workflow status state
-    envelope_response = create_docusign_envelope(@onboardDoc.id)
+    envelope_response = create_docusign_envelope(id)
 
     # set up docusign view, fetch url
     recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
       envelope_id: envelope_response["envelopeId"],
       name: "Marcus Doe",
       email: "mmitchell+standard@box.com",
-      return_url: uploadsign_docusign_response_url(envelope_response["envelopeId"])
+      return_url: uploadnsign_docusign_response_url(envelope_response["envelopeId"])
     )
 
     @url = recipient_view["url"]
   end
 
-  def uploadsign_docusign_response
+  def uploadnsign_docusign_response
 
-    ap "in docusign response"
     utility = DocusignRest::Utility.new
     temp_file = Tempfile.open(["uploadsign_docusign_response_",".pdf"], Rails.root.join('tmp'), :encoding => 'ascii-8bit')
+    box_user = user_client
 
       begin
         DOCUSIGN_CLIENT.get_document_from_envelope(
@@ -119,34 +149,24 @@ class UploadsignController < SecuredController
 
         box_info = session[params["envelope_id"]]
 
-        box_user = user_client
-        path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/"
-        signed_folder = box_user.folder_from_path(path)
+        signed_folder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}/signed", :expires_in => 10.minutes) do
+          puts "miss"
+          client.folder_from_path("Upload\ &\ Sign/Signed")
+        end
         file = box_user.upload_file(temp_file.path, signed_folder)
-        #Box.create_in_view_api(file)
+        box_user.update_file(file, name: box_info[:box_doc_name])
         box_user.delete_file(box_info[:box_doc_id])
-        box_user.update_file(file, name: "Signed-"+ box_info[:box_doc_name])
-        #box_user.update_metadata(file, [{'op' => 'add', 'path' => '/docusign_envelope_id', 'value' => params["envelope_id"]}])
-        # meta = box_user.metadata(box_info[:box_doc_id])
-        # ap meta
-
-
-        # box_user.create_metadata(file, meta)
-
       ensure
         temp_file.delete
       end
 
-      session[:progress] = 3
-      puts session[:progress]
       flash[:notice] = "Thanks! Document successfully signed."
-     render :text => utility.breakout_path(start_docusign_path), content_type: 'text/html'
+      render :text => utility.breakout_path(uploadsign_path), content_type: 'text/html'
   end
 
 
   def create_docusign_envelope(box_doc_id)
 
-    ap "in create docusign envelope"
     box_user = user_client
 
     box_file = box_user.file_from_id(box_doc_id)
@@ -172,7 +192,8 @@ class UploadsignController < SecuredController
             name: 'Marcus Doe',
             email: 'mmitchell+standard@box.com',
             role_name: 'Client',
-            sign_here_tabs: [{anchor_string: "Signature:", anchor_x_offset: '100', anchor_y_offset: '0'}]
+            signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
+            # sign_here_tabs: [{anchor_string: "Signature:", anchor_x_offset: '100', anchor_y_offset: '0'}]
           }
         ],
         files: [

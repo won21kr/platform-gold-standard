@@ -50,7 +50,7 @@
               %i.glyphicon.glyphicon-picture
               Product Catalog
         -# UPLOAD AND SIGN TAB
-        - if session[:uploadsign] == 'on'
+        - if session[:upload_sign] == 'on'
           %li{:class => "#{'active' if session[:current_page] == "upload-sign"}", :id => "sidewide"}
             %a{:href => "/upload-sign"}
               %i.glyphicon.glyphicon-pencil

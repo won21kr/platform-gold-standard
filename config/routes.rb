@@ -40,9 +40,10 @@ Rails.application.routes.draw do
   # Upload and Sign
   get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
   post "/upload-sign/:folder_id" => "uploadsign#sign_upload", :as => "sign_upload"
-  # get "/docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
-  # get "/docusign" => "uploadsign#start_docusign", :as => "start_docusign"
-  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadsign_docusign_response", :as => "uploadsign_docusign_response"
+  get "/upload-sign-docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
+  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadnsign_docusign_response", :as => "uploadnsign_docusign_response"
+  get "/reset-upload-sign" => "uploadsign#reset_uploadnsign", :as => "reset_uploadnsign"
+
 
   # medical credentialing
   get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"

@@ -21,9 +21,10 @@ class ConfigController < ApplicationController
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
 
-      # NEW BETA FEATURES
+      # NEW FEATURES
       session[:medical_credentialing] = "off"
       session[:loan_docs] = "off"
+      session[:upload_sign] = "off"
 
     end
 
@@ -33,7 +34,7 @@ class ConfigController < ApplicationController
   def post_config
 
     puts 'posting configuration page....'
-
+    ap params
     # check if new branding parameters were saved
     if !params[:message].nil? and params[:message] != ""
       session[:home_message] = params[:message]
@@ -77,7 +78,13 @@ class ConfigController < ApplicationController
     else
       session[:loan_docs] = 'off'
     end
+    if !params[:uploadsign].nil?
+      session[:upload_sign] = 'on'
+    else
+      session[:upload_sign] = 'off'
+    end
 
+    ap session[:upload_sign]
 
     redirect_to config_path
   end
@@ -104,6 +111,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&catalog=#{session[:catalog]}"
     session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
     session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
+    session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&background=#{session[:background]}"
 
   end
