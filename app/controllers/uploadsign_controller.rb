@@ -2,63 +2,40 @@ class UploadsignController < SecuredController
 
   skip_before_filter :verify_authenticity_token
   DOCUSIGN_CLIENT = DocusignRest::Client.new
-  # main controller for customer vault
+
+  # main controller for upload and sign tab
   def show
 
     # get user client obj for Box API calls
     client = user_client
     session[:current_page] = "upload-sign"
 
-    # get "My Files" and "Shared Files" folder objects
-    @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
-      client.folder_from_path('My Files')
-    end
-    @sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
-      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
-    end
-    @sharedFolder.name = "Shared Files"
-
-    # set active folder ID, either "My Files" or "Shared Files" folder
-    if(params[:id])
-      @currentFolder = params[:id]
-    else
-      @currentFolder = @myFolder.id
-    end
-    session[:current_folder] = @currentFolder
-
-    # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    if(@currentFolder == @myFolder.id)
-      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    elsif(@currentFolder == @sharedFolder.id)
-      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    end
-#add ds
-  end
-
-  # post to edit filename
-  def edit_filename
-
-    client = user_client
-
-    file = client.file_from_id(params[:fileId])
-    newName = params[:fileName] + '.' + params[:fileExt]
-
     begin
-      client.update_file(file, name: newName)
-      flash[:notice] = "File name changed to \"#{params[:fileName]}\""
+      @signFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("Upload & Sign")
+      end
     rescue
-      flash[:error] = "Error: Could not change file name"
+      @signFolder = client.create_folder("Upload & Sign", Boxr::ROOT)
     end
 
-    redirect_to dashboard_path
+    ap @signFolder
+    @files = client.folder_items(@signFolder)
+
   end
 
   # upload files to parameter specified folder ID
-  def upload
+  def sign_upload
+
+
+    puts "Uploading to sign doc"
 
     #http://www.dropzonejs.com/
     uploaded_file = params[:file]
     folder = params[:folder_id]
+    ap folder
+
+    meta = {"Signature Status" => "Pending"}
 
     temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
     begin
@@ -68,7 +45,7 @@ class UploadsignController < SecuredController
       box_user = Box.user_client(session[:box_id])
 
       box_file = box_user.upload_file(temp_file.path, folder)
-      #box_user.create_metadata(box_file, session[:meta])
+      box_user.create_metadata(box_file, meta)
 
     rescue => ex
       puts ex.message
@@ -86,6 +63,7 @@ class UploadsignController < SecuredController
   def thumbnail
 
     image = Rails.cache.fetch("/image_thumbnail/#{params[:id]}", :expires_in => 10.minutes) do
+
       puts "miss!"
       user_client.thumbnail(params[:id], min_height: 256, min_width: 256)
     end
@@ -93,14 +71,6 @@ class UploadsignController < SecuredController
     send_data image, :type => 'image/png', :disposition => 'inline'
   end
 
-  # download file from file ID
-  def download
-
-    download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
-      user_client.download_url(params[:id])
-    end
-    redirect_to download_url
-  end
 
   # delete file
   def delete_file
@@ -113,33 +83,6 @@ class UploadsignController < SecuredController
     redirect_to dashboard_id_path(session[:current_folder])
   end
 
-  # move file from personal vault to "Shared Files" folder
-  def share_file
-
-    id = params[:id]
-    client = user_client
-
-    # get shared folder, then move file into shared folder
-    sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
-    client.move_file(id, sharedFolder)
-    flash[:notice] = "File shared with company employee!"
-
-    redirect_to dashboard_id_path(sharedFolder.id)
-  end
-
-  # move file from "Shared Files" folder to personal vault
-  def unshare_file
-
-    id = params[:id]
-    client = user_client
-
-    # get my folder, then move file into my folder
-    myFolder = client.folder_from_path('My Files')
-    client.move_file(id, myFolder)
-    flash[:notice] = "File moved to private folder!"
-
-    redirect_to dashboard_id_path(myFolder.id)
-  end
 
   def start_docusign
     # fetch the onboarding doc file from whichever folder it current lives in
@@ -147,26 +90,18 @@ class UploadsignController < SecuredController
     id = params[:id]
     @onboardDoc = get_onboarding_doc
 
-    # perform actions based on current workflow status state
-      envelope_response = create_docusign_envelope(@onboardDoc.id)
+  # perform actions based on current workflow status state
+    envelope_response = create_docusign_envelope(@onboardDoc.id)
 
-      # set up docusign view, fetch url
-      recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
-        envelope_id: envelope_response["envelopeId"],
-        name: "Marcus Doe",
-        email: "mmitchell+standard@box.com",
-        return_url: uploadsign_docusign_response_url(envelope_response["envelopeId"])
-      )
-      ap recipient_view
+    # set up docusign view, fetch url
+    recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
+      envelope_id: envelope_response["envelopeId"],
+      name: "Marcus Doe",
+      email: "mmitchell+standard@box.com",
+      return_url: uploadsign_docusign_response_url(envelope_response["envelopeId"])
+    )
 
-      @url = recipient_view["url"]
-      session[:progress] = 2
-    if(session[:progress] == 3)
-      set_preview_url(@onboardDoc.id)
-      session[:progress] = 3
-      @message = "Onboarding process complete!"
-    end
-
+    @url = recipient_view["url"]
   end
 
   def uploadsign_docusign_response
@@ -256,33 +191,8 @@ class UploadsignController < SecuredController
       temp_file.delete
     end
 
-    ap envelope
     ap "Envelope Successfully Created"
     envelope
-  end
-
-  # determine what the current workflow status
-  # return the onboarding doc file obj
-  def get_onboarding_doc
-    # either "toFill", "pendingApproval", "approved", "pendingSig", "signed"
-    @status = nil
-    client = user_client
-    ap " In get onboarding document"
-    # get workflow folder paths
-    path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/"
-    sharedFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
-
-    if ((file = client.folder_items(sharedFolder, fields: [:id]).files).size > 0)
-      ap "File Exists"
-      ap file
-    end
-
-    if(!file.nil?)
-      file.first
-    else
-      nil
-    end
-
   end
 
 

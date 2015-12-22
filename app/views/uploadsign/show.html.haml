@@ -16,9 +16,17 @@
         .drop-area
           .row
             .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
+              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: sign_upload_url(@signFolder.id))  {}
       .modal-footer
         %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
+.modal.fade#viewModal{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
+  .modal-dialog{:style => "height: 800px;	width: 960px;	background-color: white"}
+    .modal-body(style="overflow: hidden; height: 730px;	width: 960px")
+      %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+    .modal-footer
+      %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal", :style => "font-size: 100%"}
+        Close
 
 .home
 .container
@@ -31,97 +39,126 @@
       .panel-heading
         .pull-right.h4
           %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
-        %h2 My Vault for Uploads
+        %h2 Upload & Sign
         .sub-title
-          = "Personal & shared files"
-      %table.table
-        %thead
-          %tr
-            %th File
-            %th Name
-            %th.hidden-xs.hidden-sm Date Modified
-            %th Actions
-          %tbody
-            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @myFolder.name, uploadsign_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @sharedFolder.name, uploadsign_id_path(@sharedFolder.id)
-            / list file contents
-            - @files.each do |f|
+          = "Upload and e-sign necessary documents"
+      %ul.nav.nav-tabs{:style => "margin-top: 30px; margin-left: 5px", :role => "tablist"}
+        %li.active{:role => "presentation"}
+          %a{:href => "#pending"} Pending Signature
+        %li{:role => "presentation"}
+          %a{:href => "#signed"} Signed
+
+      .tab-content{:style => "margin-left: 5px"}
+        #pending.tab-pane.fade.in.active
+          %table.table{:style => "margin-top: 10px"}
+            %thead
               %tr
-                %td
-                  = link_to view_doc_path(f.id) do
-                    = image_tag(thumbnail_url(f.id), width: '30px')
-                %td
-                  %span{:style => "inline"}
-                    = f.name
-                    - puts f.name
-                    = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
-                    #popover-content.hide
-                      %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
-                        %input#name.form-control{:type => "text", :name => "fileName"}
-                        %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-                        %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
-                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+                %th File
+                %th Name
+                %th Actions
+              %tbody
+                / list file contents
+                - @files.each do |f|
+                  %tr
+                    %td
+                      = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); " do
+                        = image_tag(thumbnail_url(f.id), :height => "35px")
+                      -# = link_to view_doc_path(f.id) do
+                      -#   = image_tag(thumbnail_url(f.id), width: '30px')
+                    %td
+                      %span{:style => "inline"}
+                        = f.name
+                    %td
+                      / file action options
+                      .btn-group
+                        %a.btn.btn-default.btn-md{:onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ",'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+                          %span.glyphicon.glyphicon-eye-open
 
-                %td.hidden-xs.hidden-sm
-                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
-                %td
-                  / file action options
-                  .btn-group
-                    %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                      %span.glyphicon.glyphicon-eye-open
-                    - if (@currentFolder == @myFolder.id)
-                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
-                        %span.glyphicon.glyphicon-share
-                    - elsif (@currentFolder == @sharedFolder.id)
-                      %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
-                        %span.glyphicon.glyphicon-share
-                    %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                      %span.glyphicon.glyphicon-cloud-download
-                    %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
-                      %span.glyphicon.glyphicon-trash
-                    %a.btn.btn-default.btn-md{href: start_docusign_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Docusign'}
-                      %span.glyphicon.glyphicon-check
-      - if @files.size == 0
-        .col-md-12
-          .h4
-            No files currently exist. Upload by clicking the "Upload" button above.
 
-      - if (session[:progress] == 2)
-        .col-md-12.col-sm-12
-          %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
-      - if (session[:progress] == 3)
-        .col-md-12.col-sm-12
-          %h3
-            Completed Onboarding Form:
-          %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+        #signed.tab-pane.fade
+          %p
+            signed
+
+      -# %table.table
+      -#   %thead
+      -#     %tr
+      -#       %th File
+      -#       %th Name
+      -#       %th.hidden-xs.hidden-sm Date Modified
+      -#       %th Actions
+      -#     %tbody
+      -#       %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
+      -#         %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
+      -#           = link_to @myFolder.name, uploadsign_id_path(@myFolder.id)
+      -#         %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
+      -#           = link_to @sharedFolder.name, uploadsign_id_path(@sharedFolder.id)
+      -#       / list file contents
+      -#       - @files.each do |f|
+      -#         %tr
+      -#           %td
+      -#             = link_to view_doc_path(f.id) do
+      -#               = image_tag(thumbnail_url(f.id), width: '30px')
+      -#           %td
+      -#             %span{:style => "inline"}
+      -#               = f.name
+      -#               - puts f.name
+      -#               = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+      -#                 %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
+      -#               #popover-content.hide
+      -#                 %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
+      -#                   %input#name.form-control{:type => "text", :name => "fileName"}
+      -#                   %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+      -#                   %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+      -#                   %button.btn.btn-primary.btn-md{:type => "submit"} Save
+      -#                   %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+      -#
+      -#           %td.hidden-xs.hidden-sm
+      -#             = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+      -#           %td
+      -#             / file action options
+      -#             .btn-group
+      -#               %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+      -#                 %span.glyphicon.glyphicon-eye-open
+      -#               - if (@currentFolder == @myFolder.id)
+      -#                 %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
+      -#                   %span.glyphicon.glyphicon-share
+      -#               - elsif (@currentFolder == @sharedFolder.id)
+      -#                 %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
+      -#                   %span.glyphicon.glyphicon-share
+      -#               %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+      -#                 %span.glyphicon.glyphicon-cloud-download
+      -#               %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
+      -#                 %span.glyphicon.glyphicon-trash
+      -#               %a.btn.btn-default.btn-md{href: start_docusign_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Docusign'}
+      -#                 %span.glyphicon.glyphicon-check
+      -# - if @files.size == 0
+      -#   .col-md-12
+      -#     .h4
+      -#       No files currently exist. Upload by clicking the "Upload" button above.
+      -#
+      -# - if (session[:progress] == 2)
+      -#   .col-md-12.col-sm-12
+      -#     %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+      -# - if (session[:progress] == 3)
+      -#   .col-md-12.col-sm-12
+      -#     %h3
+      -#       Completed Onboarding Form:
+      -#     %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
 
 :javascript
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
-        setTimeout(function() {location.reload();}, 2000);
+        setTimeout(function() {location.reload();}, 1000);
       });
     }
   };
 
-  $(document).ready(function() {
-
-    $('[data-toggle=popover]').popover({
-        html: 'true',
-    placement: 'right',
-    title: "Edit File Name",
-    content : function() {
-        return $('#popover-content').html();
-    }
-  })
-
-
-  })
+  $(document).ready(function(){
+    $(".nav-tabs a").click(function(){
+        $(this).tab('show');
+    });
+  });
 
 
 :javascript
