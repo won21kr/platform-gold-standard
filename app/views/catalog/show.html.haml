@@ -30,13 +30,13 @@
     url = 'https://view-api.box.com/1/sessions/d39d8242ffa5496c9b8295bac4213f73/assets';
   }
 
+
     console.log(gon.current_catalog_file);
            function setMode(mode) {
                console.log(mode);
                $('.controls button').removeClass('selected');
 
                $('.controls button.' + mode).addClass('selected');
-
 
                switch (mode) {
                    case 'pop':
@@ -50,7 +50,6 @@
                        viewer.zoom(Crocodoc.ZOOM_AUTO);
                        viewer.zoom(Crocodoc.ZOOM_OUT);
                        $('body').removeClass().addClass('crocodoc-presentation-carousel');
-
                        break;
 
                    case 'slide':

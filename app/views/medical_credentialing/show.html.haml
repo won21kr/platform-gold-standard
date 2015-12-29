@@ -1,0 +1,46 @@
+.home
+  = render 'layouts/sidenav'
+.container
+  .col-md-9.col-sm-9.pull-right
+    .flash
+      = render partial: "shared/flash_messages", flash: flash
+  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
+    .page-header{:style => "margin-top: 0px"}
+      %h1 Medical Credentialing Application
+      %p Please complete the medical credentialing process
+    .col-md-12.col-sm-12
+      .well.well-md
+        .progress
+          .progress-bar.progress-bar-info.progress-bar-striped{:role => "progressbar", :style => "width:25%"}
+            = session[:progress] == 0 ? "Step 1" : ""
+          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 1}",
+                                          :role => "progressbar", :style => "width:25%"}
+            = session[:progress] == 1 ? "Step 2" : ""
+          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 2}",
+                                          :role => "progressbar", :style => "width:25%"}
+            = session[:progress] == 2 ? "Step 3" : ""
+          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 3}",
+                                          :role => "progressbar", :style => "width:25%"}
+        .h4
+          = @message
+    - if (@status == "toFill")
+      = render 'medical_form'
+    - elsif (@status == "toUpload")
+      = render 'upload_medical'
+    - elsif (@status == "pendingApproval")
+      = render 'medical_pending'
+    - elsif (session[:progress] == 3)
+      = render 'medical_approved'
+
+.footer{:style=>"text-align: right; font-size: 10px;"}
+  = link_to "reset", reset_medical_flow_path
+
+
+:javascript
+  Dropzone.options.myDropzone = {
+    init: function() {
+      this.on("queuecomplete", function(file) {
+        // setTimeout(function() {location.reload();}, 2000);
+      });
+    }
+  };

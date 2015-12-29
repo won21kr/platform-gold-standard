@@ -16,14 +16,16 @@
     .col-md-12.col-sm-12
       .well.well-md
         .progress
-          .progress-bar.progress-bar-info.progress-bar-striped{:role => "progressbar", :style => "width:33.3%"}
-            Step 1
+          .progress-bar.progress-bar-info.progress-bar-striped{:role => "progressbar", :style => "width:25%"}
+            = session[:progress] == 0 ? "Step 1" : ""
           .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 1}",
-                                          :role => "progressbar", :style => "width:33.3%"}
-            Step 2
+                                          :role => "progressbar", :style => "width:25%"}
+            = session[:progress] == 1 ? "Step 2" : ""
           .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 2}",
-                                          :role => "progressbar", :style => "width:33.3%"}
-            Step 3
+                                          :role => "progressbar", :style => "width:25%"}
+            = session[:progress] == 2 ? "Step 3" : ""
+          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 3}",
+                                          :role => "progressbar", :style => "width:25%"}
         .h4
           = @message
     - if (session[:progress] == 0)
@@ -66,4 +68,4 @@
         %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
 
 .footer{:style=>"text-align: right; font-size: 10px;"}
-  = link_to "Reset Workflow", reset_workflow_path
+  = link_to "reset", reset_workflow_path

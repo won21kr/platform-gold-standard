@@ -56,7 +56,6 @@
                 %td
                   %span{:style => "inline"}
                     = f.name
-                    - puts f.name
                     = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
                       %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
                     #popover-content.hide
@@ -93,7 +92,7 @@
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
-        setTimeout(function() {location.reload();}, 2000);
+        setTimeout(function() {location.reload();}, 1000);
       });
     }
   };
