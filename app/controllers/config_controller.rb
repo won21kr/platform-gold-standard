@@ -111,9 +111,4 @@ class ConfigController < ApplicationController
 
   end
 
-
-  # fetches config query from encoded URL and updates the config session variables
-  # for the Use Case of sending over a pre-populated config URL without having created a session
-
-
 end
