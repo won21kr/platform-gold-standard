@@ -53,38 +53,12 @@ class ConfigController < ApplicationController
     # end
 
     # check feature tab configuration
-    if !params[:resources].nil?
-      session[:resources] = 'on'
-    else
-      session[:resources] = 'off'
-    end
-    if !params[:onboarding].nil?
-      session[:onboarding] = 'on'
-    else
-      session[:onboarding] = 'off'
-    end
-    if !params[:catalog].nil?
-      session[:catalog] = 'on'
-    else
-      session[:catalog] = 'off'
-    end
-    if !params[:medical_credentialing].nil?
-      session[:medical_credentialing] = 'on'
-    else
-      session[:medical_credentialing] = 'off'
-    end
-    if !params[:loan_docs].nil?
-      session[:loan_docs] = 'on'
-    else
-      session[:loan_docs] = 'off'
-    end
-    if !params[:uploadsign].nil?
-      session[:upload_sign] = 'on'
-    else
-      session[:upload_sign] = 'off'
-    end
-
-    ap session[:upload_sign]
+    session[:resources] = !params[:resources].nil? ? 'on' : 'off'
+    session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
+    session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
+    session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
+    session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
+    session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end
