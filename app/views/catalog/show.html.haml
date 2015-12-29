@@ -19,8 +19,17 @@
         %button.book{:style=>"background: #fafafa; border: 10;", :onclick => "setMode('spin')"} Spin
 :javascript
    var viewer,
+   url = 'https://view-api.box.com/1/sessions/d39d8242ffa5496c9b8295bac4213f73/assets';
+   if (gon.current_catalog_file == 'Financial Services'){
+    url = 'https://view-api.box.com/1/sessions/d83d29ba8623459d85deb89409582032/assets';
+    }
+  else if (gon.current_catalog_file == 'Healthcare'){
     url = 'https://view-api.box.com/1/sessions/4b569cfa8e324401986b8f51e78de5e5/assets';
-    
+  }
+  else if (gon.current_catalog_file == "Retail" || gon.current_catalog_file == ""){
+    url = 'https://view-api.box.com/1/sessions/d39d8242ffa5496c9b8295bac4213f73/assets';
+  }
+
     console.log(gon.current_catalog_file);
            function setMode(mode) {
                console.log(mode);
@@ -78,5 +87,5 @@
                    ev.preventDefault();
                });
 
-               setMode('carousel');
+               setMode('pop');
            });

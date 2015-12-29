@@ -151,9 +151,10 @@ class ConfigController < ApplicationController
 
   def set_gon
     gon.push
-      puts "In GON............"
+
       current_catalog_file = session[:catalog_file]
       ap gon.current_catalog_file
+      puts "In GON............"
 
   end
 
