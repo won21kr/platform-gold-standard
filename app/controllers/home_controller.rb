@@ -49,12 +49,4 @@ end
 
   private
 
-  def check_config
-    # check if query string exists
-    if(params != "")
-      insert_query(params)
-    end
-
-  end
-
 end

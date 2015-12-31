@@ -1,9 +1,7 @@
 
 :css
-
-  .popover {
+  .popover
     max-width: 330px
-  }
 
 #myModal.modal.fade{:role => "dialog"}
   .modal-dialog.modal-md
@@ -23,19 +21,18 @@
 .home
 .container
   = render 'layouts/sidenav'
-  .col-md-9.pull-right
+  .col-md-9.col-sm-8.col-xs-9.pull-right
     .flash
       = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
     .panel.panel-default{:style => "margin-bottom: 0px"}
       .panel-heading
         .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
-            Upload
-        %h2 My Vault
+          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
+        %h2 Pending Loan Documents
         .sub-title
-          = "Personal & shared files"
-      %table.table.striped
+          = "Shared files for the loan approval process"
+      %table.table
         %thead
           %tr
             %th File
@@ -44,10 +41,10 @@
             %th Actions
           %tbody
             %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
+              -# %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
+              -#   = link_to @myFolder.name, salesforce_id_path(@myFolder.id)
+              %li{:class => "#{'active' if '1' == '1'}", :id => "myvaultbtns"}
+                = link_to @salesforceFolder.name, salesforce_id_path(@salesforceFolder.id)
             / list file contents
             - @files.each do |f|
               %tr
@@ -57,6 +54,7 @@
                 %td
                   %span{:style => "inline"}
                     = f.name
+                    - puts f.name
                     = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
                       %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
                     #popover-content.hide
@@ -74,10 +72,10 @@
                   .btn-group
                     %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                       %span.glyphicon.glyphicon-eye-open
-                    - if (@currentFolder == @myFolder.id)
+                    - if (@currentFolder == @salesforceFolder.id)
                       %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
                         %span.glyphicon.glyphicon-share
-                    - elsif (@currentFolder == @sharedFolder.id)
+                    - elsif (@currentFolder == @salesforceFolder.id)
                       %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
                         %span.glyphicon.glyphicon-share
                     %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
@@ -90,11 +88,10 @@
             No files currently exist. Upload by clicking the "Upload" button above.
 
 :javascript
-
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
-        setTimeout(function() {location.reload();}, 1000);
+        setTimeout(function() {location.reload();}, 2000);
       });
     }
   };

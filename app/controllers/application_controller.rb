@@ -108,6 +108,11 @@ class ApplicationController < ActionController::Base
     end
     if query['catalog_file'] != "" and query['catalog_file'] != nil
       session[:catalog_file] = query['catalog_file']
+    if query['upload_sign'] != "" and query['upload_sign'] != nil
+      session[:upload_sign] = query['upload_sign']
+    end
+    if query['salesforce'] != "" and query['salesforce'] != nil
+      session[:salesforce] = query['salesforce']
     end
   end
 

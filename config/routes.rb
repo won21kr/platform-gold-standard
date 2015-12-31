@@ -37,12 +37,13 @@ Rails.application.routes.draw do
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
   get "/catalog" => "catalog#show", :as => "catalog_id"
 
-  # upload and sign
+  # Upload and Sign
   get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
-  get "/upload-sign/:id" => "uploadsign#show", :as => "uploadsign_id"
-  get "/docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
-  get "/docusign" => "uploadsign#start_docusign", :as => "start_docusign"
-  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadsign_docusign_response", :as => "uploadsign_docusign_response"
+  post "/upload-sign/:folder_id" => "uploadsign#sign_upload", :as => "sign_upload"
+  get "/upload-sign-docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
+  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadnsign_docusign_response", :as => "uploadnsign_docusign_response"
+  get "/reset-upload-sign" => "uploadsign#reset_uploadnsign", :as => "reset_uploadnsign"
+
 
   # medical credentialing
   get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"
@@ -71,6 +72,10 @@ Rails.application.routes.draw do
   get '/config' => "config#show", :as => 'config'
   get '/config-reset' => "config#reset_config", :as => "reset_config"
   post '/config' => "config#post_config", :as => "save_config"
+
+  # salesforce shared vault
+  get "salesforce" => "salesforce#show", :as => 'salesforce'
+  get "/salesforce/:id" => "salesforce#show", :as => 'salesforce_id'
 
 
 end

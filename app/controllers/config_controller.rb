@@ -21,9 +21,10 @@ class ConfigController < ApplicationController
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
 
-      # NEW BETA FEATURES
+      # NEW FEATURES
       session[:medical_credentialing] = "off"
       session[:loan_docs] = "off"
+      session[:upload_sign] = "off"
 
     end
 
@@ -33,7 +34,7 @@ class ConfigController < ApplicationController
   def post_config
 
     puts 'posting configuration page....'
-
+    ap params
     # check if new branding parameters were saved
     if !params[:message].nil? and params[:message] != ""
       session[:home_message] = params[:message]
@@ -52,32 +53,12 @@ class ConfigController < ApplicationController
     end
 
     # check feature tab configuration
-    if !params[:resources].nil?
-      session[:resources] = 'on'
-    else
-      session[:resources] = 'off'
-    end
-    if !params[:onboarding].nil?
-      session[:onboarding] = 'on'
-    else
-      session[:onboarding] = 'off'
-    end
-    if !params[:catalog].nil?
-      session[:catalog] = 'on'
-    else
-      session[:catalog] = 'off'
-    end
-    if !params[:medical_credentialing].nil?
-      session[:medical_credentialing] = 'on'
-    else
-      session[:medical_credentialing] = 'off'
-    end
-    if !params[:loan_docs].nil?
-      session[:loan_docs] = 'on'
-    else
-      session[:loan_docs] = 'off'
-    end
-
+    session[:resources] = !params[:resources].nil? ? 'on' : 'off'
+    session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
+    session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
+    session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
+    session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
+    session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
 
 
 
@@ -106,6 +87,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&catalog=#{session[:catalog]}"
     session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
     session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
+    session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&background=#{session[:background]}"
     session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
 
