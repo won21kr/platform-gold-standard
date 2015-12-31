@@ -44,6 +44,7 @@
         %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'} Upload & Sign (Beta)
 
 
+
     .col-md-5.pull-right
       %a.btn.btn-primary.btn-lg.pull-right{:style => "margin-left: 20px", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         Documentation
@@ -100,12 +101,12 @@
             - if (session[:loan_docs] == 'on')
               = ", Loan Documents"
             - if (session[:upload_sign] == 'on')
-              = ", Loan Documents"
+              = ", Upload & Sign"
+        %tr
+          %td Customized Product Catalog:
+          %td
+            = session[:catalog_file]
         %tr
           %td Encoded Configuration URL:
           %td
             = session[:config_url]
-        -# %tr
-        -#   %td Customized Product Catalog:
-        -#   %td
-        -#     = session[:catalog_file]
