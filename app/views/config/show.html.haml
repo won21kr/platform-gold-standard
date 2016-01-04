@@ -24,15 +24,14 @@
       -#   %option{:value => "Healthcare"} Healthcare
       -#   %option{:value => "Financial Services"} Financial Services
       -#   %option{:value => "AEC"} AEC
-      -# .br 
+      -# .br
 
       %label.label-div{:for => "catalog_file"} Choose Product Catalog
       %select{:name => "catalog_file"}
         %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
         %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
         %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
-        %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
-
+        
       .br
       -# Activate / Deactivate feature tabs
       %label.label-div{:for => "tab_select"} Active Feature Tabs
