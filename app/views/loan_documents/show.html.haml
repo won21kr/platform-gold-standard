@@ -1,0 +1,95 @@
+
+:css
+
+  .td {
+    vertical-align: middle !important;
+    font-size: 120%
+  }
+
+.home
+  = render 'layouts/sidenav'
+.container
+  .col-md-9.col-sm-8.col-xs-9.pull-right
+    .flash
+      = render partial: "shared/flash_messages", flash: flash
+  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff", :class => "myvaulttable"}
+    .panel.panel-default{:style => "margin-bottom: 0px"}
+      .panel-heading
+        %h2 My Loan Documents
+      %table.table
+        %thead
+          %tr
+            %th File
+            %th Name
+            %th.hidden-xs.hidden-sm Status
+            %th Actions
+          %tbody
+            -# Loan Agreement
+            %tr
+              %td.td
+                = image_tag @docStatus["Loan Image"], width: '50px'
+              %td.td
+                Loan Agreement
+              %td.td
+                = @docStatus["Loan Agreement"]
+              %td.td
+                - if @docStatus["Loan Agreement"] == "Missing"
+                  %button.btn.btn-primary.btn-lg{"data-target" => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", "data-toggle" => "modal", :type => "button"} Upload
+                - elsif @docStatus["Loan Agreement"] == "Signature Needed"
+                  %form{:method => "get", :action => loan_docusign_path(@fileId["Loan Agreement"])}
+                    %button.btn.btn-primary.btn-lg{:type => "submit"}
+                      Sign
+                - else
+                  %form{:method => "get", :action => view_doc_path(@fileId["Loan Agreement"])}
+                    %button.btn.btn-primary.btn-lg{:type => "submit"}
+                      View
+                      %i.fa.fa-comment.unread-count{:style => "margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Loan']}"}
+            -# W2 Form
+            %tr
+              %td.td
+                = image_tag @docStatus["W2 Image"], width: '50px'
+              %td.td
+                W2 Form
+              %td.td
+                = @docStatus["W2 Form"]
+              %td.td
+                - if @docStatus["W2 Form"] == "Missing"
+                  %button.btn.btn-primary.btn-lg{"data-target" => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#w2Modal", "data-toggle" => "modal", :type => "button"} Upload
+                - else
+                  %form{:method => "get", :action => view_doc_path(@fileId["W2 Form"])}
+                    %button.btn.btn-primary.btn-lg{:type => "submit"}
+                      View
+                      %i.fa.fa-comment.unread-count{:style => "margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['W2']}"}
+            -# Tax Return
+            %tr
+              %td.td
+                = image_tag @docStatus["Tax Image"], width: '50px'
+              %td.td
+                Tax Return
+              %td.td
+                = @docStatus["Tax Return"]
+              %td.td
+                - if @docStatus["Tax Return"] == "Missing"
+                  %button.btn.btn-primary.btn-lg{"data-target" => @searchFiles["Tax"].size > 0 ? "#taxVaultDocs" : "#taxModal", "data-toggle" => "modal", :type => "button"} Upload
+                - else
+                  %form{:method => "get", :action => view_doc_path(@fileId["Tax Return"])}
+                    %button.btn.btn-primary.btn-lg{:type => "submit"}
+                      View
+                      %i.fa.fa-comment.unread-count{:style => "margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Tax']}"}
+
+    %p{:style=>"text-align: right; font-size: 10px;"}
+      = link_to "reset", reset_loan_docs_path
+
+= render 'loan_documents/loan_modals'
+
+
+
+:javascript
+
+  Dropzone.options.myDropzone = {
+    init: function() {
+      this.on("queuecomplete", function(file) {
+        setTimeout(function() {location.reload();}, 1000);
+      });
+    }
+  };

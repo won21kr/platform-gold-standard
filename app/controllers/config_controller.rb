@@ -2,6 +2,7 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
+
   def show
 
     puts "config page get..."
@@ -19,6 +20,12 @@ class ConfigController < ApplicationController
       session[:resources] = 'on'
       session[:onboarding] = 'on'
       session[:catalog] = 'on'
+
+      # NEW FEATURES
+      session[:medical_credentialing] = "off"
+      session[:loan_docs] = "off"
+      session[:upload_sign] = "off"
+
     end
 
     config_url
@@ -27,7 +34,7 @@ class ConfigController < ApplicationController
   def post_config
 
     puts 'posting configuration page....'
-
+    ap params
     # check if new branding parameters were saved
     if !params[:message].nil? and params[:message] != ""
       session[:home_message] = params[:message]
@@ -41,23 +48,17 @@ class ConfigController < ApplicationController
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
+    # if !params[:catalog_file].nil? and params[:catalog_file] !=""
+    #   session[:catalog_file] = params[:catalog_file]
+    # end
 
     # check feature tab configuration
-    if !params[:resources].nil?
-      session[:resources] = 'on'
-    else
-      session[:resources] = 'off'
-    end
-    if !params[:onboarding].nil?
-      session[:onboarding] = 'on'
-    else
-      session[:onboarding] = 'off'
-    end
-    if !params[:catalog].nil?
-      session[:catalog] = 'on'
-    else
-      session[:catalog] = 'off'
-    end
+    session[:resources] = !params[:resources].nil? ? 'on' : 'off'
+    session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
+    session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
+    session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
+    session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
+    session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end
@@ -65,8 +66,6 @@ class ConfigController < ApplicationController
   # clear session
   def reset_config
     session.clear
-    puts "session reset..."
-    ap session
     redirect_to config_path
   end
 
@@ -84,9 +83,20 @@ class ConfigController < ApplicationController
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
     session[:config_url] << "&catalog=#{session[:catalog]}"
+    session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
+    session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
+    session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&background=#{session[:background]}"
 
   end
+
+  # def set_gon
+  #   gon.push
+  #     puts "In GON............"
+  #     current_catalog_file = session[:catalog_file]
+  #     ap gon.current_catalog_file
+  #
+  # end
 
 
 end

@@ -17,6 +17,16 @@
       %label.label-div{:for => "background"} Background Image URL
       %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background]}
 
+      -# Choose a product catalog
+      -# %label.label-div{:for => "catalog_file"} Choose Product Catalog
+      -# %select{:name => "catalog_file"}
+      -#   %option{:value => "Retail"} Retail
+      -#   %option{:value => "Healthcare"} Healthcare
+      -#   %option{:value => "Financial Services"} Financial Services
+      -#   %option{:value => "AEC"} AEC
+      -# .br
+
+      -# Activate / Deactivate feature tabs
       %label.label-div{:for => "tab_select"} Active Feature Tabs
       %label.checkbox
         %input#vault{:type => "checkbox", :name => "vault", :checked => true, :disabled => "on"} My Vault
@@ -26,10 +36,21 @@
         %input#onbaording{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'} Onboarding Tasks
       %label.checkbox
         %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'} Product Catalog
+      %label.checkbox
+        %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'} Medical Credentialing (Healthcare)
+      %label.checkbox
+        %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'} Loan Documents (Financial Services)
+      %label.checkbox
+        %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'} Upload & Sign (Beta)
+
+
 
     .col-md-5.pull-right
+      %a.btn.btn-primary.btn-lg.pull-right{:style => "margin-left: 20px", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
+        Documentation
       %a.btn.btn-primary.btn-lg.pull-right{href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
         Demo Feedback
+
 
     .form-group.col-md-12.item
       %input.btn.btn-default{:type => "submit", :value => "Save"}
@@ -40,6 +61,7 @@
     %button.btn.btn-default{:type => "submit", :type => "form"} Reset
   %form.item{:action => "/dashboard", :method => "get", :role => "form"}
     %input.btn.btn-default{:type => "submit", :value => "Main Page"}
+
 
 %section
   %h3
@@ -74,6 +96,16 @@
               = ", Onboarding Tasks"
             - if (session[:catalog] == 'on')
               = ", Product Catalog"
+            - if (session[:medical_credentialing] == 'on')
+              = ", Medical Credentialing"
+            - if (session[:loan_docs] == 'on')
+              = ", Loan Documents"
+            - if (session[:upload_sign] == 'on')
+              = ", Upload & Sign"
+        %tr
+          %td Customized Product Catalog:
+          %td
+            = session[:catalog_file]
         %tr
           %td Encoded Configuration URL:
           %td

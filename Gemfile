@@ -41,8 +41,6 @@ gem 'connection_pool'
 gem 'awesome_print'
 gem 'protected_attributes'
 gem 'fatalistic'
-
-
 gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
 
 
@@ -58,6 +56,7 @@ gem 'wicked_pdf'
 gem 'docusign_rest'
 gem 'lazyload-rails'
 gem 'puma'
+gem 'gon'
 
 # Gems only used on heroku
 group :production, :staging do

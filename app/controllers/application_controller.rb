@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   helper :all
-  helper_method :get_task_status
+  helper_method :get_task_status, :get_med_task_status
   before_action :check_config
 
   def get_task_status
@@ -29,12 +29,45 @@ class ApplicationController < ActionController::Base
     session[:task_status]
   end
 
+  # get med credential workflow status
+  def get_med_task_status
+
+    client = user_client
+
+    # if the medical credentialing form doc has been generated, check if the task has been approved
+    begin
+      taskFile = client.file_from_path("#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing/Medical\ Application\ Form.pdf")
+      task = client.file_tasks(taskFile, fields: [:is_completed])
+    rescue
+      puts "file doesn't exist yet..."
+    end
+    ap task
+
+    if(task.nil?)
+      session[:med_task_status] = 1
+    elsif(task.first.is_completed == false)
+      session[:med_task_status] = 1
+    elsif(task.first.is_completed == true)
+      session[:med_task_status] = 0
+    else
+      session[:med_task_status] = 1
+    end
+
+    session[:med_task_status]
+  end
+
+  # Get user client obj using App User ID
+  def user_client
+    Box.user_client(session[:box_id])
+  end
+
 
   private
 
   def check_config
     # check if query string exists
     if(params != "")
+      puts "params not nil, insert query if it exists"
       insert_query(params)
     end
 
@@ -42,9 +75,6 @@ class ApplicationController < ActionController::Base
 
   # fetches config query from encoded URL and updates the config session variables
   def insert_query(query)
-
-    puts "insert query..."
-    ap query
 
     if query['message'] != "" and query['message'] != nil
       session[:home_message] = query['message']
@@ -67,8 +97,20 @@ class ApplicationController < ActionController::Base
     if query['catalog'] != "" and query['catalog'] != nil
       session[:catalog] = query['catalog']
     end
+    if query['med_credentialing'] != "" and query['med_credentialing'] != nil
+      session[:medical_credentialing] = query['med_credentialing']
+    end
+    if query['loan_docs'] != "" and query['loan_docs'] != nil
+      session[:loan_docs] = query['loan_docs']
+    end
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
+    end
+    if query['upload_sign'] != "" and query['upload_sign'] != nil
+      session[:upload_sign] = query['upload_sign']
+    end
+    if query['salesforce'] != "" and query['salesforce'] != nil
+      session[:salesforce] = query['salesforce']
     end
   end
 

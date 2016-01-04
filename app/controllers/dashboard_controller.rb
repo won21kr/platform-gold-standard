@@ -8,6 +8,7 @@ class DashboardController < SecuredController
     client = user_client
     session[:current_page] = "vault"
 
+
     # get "My Files" and "Shared Files" folder objects
     @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
       client.folder_from_path('My Files')
@@ -34,6 +35,21 @@ class DashboardController < SecuredController
 
   end
 
+  def search_vault(name)
+
+
+    client = user_client
+
+    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      puts "miss"
+      client.folder_from_path("My Files")
+    end
+
+    results = client.search(name, content_types: :name, ancestor_folder_ids: vaultFolder.id)
+
+    results
+  end
+
   # post to edit filename
   def edit_filename
 
@@ -49,13 +65,14 @@ class DashboardController < SecuredController
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to dashboard_path
+    redirect_to dashboard_id_path(session[:current_folder])
   end
 
   # upload files to parameter specified folder ID
   def upload
 
     #http://www.dropzonejs.com/
+    puts "upload"
     uploaded_file = params[:file]
     folder = params[:folder_id]
 
@@ -138,13 +155,6 @@ class DashboardController < SecuredController
     flash[:notice] = "File moved to private folder!"
 
     redirect_to dashboard_id_path(myFolder.id)
-  end
-
-  private
-
-  # Get user client obj using App User ID
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end

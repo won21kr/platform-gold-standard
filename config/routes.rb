@@ -37,12 +37,30 @@ Rails.application.routes.draw do
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
   get "/catalog" => "catalog#show", :as => "catalog_id"
 
-  # upload and sign
+  # Upload and Sign
   get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
-  get "/upload-sign/:id" => "uploadsign#show", :as => "uploadsign_id"
-  get "/docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
-  get "/docusign" => "uploadsign#start_docusign", :as => "start_docusign"
-  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadsign_docusign_response", :as => "uploadsign_docusign_response"
+  post "/upload-sign/:folder_id" => "uploadsign#sign_upload", :as => "sign_upload"
+  get "/upload-sign-docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
+  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadnsign_docusign_response", :as => "uploadnsign_docusign_response"
+  get "/reset-upload-sign" => "uploadsign#reset_uploadnsign", :as => "reset_uploadnsign"
+
+
+  # medical credentialing
+  get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"
+  post "/medical-credentialing" => "medical_credentialing#medical_form_submit", :as => "medical_submit"
+  get "/medical-credentialing-submit-upload" => "medical_credentialing#medical_upload", :as => "medical_upload"
+  post "/medical-upload/:folder_id" => "medical_credentialing#med_upload", :as => "med_upload"
+  get "/reset-medical" => "medical_credentialing#reset_workflow", :as => "reset_medical_flow"
+  get "/medical-credentialist" => "medical_credentialing#credentialist", :as => "credentialist"
+  get "/credentialist-approve/:folder_id" => "medical_credentialing#approve_request", :as => "approve_request"
+
+  # loan documents
+  get "/loan-documents" => "loan_documents#show", :as => "loan_docs"
+  post "/loan-documents/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
+  get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
+  get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"
+  get "/loan-agreement-sign/:file_id" => "loan_documents#loan_docusign", :as => "loan_docusign"
+  get "docusign_response_loan/:envelope_id" => "loan_documents#docusign_response_loan", :as => "docusign_response_loan"
 
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
@@ -50,9 +68,14 @@ Rails.application.routes.draw do
   get '/logout' => 'home#logout', :as => "logout"
   get '/reset-logins' => 'home#reset_logins', :as => "reset_logins"
 
-
+  # config page
   get '/config' => "config#show", :as => 'config'
   get '/config-reset' => "config#reset_config", :as => "reset_config"
   post '/config' => "config#post_config", :as => "save_config"
+
+  # salesforce shared vault
+  get "salesforce" => "salesforce#show", :as => 'salesforce'
+  get "/salesforce/:id" => "salesforce#show", :as => 'salesforce_id'
+
 
 end

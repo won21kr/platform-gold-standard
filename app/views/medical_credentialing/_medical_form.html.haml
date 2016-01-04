@@ -1,0 +1,38 @@
+.col-md-12.col-sm-12
+  %h3
+    Fill out the information below:
+  %form.form-horizontal{:role => "form", :method => "post", :action => medical_submit_path}
+    .form-group
+      %label.control-label.col-sm-3{:for => "name"} Full Name:
+      .col-sm-6
+        %input#name.form-control{:type => "text", :placeholder => "Marcus Doe", :name => "name"}
+    .form-group
+      %label.control-label.col-sm-3{:for => "bday"} Date of Birth:
+      .col-sm-6
+        %input#date.form-control{:type => "date", :name => "date"}
+    .form-group
+      %label.control-label.col-sm-3{:for => "id"} Medical License Number:
+      .col-sm-6
+        %input#id.form-control{:placeholder => "123456789", :type => "text", :name => "id"}
+    .form-group
+      %label.control-label.col-sm-3{:for => "degree"} Specialty:
+      .col-sm-6
+        %select#specialty.form-control{:placeholder => "Specialty", :type => "text", :name => "specialty"}
+          %option Anesthesiology
+          %option Cardiology
+          %option Chiropractor
+          %option Dermatology
+          %option Hematology
+          %option Neurology
+          %option Pediatrics
+          %option Radiology
+    .form-group
+      %label.control-label.col-sm-3{:for => "degree"} Degree Type:
+      .col-sm-6
+        %select#degree.form-control{:placeholder => "Degree", :type => "text", :name => "degree"}
+          %option MD
+          %option DO
+    %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+    .form-group
+      .col-sm-offset-3.col-sm-6
+        %button.btn.btn-primary.btn-md{:type => "submit"} Submit for Approval

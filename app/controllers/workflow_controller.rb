@@ -34,7 +34,6 @@ class WorkflowController < SecuredController
         email: "mmitchell+standard@box.com",
         return_url: docusign_response_url(envelope_response["envelopeId"])
       )
-      ap recipient_view
 
       @url = recipient_view["url"]
       session[:progress] = 2
@@ -67,7 +66,7 @@ class WorkflowController < SecuredController
 
 
       path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Pending\ Approval"
-      doc.configure_pdf(client, filename, path)
+      doc.configure_pdf(client, filename, path, ENV['ONBOARDING_FORM'])
     end
 
     flash[:notice] = "Thanks for filling out your information! Your contract is now under review."
@@ -146,7 +145,6 @@ class WorkflowController < SecuredController
       elsif((file = client.folder_items(completedFolder, fields: [:id]).files).size > 0)
         # file exists in completed folder
       end
-      ap file
 
       # delete file
       client.delete_file(file.first)
@@ -242,24 +240,25 @@ class WorkflowController < SecuredController
 
       if (task.first.is_completed == true)
         # task has been approved, move file to sig required folder
-
         @status = "approved"
         client.move_file(file.first, sigReqFolder.id)
-        #file = client.folder_items(sigReqFolder).files
+
       else
         # task has not yet been approved, wait for approval
         @status = "pendingApproval"
       end
     elsif((file = client.folder_items(sigReqFolder, fields: [:id]).files).size > 0)
       # document in signature required folder, needs to be signed
-
       @status = "pendingSig"
+
     elsif((file = client.folder_items(completedFolder, fields: [:id]).files).size > 0)
       # document has already been signed
       @status = "signed"
+
     else
       # the information form has not yet been filled out by the customer
       @status = "toFill"
+      
     end
 
     # return document obj or nil if document doesn't exist yet
@@ -272,11 +271,6 @@ class WorkflowController < SecuredController
 
   def set_preview_url(id)
     @previewURL = user_client.embed_url(id)
-  end
-
-  # Get user client obj using App User ID
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end

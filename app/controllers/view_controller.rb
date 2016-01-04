@@ -12,7 +12,7 @@ class ViewController < SecuredController
     session[:fileId] = @fileId
 
     @file = client.file_from_id(params[:id])
-    ap params
+
     # fetch and reorder file comments
     @comments = client.file_comments(@file)
     # @comments = Array.new
@@ -75,12 +75,6 @@ class ViewController < SecuredController
 
   def no_support
 
-  end
-
-  private
-
-  def user_client
-    Box.user_client(session[:box_id])
   end
 
 end
