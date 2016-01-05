@@ -1,28 +1,7 @@
-:css
 
-  .popover {
-    max-width: 330px
-  }
 
 .home
-  .container
-    = render 'layouts/sidenav'
-    .col-md-9.col-sm-8.col-xs-9.pull-right
-      .flash
-        = render partial: "shared/flash_messages", flash: flash
-    .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-      .panel.panel-default{:style => "margin-bottom: 0px"}
-        .panel-heading
-          .pull-right.h4
-            %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
-          %h2 Upload and Sign Documents
-          .sub-title
-            = "Personal & shared files"
-      - if (session[:progress] == 2)
-        .col-md-12.col-sm-12
-          %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
-      - elsif (session[:progress] == 3)
-        .col-md-12.col-sm-12
-          %h3
-            Completed Onboarding Form:
-          %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+  %h5(style="margin-top: -5px; font-size: 120%;")
+    = link_to '<< Back to Upload & Sign', uploadsign_path
+  .container(style="text-align:center;")
+    %iframe{:src => @url, :width => '960px', :height => '850px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
