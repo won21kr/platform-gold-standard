@@ -102,6 +102,9 @@
   - if session[:loan_docs] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "loan_docs"}"}
       %a{:href => "/loan-documents", :style => "text-decoration: none;"} Loan Documents
+  - if session[:upload_sign] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
+      %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 

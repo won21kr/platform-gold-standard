@@ -23,6 +23,13 @@
         %label.label-div{:for => "background", :style => "color: black"} Background Image URL
         %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
 
+        %label.label-div{:for => "catalog_file", :style => "color: black"} Choose Product Catalog
+        %select{:name => "catalog_file"}
+          %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
+          %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
+          %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
+          %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
+
       .col.s6
         -# Activate / Deactivate feature tabs
         %b{:for => "tab_select"} Active Feature Tabs
@@ -44,8 +51,10 @@
         %p
           %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'}
           %label.checkbox{:for => "loan_docs", :style => "color: black"} Loan Documents (Financial Services)
+        %p
+          %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
+          %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
       .col.s12.item
-        -# %input.btn.btn-default{:type => "submit", :value => "Save"}
         %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"}
           Submit
 
@@ -88,14 +97,16 @@
             = ", Medical Credentialing"
           - if (session[:loan_docs] == 'on')
             = ", Loan Documents"
+          - if (session[:upload_sign] == 'on')
+            = ", Upload & Sign"
+      %tr
+        %td Customized Product Catalog:
+        %td
+          = session[:catalog_file]
       %tr
         %td Encoded Configuration URL:
         %td
           = session[:config_url]
-      -# %tr
-      -#   %td Customized Product Catalog:
-      -#   %td
-      -#     = session[:catalog_file]
 
   .br{:style => "margin-bottom: 30px"}
   %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
