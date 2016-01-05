@@ -1,53 +1,43 @@
+#modal1.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Upload a File
+    .drop-area
+      .row
+        .col-md-12
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
-:css
+#index-banner.section.no-pad-bot
+  .container
+    %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+      %i.material-icons.prefix{:style => "font-size: 28px;"} lock_outline
+      My Vault
+    %h6.caption.thin{:style => "margin-left: 165px; font-size: 16px;"}
+      Your personal and shared files
+    .col.s3.pull-right{:style => "margin-top: -45px"}
+      %ul.tabs{:style => "background-color: transparent;"}
+        %li.tab{:style => "width: 50px !important; font-size: 12px !important;", :class => "#{'active' if @myFolder.id == @currentFolder}"}
+          = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
+        %li.tab{:style => "width: 50px !important; font-size: 12px !important;", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
+          = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
 
-  .popover {
-    max-width: 330px
-  }
-
-#myModal.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Upload a File
-      .modal-body
-        .drop-area
-          .row
-            .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
 
 .home
-.container
-  = render 'layouts/sidenav'
-  .col-md-9.pull-right
-    .flash
-      = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-    .panel.panel-default{:style => "margin-bottom: 0px"}
-      .panel-heading
-        .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
-            Upload
-        %h2 My Vault
-        .sub-title
-          = "Personal & shared files"
-      %table.table.striped
-        %thead
-          %tr
-            %th File
-            %th Name
-            %th.hidden-xs.hidden-sm Date Modified
-            %th Actions
-          %tbody
-            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
+  .container
+    = render 'layouts/sidenav'
+    .pull-right.h6{:style => "margin-top: -50px;"}
+      %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+    .row{:style => "margin-top: 140px;"}
+      .col.s10.push-s2
+        %table.highlight
+          %thead
+            %tr
+              %th{"data-field" => "id"} File
+              %th{"data-field" => "name"} Name
+              %th{"data-field" => "price"} Date Modified
+              %th{"data-field" => "foop"} Actions
+
             / list file contents
             - @files.each do |f|
               %tr
@@ -66,31 +56,119 @@
                         %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
                         %button.btn.btn-primary.btn-md{:type => "submit"} Save
                         %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
-
                 %td.hidden-xs.hidden-sm
                   = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+                / file action options
                 %td
-                  / file action options
                   .btn-group
-                    %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                      %span.glyphicon.glyphicon-eye-open
+                    %a.btn.white{href: view_doc_path(f.id), 'data-placement'=>'middle', 'data-container'=>'body', 'title'=>'View', :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
                     - if (@currentFolder == @myFolder.id)
-                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
-                        %span.glyphicon.glyphicon-share
+                      %a.btn.white{href: share_file_path(f.id), 'data-placement'=> 'top', 'data-container'=>'body', 'title'=>'Share with Employee', :style => "padding-right: 9px; padding-left: 9px;"}
+                        %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
                     - elsif (@currentFolder == @sharedFolder.id)
-                      %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
-                        %span.glyphicon.glyphicon-share
-                    %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                      %span.glyphicon.glyphicon-cloud-download
-                    %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
-                      %span.glyphicon.glyphicon-trash
+                      %a.btn.white{href: unshare_file_path(f.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare', :style => "padding-right: 9px; padding-left: 9px;"}
+                        %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
+                    %a.btn.white{href: download_path(f.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download', :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
+                    %a.btn.white{href: delete_file_path(f.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete', :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
       - if @files.size == 0
-        .col-md-12
-          .h4
-            No files currently exist. Upload by clicking the "Upload" button above.
+        .col.s10.push-s5
+          .h5{:style => "margin-top: 35px;"}
+            Add files by clicking the "Upload" button above.
+
+
+
+
+
+
+
+      -# .flash
+      -# = render partial: "shared/flash_messages", flash: flash
+
+
+
+
+
+
+
+
+
+
+
+    -#
+    -#
+    -# .panel.panel-default{:style => "margin-bottom: 0px"}
+    -#   .pull-right.h4
+    -#     %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
+    -#   %table
+    -#     %thead
+    -#       %tr
+    -#         %th File
+    -#         %th Name
+    -#         %th.hidden-xs.hidden-sm Date Modified
+    -#         %th Actions
+    -#       %tbody
+    -#         %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400"}
+    -#           %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
+    -#             = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
+              -# %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
+    -#             = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
+    -#         / list file contents
+    -#         - @files.each do |f|
+    -#           %tr
+    -#             %td
+                  -# = link_to view_doc_path(f.id) do
+                  -#   = image_tag(thumbnail_url(f.id), width: '30px')
+    -#             %td
+    -#               %span{:style => "inline"}
+    -#                 = f.name
+    -#                 = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+    -#                   %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
+    -#                 #popover-content.hide
+    -#                   %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
+    -#                     %input#name.form-control{:type => "text", :name => "fileName"}
+    -#                     %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+    -#                     %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+    -#                     %button.btn.btn-primary.btn-md{:type => "submit"} Save
+    -#                     %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+    -#
+    -#             %td.hidden-xs.hidden-sm
+    -#               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+    -#             %td
+    -#               / file action options
+    -#               .btn-group
+    -#                 %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
+    -#                   %span.glyphicon.glyphicon-eye-open
+    -#                 - if (@currentFolder == @myFolder.id)
+    -#                   %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
+    -#                     %span.glyphicon.glyphicon-share
+    -#                 - elsif (@currentFolder == @sharedFolder.id)
+    -#                   %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
+    -#                     %span.glyphicon.glyphicon-share
+    -#                 %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
+    -#                   %span.glyphicon.glyphicon-cloud-download
+    -#                 %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
+    -#                   %span.glyphicon.glyphicon-trash
+    -#
+    -#
+    -#
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 :javascript
-
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
@@ -99,20 +177,8 @@
     }
   };
 
-  $(document).ready(function() {
-
-    $('[data-toggle=popover]').popover({
-        html: 'true',
-    placement: 'right',
-    title: "Edit File Name",
-    content : function() {
-        return $('#popover-content').html();
-    }
-  })
-
-
-  })
-
-
 :javascript
-  $(function () {$('[data-toggle="tooltip"]').tooltip()})
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });

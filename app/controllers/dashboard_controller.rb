@@ -72,7 +72,6 @@ class DashboardController < SecuredController
   def upload
 
     #http://www.dropzonejs.com/
-    puts "upload"
     uploaded_file = params[:file]
     folder = params[:folder_id]
 

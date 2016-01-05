@@ -5,16 +5,18 @@
       Box Platform Standard
     %meta(name="viewport" content="width=device-width, initial-scale=1.0")
     = include_gon
-    = stylesheet_link_tag    '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'
-    = stylesheet_link_tag    '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
+    -# = stylesheet_link_tag    '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'
+    = stylesheet_link_tag    '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css'
+    = stylesheet_link_tag    '//fonts.googleapis.com/icon?family=Material+Icons'
+    = stylesheet_link_tag    '//maxcdn.ap.com/font-awesome/4.1.0/css/font-awesome.min.css'
     = stylesheet_link_tag    '//fonts.googleapis.com/css?family=Open+Sans:100,200,400,300,600'
     = stylesheet_link_tag    '//vjs.zencdn.net/4.12/video-js.css'
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = stylesheet_link_tag    '//cdnjs.cloudflare.com/ajax/libs/viewer.js/0.10.10/crocodoc.viewer.css'
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'
-    = javascript_include_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'
+    -# = javascript_include_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'
     = javascript_include_tag '//vjs.zencdn.net/4.12/video.js'
-    = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/viewer.js/0.10.10/crocodoc.viewer.js'
+    -# = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/viewer.js/0.10.10/crocodoc.viewer.js'
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = yield :auth0_code
     = csrf_meta_tags

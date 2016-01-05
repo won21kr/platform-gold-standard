@@ -37,13 +37,12 @@ Rails.application.routes.draw do
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
   get "/catalog" => "catalog#show", :as => "catalog_id"
 
-  # Upload and Sign
+  # upload and sign
   get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
-  post "/upload-sign/:folder_id" => "uploadsign#sign_upload", :as => "sign_upload"
-  get "/upload-sign-docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
-  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadnsign_docusign_response", :as => "uploadnsign_docusign_response"
-  get "/reset-upload-sign" => "uploadsign#reset_uploadnsign", :as => "reset_uploadnsign"
-
+  get "/upload-sign/:id" => "uploadsign#show", :as => "uploadsign_id"
+  get "/docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
+  get "/docusign" => "uploadsign#start_docusign", :as => "start_docusign"
+  get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadsign_docusign_response", :as => "uploadsign_docusign_response"
 
   # medical credentialing
   get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"
