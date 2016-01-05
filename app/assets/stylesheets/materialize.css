@@ -7270,7 +7270,7 @@ select {
     float: none;
     padding: 0 15px; }
     .side-nav li:hover, .side-nav li.active {
-      background-color: #ddd; }
+      background-color: #F5F5F5; }
   .side-nav a {
     color: #444;
     display: block;

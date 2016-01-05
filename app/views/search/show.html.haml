@@ -27,7 +27,7 @@
           = f.input :query, placeholder: "Search...", input_html: {class: 'input-field'}
         .col.s3.push-s3
           = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
-        .col.s1.push-s2{:style => "margin-left: -40px"}
+        .col.s1.push-s2{:style => "margin-left: -40px;"}
           %select
             %option{:disabled => "", :selected => "", :value => ""} Type
             %option{:value => "1"}
@@ -41,13 +41,13 @@
           %label Filter by
         .col.s1.push-s2
           %select
-            %option{:disabled => "", :selected => "", :value => ""} Category
-            %option{:value => "1"}
+            %option{:disabled => "", :selected => "", :value => "", :style => "font-size: 12px !important;"} Category
+            %option{:value => "1", :style => "font-size: 12px;"}
               = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
-            %option{:value => "2"}
+            %option{:value => "2", :style => "font-size: 12px;"}
               = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
-            %option{:value => "3"}
-              = link_to 'Case Study', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
+            %option{:value => "3", :style => "font-size: 12px;"}
+              = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
         .col.s1.push-s2
           %select
             %option{:disabled => "", :selected => "", :value => ""} Privacy
@@ -57,7 +57,7 @@
               = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
         .col.s6.push-s3
           - if @results.nil? or @results.count == 0
-            %h6(style='text-align: center;')
+            %h6(style='text-align: center; margin-top: 30px;')
               There were no results matching your search criteria.
           - else
             / either results were found for your search or were are in the resource root folder / sub-folder
@@ -71,39 +71,33 @@
                   .col.s6
                     .filename{:style => "margin-top: 16px; margin-left: 8px; font-size: 16px; color: #333 !important; text-decoration: none;"}
                       = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
-      -#       - if (!@text.nil?)
-      -#         = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-      -#     - if (@root != true)
-      -#       - @results.each do |result|
-      -#         .result
-      -#           .row
-      -#             .col-md-3
-      -#               .thumb-image-border
-      -#                 -# = link_to view_doc_path(result.id) do
-      -#                 = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
-      -#                   = image_tag(thumbnail_url(result.id), :height => "90px")
-      -#             .col-md-6.col-xs-6.col-sm-6
-      -#               .row(style = 'margin-left: -25px;')
-      -#                 .col-md-4.hidden-xs.hidden-sm
-      -#                   .result-label
-      -#                     File Name:
-      -#                   .result-label
-      -#                     Created On:
-      -#                   .result-label
-      -#                     Type:
-      -#                   .result-label
-      -#                     Audience:
-      -#                 .col-md-8.col-sm-12.col-xs-12
-      -#                   .result-data
-      -#                     = result.name
-      -#                   .result-data
-      -#                     = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
-      -#                   .result-data
-      -#                     = result.type
-      -#                   .result-data
-      -#                     = result.audience
-      -#
-      -#
+            - if (!@text.nil?)
+              = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+          - if (@root != true)
+            %table.highlight
+              %thead
+                %tr
+                  %th{"data-field" => "id"}
+                  %th{"data-field" => "name"} Name
+                  %th{"data-field" => "price"} Type
+                  %th{"data-field" => "foop"} Privacy
+                  %th{"data-field" => "foop"} Created
+
+              - @results.each do |result|
+                %tr
+                  %td
+                    = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
+                      = image_tag(thumbnail_url(result.id), :height => "60px")
+                  %td
+                    = result.name
+                  %td
+                    = result.type
+                  %td
+                    = result.audience
+                  %td
+                    = result.type
+
+
 
 
 
