@@ -15,20 +15,21 @@
       My Vault
     %h6.caption.thin{:style => "margin-left: 165px; font-size: 16px;"}
       Your personal and shared files
-    .col.s3.pull-right{:style => "margin-top: -45px"}
-      %ul.tabs{:style => "background-color: transparent;"}
-        %li.tab{:style => "width: 50px !important; font-size: 12px !important;", :class => "#{'active' if @myFolder.id == @currentFolder}"}
+    .col.s5{:style => "margin-top: -45px; margin-left: 750px;"}
+      %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+        %li.tab{:style => "font-size: 12px !important;", :class => "#{'active' if @myFolder.id == @currentFolder}"}
           = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-        %li.tab{:style => "width: 50px !important; font-size: 12px !important;", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
+        %li.tab{:style => "font-size: 12px !important;", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
           = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
 
 
 .home
   .container
     = render 'layouts/sidenav'
-    .pull-right.h6{:style => "margin-top: -50px;"}
-      %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
-    .row{:style => "margin-top: 140px;"}
+    .row
+      .col.s4.push-s10.h6{:style => "margin-top: 40px;"}
+        %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+    .row{:style => "margin-top: 20px;"}
       .col.s10.push-s2
         %table.highlight
           %thead
