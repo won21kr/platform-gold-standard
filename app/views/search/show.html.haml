@@ -57,45 +57,56 @@
               = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
         .col.s6.push-s3
           - if @results.nil? or @results.count == 0
-            %h6(style='text-align: center; margin-top: 30px;')
+            %h6{:style =>'text-align: center; margin-top: 30px; margin-left: 200px;'}
               There were no results matching your search criteria.
           - else
             / either results were found for your search or were are in the resource root folder / sub-folder
             %h6
             / are we in the root folder?
             - if (@root == true)
-              - @results.each do |folder|
-                .row(style="margin-bottom: 10px;")
-                  .col.s1
-                    = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
-                  .col.s6
-                    .filename{:style => "margin-top: 16px; margin-left: 8px; font-size: 16px; color: #333 !important; text-decoration: none;"}
-                      = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
+              .row
+                .col.s8{:style => "width: 130%;"}
+                  %table.highlight
+                    %thead
+                      %tr
+                        %th{"data-field" => "id"} Folder
+                        %th{"data-field" => "name"} Name
+                        %th{"data-field" => "price"} Type
+                    - @results.each do |folder|
+                      %tr
+                        %th
+                          = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
+                        %th
+                          .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
+                            = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
             - if (!@text.nil?)
               = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-          - if (@root != true)
-            %table.highlight
-              %thead
-                %tr
-                  %th{"data-field" => "id"}
-                  %th{"data-field" => "name"} Name
-                  %th{"data-field" => "price"} Type
-                  %th{"data-field" => "foop"} Privacy
-                  %th{"data-field" => "foop"} Created
+            - if (@root != true)
+              .row
+                .col.s8{:style => "width: 130%;"}
+                  %table.highlight
+                    %thead
+                      %tr
+                        %th{"data-field" => "id"} File
+                        %th{"data-field" => "name"} Name
+                        %th{"data-field" => "price"} Type
+                        %th{"data-field" => "foop"} Created
+                        %th{"data-field" => "foop"} Privacy
 
-              - @results.each do |result|
-                %tr
-                  %td
-                    = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
-                      = image_tag(thumbnail_url(result.id), :height => "60px")
-                  %td
-                    = result.name
-                  %td
-                    = result.type
-                  %td
-                    = result.audience
-                  %td
-                    = result.type
+
+                    - @results.each do |result|
+                      %tr
+                        %td
+                          = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
+                            = image_tag(thumbnail_url(result.id), :height => "50px")
+                        %td
+                          = result.name
+                        %td
+                          = result.type
+                        %td
+                          = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                        %td
+                          = result.audience
 
 
 
