@@ -48,6 +48,9 @@ class ConfigController < ApplicationController
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
       session[:navbar_color] = '#' + params[:navbar_color]
     end
+    if !params[:catalog_file].nil? and params[:catalog_file] !=""
+      session[:catalog_file] = params[:catalog_file]
+    end
 
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
