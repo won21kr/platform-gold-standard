@@ -19,19 +19,17 @@ class DashboardController < SecuredController
     @sharedFolder.name = "Shared Files"
 
     # set active folder ID, either "My Files" or "Shared Files" folder
-    if(params[:id])
-      @currentFolder = params[:id]
-    else
+    if(session[:current_folder].nil?)
+      puts "it's fucking nil!"
       @currentFolder = @myFolder.id
+    else
+      @currentFolder = session[:current_folder]
     end
-    session[:current_folder] = @currentFolder
+    # session[:current_folder] = @currentFolder
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    if(@currentFolder == @myFolder.id)
-      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    elsif(@currentFolder == @sharedFolder.id)
-      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    end
+    @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :created_at, :modified_at]).files
+    @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
 
   end
 
@@ -72,6 +70,7 @@ class DashboardController < SecuredController
   def upload
 
     #http://www.dropzonejs.com/
+    session[:current_folder] = params[:folder_id]
     uploaded_file = params[:file]
     folder = params[:folder_id]
 
@@ -111,6 +110,7 @@ class DashboardController < SecuredController
   # download file from file ID
   def download
 
+    session[:current_folder] = params[:folder]
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
     end
@@ -120,6 +120,7 @@ class DashboardController < SecuredController
   # delete file
   def delete_file
 
+    session[:current_folder] = params[:folder]
     id = params[:id]
     client = user_client
     client.delete_file(id)
@@ -132,6 +133,7 @@ class DashboardController < SecuredController
   def share_file
 
     id = params[:id]
+    session[:current_folder] = params[:folder]
     client = user_client
 
     # get shared folder, then move file into shared folder
@@ -146,6 +148,7 @@ class DashboardController < SecuredController
   def unshare_file
 
     id = params[:id]
+    session[:current_folder] = params[:folder]
     client = user_client
 
     # get my folder, then move file into my folder
