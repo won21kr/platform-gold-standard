@@ -30,13 +30,13 @@
           / file action options
           %td
             .btn-group
-              %a.btn.white{href: view_doc_path(f.id, folder: @myFolder.id), 'data-placement'=>'middle', 'data-container'=>'body', 'title'=>'View', :style => "padding-right: 9px; padding-left: 9px;"}
+              %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
                 %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
-              %a.btn.white{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-placement'=> 'top', 'data-container'=>'body', 'title'=>'Share with Employee', :style => "padding-right: 9px; padding-left: 9px;"}
+              %a.btn.white.tooltipped{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Employee", :style => "padding-right: 9px; padding-left: 9px;"}
                 %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
-              %a.btn.white{href: download_path(f.id, folder: @myFolder.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download', :style => "padding-right: 9px; padding-left: 9px;"}
+              %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
                 %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
-              %a.btn.white{href: delete_file_path(f.id, folder: @myFolder.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete', :style => "padding-right: 9px; padding-left: 9px;"}
+              %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
                 %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
 - if @myFiles.size == 0
   .col.s10.push-s5
