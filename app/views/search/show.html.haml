@@ -12,7 +12,7 @@
 #index-banner.section.no-pad-bot
   .container
     %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-      %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 28px;"}
+      %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
       Resources
     %h6.caption.thin{:style => "margin-left: 165px; font-size: 16px;"}
       Find relevant content, fast
@@ -20,7 +20,7 @@
 .home
   .container
     = render 'layouts/sidenav'
-  .row{:style => "margin-top: 80px;"}
+  .row{:style => "margin-top: 40px;"}
     %span
       = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
         .col.s4.push-s3{:style => "margin-left: -30px;"}
@@ -71,8 +71,6 @@
                       %tr
                         %th{"data-field" => "id"} Folder
                         %th{"data-field" => "name"} Name
-                        %th{"data-field" => "price"} Contents
-                        %th{"data-field" => "price"} Date Modified
 
                     - @results.each do |folder|
                       %tr
