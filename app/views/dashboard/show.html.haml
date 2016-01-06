@@ -36,6 +36,7 @@
       .col.s2.push-s10.h6{:style => "margin-top: 40px;"}
         %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
     .row{:style => "margin-top: 20px;"}
+<<<<<<< HEAD
       = render 'dashboard/myfiles'
   #sharedfiles
     .row
@@ -43,6 +44,83 @@
         %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
     .row{:style => "margin-top: 20px;"}
       = render 'dashboard/sharedfiles'
+=======
+      .col.s10.push-s2
+        %table.highlight
+          %thead
+            %tr
+              %th{"data-field" => "id"} File
+              %th{"data-field" => "name"} Name
+              %th{"data-field" => "price"} Date Modified
+              %th{"data-field" => "foop"} Actions
+
+            / list file contents
+            - @files.each do |f|
+              %tr
+                %td
+                  = link_to view_doc_path(f.id) do
+                    = image_tag(thumbnail_url(f.id), width: '30px')
+                %td
+                  %span{:style => "inline"}
+                    = f.name
+                    = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
+                    #popover-content.hide
+                      %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
+                        %input#name.form-control{:type => "text", :name => "fileName"}
+                        %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+                        %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
+                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+                %td.hidden-xs.hidden-sm
+                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+                / file action options
+                %td
+                  .btn-group
+                    %a.btn.white{href: view_doc_path(f.id), 'data-placement'=>'middle', 'data-container'=>'body', 'title'=>'View', :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+                    - if (@currentFolder == @myFolder.id)
+                      %a.btn.white{href: share_file_path(f.id), 'data-placement'=> 'top', 'data-container'=>'body', 'title'=>'Share with Employee', :style => "padding-right: 9px; padding-left: 9px;"}
+                        %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
+                    - elsif (@currentFolder == @sharedFolder.id)
+                      %a.btn.white{href: unshare_file_path(f.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare', :style => "padding-right: 9px; padding-left: 9px;"}
+                        %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
+                    %a.btn.white{href: download_path(f.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download', :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
+                    %a.btn.white{href: delete_file_path(f.id), 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete', :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
+      - if @files.size == 0
+        .col.s10.push-s5
+          .h5{:style => "margin-top: 35px;"}
+            Add files by clicking the "Upload" button above.
+
+
+
+
+
+
+
+      -# .flash
+      -# = render partial: "shared/flash_messages", flash: flash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> a245185b94ca76f394fd5b5876076d3ae13d47fb
 
 :javascript
   Dropzone.options.myDropzone = {
