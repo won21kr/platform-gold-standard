@@ -1,12 +1,3 @@
--# #modal1.modal
--#   .modal-content
--#     %h5{:style => "margin-bottom: 35px;"} Upload a File
--#     .drop-area
--#       .row
--#         .col-md-12
--#           = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
--#   .modal-footer
--#     %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
 #index-banner.section.no-pad-bot
   .container
@@ -23,11 +14,6 @@
         %li.tab{:style => "font-size: 12px !important;"}
           %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
             = @sharedFolder.name
-        -# %li.tab{:style => "font-size: 12px !important;", :class => "#{'active' if @myFolder.id == @currentFolder}"}
-        -#   = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-        -# %li.tab{:style => "font-size: 12px !important;", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
-        -#   = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
-
 
 .container
   = render 'layouts/sidenav'
