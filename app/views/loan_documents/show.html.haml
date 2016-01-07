@@ -1,12 +1,4 @@
 
-:css
-
-  /*.td {
-    vertical-align: middle !important;
-    font-size: 120%
-  }*/
-
-
 #index-banner.section.no-pad-bot
   .container
     %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
@@ -23,7 +15,7 @@
         = render partial: "shared/flash_messages", flash: flash
     .col.s10.push-s2{:class => "myvaulttable"}
       .panel.panel-default{:style => "margin-bottom: 0px"}
-        %table.table
+        %table.highlight
           %thead
             %tr
               %th File
