@@ -1,103 +1,75 @@
 -# All modals on this page
 
-#loanModal.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Upload Your Loan Agreement
-      .modal-body
-        .drop-area
-          .row
-            .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: loan_upload_url("Loan Agreement - Signature Needed"))  {}
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+-# Modals for local upload
+#loanModal.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Upload Your Loan Agreement
+    .drop-area
+      .row
+        .col-md-12
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: loan_upload_url("Loan Agreement - Signature Needed"))  {}
+  .modal-footer
+    %a.modal-action.modal-close.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
-#w2Modal.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Upload Your W2 Form
-      .modal-body
-        .drop-area
-          .row
-            .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: loan_upload_url("W2 Form"))  {}
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+#w2Modal.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Upload Your W2 Form
+    .drop-area
+      .row
+        .col-md-12
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: loan_upload_url("W2 Form"))  {}
+  .modal-footer
+    %a.modal-action.modal-close.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
-#taxModal.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Upload Your Tax Return
-      .modal-body
-        .drop-area
-          .row
-            .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: loan_upload_url("Tax Return"))  {}
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+#taxModal.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Upload Your Tax Return
+    .drop-area
+      .row
+        .col-md-12
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: loan_upload_url("Tax Return"))  {}
+  .modal-footer
+    %a.modal-action.modal-close.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
-#loanVaultDocs.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Loan Agreement Suggestions
-      .modal-body
-        .list-group
-          %a.list-group-item.disabled{:href => "#"}
-            Suggested items from your vault
-          - if !@searchFiles["Loan"].nil?
-            - @searchFiles["Loan"].each do |f|
-              %a.list-group-item{:href => copy_from_vault_path(f.id, new_name: "Loan Agreement - Signature Needed", old_name: f.name)}
-                = f.name
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", "data-target" => "#loanModal", "data-toggle" => "modal", :type => "button"}
-          Upload New Loan Agreement
+-# Modals for upload suggestions
+#loanVaultDocs.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Loan Agreement Suggestions
+    .collection.with-header
+      .collection-header
+        Suggested items from your vault
+      - if !@searchFiles["Loan"].nil?
+        - @searchFiles["Loan"].each do |f|
+          %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "Loan Agreement - Signature Needed", old_name: f.name), :style => "text-decoration: none;"}
+            = f.name
+  .modal-footer
+    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#loanModal", :style => "text-decoration: none;"}
+      Upload New Loan Agreement
 
-#w2VaultDocs.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          W2 Form Suggestions
-      .modal-body
-        .list-group
-          %a.list-group-item.disabled{:href => "#"}
-            Suggested items from your vault
-          - if !@searchFiles["W2"].nil?
-            - @searchFiles["W2"].each do |f|
-              %a.list-group-item{:href => copy_from_vault_path(f.id, new_name: "W2 Form", old_name: f.name)}
-                = f.name
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", "data-target" => "#w2Modal", "data-toggle" => "modal", :type => "button"}
-          Upload New W2 Form
+#w2VaultDocs.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} W2 Form Suggestions
+    .collection.with-header
+      .collection-header
+        Suggested items from your vault
+      - if !@searchFiles["W2"].nil?
+        - @searchFiles["W2"].each do |f|
+          %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "W2 Form", old_name: f.name), :style => "text-decoration: none;"}
+            = f.name
+  .modal-footer
+    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#w2Modal", :style => "text-decoration: none;"}
+      Upload New W2 Form
 
-#taxVaultDocs.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Tax Return Suggestions
-      .modal-body
-        .list-group
-          %a.list-group-item.disabled{:href => "#"}
-            Suggested items from your vault
-          - if !@searchFiles["Tax"].nil?
-            - @searchFiles["Tax"].each do |f|
-              %a.list-group-item{:href => copy_from_vault_path(f.id, new_name: "Tax Return", old_name: f.name)}
-                = f.name
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", "data-target" => "#taxModal", "data-toggle" => "modal", :type => "button"}
-          Upload New W2 Form
+#taxVaultDocs.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Tax Return Suggestions
+    .collection.with-header
+      .collection-header
+        Suggested items from your vault
+      - if !@searchFiles["Tax"].nil?
+        - @searchFiles["Tax"].each do |f|
+          %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "Tax Return", old_name: f.name), :style => "text-decoration: none;"}
+            = f.name
+  .modal-footer
+    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#taxModal", :style => "text-decoration: none;"}
+      Upload New Tax Return

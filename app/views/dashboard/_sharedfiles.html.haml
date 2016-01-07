@@ -1,3 +1,7 @@
+- if @sharedFolder.id == @currentFolder
+  .row
+    .flash.col.s7.push-s3
+      = render partial: "shared/flash_messages", flash: flash
 .col.s10.push-s2
   %table.highlight
     %thead
