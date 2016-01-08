@@ -58,6 +58,7 @@ class DashboardController < SecuredController
 
     begin
       client.update_file(file, name: newName)
+      :javascript
       flash[:notice] = "File name changed to \"#{params[:fileName]}\""
     rescue
       flash[:error] = "Error: Could not change file name"

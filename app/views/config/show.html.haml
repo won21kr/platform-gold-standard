@@ -4,12 +4,47 @@
     %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
       %i.material-icons.prefix{:style => "font-size: 28px;"} settings
       Settings
+    %h6.caption.thin{:style => "margin-left: 10px; margin-top: -25px; margin-bottom: 45px;"}
+      Build a truly custom app to demo Box Platform, in seconds
+    .row
+      %h6{:style => "margin-top: 20px; margin-bottom: 5;"}
+        Here's How it Works
+    .row{:style => "margin-left: 20px; margin-bottom: 40px;"}
+      .col.s3.push-s1
+        .center
+          %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} invert_colors
+          %h6
+            %b
+              Customize your app
+          %p{:style => "text-align: left;"}
+            This is the Settings page where you can edit the look and feel of the Platform Standard app. Add a company logo, change the theme color, and tweak the login page to your liking. Even turn on and off features that make sense for your demo.
+        / Promo Content 1 goes here
+      .col.s3.push-s1
+        .center
+          %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} open_in_browser
+          %h6
+            %b
+              Save Your Custom URL
+          %p{:style => "text-align: left;"}
+            When you're finished tinkering, copy the long, crazy-looking URL at the bottom of this page. This is the custom URL for the app you just created. When you visit this URL the browser knows to render your special colors, logos, etc, so keep it somewhere safe.
+        / Promo Content 2 goes here
+      .col.s3.push-s1
+        .center
+          %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} done
+          %h6
+            %b
+              Give a Kickass Demo
+          %p{:style => "text-align: left;"}
+            Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app in the future and click "Reset" below or clear your browser data to revert changes.
+
+
+        / Promo Content 3 goes here
 
 .body
   .container
     .row
-      %h6{:style => "margin-top: 20px; margin-bottom: 15px;"}
-        Current Configuration
+      %h6{:style => "margin-top: 20px; margin-bottom: 25px;"}
+        Build Your App Below
       %form{:action => save_config_path, :method => "post", :role => "form"}
         .col.s5.push-s1
           %b Custom Branding
@@ -66,11 +101,11 @@
             %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
             %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
 
-          .col
-            %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 100px;"}
-              Submit
+    .col.s1
+      %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
+        Submit
 
-    %h6{:style => "margin-top: 40px"}
+    %h6{:style => "margin-top: 40px; margin-bottom: 20px;"}
       Current Configuration
     %table.table.striped
       %thead
