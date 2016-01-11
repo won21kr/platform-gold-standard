@@ -47,6 +47,8 @@
             Step 2 of 4
       .row
         .col.s8.push-s3{:style => "margin-top: 30px;"}
+          .flash
+            = render partial: "shared/flash_messages", flash: flash
           %h6{:style => "margin-bottom: 20px;"}
             Pending Employee Review:
           %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
@@ -71,14 +73,6 @@
 
 
 
-
-
-
-
-
-
--# .flash
--#   = render partial: "shared/flash_messages", flash: flash
 
 
 .footer{:style=>"text-align: right; font-size: 10px; text-decoration: none;"}
