@@ -29,8 +29,6 @@
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
-
-
   -# %hr
   -# %li
   -# - if session[:userinfo]
@@ -40,13 +38,14 @@
   -# %li
   -#   = link_to 'Feedback', "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"
   .footer-user
-    .footer-copyright{:style => "margin-left: 15%"}
+    .footer-copyright{:style => "margin-left: 15%; margin-top: -15%"}
       .container
         - if session[:userinfo]
           .name.hidden-xs{:style => "margin-left: -20px;" }
-            %span
-              = image_tag (session[:userinfo][:info][:image]), :width => '25px', :class => 'circle'
-            %span{:style => "color: black; font-size: 12px;", :class => 'title'}
-              = "#{session[:userinfo][:info][:name]}"
-            %span{:class => 'title'}
-              %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}
+            %a.tooltipped{href: logout_path, :style => "text-decoration: none", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Logout"}
+              %span
+                = image_tag (session[:userinfo][:info][:image]), :width => '25px', :class => 'circle'
+              %span{:style => "color: black; font-size: 12px;", :class => 'title'}
+                = "#{session[:userinfo][:info][:name]}"
+              %span{:class => 'title'}
+                %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}

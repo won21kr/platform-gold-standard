@@ -69,12 +69,6 @@
               %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
               %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
               %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
-          -# %label.label-div{:for => "catalog_file", :style => "color: black"} Choose Product Catalog
-          -# %select{:name => "catalog_file"}
-          -#   %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
-          -#   %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
-          -#   %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
-          -#   %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
 
         .col.s6.push-s2
           -# Activate / Deactivate feature tabs
@@ -101,9 +95,9 @@
             %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
             %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
 
-    .col.s1
-      %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
-        Submit
+        .col.s12
+          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
+            Submit
 
     %h6{:style => "margin-top: 40px; margin-bottom: 20px;"}
       Current Configuration

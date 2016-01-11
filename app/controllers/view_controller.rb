@@ -64,7 +64,6 @@ class ViewController < SecuredController
 
   # get preview url from file ID
   def preview
-
     begin
       embed_url = user_client.embed_url(params[:id])
       redirect_to embed_url

@@ -1,14 +1,4 @@
 
-
-.modal.fade#viewModal1{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
-  .modal-dialog{:style => "height: 800px;	width: 960px;	background-color: white"}
-    .modal-body(style="overflow: hidden; height: 730px;	width: 960px")
-      %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
-    .modal-footer
-      %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal", :style => "font-size: 100%"}
-        Close
-
-
 #index-banner.section.no-pad-bot
   .container
     %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
@@ -27,89 +17,115 @@
           = f.input :query, placeholder: "Search...", input_html: {class: 'input-field'}
         .col.s3.push-s3
           = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
-        .col.s1.push-s2{:style => "margin-left: -40px;"}
-          %select
-            %option{:disabled => "", :selected => "", :value => ""} Type
-            %option{:value => "1"}
+        .col.s1.push-s2{:style => "margin-left: -40px; margin-top: 15px;"}
+          %span.border-select
+            %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
+              Type
+              %i.material-icons.right arrow_drop_down
+          %ul.dropdown-content{:id => "dropdown1",}
+            %li
               = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
-            %option{:value => "2"}
+            %li
               = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
-            %option{:value => "3"}
+            %li
               = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
-            %option{:value => "3"}
+            %li
               = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
-          %label Filter by
-        .col.s1.push-s2
-          %select
-            %option{:disabled => "", :selected => "", :value => "", :style => "font-size: 12px !important;"} Category
-            %option{:value => "1", :style => "font-size: 12px;"}
+        .col.s1.push-s2{:style => "width: 10.1%; margin-top: 15px;"}
+          %span.border-select
+            %a.dropdown-button{"data-activates" => "dropdown2", :href => "#!", :style => "color: black"}
+              Category
+              %i.material-icons.right arrow_drop_down
+          %ul.dropdown-content{:id => "dropdown2"}
+            %li
               = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
-            %option{:value => "2", :style => "font-size: 12px;"}
+            %li
               = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
-            %option{:value => "3", :style => "font-size: 12px;"}
+            %li
               = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
-        .col.s1.push-s2
-          %select
-            %option{:disabled => "", :selected => "", :value => ""} Privacy
-            %option{:value => "1"}
+        .col.s1.push-s2{:style => "margin-top: 15px;"}
+          %span.border-select
+            %a.dropdown-button{"data-activates" => "dropdown3", :href => "#!", :style => "color: black"}
+              Privacy
+              %i.material-icons.right arrow_drop_down
+          %ul.dropdown-content{:id => "dropdown3"}
+            %li
               = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
-            %option{:value => "2"}
+            %li
               = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
-        .col.s6.push-s3
-          - if @results.nil? or @results.count == 0
-            %h6{:style =>'text-align: center; margin-top: 30px; margin-left: 200px;'}
-              There were no results matching your search criteria.
-          - else
-            / either results were found for your search or were are in the resource root folder / sub-folder
-            %h6
-            / are we in the root folder?
-            - if (@root == true)
-              .row
-                .col.s8{:style => "width: 130%;"}
-                  %table.highlight
-                    %thead
-                      %tr
-                        %th{"data-field" => "id"} Folder
-                        %th{"data-field" => "name"} Name
 
-                    - @results.each do |folder|
-                      %tr
-                        %th
-                          = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
-                        %th
-                          .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
-                            = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
-            - if (!@text.nil?)
-              = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-            - if (@root != true)
-              .row
-                .col.s8{:style => "width: 130%;"}
-                  %table.highlight
-                    %thead
-                      %tr
-                        %th{"data-field" => "id"} File
-                        %th{"data-field" => "name"} Name
-                        %th{"data-field" => "price"} Type
-                        %th{"data-field" => "foop"} Created
-                        %th{"data-field" => "foop"} Privacy
+  .row
+    .col.s6.push-s3
+      - if @results.nil? or @results.count == 0
+        %h6{:style =>'text-align: center; margin-top: 30px; margin-left: 200px;'}
+          There were no results matching your search criteria.
+      - else
+        / either results were found for your search or were are in the resource root folder / sub-folder
+        %h6
+        / are we in the root folder?
+        - if (@root == true)
+          .row
+            .col.s8{:style => "width: 130%;"}
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} Folder
+                    %th{"data-field" => "name"} Name
+                - @results.each do |folder|
+                  %tr
+                    %th
+                      = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
+                    %th
+                      .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
+                        = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
+        - if (!@text.nil?)
+          = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+        - if (@root != true)
+          .row
+            .col.s8{:style => "width: 130%;"}
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "price"} Category
+                    %th{"data-field" => "foop"} Created
+                    %th{"data-field" => "foop"} Privacy
 
 
-                    - @results.each do |result|
-                      %tr
-                        %td
-                          = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
-                            = image_tag(thumbnail_url(result.id), :height => "50px")
-                        %td
-                          = result.name
-                        %td
-                          = result.type
-                        %td
-                          = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
-                        %td
-                          = result.audience
+                - @results.each do |result|
+                  %tr
+                    %td.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); "}
+                      = image_tag(thumbnail_url(result.id), :height => "50px", :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                    %td
+                      = result.name
+                    %td
+                      = result.type
+                    %td
+                      = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                    %td
+                      = result.audience
+
+
+#viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%;	width: 960px;	background-color: white"}
+  .modal-content
+    %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0'}
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
 
 :javascript
   $(document).ready(function() {
     $('select').material_select();
+  });
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+  });
+
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
   });

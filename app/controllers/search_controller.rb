@@ -68,7 +68,14 @@ class SearchController < SecuredController
         mdfilters = {"templateKey" => "#{ENV['METADATA_KEY']}", "scope" => "enterprise",
                      "filters" => {"#{params["key"]}" => "#{params["filter_query"]}"}}
         @results = client.search(mdfilters: mdfilters, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
-        @search_type = params["key"]
+        # @search_type = params["key"]
+
+        # little hack to change message name
+        if(params["key"] == 'type')
+          @search_type = "category"
+        elsif(params["key"] == 'audience')
+          @search_type = "privacy"
+        end
       end
 
       @results = @results.files
