@@ -14,7 +14,7 @@
   .row
     - if (session[:progress] == 0)
       .row
-        .col.s4.push-s10{:style => "margin-top:-20px;"}
+        .col.s2.push-s10{:style => "margin-top:-20px;"}
           %h7
             Step 1 of 4
       .row
@@ -42,7 +42,7 @@
               %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit For Approval
     - elsif (session[:progress] == 1)
       .row
-        .col.s4.push-s10{:style => "margin-top:-20px;"}
+        .col.s2.push-s10{:style => "margin-top:-20px;"}
           %h7
             Step 2 of 4
       .row
@@ -54,7 +54,7 @@
           %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
     - elsif (session[:progress] == 2)
       .row
-        .col.s4.push-s10{:style => "margin-top:-20px;"}
+        .col.s2.push-s10{:style => "margin-top:-20px;"}
           %h7
             Step 3 of 4
       .row
@@ -62,11 +62,13 @@
           %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
     - elsif (session[:progress] == 3)
       .row
-        .col.s4.push-s10{:style => "margin-top:-20px;"}
+        .col.s2.push-s10{:style => "margin-top:-20px;"}
           %h7
             Complete!
       .row
         .col.s8.push-s3{:style => "margin-top: 20px;"}
+          .flash
+            = render partial: "shared/flash_messages", flash: flash
           %h6{:style => "margin-bottom: 20px;"}
             You've completed the Onboarding process!
           %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
