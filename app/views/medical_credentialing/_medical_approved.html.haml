@@ -1,8 +1,16 @@
-.col-md-12.col-sm-12
+.row
+  .col.s2.push-s10{:style => "margin-top:-20px;"}
+    %h7
+      Complete!
+  .col.s8.push-s3{:style => "margin-top: 20px;"}
+    .flash
+      = render partial: "shared/flash_messages", flash: flash
+.col.s10.push-s2
+  %h6{:style => "margin-bottom: 20px"}
+    Approved medical credential documents:
+.col.s8.push-s3
   .panel.panel-default{:style => "margin-bottom: 0px"}
-    .panel-heading
-      %h2 Approved Medical Credential Documents
-    %table.table
+    %table.highlight
       %thead
         %tr
           %th File
@@ -24,7 +32,7 @@
               %td
                 / file action options
                 .btn-group
-                  %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                    %span.glyphicon.glyphicon-eye-open
-                  %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                    %span.glyphicon.glyphicon-cloud-download
+                  %a.btn.white.tooltipped{href: view_doc_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+                  %a.btn.white.tooltipped{href: download_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}

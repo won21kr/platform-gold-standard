@@ -20,7 +20,6 @@ class DashboardController < SecuredController
 
     # set active folder ID, either "My Files" or "Shared Files" folder
     if(session[:current_folder].nil?)
-      puts "it's fucking nil!"
       @currentFolder = @myFolder.id
     else
       @currentFolder = session[:current_folder]

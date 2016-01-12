@@ -94,9 +94,9 @@
 
 
                 - @results.each do |result|
-                  %tr
-                    %td.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); "}
-                      = image_tag(thumbnail_url(result.id), :height => "50px", :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                  %tr.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); ", :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                    %td
+                      = image_tag(thumbnail_url(result.id), :height => "50px")
                     %td
                       = result.name
                     %td

@@ -34,12 +34,6 @@
                 = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
               %td
                 / file action options
-                -# .btn-group
-                -#   %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                -#     %span.glyphicon.glyphicon-eye-open
-                -#   %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                -#     %span.glyphicon.glyphicon-cloud-download
-
                 .btn-group
                   %a.btn.white.tooltipped{href: view_doc_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
                     %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
