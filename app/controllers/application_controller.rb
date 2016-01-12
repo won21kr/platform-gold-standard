@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
-  helper :all
-  helper_method :get_task_status, :get_med_task_status
+  # protect_from_forgery with: :exception
+  # helper :all
+  # helper_method :get_task_status, :get_med_task_status
   before_action :check_config
 
   def get_task_status
