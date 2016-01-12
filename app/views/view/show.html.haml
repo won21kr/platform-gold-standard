@@ -9,43 +9,45 @@
     = link_to '<< Back to My Vault', dashboard_path
 
 .container
-  .col-md-9
-    %h3
-      = @file.name.split(".").first
-    / create iframe for viewing document
-    - if @file.name.downcase.end_with?('.png') or @file.name.downcase.end_with?('.jpg') or @file.name.downcase.end_with?('.jpeg')
-      %img{:id => 'image_preview', :width => '100%', :src => download_file_url(@fileId), :allowfullscreen => 'allowfullscreen'}
-    - elsif @file.name.downcase.end_with?('.mp4') or @file.name.downcase.end_with?('.mov')
-      %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '100%', height: '600', poster: "#{thumbnail_url(@file.id)}", 'data-setup' => true}
-        %source{src: "#{download_url(@fileId)}", type: 'video/mp4'}
-    - else
-      %iframe{:height => "600", :width => "100%", :src => preview_url(@fileId), :allowfullscreen => 'allowfullscreen'}
-  .col-md-3
-    %h3
-      Comment Stream:
-    %ul.commentList
-      / list comments in chronological order associated with each file
-      - @comments.each do |c|
-        %li
-          .commenterImage
-            - if (c.created_by.id == ENV['EMPL_ID'])
-              = image_tag "empl.png"
-            - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
-              = image_tag "credentialist.png"
-            - else
-              = image_tag "customer.png"
-          .commentText
-            %p
-              = c.message
-            %span.date.sub-text
-              = DateTime.strptime(c.created_at).strftime("%m/%d/%y at %l:%M %p")
-    / allow user to enter new comment attached to file
-    %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
-      = token_tag
-      .form-group{:style => "width: 100%"}
-        %textarea.form-control{:style => "width: 100%", :rows=>"4", :placeholder => "Add a comment", :type => "text", :name => "comment", :required => true}
-      .form-group{:style => "margin-bottom: 30px"}
-        %button.btn.btn-default{:style => "margin-top: 5px"} Post
+  .row
+    .col.s9
+      %h6{:style => "margin-top: 20px"}
+        = @file.name.split(".").first
+      / create iframe for viewing document
+      - if @file.name.downcase.end_with?('.png') or @file.name.downcase.end_with?('.jpg') or @file.name.downcase.end_with?('.jpeg')
+        %img{:id => 'image_preview', :width => '100%', :src => download_file_url(@fileId), :allowfullscreen => 'allowfullscreen'}
+      - elsif @file.name.downcase.end_with?('.mp4') or @file.name.downcase.end_with?('.mov')
+        %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '100%', height: '600', poster: "#{thumbnail_url(@file.id)}", 'data-setup' => true}
+          %source{src: "#{download_url(@fileId)}", type: 'video/mp4'}
+      - else
+        %iframe{:height => "600", :width => "100%", :src => preview_url(@fileId), :allowfullscreen => 'allowfullscreen'}
+    .col.s3
+      %h6{:style => "margin-top: 20px"}
+        Comment Stream:
+      %ul.commentList
+        / list comments in chronological order associated with each file
+        - @comments.each do |c|
+          %li
+            .commenterImage
+              - if (c.created_by.id == ENV['EMPL_ID'])
+                = image_tag "empl.png"
+              - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
+                = image_tag "credentialist.png"
+              - else
+                = image_tag "customer.png"
+            .commentText
+              %p
+                = c.message
+              %span.date.sub-text
+                = DateTime.strptime(c.created_at).strftime("%m/%d/%y at %l:%M %p")
+      / allow user to enter new comment attached to file
+      %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
+        = token_tag
+        .input-field.col.s12
+          %textarea#comment.validate.materialize-textarea{:style => "width: 100%", :rows=>"4", :type => "text", :name => "comment", :required => true}
+          %label{:for => "comment"} Add a comment
+        .form-group{:style => "margin-bottom: 30px"}
+          %button.waves-effect.btn.white.black-text{:style => "margin-top: 5px"} Post
 
 
 :javascript

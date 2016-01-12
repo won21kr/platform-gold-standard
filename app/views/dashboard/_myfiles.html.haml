@@ -1,6 +1,6 @@
-- if @myFolder.id == @currentFolder
-  .row
-    .flash.col.s7.push-s3
+.row
+  .flash.col.s7.push-s3
+    - if @myFolder.id == @currentFolder
       = render partial: "shared/flash_messages", flash: flash
 .col.s10.push-s2
   %table.highlight
@@ -20,15 +20,15 @@
             %td
               %span{:style => "inline"}
                 = f.name
-                = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                  %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
-                #popover-content.hide
-                  %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
-                    %input#name.form-control{:type => "text", :name => "fileName"}
-                    %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-                    %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                    %button.btn.btn-primary.btn-md{:type => "submit"} Save
-                    %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+                -# = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+                -#   %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip1', 'data-hover'=>"tooltip1", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
+                -# #popover-content.hide
+                -#   %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
+                -#     %input#name.form-control{:type => "text", :name => "fileName"}
+                -#     %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+                -#     %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+                -#     %button.btn.btn-primary.btn-md{:type => "submit"} Save
+                -#     %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
             %td.hidden-xs.hidden-sm
               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
             / file action options
