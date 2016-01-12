@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   def get_task_status
 
+    puts "get workflow task status"
+
     if (session[:task_status].nil?)
       puts "getting task status"
       client = user_client
@@ -32,6 +34,7 @@ class ApplicationController < ActionController::Base
   # get med credential workflow status
   def get_med_task_status
 
+    puts "get med task status"
     client = user_client
 
     # if the medical credentialing form doc has been generated, check if the task has been approved

@@ -79,12 +79,11 @@ class MedicalCredentialingController < SecuredController
                      :degree => params[:degree],
                      :username => session[:userinfo]['info']['name']})
 
-
       path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
       doc.configure_pdf(client, filename, path, ENV['MEDICAL_FORM'])
     end
 
-    flash[:notice] = "Thanks for filling out your information! Now upload relevant medical credentials."
+    flash[:notice] = "Thanks for filling out your information! Now upload relevant medical credential files."
     redirect_to medical_path
   end
 

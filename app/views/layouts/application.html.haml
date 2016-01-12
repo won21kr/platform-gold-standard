@@ -7,7 +7,7 @@
     = include_gon
     -# = stylesheet_link_tag    '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'
     = stylesheet_link_tag    '//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css'
-    = stylesheet_link_tag    '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'    
+    = stylesheet_link_tag    '//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
     = stylesheet_link_tag    '//fonts.googleapis.com/icon?family=Material+Icons'
     = stylesheet_link_tag    '//maxcdn.ap.com/font-awesome/4.1.0/css/font-awesome.min.css'
     = stylesheet_link_tag    '//fonts.googleapis.com/css?family=Open+Sans:100,200,400,300,600'
@@ -21,7 +21,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = yield :auth0_code
     = csrf_meta_tags
-  %body
+  %body{:style => (current_page?(config_url) or current_page?(home_url)) ? "background-color: #fff; " : "background-color: #fcfcfc;"}
     = render 'layouts/header'
     .container
       = yield
