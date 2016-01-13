@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
-  # vault
+  # home page
   get "/" => "home#show", :as => 'home'
+  get "/login" => "home#login", :as => "login"
+
+  # dashboard
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
   get "/dashboard/:id" => "dashboard#show", :as => 'dashboard_id'
   get "/delete/:id" => "dashboard#delete_file", :as => "delete_file"
