@@ -21,9 +21,15 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = yield :auth0_code
     = csrf_meta_tags
-    -# %body{:style => (current_page?(config_url) or current_page?(home_url)) ? ((session[:navbar_color].nil? or current_page?(config_url)) ? "background-color: #fff" : "background-color: #{session[:navbar_color]}") : "background-color: #fcfcfc;"}
-    %body
-      .container
-        = yield
-      .footer
-        = render 'layouts/footer'
+    - if !current_page?(config_url)
+      %body
+        .container
+          = yield
+        .footer
+          = render 'layouts/footer'
+    - else
+      %body{:style => "background-color: #fff"}
+        .container
+          = yield
+        .footer
+          = render 'layouts/footer'

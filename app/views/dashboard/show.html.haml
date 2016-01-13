@@ -30,6 +30,15 @@
     .row{:style => "margin-top: 20px;"}
       = render 'dashboard/sharedfiles'
 
+#popover-content.hide{:style => "padding: 5px 10px"}
+  %form.form-inline{:role => "form", :method => "post", :action => edit_name_path(@currentFolder)}
+    %input#name{:type => "text", :name => "fileName", :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
+    %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+    %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 85%"} Save
+    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 85%"} Close
+
+
 :javascript
   Dropzone.options.myDropzone = {
     init: function() {
@@ -45,16 +54,13 @@
     $('.modal-trigger').leanModal();
   });
 
-  // $(document).ready(function(){
-  //     $('[data-toggle="popover"]').popover();
-  // });
-
-  // $(document).ready(function() {
-  //   $('[data-toggle=popover]').popover({
-  //       html: 'true',
-  //   placement: 'right',
-  //   title: "Edit File Name",
-  //   content : function() {
-  //       return $('#popover-content').html();
-  //   }
-  // })
+  $(document).ready(function(){
+    $('[data-toggle=popover]').popover({
+      html: 'true',
+      placement: 'right',
+      title: "Edit File Name",
+      content : function() {
+        return $('#popover-content').html();
+      }
+    })
+  });

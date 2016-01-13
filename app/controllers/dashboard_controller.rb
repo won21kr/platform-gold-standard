@@ -52,18 +52,21 @@ class DashboardController < SecuredController
 
     client = user_client
 
-    file = client.file_from_id(params[:fileId])
+    file = client.file_from_id(params[:fileId], fields: [:parent])
+
+    # set current folder id
+    session[:current_folder] = file.parent.id
+
     newName = params[:fileName] + '.' + params[:fileExt]
 
     begin
       client.update_file(file, name: newName)
-      :javascript
       flash[:notice] = "File name changed to \"#{params[:fileName]}\""
     rescue
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to dashboard_id_path(session[:current_folder])
+    redirect_to dashboard_path
   end
 
   # upload files to parameter specified folder ID

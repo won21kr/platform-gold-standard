@@ -20,15 +20,8 @@
             %td
               %span{:style => "inline"}
                 = f.name
-                -# = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                -#   %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
-                -# #popover-content.hide
-                -#   %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
-                -#     %input#name.form-control{:type => "text", :name => "fileName"}
-                -#     %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-                -#     %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                -#     %button.btn.btn-primary.btn-md{:type => "submit"} Save
-                -#     %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+                = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+                  %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit Name"}
             %td.hidden-xs.hidden-sm
               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
             / file action options
@@ -38,7 +31,7 @@
                   %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
                 %a.btn.white.tooltipped{href: unshare_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Unshare", :style => "padding-right: 9px; padding-left: 9px;"}
                   %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
-                %a.btn.white.tooltipped{href: download_path(f.id, folder: @sharedFolder.id ), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                %a.btn.white.tooltipped{href: download_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
                   %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
                 %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
                   %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
