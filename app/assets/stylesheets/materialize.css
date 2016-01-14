@@ -2094,7 +2094,7 @@ img.responsive-img, video.responsive-video {
       overflow: hidden;
       white-space: nowrap; } }
 
-.breadcrumb {
+/*.breadcrumb {
   font-size: 18px;
   color: #333333; }
   .breadcrumb:before {
@@ -2111,7 +2111,27 @@ img.responsive-img, video.responsive-video {
   .breadcrumb:first-child:before {
     display: none; }
   .breadcrumb:last-child {
-    color: #333333; }
+    color: #333333; }*/
+
+/*bootstrap breadcrumb*/
+.breadcrumb {
+  /*padding: 8px 15px;*/
+  /*margin-bottom: 20px;*/
+  list-style: none;
+  /*background-color: #f5f5f5;*/
+  border-radius: 4px;
+}
+.breadcrumb > li {
+  display: inline-block;
+}
+.breadcrumb > li + li:before {
+  content: "/\00a0";
+  padding: 0 5px;
+  color: #cccccc;
+}
+.breadcrumb > .active {
+  color: #777777;
+}
 
 .parallax-container {
   position: relative;

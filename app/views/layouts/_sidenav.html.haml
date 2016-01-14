@@ -3,7 +3,6 @@
   %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
   %ul.collection
 
-
   %li{:class => "#{'active' if session[:current_page] == "vault"}"}
     %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
   - if session[:resources] == 'on' or session[:resources].nil?
@@ -12,8 +11,6 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-      -# %span.badge
-      -#   = session[:task_status].nil? ? get_task_status : session[:task_status]
   - if session[:catalog] == 'on' or session[:catalog].nil?
     %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
       %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
@@ -31,13 +28,16 @@
 
   .footer-user
     .footer-copyright{:style => "margin-left: 15%; margin-top: -15%"}
-      .container
-        - if session[:userinfo]
-          .name.hidden-xs{:style => "margin-left: -20px;" }
-            %a.tooltipped{href: logout_path, :style => "text-decoration: none", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Logout"}
-              %span
-                = image_tag (session[:userinfo][:info][:image]), :width => '25px', :class => 'circle'
-              %span{:style => "color: black; font-size: 12px;", :class => 'title'}
-                = "#{session[:userinfo][:info][:name]}"
-              %span{:class => 'title'}
-                %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}
+      - if session[:userinfo]
+        .name.hidden-xs{:style => "margin-left: -20px;" }
+          %a.tooltipped{href: logout_path, :style => "text-decoration: none", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Logout"}
+            .row
+              .col.s2
+                %span
+                  = image_tag (session[:userinfo][:info][:image]), :width => '25px', :class => 'circle'
+              .col.s6
+                %div.inline{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap"}
+                  = "#{session[:userinfo][:info][:name]}"
+              .col.s2
+                %span{:class => 'title'}
+                  %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}

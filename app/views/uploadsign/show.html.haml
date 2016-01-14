@@ -1,91 +1,88 @@
-
 #index-banner.section.no-pad-bot
   .container
-    %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-      %i.material-icons.prefix{:style => "font-size: 28px;"} spellcheck
-      Upload & Sign
-    %h6.caption.thin{:style => "margin-left: 165px; font-size: 16px;"}
-      Upload and e-sign documents
-    .col.s5{:style => "margin-top: -45px; margin-left: 750px;"}
-      %ul.tabs{:style => "background-color: transparent; width: 88% !important;"}
-        %li.tab{:style => "font-size: 12px !important;"}
-          %a.active{:href => "#pendingSignature"}
-            Pending Signature
-        %li.tab{:style => "font-size: 12px !important;"}
-          %a{:href => "#signed"}
-            Signed
-
-.container
-  = render 'layouts/sidenav'
-  -# .row
-  -#   .flash.col.s7.push-s3
-  -#     = render partial: "shared/flash_messages", flash: flash
-  #pendingSignature
+    = render 'layouts/sidenav'
     .row
-      .col.s2.push-s10.h6{:style => "margin-top: 40px;"}
-        %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
-    .row{:style => "margin-top: 20px;"}
-      .flash.col.s7.push-s3
-        = render partial: "shared/flash_messages", flash: flash
       .col.s10.push-s2
-        - if (@pendingFiles.size > 0)
-          %table.highlight
-            %thead
-              %tr
-                %th{"data-field" => "id"} File
-                %th{"data-field" => "name"} Name
-                %th{"data-field" => "foop"} Actions
-              %tbody
-                / list file contents
-                - @pendingFiles.each do |f|
-                  %tr
-                    %td.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); "}
-                      = image_tag(thumbnail_url(f.id), width: '35px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
-                    %td
-                      %span{:style => "inline"}
-                        = f.name
-                    / file action options
-                    %td
-                      .btn-group
-                        %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                          %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
-                        %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
-                          %span.glyphicon.glyphicon-check{:style => "top: 5px; color: #263238"}
-        - else
-          .col.push-s3
-            .h5{:style => "margin-top: 35px;"}
-              You have no documents pending signature at this time
+        // Title
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} spellcheck
+          Upload & Sign
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Upload and e-sign documents
+        // Tabs
+        .col.s5.push-s7{:style => "margin-top: -45px; margin-left: 40px;"}
+          %ul.tabs{:style => "background-color: transparent; width: 88% !important;"}
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a.active{:href => "#pendingSignature"}
+                Pending Signature
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#signed"}
+                Signed
 
-  #signed
-    .row
-      .col.s2.push-s10.h6{:style => "margin-top: 76px;"}
-    .row{:style => "margin-top: 20px;"}
-      .col.s10.push-s2
-        - if (@signedFiles.size > 0)
-          %table.highlight
-            %thead
-              %tr
-                %th{"data-field" => "id"} File
-                %th{"data-field" => "name"} Name
-                %th{"data-field" => "foop"} Actions
-              %tbody
-                / list file contents
-                - @signedFiles.each do |f|
+        // Pending Sig. or Signed Tab
+        .col.s12{:style => "margin-left: 30px"}
+          #pendingSignature
+            .col.s2.push-s10{:style => "margin-top: 30px;"}
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+            .col.s12
+              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+                = render partial: "shared/flash_messages", flash: flash
+            - if (@pendingFiles.size > 0)
+              %table.highlight
+                %thead
                   %tr
-                    %td.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); "}
-                      = image_tag(thumbnail_url(f.id), width: '35px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
-                    %td
-                      %span{:style => "inline"}
-                        = f.name
-                    / file action options
-                    %td
-                      .btn-group
-                        %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                          %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
-        - else
-          .col.push-s3
-            .h5{:style => "margin-top: 35px;"}
-              You have no signed documents at this time
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "foop"} Actions
+                  %tbody
+                    / list file contents
+                    - @pendingFiles.each do |f|
+                      %tr
+                        %td.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); "}
+                          = image_tag(thumbnail_url(f.id), width: '35px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                        %td
+                          %span{:style => "inline"}
+                            = f.name
+                        / file action options
+                        %td
+                          .btn-group
+                            %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+                            %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-check{:style => "top: 5px; color: #263238"}
+            - else
+              .col.s5.push-s3
+                .h5{:style => "margin-top: 35px;"}
+                  You have no documents pending signature at this time
+
+          #signed
+            .col.s2.push-s10{:style => "margin-top: 86px;"}
+            - if (@signedFiles.size > 0)
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "foop"} Actions
+                  %tbody
+                    / list file contents
+                    - @signedFiles.each do |f|
+                      %tr
+                        %td.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); "}
+                          = image_tag(thumbnail_url(f.id), width: '35px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                        %td
+                          %span{:style => "inline"}
+                            = f.name
+                        / file action options
+                        %td
+                          .btn-group
+                            %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+            - else
+              .col.s12
+                .col.s5.push-s3
+                  .h5{:style => "margin-top: 35px;"}
+                    You have no signed documents at this time
 
 #uploadModal.modal
   .modal-content

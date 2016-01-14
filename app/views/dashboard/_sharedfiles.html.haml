@@ -1,42 +1,37 @@
-.row
-  .flash.col.s7.push-s3
-    - if @sharedFolder.id == @currentFolder
-      = render partial: "shared/flash_messages", flash: flash
-.col.s10.push-s2
-  %table.highlight
-    %thead
-      %tr
-        %th{"data-field" => "id"} File
-        %th{"data-field" => "name"} Name
-        %th{"data-field" => "price"} Date Modified
-        %th{"data-field" => "foop"} Actions
-      %tbody
-        / list file contents
-        - @sharedFiles.each do |f|
-          %tr
-            %td
-              = link_to view_doc_path(f.id, folder: @sharedFolder.id) do
-                = image_tag(thumbnail_url(f.id), width: '30px')
-            %td
-              %span{:style => "inline"}
-                = f.name
-                = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                  %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit Name"}
-            %td.hidden-xs.hidden-sm
-              = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
-            / file action options
-            %td
-              .btn-group
-                %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                  %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
-                %a.btn.white.tooltipped{href: unshare_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Unshare", :style => "padding-right: 9px; padding-left: 9px;"}
-                  %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
-                %a.btn.white.tooltipped{href: download_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
-                  %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
-                %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                  %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
+%table.highlight
+  %thead
+    %tr
+      %th{"data-field" => "id"} File
+      %th{"data-field" => "name"} Name
+      %th{"data-field" => "price"} Date Modified
+      %th{"data-field" => "foop"} Actions
+    %tbody
+      / list file contents
+      - @sharedFiles.each do |f|
+        %tr
+          %td
+            = link_to view_doc_path(f.id, folder: @sharedFolder.id) do
+              = image_tag(thumbnail_url(f.id), width: '30px')
+          %td
+            %span{:style => "inline"}
+              = f.name
+              = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
+                %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit Name"}
+          %td.hidden-xs.hidden-sm
+            = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+          / file action options
+          %td
+            .btn-group
+              %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+              %a.btn.white.tooltipped{href: unshare_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Unshare", :style => "padding-right: 9px; padding-left: 9px;"}
+                %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
+              %a.btn.white.tooltipped{href: download_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
+              %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
 - if @sharedFiles.size == 0
-  .col.s10.push-s5
+  .col.s5.push-s3
     .h5{:style => "margin-top: 35px;"}
       Add files by clicking the "Upload" button above.
 

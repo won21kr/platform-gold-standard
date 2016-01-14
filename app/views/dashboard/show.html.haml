@@ -1,34 +1,42 @@
-
 #index-banner.section.no-pad-bot
   .container
-    %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-      %i.material-icons.prefix{:style => "font-size: 28px;"} lock_outline
-      My Vault
-    %h6.caption.thin{:style => "margin-left: 165px; font-size: 16px;"}
-      Your personal and shared files
-    .col.s5{:style => "margin-top: -45px; margin-left: 750px;"}
-      %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
-        %li.tab{:style => "font-size: 12px !important;"}
-          %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
-            = @myFolder.name
-        %li.tab{:style => "font-size: 12px !important;"}
-          %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
-            = @sharedFolder.name
-
-.container
-  = render 'layouts/sidenav'
-  #myfiles
+    = render 'layouts/sidenav'
     .row
-      .col.s2.push-s10.h6{:style => "margin-top: 40px;"}
-        %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
-    .row{:style => "margin-top: 20px;"}
-      = render 'dashboard/myfiles'
-  #sharedfiles
-    .row
-      .col.s2.push-s10.h6{:style => "margin-top: 40px;"}
-        %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
-    .row{:style => "margin-top: 20px;"}
-      = render 'dashboard/sharedfiles'
+      .col.s10.push-s2
+        // Title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %i.material-icons.prefix{:style => "font-size: 28px;"} lock_outline
+            My Vault
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Your personal and shared files
+        // Tabs
+        .col.s5.push-s7{:style => "margin-top: -45px; margin-left: 40px"}
+          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
+                = @myFolder.name
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
+                = @sharedFolder.name
+        // Table + upload button
+        .col.s12{:style => "margin-left: 30px"}
+          #myfiles
+            .col.s2.push-s10{:style => "margin-top: 30px;"}
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+            .col.s12
+              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+                - if @myFolder.id == @currentFolder
+                  = render partial: "shared/flash_messages", flash: flash
+            = render 'dashboard/myfiles'
+          #sharedfiles
+            .col.s2.push-s10{:style => "margin-top: 40px;"}
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+            .col.s12
+              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+                - if @sharedFolder.id == @currentFolder
+                  = render partial: "shared/flash_messages", flash: flash
+            = render 'dashboard/sharedfiles'
 
 #popover-content.hide{:style => "padding: 5px 10px"}
   %form.form-inline{:role => "form", :method => "post", :action => edit_name_path(@currentFolder)}
@@ -40,6 +48,8 @@
 
 
 :javascript
+
+  // dropzone uploading
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
@@ -48,12 +58,12 @@
     }
   };
 
-:javascript
+  // trigger modals
   $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
   });
 
+  // edit filename popover
   $(document).ready(function(){
     $('[data-toggle=popover]').popover({
       html: 'true',

@@ -1,14 +1,13 @@
-.row
-  .col.s2.push-s10{:style => "margin-top:-20px;"}
-    %h7
-      Step 3 of 3
-  .col.s8.push-s3{:style => "margin-top: 20px;"}
-    .flash
-      = render partial: "shared/flash_messages", flash: flash
-.col.s10.push-s2
+.col.s2.push-s10{:style => "margin-top:-20px;"}
+  %h7
+    Step 3 of 3
+.col.s8.push-s2{:style => "margin-top: 30px;"}
+  .flash
+    = render partial: "shared/flash_messages", flash: flash
+.col.s5
   %h6{:style => "margin-bottom: 40px"}
     Wait for credentialing specialist to review & approve:
-.col.s8.push-s3
+.col.s10.push-s1
   .panel.panel-default{:style => "margin-bottom: 0px"}
     .panel-heading
       %h6{:style => "height: 130%"}

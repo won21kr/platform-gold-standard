@@ -31,7 +31,7 @@ class SearchController < SecuredController
 
         # get resource subfolder objects
         @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/subfolers", :expires_in => 15.minutes) do
-          client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :created_at, :size])
+          client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :content_modified_at, :description])
         end
 
         # tell view that we are in the root resource folder
@@ -44,6 +44,7 @@ class SearchController < SecuredController
                                        fields: [:id, :name, :created_at, :size])
         subFolder = client.folder_from_id(params[:folder_id], fields: [:name])
         @subName = subFolder.name
+        ap @subName
         session[:current]
       end
     else

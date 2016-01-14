@@ -1,76 +1,99 @@
-
 #index-banner.section.no-pad-bot
   .container
-    %h3.thin{:style => "margin-left: 165px; margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-      %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
-      Resources
-    %h6.caption.thin{:style => "margin-left: 165px; font-size: 16px;"}
-      Find relevant content, fast
-
-.home
-  .container
     = render 'layouts/sidenav'
-  .row{:style => "margin-top: 40px;"}
-    %span
-      = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
-        .col.s4.push-s3{:style => "margin-left: -30px;"}
-          = f.input :query, placeholder: "Search...", input_html: {class: 'input-field'}
-        .col.s3.push-s3
-          = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
-        .col.s1.push-s2{:style => "margin-left: -40px; margin-top: 15px;"}
-          %span.border-select
-            %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
-              Type
-              %i.material-icons.right arrow_drop_down
-          %ul.dropdown-content{:id => "dropdown1",}
-            %li
-              = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
-            %li
-              = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
-            %li
-              = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
-            %li
-              = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
-        .col.s1.push-s2{:style => "width: 10.1%; margin-top: 15px;"}
-          %span.border-select
-            %a.dropdown-button{"data-activates" => "dropdown2", :href => "#!", :style => "color: black"}
-              Category
-              %i.material-icons.right arrow_drop_down
-          %ul.dropdown-content{:id => "dropdown2"}
-            %li
-              = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
-            %li
-              = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
-            %li
-              = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
-        .col.s1.push-s2{:style => "margin-top: 15px;"}
-          %span.border-select
-            %a.dropdown-button{"data-activates" => "dropdown3", :href => "#!", :style => "color: black"}
-              Privacy
-              %i.material-icons.right arrow_drop_down
-          %ul.dropdown-content{:id => "dropdown3"}
-            %li
-              = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
-            %li
-              = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
+    .row
+      .col.s10.push-s2
+        // title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
+            Resources
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Find relevant content, fast
+        // Messaging
+        .col.s5.push-s7{:style => "margin-top:-20px; text-align: right"}
+          - if (!@text.nil?)
+            = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+          - elsif @root == true
+            .breadcrumb
+              %li
+                %li.active{:href => "#"} Resources
+          - elsif !@subName.nil?
+            .breadcrumb{:style => "vertical-align: top"}
+              %li
+                %a{:href => "/resources"} Resources
+              %li.active{:href => "#", :style => ""}
+                = @subName
 
-  .row
-    .col.s6.push-s3
-      - if @results.nil? or @results.count == 0
-        %h6{:style =>'text-align: center; margin-top: 30px; margin-left: 200px;'}
-          There were no results matching your search criteria.
-      - else
-        / either results were found for your search or were are in the resource root folder / sub-folder
-        %h6
-        / are we in the root folder?
-        - if (@root == true)
-          .row
-            .col.s8{:style => "width: 130%;"}
+        // Search and filtering
+        .col.s12{:style => "margin-left: 20px; margin-bottom: 20px; margin-top: 40px"}
+          = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
+            // input
+            .col.s5
+              = f.input :query, placeholder: "Search...", input_html: {class: 'input-field'}
+            // search button
+            .col.s2
+              = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
+            // file type filter
+            .col.s1{:style => "margin-top: 15px; width: 13%"}
+              %span.border-select
+                %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
+                  Type
+                  %i.material-icons.right arrow_drop_down
+              %ul.dropdown-content{:id => "dropdown1",}
+                %li
+                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
+                %li
+                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
+                %li
+                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
+                %li
+                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
+            // category filter
+            .col.s1{:style => "margin-top: 15px; width: 15%"}
+              %span.border-select
+                %a.dropdown-button{"data-activates" => "dropdown2", :href => "#!", :style => "color: black"}
+                  Category
+                  %i.material-icons.right arrow_drop_down
+              %ul.dropdown-content{:id => "dropdown2"}
+                %li
+                  = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
+                %li
+                  = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
+                %li
+                  = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
+            // privacy filter
+            .col.s1{:style => "margin-top: 15px; width: 13%"}
+              %span.border-select
+                %a.dropdown-button{"data-activates" => "dropdown3", :href => "#!", :style => "color: black"}
+                  Privacy
+                  %i.material-icons.right arrow_drop_down
+              %ul.dropdown-content{:id => "dropdown3"}
+                %li
+                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
+                %li
+                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
+
+        // Results: folders, search, filter
+        .col.s12{:style => "margin-left: 30px"}
+          - if @results.nil? or @results.count == 0
+            %h6
+              There were no results matching your search criteria.
+          - else
+            / either results were found for your search or were are in the resource root folder / sub-folder
+            / are we in the root folder?
+            - if (@root == true)
+              -# .nav-wrapper
+              -#   %a.breadcrumb{:href => "/resources"}
+              -#     Resources
+              -#   %a.breadcrumb{:href => "#!"}
               %table.highlight
                 %thead
                   %tr
                     %th{"data-field" => "id"} Folder
                     %th{"data-field" => "name"} Name
+                    %th{"data-field" => "modified"} Last Modified
+                    %th{"data-field" => "modified"} Description
                 - @results.each do |folder|
                   %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
                     %th
@@ -78,11 +101,13 @@
                     %th
                       .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
                         = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
-        - if (!@text.nil?)
-          = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-        - if (@root != true)
-          .row
-            .col.s8{:style => "width: 130%;"}
+                    %th
+                      = DateTime.strptime(folder.content_modified_at).strftime("%B %d, %Y")
+                    %th
+                      = folder.description
+            -# - if (!@text.nil?)
+            -#   = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+            - if (@root != true)
               %table.highlight
                 %thead
                   %tr
