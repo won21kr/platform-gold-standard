@@ -68,9 +68,12 @@
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
             #demo.collapse
               %div{:style => "margin-top: 20px"}
-              %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Login Page Background URL
-              %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
-
+              .col.s10{:style => "padding-left: 0"}
+                %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Login Page Background URL
+                %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
+              .col.s1
+                %a.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.6rem; margin-left: -10px", :href => "/login"}
+                  Preview
           .col.s5.push-s1
             -# Activate / Deactivate feature tabs
             %b{:for => "tab_select"} Active Feature Tabs
@@ -151,7 +154,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
-        %form.item{:action => "/dashboard", :method => "get", :role => "form"}
+        %form.item{:action => session[:background].nil? ? "/dashboard" : '/login', :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         -#   Documentation
