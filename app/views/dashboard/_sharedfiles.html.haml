@@ -23,13 +23,13 @@
           %td
             .btn-group
               %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+                %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
               %a.btn.white.tooltipped{href: unshare_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Unshare", :style => "padding-right: 9px; padding-left: 9px;"}
-                %span.glyphicon.glyphicon-share{:style => "top: 5px; color: #263238"}
+                %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
               %a.btn.white.tooltipped{href: download_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
-                %span.glyphicon.glyphicon-download{:style => "top: 5px; color: #263238"}
+                %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
               %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                %span.glyphicon.glyphicon-trash{:style => "top: 5px; color: #263238"}
+                %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
 - if @sharedFiles.size == 0
   .col.s5.push-s3
     .h5{:style => "margin-top: 35px;"}

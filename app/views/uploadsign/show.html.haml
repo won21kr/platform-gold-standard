@@ -47,9 +47,9 @@
                         %td
                           .btn-group
                             %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+                              %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
                             %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-check{:style => "top: 5px; color: #263238"}
+                              %span.glyphicon.glyphicon-check{:style => "top: 3px; color: #263238"}
             - else
               .col.s5.push-s3
                 .h5{:style => "margin-top: 35px;"}
@@ -77,7 +77,7 @@
                         %td
                           .btn-group
                             %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-eye-open{:style => "top: 5px; color: #263238"}
+                              %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
             - else
               .col.s12
                 .col.s5.push-s3

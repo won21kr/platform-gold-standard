@@ -44,7 +44,6 @@ class SearchController < SecuredController
                                        fields: [:id, :name, :created_at, :size])
         subFolder = client.folder_from_id(params[:folder_id], fields: [:name])
         @subName = subFolder.name
-        ap @subName
         session[:current]
       end
     else

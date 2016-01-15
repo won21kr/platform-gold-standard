@@ -43,9 +43,9 @@
       / allow user to enter new comment attached to file
       %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
         = token_tag
-        .input-field.col.s12
-          %textarea#comment.validate.materialize-textarea{:style => "width: 100%", :rows=>"4", :type => "text", :name => "comment", :required => true}
-          %label{:for => "comment"} Add a comment
+        .input-field{:style => "margin-top: 2rem"}
+          %input#comment.validate{:style => "width: 100%", :rows=>"4", :type => "text", :name => "comment", :required => true}
+          %label{:for => "comment", :style => "left: 0"} Add a comment
         .form-group{:style => "margin-bottom: 30px"}
           %button.waves-effect.btn.white.black-text{:style => "margin-top: 5px"} Post
 
