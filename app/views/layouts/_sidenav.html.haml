@@ -41,3 +41,12 @@
               .col.s2
                 %span{:class => 'title'}
                   %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}
+
+%a.button-collapse{"data-activates" => "slide-out", :href => "#"}
+  %i.medium.material-icons
+    reorder
+
+
+:javascript
+  // Initialize collapse button
+  $(".button-collapse").sideNav();
