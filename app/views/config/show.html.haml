@@ -55,17 +55,21 @@
             %label.label-div{:for => "navbar_color", :style => "color: black"} Navbar Background Color
             %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
 
-            %label.label-div{:for => "background", :style => "color: black"} Background Image URL
-            %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
-
             %label.label-div{:style => "color: black"} Product Catalog
-            .input-field{:style => "margin-top: 0 !important"}
+            .input-field{:style => "margin-top: 0 !important; margin-bottom: 30px"}
               %select{:name => "catalog_file"}
                 %option{:disabled => "", :selected => "", :value => ""} Choose your option
                 %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
                 %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
                 %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
                 %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
+
+            -# Advanced features
+            %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "margin-top: 20px; text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
+            #demo.collapse
+              %div{:style => "margin-top: 20px"}
+              %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Login Page Background URL
+              %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
 
           .col.s5.push-s1
             -# Activate / Deactivate feature tabs
@@ -92,7 +96,7 @@
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
 
-          .col.s12
+          .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit
 
