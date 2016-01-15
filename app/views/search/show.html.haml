@@ -58,7 +58,7 @@
               %ul.dropdown-content{:id => "dropdown2"}
                 %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
                   %li
-                    = link_to "Training Material", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
+                    = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
                 %li
                   = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
                 %li

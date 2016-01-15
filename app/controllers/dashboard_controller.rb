@@ -8,7 +8,6 @@ class DashboardController < SecuredController
     client = user_client
     session[:current_page] = "vault"
 
-
     # get "My Files" and "Shared Files" folder objects
     @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
       client.folder_from_path('My Files')
@@ -24,11 +23,10 @@ class DashboardController < SecuredController
     else
       @currentFolder = session[:current_folder]
     end
-    # session[:current_folder] = @currentFolder
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
+    @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at]).files
+    @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
 
   end
 
@@ -37,7 +35,7 @@ class DashboardController < SecuredController
 
     client = user_client
 
-    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 8.minutes) do
       puts "miss"
       client.folder_from_path("My Files")
     end
@@ -54,11 +52,11 @@ class DashboardController < SecuredController
 
     file = client.file_from_id(params[:fileId], fields: [:parent])
 
-    # set current folder id
+    # set current folder id & new file name
     session[:current_folder] = file.parent.id
-
     newName = params[:fileName] + '.' + params[:fileExt]
 
+    # make Box API call to update file name
     begin
       client.update_file(file, name: newName)
       flash[:notice] = "File name changed to \"#{params[:fileName]}\""
@@ -77,15 +75,13 @@ class DashboardController < SecuredController
     uploaded_file = params[:file]
     folder = params[:folder_id]
 
+    # upload file to box from tmp folder
     temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
     begin
       temp_file.write(uploaded_file.read)
       temp_file.close
-
       box_user = Box.user_client(session[:box_id])
-
       box_file = box_user.upload_file(temp_file.path, folder)
-      #box_user.create_metadata(box_file, session[:meta])
 
     rescue => ex
       puts ex.message
@@ -124,9 +120,10 @@ class DashboardController < SecuredController
   def delete_file
 
     session[:current_folder] = params[:folder]
-    id = params[:id]
     client = user_client
-    client.delete_file(id)
+
+    # delete file
+    client.delete_file(params[:id])
     flash[:notice] = "File successfully deleted!"
 
     redirect_to dashboard_id_path(session[:current_folder])

@@ -94,11 +94,7 @@ class WorkflowController < SecuredController
         completedPath = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Completed/"
         signed_folder = box_user.folder_from_path(completedPath)
         file = box_user.upload_file(temp_file.path, signed_folder)
-        #Box.create_in_view_api(file)
         box_user.update_file(file, name: box_info[:box_doc_name])
-        #box_user.update_metadata(file, [{'op' => 'add', 'path' => '/docusign_envelope_id', 'value' => params["envelope_id"]}])
-        # meta = box_user.metadata(box_info[:box_doc_id])
-        # ap meta
         box_user.delete_file(box_info[:box_doc_id])
 
         # box_user.create_metadata(file, meta)
@@ -258,7 +254,7 @@ class WorkflowController < SecuredController
     else
       # the information form has not yet been filled out by the customer
       @status = "toFill"
-      
+
     end
 
     # return document obj or nil if document doesn't exist yet
