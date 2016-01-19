@@ -97,14 +97,14 @@
                     %th{"data-field" => "modified"} Description
                 - @results.each do |folder|
                   %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
-                    %th
+                    %td
                       = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
-                    %th
+                    %td
                       .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
                         = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
-                    %th
+                    %td
                       = DateTime.strptime(folder.content_modified_at).strftime("%B %d, %Y")
-                    %th
+                    %td
                       = folder.description
             -# - if (!@text.nil?)
             -#   = "Found #{@results.count} results for #{@search_type}: '#{@text}'"

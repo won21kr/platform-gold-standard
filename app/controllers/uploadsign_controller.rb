@@ -62,7 +62,7 @@ class UploadsignController < SecuredController
 
       flash[:notice] = "Successfully Uploaded!"
     else
-      flash[:error] = "Error: File not uploaded. Must upload a PDF."
+      flash[:error] = "File not uploaded. Must upload a PDF."
     end
     respond_to do |format|
       format.json{ render :json => {} }
@@ -114,6 +114,16 @@ class UploadsignController < SecuredController
     redirect_to uploadsign_path
   end
 
+  def delete_file
+
+    client = user_client
+
+    # delete file
+    client.delete_file(params[:id])
+    flash[:notice] = "File successfully deleted!"
+
+    redirect_to uploadsign_path
+  end
 
   def start_docusign
     # fetch the onboarding doc file from whichever folder it current lives in

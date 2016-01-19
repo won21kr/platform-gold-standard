@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get "/upload-sign-docusign/:id" => "uploadsign#start_docusign", :as => "start_docusign_id"
   get "uploadsign_docusign_response/:envelope_id" => "uploadsign#uploadnsign_docusign_response", :as => "uploadnsign_docusign_response"
   get "/reset-upload-sign" => "uploadsign#reset_uploadnsign", :as => "reset_uploadnsign"
+  get "/delete_uploadnsign/:id" => "uploadsign#delete_file", :as => "delete_uploadnsign_file"
 
   # medical credentialing
   get "/medical-credentialing" => "medical_credentialing#show", :as => "medical"

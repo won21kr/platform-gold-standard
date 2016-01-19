@@ -48,6 +48,8 @@
                           .btn-group
                             %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
                               %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                            %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
                             %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
                               %span.glyphicon.glyphicon-check{:style => "top: 3px; color: #263238"}
             - else
@@ -78,6 +80,8 @@
                           .btn-group
                             %a.btn.white.tooltipped.modal-trigger{:href => "#viewModal", :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(f.id)}');}, 10); $('#viewModal').modal(open); ", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
                               %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                            %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
             - else
               .col.s12
                 .col.s5.push-s3
@@ -86,7 +90,7 @@
 
 #uploadModal.modal
   .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Upload a File
+    %h5{:style => "margin-bottom: 35px;"} Upload a PDF
     .drop-area
       .row
         .col-md-12
