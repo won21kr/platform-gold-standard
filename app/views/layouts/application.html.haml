@@ -21,6 +21,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = yield :auth0_code
     = csrf_meta_tags
+
+    -# current on config page?
     - if !current_page?(config_url)
       %body
         .container
