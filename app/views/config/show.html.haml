@@ -98,6 +98,10 @@
             %p
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
+            %p
+              %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
+              %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Insurance)
+
 
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
@@ -138,6 +142,8 @@
                   = ", Loan Documents"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
+                - if (session[:create_claim] == 'on')
+                  = ", Create A Claim"
             %tr
               %td Customized Product Catalog:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}

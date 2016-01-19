@@ -1,0 +1,21 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.s10.push-s2
+        // Title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %i.material-icons.prefix{:style => "font-size: 28px;"} library_add
+            Create A Claim
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Create & submit an insurance claim
+        // Tabs
+        .col.s5.push-s7{:style => "margin-top: -45px; margin-left: 40px"}
+          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#newclaim", :class => "active"}
+                New Claim
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#submittedclaims"}
+                Submitted Claims
