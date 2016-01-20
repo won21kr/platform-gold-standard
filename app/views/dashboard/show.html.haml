@@ -43,8 +43,8 @@
     %input#name{:type => "text", :name => "fileName", :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
     %input#fileid.form-control{:type => "hidden", :name => "fileId"}
     %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 85%"} Save
-    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 85%"} Close
+    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
+    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
 
 
 :javascript
@@ -68,7 +68,6 @@
     $('[data-toggle=popover]').popover({
       html: 'true',
       placement: 'right',
-      title: "Edit File Name",
       content : function() {
         return $('#popover-content').html();
       }
