@@ -27,8 +27,6 @@ class CreateClaimController < SecuredController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
       end
       client.create_folder("Claims", sharedFolder)
-
-
     end
 
     # attach file metadata template to each file
@@ -88,13 +86,19 @@ class CreateClaimController < SecuredController
           'description' => params[:description],
           'status' => "Submitted"}
 
+  # error handle if type == nil
+  if (meta['type'].nil?)
+    meta['type'] = 'Auto'
+  end
+
   begin
     @submittedClaimsFolder = client.folder_from_path(path)
     @claimFile = client.file_from_path(path + "/#{session[:claim]}.jpg")
     client.create_metadata(@claimFile, meta, scope: :enterprise, template: 'insuranceClaim')
     flash[:notice] = "Claim ##{session[:claim_id]} successfully submitted. Await company approval."
     session[:claimPage] = 'submitted'
-  rescue
+  rescue Exception => e
+    ap e
     puts "error. Folder not found"
     flash[:error] = "Error. Something went wrong."
     session[:claimPage] = 'newClaim'
@@ -104,6 +108,23 @@ class CreateClaimController < SecuredController
     redirect_to create_claim_path
   end
 
+
+  def claim_reset
+
+    client = user_client
+    begin
+      @submittedClaimsFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+      @claims = client.folder_items(@submittedClaimsFolder, fields: [:id, :name])
+    rescue
+      puts "folder not yet created"
+    end
+
+    @claims.each do |c|
+      client.delete_file(c)
+    end
+
+    redirect_to create_claim_path
+  end
 
 
 end
