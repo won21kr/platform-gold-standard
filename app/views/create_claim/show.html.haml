@@ -11,8 +11,8 @@
           %h6.caption.thin{:style => "font-size: 16px;"}
             Create & submit an insurance claim
         // Tabs
-        .col.s5.push-s7{:style => "margin-top: -45px; margin-left: 40px"}
-          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px"}
+          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
             %li.tab{:style => "font-size: 12px !important;"}
               %a{:href => "#newclaim", :class => "#{'active' if @currentPage == 'newClaim'}"}
                 New Claim
@@ -94,7 +94,7 @@
 
 #viewModal2.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%; background-color: white"}
   .modal-content
-    %img{:id => 'image_preview', :width => '100%', :style => "text-align: center"}
+    %img{:id => 'image_preview', :widthYes => '100%', :style => "text-align: center"}
   .modal-footer
     %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
