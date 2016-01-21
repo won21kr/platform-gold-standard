@@ -2,14 +2,14 @@
   %thead
     %tr
       %th{"data-field" => "id"} File
-      %th{"data-field" => "name"} Name
+      %th{"data-field" => "name", :style => "z-index: 999999 !important;"} Name
       %th{"data-field" => "price"} Date Modified
-      %th{"data-field" => "foop"} Actions
+      %th{"data-field" => "foop", :style => "z-index: 999999 !important;"} Actions
     %tbody
       / list file contents
-      - @myFiles.each do |f|
+      - @myFiles.each_with_index do |f, i|
         %tr
-          %td
+          %td{:style => "z-index: 99999999", "data-intro" => i==0 ? "Box File ID's remain unchanged when editing file names." : nil,  "data-position" => i==0 ? "left" : nil}
             = link_to view_doc_path(f.id, folder: @myFolder.id) do
               = image_tag(thumbnail_url(f.id), width: '30px')
           %td
@@ -20,7 +20,7 @@
           %td.hidden-xs.hidden-sm
             = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
           / file action options
-          %td
+          %td{"data-intro" => i==0 ? "View, Share, Download, and Delete files from Box" : nil,  "data-position" => i==0 ? "left" : nil}
             .btn-group
               %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}
                 %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
