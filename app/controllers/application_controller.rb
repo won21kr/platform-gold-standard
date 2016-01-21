@@ -3,31 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   helper :all
-  helper_method :get_task_status, :get_med_task_status
+  helper_method :get_med_task_status
   before_action :check_config
-
-  # def get_task_status
-  #
-  #   if (session[:task_status].nil?)
-  #     puts "getting task status"
-  #     client = user_client
-  #     # get workflow folder paths
-  #     path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
-  #     completedPath = "#{path}/Completed/"
-  #
-  #     completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 15.minutes) do
-  #       client.folder_from_path(completedPath)
-  #     end
-  #
-  #     if((file = client.folder_items(completedFolder, fields: [:id]).files).size > 0)
-  #       session[:task_status] = 0
-  #     else
-  #       session[:task_status] = 1
-  #     end
-  #   end
-  #
-  #   session[:task_status]
-  # end
 
   # get med credential workflow status
   def get_med_task_status
@@ -113,6 +90,11 @@ class ApplicationController < ActionController::Base
     if query['upload_sign'] != "" and query['upload_sign'] != nil
       session[:upload_sign] = query['upload_sign']
     end
+    if query['create_claim'] != "" and query['create_claim'] != nil
+      session[:create_claim] = query['create_claim']
+    end
+
+    # temp
     if query['salesforce'] != "" and query['salesforce'] != nil
       session[:salesforce] = query['salesforce']
     end

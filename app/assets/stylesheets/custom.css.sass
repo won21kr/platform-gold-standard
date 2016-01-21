@@ -172,8 +172,6 @@ tbody.collapse.in
     display: none
 
 // ? icon top right
-
-
 .help
   position: fixed
   right: 0px
@@ -213,3 +211,36 @@ tbody.collapse.in
   overflow: hidden
   background-color: #fff
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
+
+  // #view-claim
+  //   width: 100%
+
+// mobile friendly media querys
+@media only screen and (max-width : 992px)
+  #claim-descr
+    display: none
+  // #container
+  //   .col.s12
+
+
+
+// create a claim css
+
+.btn-file
+  position: relative
+  overflow: hidden
+
+.btn-file input[type=file]
+  position: absolute
+  top: 0
+  right: 0
+  min-width: 100%
+  min-height: 100%
+  font-size: 100px
+  text-align: right
+  filter: alpha(opacity=0)
+  opacity: 0
+  outline: none
+  background: white
+  cursor: inherit
+  display: block

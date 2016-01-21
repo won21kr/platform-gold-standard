@@ -25,6 +25,7 @@ class ConfigController < ApplicationController
       session[:medical_credentialing] = "off"
       session[:loan_docs] = "off"
       session[:upload_sign] = "off"
+      session[:create_claim] = "off"
 
     end
 
@@ -59,7 +60,7 @@ class ConfigController < ApplicationController
     session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
     session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
-
+    session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end
@@ -88,6 +89,8 @@ class ConfigController < ApplicationController
     session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
     session[:config_url] << "&background=#{session[:background]}"
     session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
+    
+    session[:config_url] << "&create_claim=#{session[:create_claim]}"
 
   end
 
