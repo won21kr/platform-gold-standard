@@ -27,6 +27,7 @@ class CreateClaimController < SecuredController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
       end
       client.create_folder("Claims", sharedFolder)
+      @claims = []
     end
 
     # attach file metadata template to each file

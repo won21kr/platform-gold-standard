@@ -10,7 +10,7 @@
 
 .container
   .row
-    .col.s9
+    .col.l9.s12
       %h6{:style => "margin-top: 20px"}
         = @file.name.split(".").first
       / create iframe for viewing document
@@ -21,7 +21,7 @@
           %source{src: "#{download_url(@fileId)}", type: 'video/mp4'}
       - else
         %iframe{:height => "600", :width => "100%", :src => preview_url(@fileId), :allowfullscreen => 'allowfullscreen'}
-    .col.s3
+    .col.l3.s12
       %h6{:style => "margin-top: 20px"}
         Comment Stream:
       %ul.commentList
