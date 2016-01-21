@@ -37,7 +37,7 @@
                 %input{type: 'file', id: "file-select", name: 'files'}
 
         .col.s12#submittedclaims{:style => "margin-top: 20px"}
-          .col.s10.push-s1
+          .col.l10.push-l1.s12
             - if @currentPage == 'submitted'
               .flash
                 = render partial: "shared/flash_messages", flash: flash
@@ -94,7 +94,7 @@
 
 #viewModal2.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%; background-color: white"}
   .modal-content
-    %img{:id => 'image_preview', :height => '100%', :style => "text-align: center"}
+    %img{:id => 'image_preview', :width => '100%', :style => "text-align: center"}
   .modal-footer
     %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
