@@ -37,17 +37,17 @@
             .row
               .col.s2
                 %span
-                  = image_tag (session[:userinfo][:info][:image]), :width => '25px', :class => 'circle'
+                  = image_tag "new_user.png", :width => '28px', :class => 'circle', :style => "margin-left: -13px;"
               .col.s6
-                %div{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap"}
+                %div{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap; margin-left: -10px; margin-top: 3px;"}
                   = "#{session[:userinfo][:info][:name]}"
               .col.s2
                 %span{:class => 'title'}
-                  %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}
+                  %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
 
-%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#"}
-  %i.medium.material-icons
-    reorder
+-# %a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#"}
+-#   %i.medium.material-icons
+-#     reorder
 
 
 :javascript

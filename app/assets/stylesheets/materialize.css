@@ -2590,7 +2590,8 @@ nav ul a span.badge {
   user-select: none; }
 
 .circle {
-  border-radius: 50%; }
+  border-radius: 50% !important;
+}
 
 .center-block {
   display: block;

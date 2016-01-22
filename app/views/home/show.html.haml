@@ -1,3 +1,9 @@
+:css
+
+  #a0-lock.a0-theme-default .a0-panel .a0-bg-gradient
+    background-color: #fff !important
+
+
 - content_for :auth0_code do
   = javascript_include_tag '//cdn.auth0.com/js/lock-8.1.min.js'
 
@@ -18,6 +24,8 @@
     lock.show({
         container: 'root',
         callbackURL: '#{ENV["AUTH0_CALLBACK"]}',
+        primaryColor: '#00184D',
+        icon: 'nil',
         responseType: 'code',
         authParams: {
         scope: 'openid profile'
