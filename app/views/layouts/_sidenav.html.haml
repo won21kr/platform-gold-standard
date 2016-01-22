@@ -1,7 +1,7 @@
 
 %ul#slide-out.side-nav.fixed
   %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
-  %ul.tabList.collection
+  %ul.tabList
 
     %li{:class => "#{'active' if session[:current_page] == "vault"}"}
       %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault

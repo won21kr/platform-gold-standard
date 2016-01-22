@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # home page
   get "/" => "home#show", :as => 'home'
-  get "/login" => "home#login", :as => "login"
+  get "/home" => "home#login", :as => "home-page"
 
   # dashboard
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
