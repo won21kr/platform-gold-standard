@@ -75,7 +75,6 @@ class CreateClaimController < SecuredController
 
   end
 
-
   def submit_claim
 
   client = user_client
