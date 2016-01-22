@@ -17,7 +17,7 @@
               = f.name
               = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
                 %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit Name"}
-          %td.hidden-xs.hidden-sm
+          %td.hidden-xs.hidden-sm#claim-descr
             = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
           / file action options
           %td
