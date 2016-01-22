@@ -69,7 +69,6 @@ Rails.application.routes.draw do
   get "/create-claim" => "create_claim#show", :as => "create_claim"
   get "/claim-info/:file" => "create_claim#claim_info", :as => "claim_info"
   post "/submit-claim" => "create_claim#submit_claim", :as => "submit_claim"
-  post "/submit-claim1" => "create_claim#submit_claim1", :as => "submit_claim1"  
   get "/reset-claims" => "create_claim#claim_reset", :as => "claim_reset"
 
   get "/auth0/failure" => "auth0#failure"
