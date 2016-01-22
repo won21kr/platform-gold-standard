@@ -133,6 +133,7 @@
     $.ajax({
       url: uploadUrl,
       headers: headers,
+      crossDomain: true,
       type: 'POST',
       // This prevents JQuery from trying to append the form as a querystring
       processData: false,
