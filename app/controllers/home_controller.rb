@@ -15,8 +15,6 @@ class HomeController < ApplicationController
 
   def login
     puts "login background page"
-
-    ap session[:background]
   end
 
   def reset_logins

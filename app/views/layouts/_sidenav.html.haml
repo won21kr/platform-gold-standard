@@ -1,36 +1,36 @@
 
 %ul#slide-out.side-nav.fixed
   %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
-  %ul.collection
+  %ul.tabList
 
-  %li{:class => "#{'active' if session[:current_page] == "vault"}"}
-    %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
-  - if session[:resources] == 'on' or session[:resources].nil?
-    %li{:class => "#{'active' if session[:current_page] == "search"}"}
-      %a{:href => "/resources", :style => "text-decoration: none;"} Resources
-  - if session[:onboarding] == 'on' or session[:onboarding].nil?
-    %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
-      %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  - if session[:catalog] == 'on' or session[:catalog].nil?
-    %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-      %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
-  - if session[:medical_credentialing] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
-      %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
-  - if session[:loan_docs] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "loan_docs"}"}
-      %a{:href => "/loan-documents", :style => "text-decoration: none;"} Loan Documents
-  - if session[:upload_sign] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
-      %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
-  - if session[:create_claim] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
-      %a{:href => "/create-claim", :style => "text-decoration: none;"} Create A Claim
-  %li
-    %a{:href => "/config", :style => "text-decoration: none;"} Settings
+    %li{:class => "#{'active' if session[:current_page] == "vault"}"}
+      %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
+    - if session[:resources] == 'on' or session[:resources].nil?
+      %li{:class => "#{'active' if session[:current_page] == "search"}"}
+        %a{:href => "/resources", :style => "text-decoration: none;"} Resources
+    - if session[:onboarding] == 'on' or session[:onboarding].nil?
+      %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
+        %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
+    - if session[:catalog] == 'on' or session[:catalog].nil?
+      %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+        %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
+    - if session[:medical_credentialing] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
+        %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
+    - if session[:loan_docs] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "loan_docs"}"}
+        %a{:href => "/loan-documents", :style => "text-decoration: none;"} Loan Documents
+    - if session[:upload_sign] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
+        %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
+    - if session[:create_claim] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
+        %a{:href => "/create-claim", :style => "text-decoration: none;"} Create A Claim
+    %li
+      %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
   .footer-user
-    .footer-copyright{:style => "margin-left: 15%; margin-top: -15%"}
+    .footer-copyright{:style => "margin-left: 15%; margin-top: -10%"}
       - if session[:userinfo]
         .name.hidden-xs{:style => "margin-left: -20px;" }
           %a.tooltipped{href: logout_path, :style => "text-decoration: none", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Logout"}
