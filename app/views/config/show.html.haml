@@ -69,10 +69,10 @@
             #demo.collapse
               %div{:style => "margin-top: 20px"}
               .col.s10{:style => "padding-left: 0"}
-                %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Login Page Background URL
+                %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Home Page Background URL
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
               .col.s1
-                %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/login"}
+                %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"}
                   Preview
           .col.s5.push-s1
             -# Activate / Deactivate feature tabs
@@ -100,10 +100,13 @@
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
-              %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Insurance)
+              %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Financial Services)
             %p
               %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} Dicom Viewer (Healthcare)
+              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+
+
+
 
 
           .col.s12{:style => "margin-top: 20px"}
@@ -152,7 +155,7 @@
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = session[:catalog_file]
             %tr
-              %td Login Page Background URL:
+              %td Home Page Background URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = session[:background]
             %tr
@@ -163,7 +166,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
-        %form.item{:action => session[:background].nil? ? "/dashboard" : '/login', :method => "get", :role => "form"}
+        %form.item{:action => session[:background].nil? ? "/dashboard" : '/home', :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         -#   Documentation

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # home page
   get "/" => "home#show", :as => 'home'
-  get "/login" => "home#login", :as => "login"
+  get "/home" => "home#login", :as => "home-page"
 
   # dashboard
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   get "/create-claim" => "create_claim#show", :as => "create_claim"
   get "/claim-info/:file" => "create_claim#claim_info", :as => "claim_info"
   post "/submit-claim" => "create_claim#submit_claim", :as => "submit_claim"
+  get "/reset-claims" => "create_claim#claim_reset", :as => "claim_reset"
 
   # dicom viewer
   get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
