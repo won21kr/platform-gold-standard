@@ -26,6 +26,7 @@ class ConfigController < ApplicationController
       session[:loan_docs] = "off"
       session[:upload_sign] = "off"
       session[:create_claim] = "off"
+      session[:dicom_viewer] = "off"
 
     end
 
@@ -61,6 +62,7 @@ class ConfigController < ApplicationController
     session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
+    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end
@@ -89,8 +91,9 @@ class ConfigController < ApplicationController
     session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
     session[:config_url] << "&background=#{session[:background]}"
     session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
-    
+
     session[:config_url] << "&create_claim=#{session[:create_claim]}"
+    session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
 
   end
 

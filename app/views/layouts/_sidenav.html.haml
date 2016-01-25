@@ -26,6 +26,9 @@
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/create-claim", :style => "text-decoration: none;"} Create A Claim
+  - if session[:dicom_viewer] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+      %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
