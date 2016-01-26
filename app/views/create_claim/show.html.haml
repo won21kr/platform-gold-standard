@@ -139,10 +139,9 @@
       contentType: false,
       data: formData
     }).complete(function ( data ) {
-      // console.log(data.responseText);
+      console.log($.parseJSON(data.responseText));
 
       var obj = $.parseJSON(data.responseText);
-      console.log(obj);
 
       // redirect with file id
       location.href = "/claim-info/" + obj.entries[0].id;

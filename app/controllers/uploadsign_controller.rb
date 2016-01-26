@@ -50,7 +50,6 @@ class UploadsignController < SecuredController
         temp_file.close
 
         box_user = Box.user_client(session[:box_id])
-
         box_file = box_user.upload_file(temp_file.path, folder)
         # box_user.create_metadata(box_file, meta)
 
