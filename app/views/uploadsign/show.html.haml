@@ -9,9 +9,13 @@
           Upload & Sign
         %h6.caption.thin{:style => "font-size: 16px;"}
           Upload and e-sign documents
+        .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+            info
         // Tabs
         .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px;"}
-          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 88% !important;"}
+          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 88% !important;", "data-intro" => "These tabs represent folders in Box. Signing a file below will make an api call to move to the 'Signed Documents' folder in Box", "data-position" => "left"}
             %li.tab{:style => "font-size: 12px !important;"}
               %a.active{:href => "#pendingSignature"}
                 Pending Signature
@@ -23,7 +27,7 @@
         .col.s12{:style => "margin-left: 30px"}
           #pendingSignature
             .col.s2.push-s10{:style => "margin-top: 30px;"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
             .col.s12
               .flash.col.s8.push-s2{:style => "margin-top: 20px"}
                 = render partial: "shared/flash_messages", flash: flash
@@ -106,7 +110,7 @@
 
 
 %p{:style=>"text-align: right; font-size: 10px;"}
-  = link_to "reset", reset_uploadnsign_path
+  = link_to "reset", reset_uploadnsign_path, {:style => "text-decoration: none; z-index: 9999999;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
 
 :javascript
   Dropzone.options.myDropzone = {
@@ -124,3 +128,7 @@
 
 :javascript
   $(function () {$('[data-toggle="tooltip"]').tooltip()})
+
+    function chardinToggle() {
+      $('body').chardinJs('toggle');
+    }

@@ -1,40 +1,3 @@
-:css
-  .search
-  	background: #42454e
-  	border-radius: 3px
-  	display: inline-block
-  	padding: 7px
-
-  .search input
-  	float: left
-
-  .search input[type="search"],
-  .search input[type="submit"]
-  	border-radius: 3px
-  	font-size: 12px
-
-  .search input[type="search"]
-  	background: #fff
-  	color: #42454e
-  	min-width: 184px
-  	padding: 6px 8px
-
-  .search input[type="submit"]
-  	background: #1bba9a
-  	color: #fff
-  	font-weight: bold
-  	margin-left: 7px
-  	padding: 6px 10px
-
-  .search input[type="submit"]:hover
-  	background: #189e83
-
-
-  .search input[type="search"]::-webkit-input-placeholder { color: #42454e
-  .search input[type="search"]:-moz-placeholder { color: #42454e
-  .search input[type="search"]:-ms-input-placeholder { color: #42454e
-
-
 #index-banner.section.no-pad-bot
   .container
     = render 'layouts/sidenav'
@@ -47,17 +10,22 @@
             Resources
           %h6.caption.thin{:style => "font-size: 16px;"}
             Find relevant content, fast
+          .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+            %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+            %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+              info
         // Messaging
         .col.s5.push-s7{:style => "margin-top:-20px; text-align: right"}
+          .styleoverlay{:style => "margin-left: 130px;"}
           - if (!@text.nil?)
             = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
           - elsif @root == true
             .breadcrumb
               %li
-                %li.active{:href => "#"} Resources
+                %li.active{:href => "#", "data-intro" => "Your current folder path. On creation of your App User you were granted Viewer access to these folders", "data-position" => "bottom"} Resources
           - elsif !@subName.nil?
             .breadcrumb{:style => "vertical-align: top"}
-              %li
+              %li{ "data-intro" => "Look here for a breadcrumb view of your current folder", "data-position" => "bottom"}
                 %a{:href => "/resources"} Resources
               %li.active{:href => "#", :style => ""}
                 = @subName
@@ -67,12 +35,12 @@
           = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
             // input
             .col.s5
-              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search' }
+              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box full text search to query against file name, type, metadata, and more", "data-position" => "bottom"}
             // search button
             .col.s2
               = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
             // file type filter
-            .col.s1{:style => "margin-top: 15px; width: 13%"}
+            .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates including Category and Privacy", "data-position" => "bottom"}
               %span.border-select
                 %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
                   Type
@@ -115,7 +83,7 @@
         // Results: folders, search, filter
         .col.s12{:style => "margin-left: 30px"}
           - if @results.nil? or @results.count == 0
-            %h6
+            %h6.center{:style => "margin-top: 35px;"}
               There were no results matching your search criteria.
           - else
             / either results were found for your search or were are in the resource root folder / sub-folder
@@ -132,9 +100,9 @@
                     %th{"data-field" => "name"} Name
                     %th{"data-field" => "modified"} Last Modified
                     %th{"data-field" => "modified"} Description
-                - @results.each do |folder|
+                - @results.each_with_index do |folder, i|
                   %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
-                    %td
+                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
                       = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
                     %td
                       .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
@@ -156,9 +124,9 @@
                     %th{"data-field" => "foop"} Privacy
 
 
-                - @results.each do |result|
+                - @results.each_with_index do |result, i|
                   %tr.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); ", :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                    %td
+                    %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
                       = image_tag(thumbnail_url(result.id), :height => "50px")
                     %td
                       = result.name
@@ -193,3 +161,7 @@
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
   });
+
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }

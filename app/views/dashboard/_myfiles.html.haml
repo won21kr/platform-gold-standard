@@ -9,7 +9,7 @@
       / list file contents
       - @myFiles.each_with_index do |f, i|
         %tr
-          %td{:style => "z-index: 99999999", "data-intro" => i==0 ? "Box File ID's remain unchanged when editing file names." : nil,  "data-position" => i==0 ? "left" : nil}
+          %td{:style => "z-index: 99999999", "data-intro" => i==0 ? "Edit file names. Box File ID's remain unchanged so paths to the file will never break." : nil,  "data-position" => i==0 ? "left" : nil}
             = link_to view_doc_path(f.id, folder: @myFolder.id) do
               = image_tag(thumbnail_url(f.id), width: '30px')
           %td

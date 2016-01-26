@@ -69,7 +69,7 @@ class WorkflowController < SecuredController
       doc.configure_pdf(client, filename, path, ENV['ONBOARDING_FORM'])
     end
 
-    flash[:notice] = "Thanks for filling out your information! Your contract is now under review."
+    flash[:notice] = "Thanks for sharing your information! Your contract is under review."
     redirect_to workflow_path
 
   end

@@ -83,7 +83,7 @@ class MedicalCredentialingController < SecuredController
       doc.configure_pdf(client, filename, path, ENV['MEDICAL_FORM'])
     end
 
-    flash[:notice] = "Thanks for filling out your information! Now upload relevant medical credential files."
+    flash[:notice] = "Thanks for submitting! Please upload credentials for review."
     redirect_to medical_path
   end
 
@@ -99,7 +99,7 @@ class MedicalCredentialingController < SecuredController
     medDocs = client.folder_items(medFolder, fields: [:name, :id])
 
     if (medDocs.size > 1)
-      flash[:notice] = "Thanks for uploading the relevant documents. Now wait for the credentialing specialist to approve."
+      flash[:notice] = "Thanks for uploading! A medical credentialing specialist will review your submission"
     else
       flash[:error] = "You must upload documents to continue."
     end
