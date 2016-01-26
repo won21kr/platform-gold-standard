@@ -93,6 +93,9 @@ class ApplicationController < ActionController::Base
     if query['create_claim'] != "" and query['create_claim'] != nil
       session[:create_claim] = query['create_claim']
     end
+    if query['dicom_viewer'] != "" and query['dicom_viewer'] != nil
+      session[:dicom_viewer] = query['dicom_view']
+    end
 
     # temp
     if query['salesforce'] != "" and query['salesforce'] != nil

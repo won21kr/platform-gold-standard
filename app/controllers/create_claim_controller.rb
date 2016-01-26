@@ -18,7 +18,10 @@ class CreateClaimController < SecuredController
 
 
     begin
-      @submittedClaimsFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+      @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+      end
+
       @claims = client.folder_items(@submittedClaimsFolder, fields: [:id, :name])
 
     rescue
@@ -70,8 +73,11 @@ class CreateClaimController < SecuredController
 
   def claim_info
     session[:current_page] = "create-claim"
-    session[:claim] = params[:file]
-    session[:claim_id] = params[:file].split('-').last
+    session[:file_id] = params[:file_id]
+
+    #
+    # session[:claim] = params[:file]
+    # session[:claim_id] = params[:file].split('-').last
 
   end
 
@@ -79,23 +85,24 @@ class CreateClaimController < SecuredController
 
   client = user_client
 
-  path = "#{session[:userinfo]['info']['name']} - Shared Files/Claims"
-  meta = {'id' => session[:claim_id].to_i,
-          'type' => params[:type],
-          'estimatedValue' => params[:value].to_i,
-          'description' => params[:description],
-          'status' => "Submitted"}
-
-  # error handle if type == nil
-  if (meta['type'].nil?)
-    meta['type'] = 'Auto'
-  end
-
   begin
-    @submittedClaimsFolder = client.folder_from_path(path)
-    @claimFile = client.file_from_path(path + "/#{session[:claim]}.jpg")
+    @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+    end
+    @claimFile = client.file_from_id(session[:file_id], fields: [:name])
+    claimId = @claimFile.name.split('-').last.split('.').first
+
+    meta = {'id' => claimId.to_i,
+            'type' => params[:type],
+            'estimatedValue' => params[:value].to_i,
+            'description' => params[:description],
+            'status' => "Submitted"}
+    # error handle if type == nil
+    if (meta['type'].nil?)
+      meta['type'] = 'Auto'
+    end
     client.create_metadata(@claimFile, meta, scope: :enterprise, template: 'insuranceClaim')
-    flash[:notice] = "Claim ##{session[:claim_id]} successfully submitted. Await company approval."
+    flash[:notice] = "Claim ##{claimId} successfully submitted. Await company approval."
     session[:claimPage] = 'submitted'
   rescue Exception => e
     ap e
@@ -113,7 +120,9 @@ class CreateClaimController < SecuredController
 
     client = user_client
     begin
-      @submittedClaimsFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+      @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+      end
       @claims = client.folder_items(@submittedClaimsFolder, fields: [:id, :name])
     rescue
       puts "folder not yet created"

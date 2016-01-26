@@ -52,32 +52,18 @@
 
             - @claims.each do |result|
               - if !result.claimId.nil?
-                - if result.name.downcase.end_with?('.png') or result.name.downcase.end_with?('.jpg')
-                  %tr.modal-trigger{:href => '#viewModal2', :onclick => "$('#image_preview').attr('src','#{download_url(result.id)}'); $('#viewModal2').modal(open); ", :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                    %td
-                      = result.claimId
-                    %td
-                      = result.type
-                    %td
-                      = "$#{result.estimatedValue}"
-                    %td#claim-descr
-                      %div{:style => "text-overflow: ellipsis; width: 20em; overflow: hidden; white-space: wrap"}
-                        = result.description
-                    %td
-                      = result.status
-                - else
-                  %tr.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); ", :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                    %td
-                      = result.claimId
-                    %td
-                      = result.type
-                    %td
-                      = "$#{result.estimatedValue}"
-                    %td
-                      %div{:style => "text-overflow: ellipsis; width: 20em; overflow: hidden; white-space: wrap"}
-                        = result.description
-                    %td
-                      = result.status
+                %tr.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); ", :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                  %td
+                    = result.claimId
+                  %td
+                    = result.type
+                  %td
+                    = "$#{result.estimatedValue}"
+                  %td#claim-descr
+                    %div{:style => "text-overflow: ellipsis; width: 20em; overflow: hidden; white-space: wrap"}
+                      = result.description
+                  %td
+                    = result.status
           - if @claims.size == 0
             %h6{:style => "text-align: center"}
               You have not yet submitted any claims
@@ -85,18 +71,27 @@
   %p{:style=>"text-align: right; font-size: 10px;"}
     = link_to "reset", claim_reset_path
 
-#viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%;	width: 960px;	background-color: white"}
+#viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%; background-color: white"}
   .modal-content
-    %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0'}
+    %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0', :allowfullscreen => ""}
   .modal-footer
     %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
 
-#viewModal2.modal.modal-fixed-footer{:style => "max-height: 80%; background-color: white"}
-  .modal-content
-    %img{:id => 'image_preview', :width => '100%', :style => "text-align: center"}
-  .modal-footer
-    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
+
+-#
+-# #viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%;	width: 960px;	background-color: white"}
+-#   .modal-content
+-#     %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0'}
+-#   .modal-footer
+-#     %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
+-#
+-#
+-# #viewModal2.modal.modal-fixed-footer{:style => "max-height: 80%; background-color: white"}
+-#   .modal-content
+-#     %img{:id => 'image_preview', :width => '100%', :style => "text-align: center"}
+-#   .modal-footer
+-#     %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
 :javascript
 
@@ -144,7 +139,13 @@
       contentType: false,
       data: formData
     }).complete(function ( data ) {
-      location.href = "/claim-info/" + "Claim-" + id;
+      // console.log(data.responseText);
+
+      var obj = $.parseJSON(data.responseText);
+      console.log(obj);
+
+      // redirect with file id
+      location.href = "/claim-info/" + obj.entries[0].id;
     });
 
   });
