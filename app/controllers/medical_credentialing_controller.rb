@@ -18,7 +18,9 @@ class MedicalCredentialingController < SecuredController
 
       # get medical credentialing folder, if it doesn't exist create one + add collaboration
       begin
-        @medFolder = client.folder_from_path(path)
+        @medFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/medical_folder", :expires_in => 10.minutes) do
+          client.folder_from_path(path)
+        end
       rescue
         @medFolder = client.create_folder("#{session[:userinfo]['info']['name']} - Medical Credentialing", Boxr::ROOT)
         client.add_collaboration(@medFolder, {id: ENV['CRED_SPECIALIST'], type: :user}, :editor)
@@ -95,7 +97,9 @@ class MedicalCredentialingController < SecuredController
 
     # get medical folder path
     path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
-    medFolder = client.folder_from_path(path)
+    medFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/medical_folder", :expires_in => 10.minutes) do
+      client.folder_from_path(path)
+    end
     medDocs = client.folder_items(medFolder, fields: [:name, :id])
 
     if (medDocs.size > 1)
@@ -115,7 +119,11 @@ class MedicalCredentialingController < SecuredController
     # get workflow folder paths, delete folder
     path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
     folder = client.folder_from_path(path)
-    client.delete_folder(folder, recursive: true)
+    items = client.folder_items(folder, fields: [:id])
+
+    items.each do |f|
+      client.delete_file(f)
+    end
 
     redirect_to medical_path
   end
