@@ -21,7 +21,10 @@ class LoanDocumentsController < SecuredController
 
     # get loan documents folder, if it doesn't exist create one
     begin
-      @loanFolder = client.folder_from_path(path)
+      @loanFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
+        client.folder_from_path(path)
+      end
+      # @loanFolder = client.folder_from_path(path)
     rescue
       parent = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
         puts "miss"
@@ -125,7 +128,9 @@ class LoanDocumentsController < SecuredController
     name = params[:file_name]
     fileName = params[:file_name]
 
-    folder = client.folder_from_path(path)
+    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
+      client.folder_from_path(path)
+    end
 
     temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
     begin
@@ -168,7 +173,10 @@ class LoanDocumentsController < SecuredController
 
     # get loan docs folder, copy vault file into it
     client = user_client
-    folder = client.folder_from_path(path)
+    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
+      client.folder_from_path(path)
+    end
+    # folder = client.folder_from_path(path)
     toCopy = client.file_from_id(fileId, fields: [:name, :id])
     copiedFile = client.copy_file(toCopy, folder, name: newName)
 
@@ -188,7 +196,12 @@ class LoanDocumentsController < SecuredController
     # get loan docs folder, copy vault file into it
     client = user_client
     folder = client.folder_from_path(path)
-    client.delete_folder(folder, recursive: true)
+    items = client.folder_items(folder, fields: [:id])
+    # client.delete_folder(folder, recursive: true)
+
+    items.each do |f|
+      client.delete_file(f)
+    end
 
     redirect_to loan_docs_path
   end
@@ -251,32 +264,6 @@ class LoanDocumentsController < SecuredController
         status: 'sent'
       )
 
-      # # no anchor string found!
-      # if (envelope['errorCode'] == "ANCHOR_TAB_STRING_NOT_FOUND")
-      #   envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
-      #     email: {
-      #       subject: "Signature Requested",
-      #       body: "Please electronically sign this document."
-      #     },
-      #     # If embedded is set to true in the signers array below, emails
-      #     # don't go out to the signers and you can embed the signature page in an
-      #     # iFrame by using the client.get_recipient_view method
-      #     signers: [
-      #       {
-      #         embedded: true,
-      #         name: 'Marcus Doe',
-      #         email: 'mmitchell+standard@box.com',
-      #         role_name: 'Client',
-      #         signHereTabs: [{"xPosition": "100", "yPosition": "100", "documentId": "1", "pageNumber": "1"}]
-      #         # sign_here_tabs: [{anchor_string: "guarantee that all information above", anchor_x_offset: '150', anchor_y_offset: '50'}]
-      #       }
-      #     ],
-      #     files: [
-      #       {path: temp_file.path, name: "#{box_file.name}"}
-      #     ],
-      #     status: 'sent'
-      #   )
-      # end
       session[envelope["envelopeId"]] = {box_doc_id: box_file.id, box_doc_name: box_file.name}
     rescue => ex
       puts "Error in creating envo"

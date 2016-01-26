@@ -33,7 +33,7 @@
                     = @docStatus["Loan Agreement"]
                   %td.td
                     - if @docStatus["Loan Agreement"] == "Missing"
-                      %a.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px; z-index: 999999;", "data-intro" => "Upload the missing Loan Document for approval", "data-position" => "left"} Upload
+                      %a.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px;", "data-intro" => "Upload the missing Loan Document for approval", "data-position" => "left"} Upload
                     - elsif @docStatus["Loan Agreement"] == "Signature Needed"
                       %form{:method => "get", :action => loan_docusign_path(@fileId["Loan Agreement"])}
                         %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
@@ -76,7 +76,7 @@
                           %i.fa.fa-comment.unread-count{:style => "margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Tax']}"}
 
   %p{:style=>"text-align: right; font-size: 10px;"}
-    = link_to "reset", reset_loan_docs_path, {:style => "text-decoration: none; z-index: 9999999;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
+    = link_to "reset", reset_loan_docs_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
 
 = render 'loan_documents/loan_modals'
 
