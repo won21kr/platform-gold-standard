@@ -101,6 +101,9 @@
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Financial Services)
+            %p
+              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
 
 
           .col.s12{:style => "margin-top: 20px"}

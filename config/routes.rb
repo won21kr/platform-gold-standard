@@ -71,6 +71,9 @@ Rails.application.routes.draw do
   post "/submit-claim" => "create_claim#submit_claim", :as => "submit_claim"
   get "/reset-claims" => "create_claim#claim_reset", :as => "claim_reset"
 
+  # dicom viewer
+  get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
+
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
 
