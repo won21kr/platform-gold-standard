@@ -163,7 +163,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
-        %form.item{:action => session[:background].nil? ? "/dashboard" : '/home', :method => "get", :role => "form"}
+        %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         -#   Documentation

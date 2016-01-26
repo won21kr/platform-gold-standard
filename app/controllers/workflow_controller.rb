@@ -123,13 +123,13 @@ class WorkflowController < SecuredController
     completedPath = "#{path}/Completed/"
 
     # get all workflow folders, utilize cache
-    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}", :expires_in => 15.minutes) do
+    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(approvalPath)
     end
-    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}", :expires_in => 15.minutes) do
+    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(sigReqPath)
     end
-    completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 15.minutes) do
+    completedFolder = Rails.cache.fetch("/folder/#{completedPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(completedPath)
     end
 
@@ -218,13 +218,13 @@ class WorkflowController < SecuredController
     completedPath = "#{path}/Completed/"
 
     # get all workflow folders, utilize cache
-    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}", :expires_in => 15.minutes) do
+    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(approvalPath)
     end
-    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}", :expires_in => 15.minutes) do
+    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(sigReqPath)
     end
-    completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 15.minutes) do
+    completedFolder = Rails.cache.fetch("/folder/#{completedPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(completedPath)
     end
 
