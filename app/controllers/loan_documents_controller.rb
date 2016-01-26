@@ -44,19 +44,20 @@ class LoanDocumentsController < SecuredController
         name = file.name.split(".").first
         imageName = name.split(" ").first + " Image"
         searchName = name.split(" ").first
-        task = client.file_tasks(file, fields: [:is_completed]).first
 
         if (name == "Loan Agreement - Signature Needed")
           @docStatus["Loan Agreement"] = "Signature Needed"
           @docStatus[imageName] = "file_process.png"
           @fileId["Loan Agreement"] = file.id
-          @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
+          # @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
         elsif(name == "Loan Agreement - Completed")
           @docStatus["Loan Agreement"] = "Completed"
           @docStatus[imageName] = "file_success.png"
           @fileId["Loan Agreement"] = file.id
-          @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
+          # @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
         else
+          # document is either w2 or tax doc. Get file tasks and comments
+          task = client.file_tasks(file, fields: [:is_completed]).first
           @fileComments[searchName] = client.file_comments(file.id, fields: [:id]).size
           if(task != nil and task.is_completed)
             # task completed

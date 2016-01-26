@@ -73,7 +73,7 @@
                       %form{:method => "get", :action => view_doc_path(@fileId["Tax Return"])}
                         %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
                           View
-                          %i.fa.fa-comment.unread-count{:style => "margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Tax']}"}
+                          %i.fa.fa-comment.unread-count{:style => "font-size: 14px; margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Tax']}"}
 
   %p{:style=>"text-align: right; font-size: 10px;"}
     = link_to "reset", reset_loan_docs_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
