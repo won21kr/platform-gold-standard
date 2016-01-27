@@ -2,7 +2,7 @@
 %ul#slide-out.side-nav.fixed
   .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px;" : "background-color: #{session[:navbar_color]}; padding: 15px;"}
     %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 130px; min-width: 130px;", :style => session[:logo].nil? ? "max-width: 220px; min-width: 220px;" : "max-width: 110px; min-width: 110px;"}
-  %ul.tabList
+  %ul.tabList.nav-wrapper
 
   %li{:class => "#{'active' if session[:current_page] == "vault"}"}
     %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault

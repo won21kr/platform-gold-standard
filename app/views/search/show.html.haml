@@ -7,6 +7,13 @@
     .row
       .col.m12.l10.push-l2
         // title
+        -# %a{"data-lity" => "", :href => "https://farm9.staticflickr.com/8642/16455005578_0fdfc6c3da_b.jpg"} Image
+        -# %a{"data-lity" => "", :href => "#inline"} Inline
+        -# %a{"data-lity" => "", :href => "//www.youtube.com/watch?v=XSGBVzeBUbk"} iFrame Youtube
+        -# %a{"data-lity" => "", :href => "//vimeo.com/1084537"} iFrame Vimeo
+        -# %a{"data-lity" => "", :href => "//maps.google.com/maps?q=1600+Amphitheatre+Parkway,+Mountain+View,+CA"} Google Maps
+        -# #inline.lity-hide{:style => "background:#fff"}
+        -#   Inline content
         .col.s12
           %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
             %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
@@ -128,7 +135,7 @@
 
 
                 - @results.each_with_index do |result, i|
-                  %tr.modal-trigger{:href => '#viewModal', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal').modal(open); ", :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                  %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
                     %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
                       = image_tag(thumbnail_url(result.id), :height => "50px")
                     %td
@@ -156,11 +163,6 @@
     $('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
-  });
-
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal();
   });
 
   function chardinToggle() {
