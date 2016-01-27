@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
       session[:create_claim] = query['create_claim']
     end
     if query['dicom_viewer'] != "" and query['dicom_viewer'] != nil
-      session[:dicom_viewer] = query['dicom_view']
+      session[:dicom_viewer] = query['dicom_viewer']
     end
 
     # temp
