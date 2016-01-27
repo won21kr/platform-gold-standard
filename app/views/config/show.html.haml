@@ -52,7 +52,7 @@
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
 
-            %label.label-div{:for => "navbar_color", :style => "color: black"} Navbar Background Color
+            %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
             %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
 
             %label.label-div{:style => "color: black"} Product Catalog
@@ -126,7 +126,7 @@
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 %img{:src => session[:logo], :style => "max-height:100px"}
             %tr
-              %td Navbar Background Color:
+              %td Logo Background Color:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = session[:navbar_color]
             %tr
