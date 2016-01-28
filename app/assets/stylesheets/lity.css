@@ -10,7 +10,7 @@
   left: 0;
   white-space: nowrap;
   background: #0b0b0b;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.8);
   outline: none !important;
   opacity: 0;
   -webkit-transition: opacity 0.3s ease;
