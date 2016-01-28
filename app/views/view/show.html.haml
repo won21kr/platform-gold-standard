@@ -5,6 +5,8 @@
     = link_to '<< Back to Medical Credentialing', '/medical-credentialing'
   - elsif (session[:current_page] == "loan_docs")
     = link_to '<< Back to Loan Documents', '/loan-documents'
+  - elsif (session[:current_page] == 'tax_return')
+    = link_to '<< Back to my taxes', '/tax_return'
   - else
     = link_to '<< Back to My Vault', dashboard_path
 

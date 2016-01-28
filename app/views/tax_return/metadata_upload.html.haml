@@ -1,0 +1,75 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.s10.push-s2
+        .col.s2.push-s10{:style => "margin-top: 80px;"}
+          %h7
+            Step 2 of 2
+        .col.s12{:style => "margin-top: 30px"}
+          .col.s5
+            %h6
+              Categorize Your Tax Document
+        .col.s8.push-s2{:style => "margin-top: 20px"}
+
+          %form{:role => "form", :method => "post", :action => submit_claim_path}
+            %label{:for => "category"}
+              %select#type{:placeholder => "Category", :type => "text", :name => "category"}
+                %option{:disabled => "", :selected => "", :value => ""} Choose your option
+                %option{:value => "Taxes"} Taxes
+                %option{:value => "Income"} Income
+                %option{:value => "Credits"} Credits
+                %option{:value => "Adj_Deduc"} Adjustments & Deductions
+            .form-group
+              #Taxes.style-sub-1{:name => "stylesub1", :onchange => "ChangeDropdowns(this.value)", :style => "display: none;"}
+                %label{:for => "subcategory"}
+                  %select#type{:placeholder => "subCategory", :type => "text", :name => "subcategory"}
+                    %option{:disabled => "", :selected => "", :value => ""} Choose your option
+                    %option Not specified
+                    %option Form 1040-ES
+                    %option Schedule H
+              #Income.style-sub-1{:name => "stylesub1", :onchange => "ChangeDropdowns(this.value)", :style => "display: none;"}
+                %label{:for => "subcategory"}
+                  %select#type{:placeholder => "subCategory", :type => "text", :name => "subcategory"}
+                    %option{:disabled => "", :selected => "", :value => ""} Choose your option
+                    %option Form W-2
+                    %option Form 1099-G
+                    %option Form 1099-INT
+                    %option Form 1099-DIV (Dividend Income)
+                    %option Form 1099-R (Retirement Income)
+                    %option Form SSA-1099 (Social Security Income)
+                    %option Schedule C (Self-employment or Business Income or Loss)
+              #Credits.style-sub-1{:name => "stylesub1", :onchange => "ChangeDropdowns(this.value)", :style => "display: none;"}
+                %label{:for => "subcategory"}
+                  %select#type{:placeholder => "subCategory", :type => "text", :name => "subcategory"}
+                    %option{:disabled => "", :selected => "", :value => ""}
+                    %option Not Specified
+                    %option Child and Dependent Care Expenses
+                    %option Form 1098-T (Tuition and Expenses)
+                    %option Mortgage Interest Credit
+              #Adj_Deduc.style-sub-1{:name => "stylesub1", :onchange => "ChangeDropdowns(this.value)", :style => "display: none;"}
+                %label{:for => "subcategory"}
+                  %select#type{:placeholder => "subCategory", :type => "text", :name => "subcategory"}
+                    %option{:disabled => "", :selected => "", :value => ""}
+                    %option Form 1098 (Mortgage Interest)
+                    %option Form 1098-E (Student Loan Interest)
+                    %option Form 1098-T (Tuition and Expenses)
+                    %option Cash Contributions
+                    %option Medical Expenses
+                    %option Miscellaneous Deductions
+                    %option Charitable Contributions
+            %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+            .form-group
+              -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
+              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit
+
+:javascript
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+  $("#type").change ( function () {
+      var targID  = $(this).val ();
+      $("div.style-sub-1").hide ();
+      $('#' + targID).show ();
+  })

@@ -116,7 +116,9 @@ class ApplicationController < ActionController::Base
     if query['salesforce'] != "" and query['salesforce'] != nil
       session[:salesforce] = query['salesforce']
     end
-
+    if query['tax_return'] != "" and query['tax_return'] != nil
+      session[:tax_return] = query['tax_return']
+    end
   end
 
 end
