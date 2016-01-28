@@ -52,7 +52,7 @@
 
             - @claims.each do |result|
               - if !result.claimId.nil?
-                %tr.modal-trigger{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
                   %td
                     = result.claimId
                   %td
