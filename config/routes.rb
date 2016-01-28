@@ -62,8 +62,8 @@ Rails.application.routes.draw do
   post "/loan-documents/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
   get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
   get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"
-  get "/loan-agreement-sign/:file_id" => "tax_return#tax_loan_docusign", :as => "loan_docusign"
-  get "docusign_response_loan/:envelope_id" => "tax_return#tax_docusign_response_loan", :as => "docusign_response_loan"
+  get "/loan-agreement-sign/:file_id" => "loan_documentsloan_docusign", :as => "loan_docusign"
+  get "docusign_response_loan/:envelope_id" => "loan_documents#docusign_response_loan", :as => "docusign_response_loan"
 
   # create a claim
   get "/create-claim" => "create_claim#show", :as => "create_claim"
