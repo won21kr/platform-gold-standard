@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # home page
   get "/" => "home#show", :as => 'home'
-  get "/login" => "home#login", :as => "login"
+  get "/home" => "home#login", :as => "home-page"
 
   # dashboard
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
@@ -65,6 +65,15 @@ Rails.application.routes.draw do
   get "/loan-agreement-sign/:file_id" => "tax_return#tax_loan_docusign", :as => "loan_docusign"
   get "docusign_response_loan/:envelope_id" => "tax_return#tax_docusign_response_loan", :as => "docusign_response_loan"
 
+  # create a claim
+  get "/create-claim" => "create_claim#show", :as => "create_claim"
+  get "/claim-info/:file_id" => "create_claim#claim_info", :as => "claim_info"
+  post "/submit-claim" => "create_claim#submit_claim", :as => "submit_claim"
+  get "/reset-claims" => "create_claim#claim_reset", :as => "claim_reset"
+
+  # dicom viewer
+  get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
+
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
 
@@ -83,9 +92,9 @@ Rails.application.routes.draw do
   #tax return
   get "/tax_return" => "tax_return#show", :as => "tax_return"
   post "/tax_file_upload" => "tax_return#file_upload", :as => "file_upload"
-  get "/tax_create-claim" => "tax_return#show", :as => "create_claim"
-  get "/tax_claim-info/:file" => "tax_return#claim_info", :as => "claim_info"
-  post "/tax_submit-claim" => "tax_return#submit_claim", :as => "submit_claim"
+  get "/tax_create-claim" => "tax_return#show", :as => "tax_create_claim"
+  get "/tax_claim-info/:file" => "tax_return#claim_info", :as => "tax_claim_info"
+  post "/tax_submit-claim" => "tax_return#submit_claim", :as => "tax_submit_claim"
   get "/tax_reset-claims" => "tax_return#tax_reset", :as => "tax_reset"
   post "/tax-upload/:folder_id" => "tax_return#tax_upload", :as => "tax_upload"
 

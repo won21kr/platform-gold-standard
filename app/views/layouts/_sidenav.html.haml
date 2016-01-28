@@ -1,7 +1,9 @@
+%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
 
 %ul#slide-out.side-nav.fixed
-  %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
-  %ul.collection
+  .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px; padding-left: 4% !important" : "background-color: #{session[:navbar_color]}; padding: 15px; padding-left: 4% !important"}
+    %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 220px; min-width: 220px;"}
+  %ul.tabList.nav-wrapper
 
   %li{:class => "#{'active' if session[:current_page] == "vault"}"}
     %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
@@ -26,24 +28,30 @@
   - if session[:tax_return] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
       %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
+  - if session[:create_claim] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
+      %a{:href => "/create-claim", :style => "text-decoration: none;"} Create A Claim
+  - if session[:dicom_viewer] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+      %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
   .footer-user
-    .footer-copyright{:style => "margin-left: 15%; margin-top: -15%"}
+    .footer-copyright{:style => "margin-left: 15%; margin-top: -10%"}
       - if session[:userinfo]
         .name.hidden-xs{:style => "margin-left: -20px;" }
           %a.tooltipped{href: logout_path, :style => "text-decoration: none", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Logout"}
             .row
               .col.s2
                 %span
-                  = image_tag (session[:userinfo][:info][:image]), :width => '25px', :class => 'circle'
+                  = image_tag "new_user.png", :width => '28px', :class => 'circle', :style => "margin-left: -13px;"
               .col.s6
-                %div{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap"}
+                %div{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap; margin-left: -10px; margin-top: 3px;"}
                   = "#{session[:userinfo][:info][:name]}"
               .col.s2
                 %span{:class => 'title'}
-                  %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px"}
+                  %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
 
 %a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#"}
   %i.medium.material-icons

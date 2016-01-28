@@ -1,6 +1,12 @@
 %body.bg{:onclick => "goto();", :style => "height: 100vh; background: url(#{session[:background]}) no-repeat center fixed; background-size: cover"}
 
--# %body.enterPage{:onclick => "goto();", :style => "height: 100%"}
+- if session[:background].nil?
+  %br
+  %br
+  %br
+  %br
+  %h5{:style => "text-align: center"}
+    You must submit a home page URL image for this page to work
 
 :javascript
 

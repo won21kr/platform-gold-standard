@@ -12,7 +12,7 @@
               Categorize Your Tax Document
         .col.s8.push-s2{:style => "margin-top: 20px"}
 
-          %form{:role => "form", :method => "post", :action => submit_claim_path}
+          %form{:role => "form", :method => "post", :action => tax_submit_claim_path}
             %label{:for => "category"}
               %select#type{:placeholder => "Category", :type => "text", :name => "category"}
                 %option{:disabled => "", :selected => "", :value => ""} Choose your option

@@ -333,7 +333,7 @@ class TaxReturnController < SecuredController
   end
 
 
-    redirect_to create_claim_path
+    redirect_to tax_create_claim_path
   end
 
 
@@ -366,7 +366,7 @@ class TaxReturnController < SecuredController
       end
     end
 
-    redirect_to create_claim_path
+    redirect_to tax_create_claim_path
   end
 
   def tax_upload

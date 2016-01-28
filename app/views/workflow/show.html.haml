@@ -2,24 +2,28 @@
   .container
     = render 'layouts/sidenav'
     .row
-      .col.s10.push-s2
+      .col.m12.l10.push-l2
         // Title
         %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
           %i.material-icons.prefix{:style => "font-size: 28px;"} verified_user
           Onboarding Tasks
         %h6.caption.thin{:style => "font-size: 16px;"}
           Follow these steps to complete the onboarding process
+        .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+            info
 
         // Workflow
         - if (session[:progress] == 0)
-          .col.s2.push-s10{:style => "margin-top:-20px;"}
+          .col.s2.push-s10{:style => "margin-top: -20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
             %h7
               Step 1 of 3
           .col.s12{:style => "margin-top: 30px"}
             .col.s4
               %h6
                 Enter your personal information here:
-          .col.s8.push-s2{:style => "margin-top: 20px"}
+          .col.s8.push-s2{:style => "margin-top: 20px", "data-intro" => "On submit, a PDF is created, filled with this information, and uploaded to the 'Pending Approval' folder in Box. A task is created on the document and assigned to the Company Employee managed user.", "data-position" => "left"}
             %form.form-horizontal{:role => "form", :method => "post", :action => form_submit_path}
               .form-group
                 %label.control-label.col-sm-2{:for => "tel"} Phone:
@@ -39,23 +43,23 @@
                 %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit For Approval
         - elsif (session[:progress] == 1)
           .col.s2.push-s10{:style => "margin-top:-20px;"}
-            %h7
+            %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
               Step 2 of 3
           .col.s8.push-s2{:style => "margin-top: 30px;"}
             .flash
               = render partial: "shared/flash_messages", flash: flash
           .col.s12
-            %h6{:style => "margin-bottom: 20px;"}
+            %h6{:style => "margin-bottom: 20px; z-index: 999999;", "data-intro" => "A task has been created for the Company Employee managed user. Make sure to complete the task in Box to proceed to the next step", "data-position" => "left"}
               Pending Employee Review:
             %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
         - elsif (session[:progress] == 2)
-          .col.s2.push-s10{:style => "margin-top:-20px;"}
+          .col.s2.push-s10{:style => "margin-top:-20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
             %h7
               Step 3 of 3
           .col.s12{:style => "margin-top: 30px;"}
             %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
         - elsif (session[:progress] == 3)
-          .col.s2.push-s10{:style => "margin-top:-20px;"}
+          .col.s2.push-s10{:style => "margin-top:-20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
             %h7
               Complete!
           .col.s8.push-s2{:style => "margin-top: 30px"}
@@ -64,9 +68,12 @@
           .col.s12{:style =>  "margin-bottom: 20px"}
             %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
 
-
-
-
-
 .footer{:style=>"text-align: right; font-size: 10px; text-decoration: none;"}
-  = link_to "reset", reset_workflow_path, {:style => "text-decoration: none;"}
+  = link_to "reset", reset_workflow_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
+
+
+
+:javascript
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }
