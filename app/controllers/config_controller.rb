@@ -48,7 +48,11 @@ class ConfigController < ApplicationController
       session[:background] = params[:background]
     end
     if !params[:navbar_color].nil? and params[:navbar_color] != ""
-      session[:navbar_color] = '#' + params[:navbar_color]
+      if (params[:navbar_color][0] == '#')
+        session[:navbar_color] = params[:navbar_color]
+      else
+        session[:navbar_color] = '#' + params[:navbar_color]
+      end
     end
     if !params[:catalog_file].nil? and params[:catalog_file] !=""
       session[:catalog_file] = params[:catalog_file]
