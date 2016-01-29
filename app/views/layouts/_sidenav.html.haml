@@ -2,7 +2,8 @@
 
 %ul#slide-out.side-nav.fixed
   .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px; padding-left: 4% !important" : "background-color: #{session[:navbar_color]}; padding: 15px; padding-left: 4% !important"}
-    %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 160px; min-width: 160px;"}
+    .defaultsize
+      %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/J74UJ6Tj8q2w/ScreenShot2016-01-28at4.43.34PM.png" : "#{session[:logo]}", :style =>  session[:logo].nil? ? "max-width: 220px; min-width: 220px" : "max-width: 160px; min-width: 160px;"}
   %ul.tabList.nav-wrapper
 
   %li{:class => "#{'active' if session[:current_page] == "vault"}"}
