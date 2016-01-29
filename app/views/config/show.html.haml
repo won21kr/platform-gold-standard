@@ -100,6 +100,8 @@
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
             %p
+              %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
+              %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Financial Services)
             %p
@@ -146,6 +148,8 @@
                   = ", Loan Documents"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
+                - if (session[:tax_return] == 'on')
+                  = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Create A Claim"
             %tr

@@ -25,6 +25,9 @@
   - if session[:upload_sign] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
       %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
+  - if session[:tax_return] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
+      %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/create-claim", :style => "text-decoration: none;"} Create A Claim
