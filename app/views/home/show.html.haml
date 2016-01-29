@@ -1,20 +1,11 @@
-:css
-
-  #a0-lock.a0-theme-default .a0-panel .a0-bg-gradient
-    background-color: #fff !important
-
-
-- content_for :auth0_code do
-  = javascript_include_tag '//cdn.auth0.com/js/lock-8.1.min.js'
-
+%script{:src => "https://cdn.auth0.com/js/lock-8.1.min.js"}
 
 .container{:style => "margin-top 200px;"}
   %body{:style => session[:navbar_color].nil? ? "background-color: #fff " : "background-color: #{session[:navbar_color]}" }
-    .row
-      %center{:style => "margin-top: 80px;"}
-        %img{:src => session[:logo].nil? ? "https://hostr.co/file/wjURGV9V1IRu/ScreenShot2015-12-30at6.35.54PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
+  .row
+    %center{:style => "margin-top: 80px;"}
+      %img{:src => session[:logo].nil? ? "https://hostr.co/file/wjURGV9V1IRu/ScreenShot2015-12-30at6.35.54PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
   #root{:style => "width: 300px; margin: 40px auto; margin-top: 0px !important; border-width: 10px;"}
-  %script{:src => ""}
 
 
 
@@ -25,7 +16,6 @@
         container: 'root',
         callbackURL: '#{ENV["AUTH0_CALLBACK"]}',
         primaryColor: '#00184D',
-        // icon: 'nil',
         responseType: 'code',
         authParams: {
         scope: 'openid profile'

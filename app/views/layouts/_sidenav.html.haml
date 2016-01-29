@@ -1,7 +1,10 @@
+%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
 
 %ul#slide-out.side-nav.fixed
-  %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/ymFedDL5NhlX/ScreenShot2015-12-21at1.18.09PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
-  %ul.tabList
+  .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px;" : "background-color: #{session[:navbar_color]}; padding: 15px;"}
+    .defaultsize
+      %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/J74UJ6Tj8q2w/ScreenShot2016-01-28at4.43.34PM.png" : "#{session[:logo]}", :style =>  session[:logo].nil? ? "max-width: 220px; min-width: 220px" : "max-width: 160px; min-width: 160px;"}
+  %ul.tabList.nav-wrapper
 
   %li{:class => "#{'active' if session[:current_page] == "vault"}"}
     %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
@@ -11,7 +14,7 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  - if session[:catalog] == 'on' or session[:catalog].nil?
+  - if session[:catalog] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
       %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
   - if session[:medical_credentialing] == 'on'
@@ -23,6 +26,9 @@
   - if session[:upload_sign] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
       %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
+  - if session[:tax_return] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
+      %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/create-claim", :style => "text-decoration: none;"} Create A Claim
@@ -52,6 +58,7 @@
   %i.medium.material-icons
     reorder
 
+//asdhfalksjdhflkashjdflkasjhdflkashdflkasjhdflkasjhdf
 
 :javascript
   // Initialize collapse button

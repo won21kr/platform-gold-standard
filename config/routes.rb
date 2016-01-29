@@ -57,7 +57,7 @@ Rails.application.routes.draw do
   get "/medical-credentialist" => "medical_credentialing#credentialist", :as => "credentialist"
   get "/credentialist-approve/:folder_id" => "medical_credentialing#approve_request", :as => "approve_request"
 
-  # loan documents
+  #loan documents
   get "/loan-documents" => "loan_documents#show", :as => "loan_docs"
   post "/loan-documents/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
   get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
@@ -89,5 +89,27 @@ Rails.application.routes.draw do
   get "salesforce" => "salesforce#show", :as => 'salesforce'
   get "/salesforce/:id" => "salesforce#show", :as => 'salesforce_id'
 
+  #tax return
+  get "/tax_return" => "tax_return#show", :as => "tax_return"
+  post "/tax_file_upload" => "tax_return#file_upload", :as => "file_upload"
+  get "/tax_create-claim" => "tax_return#show", :as => "tax_create_claim"
+  get "/tax_claim-info/:file" => "tax_return#claim_info", :as => "tax_claim_info"
+  post "/tax_submit-claim" => "tax_return#submit_claim", :as => "tax_submit_claim"
+  get "/tax_reset-claims" => "tax_return#tax_reset", :as => "tax_reset"
+  post "/tax-upload/:folder_id" => "tax_return#tax_upload", :as => "tax_upload"
+
+  # tax return - search process
+  post "/tax_loan-documents/:file_name" => "tax_return#tax_loan_upload", :as => "tax_loan_upload"
+  get "/tax_copy-from-vault/:file_id" => "tax_return#tax_copy_from_vault", :as => "tax_copy_from_vault"
+  get "/tax_reset-loan-docs" => "tax_return#reset_loan", :as => "tax_reset_loan_docs"
+  get "/tax_loan-agreement-sign/:file_id" => "tax_return#tax_loan_docusign", :as => "tax_loan_docusign"
+  get "tax_docusign_response_loan/:envelope_id" => "tax_return#tax_docusign_response_loan", :as => "tax_docusign_response_loan"
+
+  get "/delete/:id" => "tax_return#delete_file", :as => "delete_tax_file"
+  get "/download/:id" => 'tax_return#download', :as => "download_tax_file"
+  get "/share/:id" => "tax_return#share_file", :as => "share_file_tax_file"
+  get "/tax_file" => "tax_return#tax_file_upload", :as => "tax_file_upload"
+  get "/loan_file" => "tax_return#loan_file_upload", :as => "loan_file_upload"
+  get "/metadata_upload" => "tax_return#metadata_upload", :as => "tax_metadata_upload"
 
 end

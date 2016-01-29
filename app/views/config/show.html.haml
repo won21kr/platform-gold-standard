@@ -2,6 +2,7 @@
 #index-banner.section.no-pad-bot
   .container
     .row
+
       %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
         %i.material-icons.prefix{:style => "font-size: 28px;"} settings
         Settings
@@ -52,17 +53,17 @@
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
 
-            %label.label-div{:for => "navbar_color", :style => "color: black"} Navbar Background Color
+            %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
             %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
 
-            %label.label-div{:style => "color: black"} Product Catalog
-            .input-field{:style => "margin-top: 0 !important; margin-bottom: 30px"}
-              %select{:name => "catalog_file"}
-                %option{:disabled => "", :selected => "", :value => ""} Choose your option
-                %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
-                %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
-                %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
-                %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
+            -# %label.label-div{:style => "color: black"} Product Catalog
+            -# .input-field{:style => "margin-top: 0 !important; margin-bottom: 30px"}
+            -#   %select{:name => "catalog_file"}
+            -#     %option{:disabled => "", :selected => "", :value => ""} Choose your option
+            -#     %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
+            -#     %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
+            -#     %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
+            -#     %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
@@ -99,6 +100,9 @@
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
             %p
+              %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
+              %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
+            %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Financial Services)
             %p
@@ -126,7 +130,7 @@
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 %img{:src => session[:logo], :style => "max-height:100px"}
             %tr
-              %td Navbar Background Color:
+              %td Logo Background Color:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = session[:navbar_color]
             %tr
@@ -145,6 +149,8 @@
                   = ", Loan Documents"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
+                - if (session[:tax_return] == 'on')
+                  = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Create A Claim"
             %tr
@@ -163,14 +169,12 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
-        %form.item{:action => session[:background].nil? ? "/dashboard" : '/home', :method => "get", :role => "form"}
+        %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         -#   Documentation
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none;", href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
         -#   Demo Feedback
-
-
 
 :javascript
   $(document).ready(function() {
