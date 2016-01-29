@@ -29,7 +29,7 @@ class CreateClaimController < SecuredController
       sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
       end
-      client.create_folder("Claims", sharedFolder)
+      @submittedClaimsFolder = client.create_folder("Claims", sharedFolder)
       @claims = []
     end
 
