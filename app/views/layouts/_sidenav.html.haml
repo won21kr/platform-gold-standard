@@ -14,7 +14,7 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  - if session[:catalog] == 'on' or session[:catalog].nil?
+  - if session[:catalog] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
       %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
   - if session[:medical_credentialing] == 'on'
