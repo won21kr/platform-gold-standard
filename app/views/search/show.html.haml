@@ -50,13 +50,13 @@
                   %i.material-icons.right arrow_drop_down
               %ul.dropdown-content{:id => "dropdown1",}
                 %li
-                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
+                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
+                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
+                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
+                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
             // category filter
             .col.s1{:style => "margin-top: 15px; width: 15%"}
               %span.border-select
@@ -66,11 +66,11 @@
               %ul.dropdown-content{:id => "dropdown2"}
                 %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
                   %li
-                    = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
+                    = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
+                  = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
+                  = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post, :style => "text-decoration: none"
             // privacy filter
             .col.s1{:style => "margin-top: 15px; width: 13%"}
               %span.border-select
@@ -79,9 +79,9 @@
                   %i.material-icons.right arrow_drop_down
               %ul.dropdown-content{:id => "dropdown3"}
                 %li
-                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
+                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
+                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post, :style => "text-decoration: none"
 
         // Results: folders, search, filter
         .col.s12{:style => "margin-left: 30px"}
