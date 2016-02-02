@@ -11,7 +11,6 @@
 
 :javascript
   var lock = new Auth0Lock('#{ENV["AUTH0_CLIENT_ID"]}', '#{ENV["AUTH0_DOMAIN"]}');
-
     lock.show({
         container: 'root',
         callbackURL: '#{ENV["AUTH0_CALLBACK"]}',
