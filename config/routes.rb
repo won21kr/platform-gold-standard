@@ -58,15 +58,15 @@ Rails.application.routes.draw do
   get "/credentialist-approve/:folder_id" => "medical_credentialing#approve_request", :as => "approve_request"
 
   #loan documents
-  get "/loan-documents" => "loan_documents#show", :as => "loan_docs"
-  post "/loan-documents/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
+  get "/loan-origination" => "loan_documents#show", :as => "loan_docs"
+  post "/loan-origination/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
   get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
   get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"
   get "/loan-agreement-sign/:file_id" => "loan_documents#loan_docusign", :as => "loan_docusign"
   get "docusign_response_loan/:envelope_id" => "loan_documents#docusign_response_loan", :as => "docusign_response_loan"
 
   # create a claim
-  get "/create-claim" => "create_claim#show", :as => "create_claim"
+  get "/submit-claim" => "create_claim#show", :as => "create_claim"
   get "/claim-info/:file_id" => "create_claim#claim_info", :as => "claim_info"
   post "/submit-claim" => "create_claim#submit_claim", :as => "submit_claim"
   get "/reset-claims" => "create_claim#claim_reset", :as => "claim_reset"
