@@ -41,7 +41,7 @@
               = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box full text search to query against file name, type, metadata, and more", "data-position" => "bottom"}
             // search button
             .col.s2
-              = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
+              = f.button :submit, "Submit", :style => "margin-top: 5px;", class: 'btn white black-text'
             // file type filter
             .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates including Category and Privacy", "data-position" => "bottom"}
               %span.border-select
