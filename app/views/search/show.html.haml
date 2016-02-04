@@ -38,12 +38,12 @@
           = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
             // input
             .col.s5
-              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box full text search to query against file name, type, metadata, and more", "data-position" => "bottom"}
+              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box's search api capabilities to query against file name, type, metadata, and more", "data-position" => "bottom"}
             // search button
             .col.s2
               = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
             // file type filter
-            .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates including Category and Privacy", "data-position" => "bottom"}
+            .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates. Each of these dropdowns represent metadata values in Box", "data-position" => "bottom"}
               %span.border-select
                 %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
                   Type
@@ -105,7 +105,7 @@
                     %th{"data-field" => "modified"} Description
                 - @results.each_with_index do |folder, i|
                   %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
-                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
+                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
                       = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
                     %td
                       .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
@@ -129,7 +129,7 @@
 
                 - @results.each_with_index do |result, i|
                   %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                    %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
+                    %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser via the Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
                       = image_tag(thumbnail_url(result.id), :height => "50px")
                     %td
                       = result.name
