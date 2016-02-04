@@ -19,7 +19,7 @@ class ConfigController < ApplicationController
       session[:vault] = 'on'
       session[:resources] = 'on'
       session[:onboarding] = 'on'
-      session[:catalog] = 'on'
+      session[:catalog] = 'off'
 
       # NEW FEATURES
       session[:medical_credentialing] = "off"

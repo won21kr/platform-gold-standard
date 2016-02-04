@@ -581,8 +581,8 @@ class TaxReturnController < SecuredController
       ensure
         temp_file.delete
       end
-
-      render :text => utility.breakout_path(tax_return_path), content_type: 'text/html'
+      flash[:error] = "Your document has been submitted to our tax specialist."
+      render :text => utility.breakout_path(tax_return_path(tab: :signed)), content_type: 'text/html'
     else
       flash[:error] = "You chose not to sign the document."
       render :text => utility.breakout_path(tax_return_path), content_type: 'text/html'

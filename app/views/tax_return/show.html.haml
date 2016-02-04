@@ -25,17 +25,14 @@
         .col.s5.push-s7{:style => "margin-top: -45px; margin-left: 40px"}
           %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
             %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#newclaim", :class => "#{'active' if @currentPage == 'newClaim'}"}
+              %a{:href => "#newclaim"}
                 My Tax Organizer
             %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted'}"}
+              %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted' || params[:tab] == "signed"}"}
                 My Tax Preparation
 
         .col.s12#newclaim{:style => "margin-top: 10px"}
           .col.s10.push-s1
-            - if @currentPage == 'newClaim'
-              .flash
-                = render partial: "shared/flash_messages", flash: flash
             .col.s12{:style => "margin-top: 45px; margin-left: 30px"}
               .col.s8.push-s2.flash
                 = render partial: "shared/flash_messages", flash: flash
@@ -50,9 +47,9 @@
                     -# Loan Agreement
                     %tr
                       %td.td
-                        = image_tag @docStatus["Loan Image"], width: '45px'
+                        = image_tag @docStatus["Loan Image"], width: '40px'
                       %td.td
-                        Form 1099
+                        Forms
                       %td.td
                         = @docStatus["Loan Agreement"]
                       %td.td
@@ -69,9 +66,9 @@
                     -# W2 Form
                     %tr
                       %td.td
-                        = image_tag @docStatus["W2 Image"], width: '45px'
+                        = image_tag @docStatus["W2 Image"], width: '40px'
                       %td.td
-                        Form W2
+                        Income/Investments
                       %td.td
                         = @docStatus["W2 Form"]
                       %td.td
@@ -84,9 +81,9 @@
                     -# Tax Return
                     %tr
                       %td.td
-                        = image_tag @docStatus["Tax Image"], width: '45px'
+                        = image_tag @docStatus["Tax Image"], width: '40px'
                       %td.td
-                        Tax Return
+                        Deductions/Expenses
                       %td.td
                         = @docStatus["Tax Return"]
                       %td.td
@@ -100,6 +97,7 @@
 
         .col.s12#submittedclaims{:style => "margin-top: 20px"}
           .col.s10.push-s1
+            = render partial: "shared/flash_messages", flash: flash
 
           %table.highlight{:style => "margin-top: 45px; margin-left: 30px"}
             %thead
