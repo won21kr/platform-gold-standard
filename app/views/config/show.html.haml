@@ -87,9 +87,9 @@
             %p
               %input#onboarding{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'}
               %label.checkbox{:for => "onboarding", :style => "color: black"} Onboarding Tasks
-            %p
-              %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'}
-              %label.checkbox{:for => "catalog", :style => "color: black"} Product Catalog
+            -# %p
+            -#   %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'}
+            -#   %label.checkbox{:for => "catalog", :style => "color: black"} Product Catalog
             %p
               %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'}
               %label.checkbox{:for => "credentialing", :style => "color: black"} Medical Credentialing (Healthcare)
@@ -99,15 +99,15 @@
             %p
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
-            %p
-              %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
-              %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
+            -# %p
+            -#   %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
+            -#   %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            %p
-              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            -# %p
+            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
 
 
           .col.s12{:style => "margin-top: 20px"}
@@ -149,8 +149,8 @@
                   = ", Loan Origination"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
-                - if (session[:tax_return] == 'on')
-                  = ", Tax Return"
+                -# - if (session[:tax_return] == 'on')
+                -#   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
             %tr
@@ -168,9 +168,9 @@
 
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => reset_config_path, :method => "get"}
-          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
+          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         -#   Documentation
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none;", href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}

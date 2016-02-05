@@ -14,10 +14,10 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  - if session[:catalog] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-      %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
-  - if session[:medical_credentialing] == 'on'
+  -# - if session[:catalog] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+  -#     %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
+  -# - if session[:medical_credentialing] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
       %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
   - if session[:loan_docs] == 'on'
@@ -26,15 +26,15 @@
   - if session[:upload_sign] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
       %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
-  - if session[:tax_return] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
-      %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
+  -# - if session[:tax_return] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
+  -#     %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
-  - if session[:dicom_viewer] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
-      %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
+  -# - if session[:dicom_viewer] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+  -#     %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
