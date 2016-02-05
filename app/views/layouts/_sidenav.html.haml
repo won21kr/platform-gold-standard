@@ -17,7 +17,7 @@
   -# - if session[:catalog] == 'on'
   -#   %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
   -#     %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
-  -# - if session[:medical_credentialing] == 'on'
+  - if session[:medical_credentialing] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
       %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
   - if session[:loan_docs] == 'on'
