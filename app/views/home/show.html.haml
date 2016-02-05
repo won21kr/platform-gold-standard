@@ -1,4 +1,5 @@
-%script{:src => "https://cdn.auth0.com/js/lock-8.1.min.js"}
+- content_for :auth0_code do
+  = javascript_include_tag '//cdn.auth0.com/js/lock-8.1.min.js'
 
 .container{:style => "margin-top 200px;"}
   %body{:style => session[:navbar_color].nil? ? "background-color: #fff " : "background-color: #{session[:navbar_color]}" }
