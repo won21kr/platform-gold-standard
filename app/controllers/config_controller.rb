@@ -55,7 +55,11 @@ class ConfigController < ApplicationController
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
     session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
-    session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
+
+    ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
+    ###################################################################################################
+    ##################################################################################################
+    # session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
     session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
     session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
@@ -84,12 +88,20 @@ class ConfigController < ApplicationController
     session[:config_url] << "&vault=#{session[:vault]}"
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
-    session[:config_url] << "&catalog=#{session[:catalog]}"
+
+    ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
+    ###################################################################################################
+    ##################################################################################################
+    # session[:config_url] << "&catalog=#{session[:catalog]}"
     session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
     session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
     session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&background=#{session[:background]}"
-    session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
+
+    ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
+    ###################################################################################################
+    ##################################################################################################
+    # session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
 
   end
 
