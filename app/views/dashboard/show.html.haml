@@ -15,7 +15,7 @@
             %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
               info
         // Tabs
-        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px", "data-intro" => "These tabs represent folders in Box. Sharing a file below will make an api call to move to the 'Shared Files' folder where Company Employee is a collaborator (Editor)", "data-position" => "left"}
+        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px", "data-intro" => "These tabs represent folders in Box. Sharing a file below will make an api call to move to the 'Shared Files' folder where Company Employee, a Box managed user, is a collaborator (Editor)", "data-position" => "left"}
           %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
             %li.tab{:style => "font-size: 12px !important;"}
               %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
@@ -35,7 +35,7 @@
             = render 'dashboard/myfiles'
           #sharedfiles
             .col.s2.push-s10{:style => "margin-top: 30px;"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none; z-index: 9999999 !important;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none; z-index: 999999 !important;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
             .col.s12
               .flash.col.s8.push-s2{:style => "margin-top: 20px"}
                 - if @sharedFolder.id == @currentFolder

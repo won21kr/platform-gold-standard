@@ -38,25 +38,25 @@
           = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
             // input
             .col.s5
-              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box full text search to query against file name, type, metadata, and more", "data-position" => "bottom"}
+              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box's search api capabilities to query against file name, type, metadata, and more", "data-position" => "bottom"}
             // search button
             .col.s2
-              = f.submit 'Search', class: 'waves-effect btn white black-text', :style => "margin-top: 5px;"
+              = f.button :submit, "Submit", :style => "margin-top: 5px;", class: 'btn white black-text'
             // file type filter
-            .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates including Category and Privacy", "data-position" => "bottom"}
+            .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates. Each of these dropdowns represent metadata values in Box", "data-position" => "bottom"}
               %span.border-select
                 %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
                   Type
                   %i.material-icons.right arrow_drop_down
               %ul.dropdown-content{:id => "dropdown1",}
                 %li
-                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
+                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
+                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
+                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
+                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
             // category filter
             .col.s1{:style => "margin-top: 15px; width: 15%"}
               %span.border-select
@@ -66,11 +66,11 @@
               %ul.dropdown-content{:id => "dropdown2"}
                 %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
                   %li
-                    = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
+                    = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
+                  = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
+                  = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post, :style => "text-decoration: none"
             // privacy filter
             .col.s1{:style => "margin-top: 15px; width: 13%"}
               %span.border-select
@@ -79,9 +79,9 @@
                   %i.material-icons.right arrow_drop_down
               %ul.dropdown-content{:id => "dropdown3"}
                 %li
-                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
+                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post, :style => "text-decoration: none"
                 %li
-                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
+                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post, :style => "text-decoration: none"
 
         // Results: folders, search, filter
         .col.s12{:style => "margin-left: 30px"}
@@ -105,7 +105,7 @@
                     %th{"data-field" => "modified"} Description
                 - @results.each_with_index do |folder, i|
                   %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
-                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
+                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
                       = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
                     %td
                       .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
@@ -130,7 +130,7 @@
                 - @results.each_with_index do |result, i|
                   %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
                     %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
-                      = image_tag(thumbnail_url(result.id), :height => "50px")
+                      = image_tag(thumbnail_url(result.id), :width => "40px")
                     %td
                       = result.name
                     %td

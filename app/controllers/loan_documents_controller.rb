@@ -78,42 +78,27 @@ class LoanDocumentsController < SecuredController
 
     threads.each { |thr| thr.join }
 
+    # if one of the loan documents is "missing", then
     # get vault folder and search for items by name
-    # vaultId = client.folder_from_path("My Files").id
-    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
-      puts "miss"
-      client.folder_from_path("My Files")
-    end
+    if (@docStatus["Loan Agreement"] == "Missing" or @docStatus["W2 Form"] == "Missing" or @docStatus["Tax Return"] == "Missing")
 
-    if (@docStatus["Loan Agreement"] == "Missing")
-      threads << Thread.new do
-        @searchFiles["Loan"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/loan", :expires_in => 4.minutes) do
-          puts "miss"
-          client.search("Loan", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
-        end
+      vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("My Files")
       end
-    end
 
-    if (@docStatus["W2 Form"] == "Missing")
-      threads << Thread.new do
-        @searchFiles["W2"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/w2", :expires_in => 4.minutes) do
-          puts "miss"
-          client.search("W2", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
-        end
+      # search for loan related documents
+      tmpSearchFiles = Rails.cache.fetch("/loan_docs_search/#{session[:box_id]}", :expires_in => 4.minutes) do
+        puts "miss"
+        client.search("W2 || Tax || Loan", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
       end
+
+      # parse through search results
+      @searchFiles["W2"] = tmpSearchFiles.select {|item| item.name.include?("W2") }
+      @searchFiles["Loan"] = tmpSearchFiles.select {|item| item.name.include?("Loan") }
+      @searchFiles["Tax"] = tmpSearchFiles.select {|item| item.name.include?("Tax") }
     end
 
-    if (@docStatus["Tax Return"] == "Missing")
-      threads << Thread.new do
-        @searchFiles["Tax"] = Rails.cache.fetch("/loan_search/#{session[:box_id]}/tax", :expires_in => 4.minutes) do
-          puts "miss"
-          client.search("Tax", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
-        end
-      end
-    end
-
-    #  rejoins threads
-    threads.each { |thr| thr.join }
   end
 
   # upload files to parameter specified folder ID

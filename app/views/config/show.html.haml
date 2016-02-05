@@ -95,7 +95,7 @@
               %label.checkbox{:for => "credentialing", :style => "color: black"} Medical Credentialing (Healthcare)
             %p
               %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'}
-              %label.checkbox{:for => "loan_docs", :style => "color: black"} Loan Documents (Financial Services)
+              %label.checkbox{:for => "loan_docs", :style => "color: black"} Loan Origination (Financial Services)
             %p
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
@@ -104,7 +104,7 @@
               %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
-              %label.checkbox{:for => "createclaim", :style => "color: black"} Create A Claim (Financial Services)
+              %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
             %p
               %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
               %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
@@ -146,13 +146,13 @@
                 - if (session[:medical_credentialing] == 'on')
                   = ", Medical Credentialing"
                 - if (session[:loan_docs] == 'on')
-                  = ", Loan Documents"
+                  = ", Loan Origination"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
                 - if (session[:tax_return] == 'on')
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
-                  = ", Create A Claim"
+                  = ", Submit A Claim"
             %tr
               %td Customized Product Catalog:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
