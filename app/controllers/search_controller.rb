@@ -4,8 +4,6 @@ class SearchController < SecuredController
   BOX_CLIENT = HTTPClient.new
   BOX_CLIENT.cookie_manager = nil
   BOX_CLIENT.send_timeout = 3600 #one hour; needed for lengthy uploads
-  #BOX_CLIENT.agent_name = "Boxr/#{Boxr::VERSION}"
-  #BOX_CLIENT.transparent_gzip_decompression = true
 
   # main search page controller
   def show
@@ -31,7 +29,7 @@ class SearchController < SecuredController
 
         # get resource subfolder objects
         @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/subfolers", :expires_in => 15.minutes) do
-          client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :created_at, :size])
+          client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :content_modified_at, :description])
         end
 
         # tell view that we are in the root resource folder
@@ -40,9 +38,13 @@ class SearchController < SecuredController
         # in a resource subfolder
 
         # get subfolder contents and subfolder name
-        @results = client.folder_items(params[:folder_id],
-                                       fields: [:id, :name, :created_at, :size])
-        subFolder = client.folder_from_id(params[:folder_id], fields: [:name])
+        @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/#{params[:folder_id]}", :expires_in => 15.minutes) do
+          puts "miss"
+          client.folder_items(params[:folder_id], fields: [:id, :name, :created_at, :parent])
+        end
+
+        # get subfolder
+        subFolder = @results.first.parent
         @subName = subFolder.name
         session[:current]
       end
@@ -56,7 +58,6 @@ class SearchController < SecuredController
         @text = params[:filter_query]
       end
 
-      ap params
       # perform Box search, get results
       if (!params[:search].nil?)
         @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
@@ -68,7 +69,14 @@ class SearchController < SecuredController
         mdfilters = {"templateKey" => "#{ENV['METADATA_KEY']}", "scope" => "enterprise",
                      "filters" => {"#{params["key"]}" => "#{params["filter_query"]}"}}
         @results = client.search(mdfilters: mdfilters, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
-        @search_type = params["key"]
+        # @search_type = params["key"]
+
+        # little hack to change message name
+        if(params["key"] == 'type')
+          @search_type = "category"
+        elsif(params["key"] == 'audience')
+          @search_type = "privacy"
+        end
       end
 
       @results = @results.files

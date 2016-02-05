@@ -1,51 +1,55 @@
 
 / back to previous page
-%h5(style="margin-top: -5px; font-size: 120%;")
+%h5(style="font-size: 120%;")
   - if (session[:current_page] == "medical_credentialing")
     = link_to '<< Back to Medical Credentialing', '/medical-credentialing'
   - elsif (session[:current_page] == "loan_docs")
     = link_to '<< Back to Loan Documents', '/loan-documents'
+  - elsif (session[:current_page] == 'tax_return')
+    = link_to '<< Back to my taxes', '/tax_return'
   - else
-    = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
+    = link_to '<< Back to My Vault', dashboard_path
 
 .container
-  .col-md-9
-    %h3
-      = @file.name.split(".").first
-    / create iframe for viewing document
-    - if @file.name.downcase.end_with?('.png') or @file.name.downcase.end_with?('.jpg') or @file.name.downcase.end_with?('.jpeg')
-      %img{:id => 'image_preview', :width => '100%', :src => download_file_url(@fileId), :allowfullscreen => 'allowfullscreen'}
-    - elsif @file.name.downcase.end_with?('.mp4') or @file.name.downcase.end_with?('.mov')
-      %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '100%', height: '600', poster: "#{thumbnail_url(@file.id)}", 'data-setup' => true}
-        %source{src: "#{download_url(@fileId)}", type: 'video/mp4'}
-    - else
+  .row
+    .col.l9.s12
+      %h6{:style => "margin-top: 20px"}
+        = @file.name.split(".").first
+      / create iframe for viewing document
+      -# - if @file.name.downcase.end_with?('.dpng') or @file.name.downcase.end_with?('.jdg') or @file.name.downcase.end_with?('.jpedg')
+      -#   %img{:id => 'image_preview', :width => '100%', :src => download_file_url(@fileId), :allowfullscreen => 'allowfullscreen'}
+      -# - elsif @file.name.downcase.end_with?('.mdp4') or @file.name.downcase.end_with?('.mov')
+      -#   %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '100%', height: '600', poster: "#{thumbnail_url(@file.id)}", 'data-setup' => true}
+      -#     %source{src: "#{download_url(@fileId)}", type: 'video/mp4'}
+      -# - else
       %iframe{:height => "600", :width => "100%", :src => preview_url(@fileId), :allowfullscreen => 'allowfullscreen'}
-  .col-md-3
-    %h3
-      Comment Stream:
-    %ul.commentList
-      / list comments in chronological order associated with each file
-      - @comments.each do |c|
-        %li
-          .commenterImage
-            - if (c.created_by.id == ENV['EMPL_ID'])
-              = image_tag "empl.png"
-            - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
-              = image_tag "credentialist.png"
-            - else
-              = image_tag "customer.png"
-          .commentText
-            %p
-              = c.message
-            %span.date.sub-text
-              = DateTime.strptime(c.created_at).strftime("%m/%d/%y at %l:%M %p")
-    / allow user to enter new comment attached to file
-    %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
-      = token_tag
-      .form-group{:style => "width: 100%"}
-        %textarea.form-control{:style => "width: 100%", :rows=>"4", :placeholder => "Add a comment", :type => "text", :name => "comment", :required => true}
-      .form-group{:style => "margin-bottom: 30px"}
-        %button.btn.btn-default{:style => "margin-top: 5px"} Post
+    .col.l3.s12
+      %h6{:style => "margin-top: 20px"}
+        Comment Stream:
+      %ul.commentList
+        / list comments in chronological order associated with each file
+        - @comments.each do |c|
+          %li
+            .commenterImage
+              - if (c.created_by.id == ENV['EMPL_ID'])
+                = image_tag "empl.png"
+              - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
+                = image_tag "credentialist.png"
+              - else
+                = image_tag "new_user.png"
+            .commentText
+              %p
+                = c.message
+              %span.date.sub-text
+                = DateTime.strptime(c.created_at).strftime("%m/%d/%y at %l:%M %p")
+      / allow user to enter new comment attached to file
+      %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
+        = token_tag
+        .commentbox
+          %label{:for => "comment", :style => "left: 0"} Add a comment
+          %textarea.input{:style => "width: 100%; height: 100%; background-color: #fff;", :rows => "4", :cols => "50", :name => "comment", :required => true}
+        .form-group{:style => "margin-bottom: 30px"}
+          %button.waves-effect.btn.white.black-text{:style => "margin-top: 5px"} Post
 
 
 :javascript

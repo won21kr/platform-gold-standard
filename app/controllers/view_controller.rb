@@ -7,6 +7,7 @@ class ViewController < SecuredController
   def show
 
     # get user client obj and file ID
+    session[:current_folder] = params[:folder]
     client = user_client
     @fileId = params[:id]
     session[:fileId] = @fileId
@@ -63,7 +64,6 @@ class ViewController < SecuredController
 
   # get preview url from file ID
   def preview
-
     begin
       embed_url = user_client.embed_url(params[:id])
       redirect_to embed_url

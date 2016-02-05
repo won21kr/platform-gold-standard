@@ -13,32 +13,36 @@ class HomeController < ApplicationController
                       '254291677', '257524801', '258215985', '260539217']
 
 
+  def login
+    puts "login background page"
+  end
+
   def reset_logins
-  @message = "This feature is currently disabled"
-  begin
-    box_admin = Box.admin_client
+    @message = "This feature is currently disabled"
+    begin
+      box_admin = Box.admin_client
 
-    num_deleted_logins = 0
-    logins = Auth0API.client.users
-    logins.each do |login|
-      box_user_id = login["box_id"]
+      num_deleted_logins = 0
+      logins = Auth0API.client.users
+      logins.each do |login|
+        box_user_id = login["box_id"]
 
-      unless DO_NOT_DELETE_IDS.include? box_user_id
-        begin
-          deleted = box_admin.delete_user(box_user_id, notify: false, force: true)
-          puts "deleting user #{box_user_id}"
-          Auth0API.client.delete_user(login["user_id"])
-          num_deleted_logins += 1
-        rescue
+        unless DO_NOT_DELETE_IDS.include? box_user_id
+          begin
+            deleted = box_admin.delete_user(box_user_id, notify: false, force: true)
+            puts "deleting user #{box_user_id}"
+            Auth0API.client.delete_user(login["user_id"])
+            num_deleted_logins += 1
+          rescue
+          end
         end
       end
-    end
 
-    @message = "Successfully deleted #{num_deleted_logins} logins."
-  rescue => ex
-    @message = ex.message
+      @message = "Successfully deleted #{num_deleted_logins} logins."
+    rescue => ex
+      @message = ex.message
+    end
   end
-end
 
   def logout
     session[:userinfo] = nil
@@ -46,7 +50,5 @@ end
     session[:med_task_status] = nil
     redirect_to home_path
   end
-
-  private
 
 end

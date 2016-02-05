@@ -57,6 +57,11 @@ gem 'docusign_rest'
 gem 'lazyload-rails'
 gem 'puma'
 gem 'gon'
+gem "chardinjs-rails"
+gem "skylight"
+
+gem "skylight"
+
 
 # Gems only used on heroku
 group :production, :staging do

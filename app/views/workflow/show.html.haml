@@ -1,71 +1,79 @@
-.home
-  = render 'layouts/sidenav'
-.container
-  .col-md-9.col-sm-9.pull-right
-    .flash
-      = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff; min-height: 470px", :class => "myvaulttable"}
-    .page-header{:style => "margin-top: 0px"}
-      -# %h4
-      -#   Progress
-      -# .progress
-      -#   .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "#{session[:progress]}%", :role => "progressbar", :style => "width: #{session[:progress]}%;"}
-      -#     = "#{session[:progress]}%"
-      %h1 Onboarding Tasks
-      %p Please complete the onboarding process
-    .col-md-12.col-sm-12
-      .well.well-md
-        .progress
-          .progress-bar.progress-bar-info.progress-bar-striped{:role => "progressbar", :style => "width:25%"}
-            = session[:progress] == 0 ? "Step 1" : ""
-          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 1}",
-                                          :role => "progressbar", :style => "width:25%"}
-            = session[:progress] == 1 ? "Step 2" : ""
-          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 2}",
-                                          :role => "progressbar", :style => "width:25%"}
-            = session[:progress] == 2 ? "Step 3" : ""
-          .progress-bar.progress-bar-info.progress-bar-striped{:class => "#{'progress-bar-todo' if session[:progress] < 3}",
-                                          :role => "progressbar", :style => "width:25%"}
-        .h4
-          = @message
-    - if (session[:progress] == 0)
-      .col-md-12.col-sm-12
-        %h3
-          Fill out the required personal information below:
-        %form.form-horizontal{:role => "form", :method => "post", :action => form_submit_path}
-          .form-group
-            %label.control-label.col-sm-2{:for => "tel"} Phone:
-            .col-sm-6
-              %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel"}
-          .form-group
-            %label.control-label.col-sm-2{:for => "address"} Address:
-            .col-sm-6
-              %input#address.form-control{:placeholder => "4 Privet Drive", :type => "text", :name => "address"}
-          .form-group
-            %label.control-label.col-sm-2{:for => "bday"} Birthday:
-            .col-sm-6
-              %input#bday.form-control{:type => "date", :name => "bday"}
-          .form-group
-            %label.control-label.col-sm-2{:for => "id"} Customer ID #:
-            .col-sm-6
-              %input#id.form-control{:type => "text", :placeholder => "1234-1234132", :name => "id"}
-          %input{:name => "formSubmit", :type => "hidden", :value => "true"}
-          .form-group
-            .col-sm-offset-2.col-sm-6
-              %button.btn.btn-primary.btn-md{:type => "submit"} Submit for Approval
-    - elsif (session[:progress] == 1)
-      .col-md-12.col-sm-12
-        %h3
-          Pending Employee Review:
-        %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
-    - elsif (session[:progress] == 2)
-      .col-md-12.col-sm-12
-        %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
-    - elsif (session[:progress] == 3)
-      .col-md-12.col-sm-12
-        %h3
-          Completed Onboarding Form:
-        %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        // Title
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} verified_user
+          Onboarding Tasks
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Follow these steps to complete the onboarding process
+        .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+            info
 
-.footer{:style=>"text-align: right; font-size: 10px;"}
-  = link_to "reset", reset_workflow_path
+        // Workflow
+        - if (session[:progress] == 0)
+          .col.s2.push-s10{:style => "margin-top: -20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+            %h7
+              Step 1 of 3
+          .col.s12{:style => "margin-top: 30px"}
+            .col.s4
+              %h6
+                Enter your personal information here:
+          .col.s8.push-s2{:style => "margin-top: 20px", "data-intro" => "On submit, a PDF is created, filled with this information, and uploaded to the 'Pending Approval' folder in Box. A task is created on the document and assigned to the Company Employee managed user.", "data-position" => "left"}
+            %form.form-horizontal{:role => "form", :method => "post", :action => form_submit_path}
+              .form-group
+                %label.control-label.col-sm-2{:for => "tel"} Phone:
+                %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel"}
+              .form-group
+                %label.control-label.col-sm-2{:for => "address"} Address:
+                %input#address.form-control{:placeholder => "4 Privet Drive", :type => "text", :name => "address"}
+              .form-group
+                %label.control-label.col-sm-2{:for => "bday"} Date of Birth:
+                %input#bday.form-control{:type => "date", :name => "bday"}
+              .form-group
+                %label.control-label.col-sm-2{:for => "id"} Customer ID:
+                %input#id.form-control{:type => "text", :placeholder => "1234-1234132", :name => "id"}
+              %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+              .form-group
+                -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
+                %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit For Approval
+        - elsif (session[:progress] == 1)
+          .col.s2.push-s10{:style => "margin-top:-20px;"}
+            %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+              Step 2 of 3
+          .col.s8.push-s2{:style => "margin-top: 30px;"}
+            .flash
+              = render partial: "shared/flash_messages", flash: flash
+          .col.s12
+            %h6{:style => "margin-bottom: 20px; z-index: 999999;", "data-intro" => "A task has been created for the Company Employee managed user. Make sure to complete the task in Box to proceed to the next step", "data-position" => "left"}
+              Pending Employee Review:
+            %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+        - elsif (session[:progress] == 2)
+          .col.s2.push-s10{:style => "margin-top:-20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+            %h7
+              Step 3 of 3
+          .col.s12{:style => "margin-top: 30px;"}
+            %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+        - elsif (session[:progress] == 3)
+          .col.s2.push-s10{:style => "margin-top:-20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+            %h7
+              Complete!
+          .col.s8.push-s2{:style => "margin-top: 30px"}
+            .flash
+              = render partial: "shared/flash_messages", flash: flash
+          .col.s12{:style =>  "margin-bottom: 20px"}
+            %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+
+.footer{:style=>"text-align: right; font-size: 10px; text-decoration: none;"}
+  = link_to "reset", reset_workflow_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
+
+
+
+:javascript
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }
