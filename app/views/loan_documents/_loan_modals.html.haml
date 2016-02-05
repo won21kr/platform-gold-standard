@@ -37,7 +37,7 @@
     %h5{:style => "margin-bottom: 35px;"} Loan Agreement Suggestions
     .collection.with-header
       .collection-header
-        Suggested items from your vault
+        Suggested items from My Vault
       - if !@searchFiles["Loan"].nil?
         - @searchFiles["Loan"].each do |f|
           %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "Loan Agreement - Signature Needed", old_name: f.name), :style => "text-decoration: none;"}
@@ -51,7 +51,7 @@
     %h5{:style => "margin-bottom: 35px;"} W2 Form Suggestions
     .collection.with-header
       .collection-header
-        Suggested items from your vault
+        Suggested items from My Vault
       - if !@searchFiles["W2"].nil?
         - @searchFiles["W2"].each do |f|
           %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "W2 Form", old_name: f.name), :style => "text-decoration: none;"}
