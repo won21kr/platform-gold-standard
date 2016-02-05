@@ -1,27 +1,23 @@
 - content_for :auth0_code do
-  = javascript_include_tag '//cdn.auth0.com/js/lock-7.1.min.js'
+  = javascript_include_tag '//cdn.auth0.com/js/lock-8.1.min.js'
+
+.container{:style => "margin-top 200px;"}
+  %body{:style => session[:navbar_color].nil? ? "background-color: #fff " : "background-color: #{session[:navbar_color]}" }
+  .row
+    %center{:style => "margin-top: 80px;"}
+      %img{:src => session[:logo].nil? ? "https://hostr.co/file/wjURGV9V1IRu/ScreenShot2015-12-30at6.35.54PM.png" : "#{session[:logo]}", :style => "max-width: 240px; min-width: 240px;"}
+  #root{:style => "width: 300px; margin: 40px auto; margin-top: 0px !important; border-width: 10px;"}
 
 
-%body.bg{:style => session[:background].nil? ? "" : "background: url(#{session[:background]}) no-repeat center fixed; background-size: cover"}
-
-  .signin-button{:style => session[:background].nil? ? "" : "background: #F5F5F5; border-radius: 10px;"}
-    %center(style="font-size: 160%; padding-top: 30px; margin-top: -215px; margin-bottom: -5px; color: #8F8D8E; font-family: 'Open Sans'; letter-spacing: 2px;")
-      Welcome to
-    %center(style="font-size: 300%; !important; color: #2F2F2F; letter-spacing: 2px;")
-      - if session[:home_message] == nil or session[:home_message] == ""
-        The Box Platform
-      - else
-        = session[:home_message]
-    %button.one{:onclick => 'signin()', :style => "margin: 50px 30%; width: 40%; position: relative;"}
-      Sign In
 
 :javascript
   var lock = new Auth0Lock('#{ENV["AUTH0_CLIENT_ID"]}', '#{ENV["AUTH0_DOMAIN"]}');
-
-  function signin() {
     lock.show({
+        container: 'root',
         callbackURL: '#{ENV["AUTH0_CALLBACK"]}',
+        primaryColor: '#00184D',
         responseType: 'code',
-        authParams: {scope: 'openid profile'},
+        authParams: {
+        scope: 'openid profile'
+      }
     });
-  }

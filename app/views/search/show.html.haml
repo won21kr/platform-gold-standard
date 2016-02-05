@@ -1,134 +1,163 @@
 
 
-.modal.fade#viewModal1{tabindex:"-1", role:"dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true"}
-  .modal-dialog{:style => "height: 800px;	width: 960px;	background-color: white"}
-    .modal-body(style="overflow: hidden; height: 730px;	width: 960px")
-      %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
-    .modal-footer
-      %button{type:"button", class:"btn btn-default btn-small", "data-dismiss"=>"modal", :style => "font-size: 100%"}
-        Close
 
-.container
-  = render 'layouts/sidenav'
-  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-    .page-header{:style => "margin-top: 0px"}
-      %h1 Resources
-      %p Browse through the various resources provided below
-    .h4
-      Search By:
-    .col-md-5
-      .well.well-sm
-        = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
-          %h3.form-search-heading
-            %center File Name
-          = f.input :query, placeholder: "feature, customer, search, etc...", input_html: { class: 'form-control', type: 'search' }
-          = f.submit 'Search', class: 'btn btn-md btn-primary btn-block', :style => "width: 40%; margin: 5px auto"
-    .col-md-1{:style => "margin-top: 45px"}
-      %p
-        %center
-          %i{:style => "font-size: 140%"}
-            or
-    .col-md-5
-      .well.well-sm{:style => "height: 155px"}
-        .form-search
-          %h3.form-search-heading
-            %center File Attribute
-          .btn-group.btn-group-justified{:style => "margin-bottom: 40px"}
-            .btn-group{:role => "group"}
-              %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button", :method => "post"}
-                File Type
-                %span.caret
-              %ul.dropdown-menu
-                %li
-                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post
-                %li
-                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post
-                %li
-                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post
-                %li
-                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post
-            .btn-group{:role => "group"}
-              %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-                Type
-                %span.caret
-              %ul.dropdown-menu
-                %li
-                  = link_to "Training Material", search_path(:filter_query => "Training Material", :key => "type"), :method => :post
-                %li
-                  = link_to 'Onboarding Document', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post
-                %li
-                  = link_to 'Case Study', search_path(:filter_query => "Case Study", :key => "type"), :method => :post
-            .btn-group{:role => "group"}
-              %button.btn.btn-default.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-                Audience
-                %span.caret
-              %ul.dropdown-menu
-                %li
-                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post
-                %li
-                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post
-    / Print out results or display resource folders
-    .col-md-12
-      .results
-        %h3
-          .row
-            %ol.breadcrumb{:style => "font-size: 85%"}
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        // title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
+            Resources
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Find relevant content, fast
+          .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+            %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+            %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+              info
+        // Messaging
+        .col.s5.push-s7{:style => "margin-top:-20px; text-align: right"}
+          .styleoverlay{:style => "margin-left: 130px;"}
+          - if (!@text.nil?)
+            = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+          - elsif @root == true
+            .breadcrumb
               %li
-                = link_to @resource.name, resources_path
-              - if !@subName.nil?
-                %li.active
-                  = @subName
-        - if @results.nil? or @results.count == 0
-          / there were no results found for your search query
-          %h2(style='text-align: center;')
-            There were no results matching your search criteria.
-        - else
-          / either results were found for your search or were are in the resource root folder / sub-folder
-          %h3
+                %li.active{:href => "#", "data-intro" => "Your current folder path. On creation of your App User you were granted Viewer access to these folders", "data-position" => "bottom"} Resources
+          - elsif !@subName.nil?
+            .breadcrumb{:style => "vertical-align: top"}
+              %li{ "data-intro" => "Look here for a breadcrumb view of your current folder", "data-position" => "bottom"}
+                %a{:href => "/resources"} Resources
+              %li.active{:href => "#", :style => ""}
+                = @subName
+
+        // Search and filtering
+        .col.s12{:style => "margin-left: 20px; margin-bottom: 20px; margin-top: 40px"}
+          = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
+            // input
+            .col.s5
+              = f.input :query, placeholder: "Search...", input_html: {class: 'search', id: 'search', "data-intro" => "Leverage Box's search api capabilities to query against file name, type, metadata, and more", "data-position" => "bottom"}
+            // search button
+            .col.s2
+              = f.button :submit, "Submit", :style => "margin-top: 5px;", class: 'btn white black-text'
+            // file type filter
+            .col.s1{:style => "margin-top: 15px; width: 13%; z-index: 9999999 !important;", "data-intro" => "Filter search results by file type and metadata templates. Each of these dropdowns represent metadata values in Box", "data-position" => "bottom"}
+              %span.border-select
+                %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
+                  Type
+                  %i.material-icons.right arrow_drop_down
+              %ul.dropdown-content{:id => "dropdown1",}
+                %li
+                  = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                %li
+                  = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                %li
+                  = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                %li
+                  = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+            // category filter
+            .col.s1{:style => "margin-top: 15px; width: 15%"}
+              %span.border-select
+                %a.dropdown-button{"data-activates" => "dropdown2", :href => "#!", :style => "color: black"}
+                  Category
+                  %i.material-icons.right arrow_drop_down
+              %ul.dropdown-content{:id => "dropdown2"}
+                %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
+                  %li
+                    = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post, :style => "text-decoration: none"
+                %li
+                  = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post, :style => "text-decoration: none"
+                %li
+                  = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post, :style => "text-decoration: none"
+            // privacy filter
+            .col.s1{:style => "margin-top: 15px; width: 13%"}
+              %span.border-select
+                %a.dropdown-button{"data-activates" => "dropdown3", :href => "#!", :style => "color: black"}
+                  Privacy
+                  %i.material-icons.right arrow_drop_down
+              %ul.dropdown-content{:id => "dropdown3"}
+                %li
+                  = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post, :style => "text-decoration: none"
+                %li
+                  = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post, :style => "text-decoration: none"
+
+        // Results: folders, search, filter
+        .col.s12{:style => "margin-left: 30px"}
+          - if @results.nil? or @results.count == 0
+            %h6.center{:style => "margin-top: 35px;"}
+              There were no results matching your search criteria.
+          - else
+            / either results were found for your search or were are in the resource root folder / sub-folder
             / are we in the root folder?
             - if (@root == true)
-              - @results.each do |folder|
-                .row(style="margin-bottom: 10px;")
-                  .col-md-1
-                    = image_tag("folder.png", height: '50px')
-                  .col-md-9
-                    .filename{:style => "margin-top: 16px; margin-left: 8px; font-size: 80%"}
-                      = link_to folder.name, sub_resource_path(folder.id)
-            - if (!@text.nil?)
-              = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-          - if (@root != true)
-            - @results.each do |result|
-              .result
-                .row
-                  .col-md-3
-                    .thumb-image-border
-                      -# = link_to view_doc_path(result.id) do
-                      = link_to '#', :onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); " do
-                        = image_tag(thumbnail_url(result.id), :height => "90px")
-                  .col-md-6.col-xs-6.col-sm-6
-                    .row(style = 'margin-left: -25px;')
-                      .col-md-4.hidden-xs.hidden-sm
-                        .result-label
-                          File Name:
-                        .result-label
-                          Created On:
-                        .result-label
-                          Type:
-                        .result-label
-                          Audience:
-                      .col-md-8.col-sm-12.col-xs-12
-                        .result-data
-                          = result.name
-                        .result-data
-                          = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
-                        .result-data
-                          = result.type
-                        .result-data
-                          = result.audience
-                  .col-md-3
-                    .btn-group.pull-right
-                      .btn.btn-default.btn-md{:onclick => "$('#preview').attr('src','about:blank'); setTimeout(function() {$('#preview').attr('src','#{preview_url(result.id)}');}, 10); $('#viewModal1').modal(open); ", 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                        %span.glyphicon.glyphicon-eye-open
-                      %a.btn.btn-default.btn-md{href: download_path(result.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                        %span.glyphicon.glyphicon-cloud-download
-                    /= link_to image_tag('download.png', width: '40px', style: 'opacity: 0.65;'), result.download_link, :id => "download_link_#{result.id}"
+              -# .nav-wrapper
+              -#   %a.breadcrumb{:href => "/resources"}
+              -#     Resources
+              -#   %a.breadcrumb{:href => "#!"}
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} Folder
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "modified"} Last Modified
+                    %th{"data-field" => "modified"} Description
+                - @results.each_with_index do |folder, i|
+                  %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
+                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
+                      = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
+                    %td
+                      .filename{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
+                        = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
+                    %td
+                      = DateTime.strptime(folder.content_modified_at).strftime("%B %d, %Y")
+                    %td
+                      = folder.description
+            -# - if (!@text.nil?)
+            -#   = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+            - if (@root != true)
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "price"} Category
+                    %th{"data-field" => "foop"} Created
+                    %th{"data-field" => "foop"} Privacy
+
+
+                - @results.each_with_index do |result, i|
+                  %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                    %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
+                      = image_tag(thumbnail_url(result.id), :width => "40px")
+                    %td
+                      = result.name
+                    %td
+                      = result.type
+                    %td
+                      = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                    %td
+                      = result.audience
+
+#viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%; background-color: white"}
+  .modal-content
+    %iframe{:id => 'preview', :width => '100%', :height => '100%', :frameborder => '0', :allowfullscreen => "", :width => '100%', :height => '100%'}
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
+
+:javascript
+
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });
+  });
+
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }

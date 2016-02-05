@@ -69,7 +69,7 @@ class WorkflowController < SecuredController
       doc.configure_pdf(client, filename, path, ENV['ONBOARDING_FORM'])
     end
 
-    flash[:notice] = "Thanks for filling out your information! Your contract is now under review."
+    flash[:notice] = "Thanks for sharing your information! Your contract is under review."
     redirect_to workflow_path
 
   end
@@ -94,11 +94,7 @@ class WorkflowController < SecuredController
         completedPath = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow/Completed/"
         signed_folder = box_user.folder_from_path(completedPath)
         file = box_user.upload_file(temp_file.path, signed_folder)
-        #Box.create_in_view_api(file)
         box_user.update_file(file, name: box_info[:box_doc_name])
-        #box_user.update_metadata(file, [{'op' => 'add', 'path' => '/docusign_envelope_id', 'value' => params["envelope_id"]}])
-        # meta = box_user.metadata(box_info[:box_doc_id])
-        # ap meta
         box_user.delete_file(box_info[:box_doc_id])
 
         # box_user.create_metadata(file, meta)
@@ -127,13 +123,13 @@ class WorkflowController < SecuredController
     completedPath = "#{path}/Completed/"
 
     # get all workflow folders, utilize cache
-    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}", :expires_in => 15.minutes) do
+    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(approvalPath)
     end
-    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}", :expires_in => 15.minutes) do
+    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(sigReqPath)
     end
-    completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 15.minutes) do
+    completedFolder = Rails.cache.fetch("/folder/#{completedPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(completedPath)
     end
 
@@ -222,13 +218,13 @@ class WorkflowController < SecuredController
     completedPath = "#{path}/Completed/"
 
     # get all workflow folders, utilize cache
-    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}", :expires_in => 15.minutes) do
+    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(approvalPath)
     end
-    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}", :expires_in => 15.minutes) do
+    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(sigReqPath)
     end
-    completedFolder = Rails.cache.fetch("/folder/#{completedPath}", :expires_in => 15.minutes) do
+    completedFolder = Rails.cache.fetch("/folder/#{completedPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       client.folder_from_path(completedPath)
     end
 
@@ -258,7 +254,7 @@ class WorkflowController < SecuredController
     else
       # the information form has not yet been filled out by the customer
       @status = "toFill"
-      
+
     end
 
     # return document obj or nil if document doesn't exist yet

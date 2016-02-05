@@ -1,106 +1,182 @@
 
-%h3
-  Set header config options:
+#index-banner.section.no-pad-bot
+  .container
+    .row
 
-%section#config-form
-  %form{:action => save_config_path, :method => "post", :role => "form"}
-    .form-group.col-md-7
-      %label.label-div{:for => "message"} Home Page Message
-      %input.form-control#message{:type => "text", :name => "message", :placeholder => session[:home_message].nil? ? "The Box Platform" : session[:home_message]}
+      %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} settings
+        Settings
+      %h6.caption.thin{:style => "margin-top: -25px; margin-bottom: 45px;"}
+        Build a truly custom app to demo Box Platform, in seconds
 
-      %label.label-div{:for => "logo"} Company Logo URL
-      %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo]}
+      // How it works...
+      %h6{:style => "margin-top: 20px; margin-bottom: 5;"}
+        Here's How it Works
+      .col.s10.push-s1{:style => "margin-bottom: 40px"}
+        .col.s4
+          .center
+            %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} invert_colors
+            %h6
+              %b
+                Customize your app
+            %p{:style => "text-align: left;"}
+              This is the Settings page where you can edit the look and feel of the Platform Standard app. Add a company logo, change the theme color, and tweak the login page to your liking. Even turn on and off features that make sense for your demo.
+        .col.s4
+          .center
+            %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} open_in_browser
+            %h6
+              %b
+                Save Your Custom URL
+            %p{:style => "text-align: left;"}
+              When you're finished tinkering, copy the long, crazy-looking URL at the bottom of this page. This is the custom URL for the app you just created. When you visit this URL the browser knows to render your special colors, logos, etc, so keep it somewhere safe.
+        .col.s4
+          .center
+            %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} done
+            %h6
+              %b
+                Give a Kickass Demo
+            %p{:style => "text-align: left;"}
+              Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app in the future and click "Reset" below or clear your browser data to revert changes.
 
-      %label.label-div{:for => "navbar_color"} Navbar Background Color
-      %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1]}
+      // Build your own app
+      .col.s12
+        %h6{:style => "margin-top: 20px; margin-bottom: 25px;"}
+          Build Your App Below
+      .col.s10.push-s1{:style => "margin-bottom: 40px"}
+        %form{:action => save_config_path, :method => "post", :role => "form"}
+          .col.s6
+            %b Custom Branding
+            .br{:style => "margin-bottom: 12px"}
+            -# %label.label-div{:for => "message"} Home Page Message
+            -# %input.form-control#message{:type => "text", :name => "message", :placeholder => session[:home_message].nil? ? "The Box Platform" : session[:home_message]}
 
-      %label.label-div{:for => "background"} Background Image URL
-      %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background]}
+            %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
+            %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
 
-      -# Choose a product catalog
-      -# %label.label-div{:for => "catalog_file"} Choose Product Catalog
-      -# %select{:name => "catalog_file"}
-      -#   %option{:value => "Retail"} Retail
-      -#   %option{:value => "Healthcare"} Healthcare
-      -#   %option{:value => "Financial Services"} Financial Services
-      -#   %option{:value => "AEC"} AEC
-      -# .br
+            %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
+            %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
 
-      -# Activate / Deactivate feature tabs
-      %label.label-div{:for => "tab_select"} Active Feature Tabs
-      %label.checkbox
-        %input#vault{:type => "checkbox", :name => "vault", :checked => true, :disabled => "on"} My Vault
-      %label.checkbox
-        %input#resources{:type => "checkbox", :name => "resources", :checked => session[:resources] == 'on'} Resources
-      %label.checkbox
-        %input#onbaording{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'} Onboarding Tasks
-      %label.checkbox
-        %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'} Product Catalog
-      %label.checkbox
-        %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'} Medical Credentialing (Healthcare)
-      %label.checkbox
-        %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'} Loan Documents (Financial Services)
+            -# %label.label-div{:style => "color: black"} Product Catalog
+            -# .input-field{:style => "margin-top: 0 !important; margin-bottom: 30px"}
+            -#   %select{:name => "catalog_file"}
+            -#     %option{:disabled => "", :selected => "", :value => ""} Choose your option
+            -#     %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
+            -#     %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
+            -#     %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
+            -#     %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
 
-    .col-md-5.pull-right
-      %a.btn.btn-primary.btn-lg.pull-right{:style => "margin-left: 20px", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
-        Documentation
-      %a.btn.btn-primary.btn-lg.pull-right{href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
-        Demo Feedback
+            -# Advanced features
+            %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
+            #demo.collapse
+              %div{:style => "margin-top: 20px"}
+              .col.s10{:style => "padding-left: 0"}
+                %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Home Page Background URL
+                %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
+              .col.s1
+                %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"}
+                  Preview
+          .col.s5.push-s1
+            -# Activate / Deactivate feature tabs
+            %b{:for => "tab_select"} Active Feature Tabs
+            %p
+              %input#vault{:type => "checkbox", :name => "vault", :checked => true, :disabled => "on"}
+              %label.checkbox{:for => "vault", :style => "color: black"} My Vault
+            %p
+              %input#resources{:type => "checkbox", :name => "resources", :checked => session[:resources] == 'on'}
+              %label.checkbox{:for => "resources", :style => "color: black"} Resources
+            %p
+              %input#onboarding{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'}
+              %label.checkbox{:for => "onboarding", :style => "color: black"} Onboarding Tasks
+            -# %p
+            -#   %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'}
+            -#   %label.checkbox{:for => "catalog", :style => "color: black"} Product Catalog
+            %p
+              %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'}
+              %label.checkbox{:for => "credentialing", :style => "color: black"} Medical Credentialing (Healthcare)
+            %p
+              %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'}
+              %label.checkbox{:for => "loan_docs", :style => "color: black"} Loan Origination (Financial Services)
+            %p
+              %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
+              %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
+            -# %p
+            -#   %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
+            -#   %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
+            %p
+              %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
+              %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
+            -# %p
+            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
 
 
-    .form-group.col-md-12.item
-      %input.btn.btn-default{:type => "submit", :value => "Save"}
+          .col.s12{:style => "margin-top: 20px"}
+            %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
+              Submit
 
-%container.col-md-12{:role => "group"}
+      // Current Configuration
+      .col.s12
+        %h6{:style => "margin-top: 40px; margin-bottom: 20px;"}
+          Current Configuration
+      .col.s10.push-s1
+        %table.striped.fixed
+          %thead
+            %tr
+              %th Attribute Name
+              %th Attribute Value
+          %tbody
+            %tr
+              %td Logo:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                %img{:src => session[:logo], :style => "max-height:100px"}
+            %tr
+              %td Logo Background Color:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:navbar_color]
+            %tr
+              %td Active Feature Tabs
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = "My Vault"
+                - if (session[:resources] == 'on')
+                  = ", Resources"
+                - if (session[:onboarding] == 'on')
+                  = ", Onboarding Tasks"
+                -# - if (session[:catalog] == 'on')
+                -#   = ", Product Catalog"
+                - if (session[:medical_credentialing] == 'on')
+                  = ", Medical Credentialing"
+                - if (session[:loan_docs] == 'on')
+                  = ", Loan Origination"
+                - if (session[:upload_sign] == 'on')
+                  = ", Upload & Sign"
+                -# - if (session[:tax_return] == 'on')
+                -#   = ", Tax Return"
+                - if (session[:create_claim] == 'on')
+                  = ", Submit A Claim"
+            %tr
+              %td Customized Product Catalog:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:catalog_file]
+            %tr
+              %td Home Page Background URL:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:background]
+            %tr
+              %td Encoded Configuration URL:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:config_url]
 
-  %form.item{:action => reset_config_path, :method => "get"}
-    %button.btn.btn-default{:type => "submit", :type => "form"} Reset
-  %form.item{:action => "/dashboard", :method => "get", :role => "form"}
-    %input.btn.btn-default{:type => "submit", :value => "Main Page"}
+        .br{:style => "margin-bottom: 40px"}
+        %form.item{:action => reset_config_path, :method => "get"}
+        %form.item{:action => "/dashboard", :method => "get", :role => "form"}
+          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
+          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
+        -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
+        -#   Documentation
+        -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none;", href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
+        -#   Demo Feedback
 
-
-%section
-  %h3
-    %table.table.table-striped
-      %colgroup
-        %col.col-md-4
-        %col.col-md-7
-      %thead
-        %tr
-          %th Attribute Name
-          %th Attribute Value
-      %tbody
-        %tr
-          %td Company Name:
-          %td
-            = session[:home_message]
-        %tr
-          %td Logo:
-          %td
-            %img{:src => session[:logo], :style => "max-height:100px"}
-        %tr
-          %td Navbar Background Color:
-          %td
-            = session[:navbar_color]
-        %tr
-          %td Active Feature Tabs
-          %td
-            = "My Vault"
-            - if (session[:resources] == 'on')
-              = ", Resources"
-            - if (session[:onboarding] == 'on')
-              = ", Onboarding Tasks"
-            - if (session[:catalog] == 'on')
-              = ", Product Catalog"
-            - if (session[:medical_credentialing] == 'on')
-              = ", Medical Credentialing"
-            - if (session[:loan_docs] == 'on')
-              = ", Loan Documents"
-        %tr
-          %td Encoded Configuration URL:
-          %td
-            = session[:config_url]
-        -# %tr
-        -#   %td Customized Product Catalog:
-        -#   %td
-        -#     = session[:catalog_file]
+:javascript
+  $(document).ready(function() {
+    $('select').material_select();
+  });

@@ -1,76 +1,65 @@
-.col-md-3.col-sm-4.col-xs-3.pull-left
-  / SIDEBAR USERPICTURE
-  .profile{:style => "margin: 1px 0; background: #fff"}
-    .profile-sidebar{:style => "padding: 20px 0 30px 0"}
-      .profile-userpic
-        - if session[:box_id] == ENV['CRED_SPECIALIST']
-          = image_tag "credentialist.png", :style => "float: none; margin: 0 15%; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important"
-        -else
-          = image_tag "customer.png", :style => "float: none; margin: 0 15%; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important"
+%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
 
-        -# %img.img-responsive{:alt => "", :src => "https://platform-standard.box.com/shared/static/a3a2uag0hkt4vuixearil86li2ghlrlb.png", :style => "float: none; margin: 0 auto; width: 70%; height: 70%; -webkit-border-radius: 70% !important; -moz-border-radius: 70% !important; border-radius: 70% !important" }
-      / END SIDEBAR USERPIC
-      / SIDEBAR USER TITLE
-      .profile-usertitle{:style => "text-align: center; margin-top: 20px;"}
-        .profile-usertitle-name{:style => "color: #5a7391; font-size: 16px; font-weight: 600; margin-bottom: 7px"}
-          - if session[:box_id] == ENV['CRED_SPECIALIST']
-            Credentialing Specialist
-          - else
-            Marcus Doe
-        .profile-usertitle-job{:style => " text-transform: uppercase; color: #5b9bd1; font-size: 12px; font-weight: 600; margin-bottom: 15px;"}
-          - if session[:medical_credentialing] == "on" and session[:box_id] != ENV['CRED_SPECIALIST']
-            Applicant
-          - elsif session[:box_id] != ENV['CRED_SPECIALIST']
-            Customer
+%ul#slide-out.side-nav.fixed
+  .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px;" : "background-color: #{session[:navbar_color]}; padding: 15px;"}
+    .defaultsize
+      %img.brand-logo{:src => session[:logo].nil? ? "https://hostr.co/file/J74UJ6Tj8q2w/ScreenShot2016-01-28at4.43.34PM.png" : "#{session[:logo]}", :style =>  session[:logo].nil? ? "max-width: 220px; min-width: 220px" : "max-width: 160px; min-width: 160px;"}
+  %ul.tabList.nav-wrapper
 
-      / END SIDEBAR USER TITLE
+  %li{:class => "#{'active' if session[:current_page] == "vault"}"}
+    %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
+  - if session[:resources] == 'on' or session[:resources].nil?
+    %li{:class => "#{'active' if session[:current_page] == "search"}"}
+      %a{:href => "/resources", :style => "text-decoration: none;"} Resources
+  - if session[:onboarding] == 'on' or session[:onboarding].nil?
+    %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
+      %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
+  -# - if session[:catalog] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
+  -#     %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
+  - if session[:medical_credentialing] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
+      %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
+  - if session[:loan_docs] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "loan_docs"}"}
+      %a{:href => "/loan-origination", :style => "text-decoration: none;"} Loan Origination
+  - if session[:upload_sign] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
+      %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
+  -# - if session[:tax_return] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
+  -#     %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
+  - if session[:create_claim] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
+      %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
+  -# - if session[:dicom_viewer] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+  -#     %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
+  %li
+    %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
-    / SIDEBAR MENU
-    .profile-usermenu
-      %ul.nav.nav-pills.nav-stacked.appnavbtns
-        %li{:class => "#{'active' if session[:current_page] == "vault"}", :id => "sidewide"}
-          %a{:href => "/dashboard"}
-            %i.glyphicon.glyphicon-home
-            My Vault
-        - if session[:resources] == 'on' or session[:resources].nil?
-          %li{:class => "#{'active' if session[:current_page] == "search"}", :id => "sidewide"}
-            %a{:href => "/resources"}
-              %i.glyphicon.glyphicon-user
-              Resources
-        - if session[:onboarding] == 'on' or session[:onboarding].nil?
-          %li{:class => "#{'active' if session[:current_page] == "workflow"}", :id => "sidewide"}
-            %a{:href => "/onboarding-tasks"}
-              %i.glyphicon.glyphicon-ok
-              Onboarding Tasks
-              %span.badge
-                = session[:task_status].nil? ? get_task_status : session[:task_status]
-        - if session[:catalog] == 'on' or session[:catalog].nil?
-          %li{:class => "#{'active' if session[:current_page] == "catalog"}", :id => "sidewide"}
-            %a{:href => "/catalog"}
-              %i.glyphicon.glyphicon-picture
-              Product Catalog
-        -# UPLOAD AND SIGN TAB
-        -# - if session[:uploadsign] == 'on' or session[:uploadsign].nil?
-        -#   %li{:class => "#{'active' if session[:current_page] == "upload-sign"}", :id => "sidewide"}
-        -#     %a{:href => "/upload-sign"}
-        -#       %i.glyphicon.glyphicon-user
-        -#       Upload and Sign
-        - if session[:medical_credentialing] == 'on'
-          %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
-            %a{:href => "/medical-credentialing"}
-              %i.glyphicon.glyphicon-heart-empty
-              Medical Credentialing
-              - if session[:box_id] != ENV['CRED_SPECIALIST']
-                %span.badge
-                  = session[:med_task_status].nil? ? get_med_task_status : session[:med_task_status]
-        - if session[:loan_docs] == 'on'
-          %li{:class => "#{'active' if session[:current_page] == "loan_docs"}", :id => "sidewide"}
-            %a{:href => "/loan-documents"}
-              %i.glyphicon.glyphicon-folder-open{:style => "margin-right: 2px"}
-              Loan Documents
-        %li
-          %a{:href => "#", :id => "sidewide"}
-            %i.glyphicon.glyphicon-flag
-            Help
+  .footer-user
+    .footer-copyright{:style => "margin-left: 15%; margin-top: -10%"}
+      - if session[:userinfo]
+        .name.hidden-xs{:style => "margin-left: -20px;" }
+          %a.tooltipped{href: logout_path, :style => "text-decoration: none", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Logout"}
+            .row
+              .col.s2
+                %span
+                  = image_tag "new_user.png", :width => '28px', :class => 'circle', :style => "margin-left: -13px;"
+              .col.s6
+                %div{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap; margin-left: -10px; margin-top: 3px;"}
+                  = "#{session[:userinfo][:info][:name]}"
+              .col.s2
+                %span{:class => 'title'}
+                  %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
 
-  / END MENU
+%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#"}
+  %i.medium.material-icons
+    reorder
+
+//asdhfalksjdhflkashjdflkasjhdflkashdflkasjhdflkasjhdf
+
+:javascript
+  // Initialize collapse button
+  $(".button-collapse").sideNav();

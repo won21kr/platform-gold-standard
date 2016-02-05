@@ -1,8 +1,15 @@
-.col-md-12.col-sm-12
+.col.s2.push-s10{:style => "margin-top:-20px;"}
+  %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+    Complete!
+.col.s8.push-s2{:style => "margin-top: 30px;"}
+  .flash
+    = render partial: "shared/flash_messages", flash: flash
+.col.s5
+  %h6{:style => "margin-bottom: 20px"}
+    Approved medical credential documents:
+.col.s10.push-s1
   .panel.panel-default{:style => "margin-bottom: 0px"}
-    .panel-heading
-      %h2 Approved Medical Credential Documents
-    %table.table
+    %table.highlight
       %thead
         %tr
           %th File
@@ -15,7 +22,7 @@
             %tr
               %td
                 = link_to view_doc_path(f.id) do
-                  = image_tag(thumbnail_url(f.id), width: '30px')
+                  = image_tag(thumbnail_url(f.id), width: '40px')
               %td
                 %span{:style => "inline"}
                   = f.name
@@ -24,7 +31,7 @@
               %td
                 / file action options
                 .btn-group
-                  %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                    %span.glyphicon.glyphicon-eye-open
-                  %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                    %span.glyphicon.glyphicon-cloud-download
+                  %a.btn.white.tooltipped{href: view_doc_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                  %a.btn.white.tooltipped{href: download_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}

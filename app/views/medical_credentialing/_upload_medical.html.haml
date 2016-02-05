@@ -1,11 +1,16 @@
-.col-md-12.col-sm-12
-  %h3
-    Upload Supporting Medical Credential Documents
+.col.s2.push-s10{:style => "margin-top:-20px;"}
+  %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+    Step 2 of 3
+.col.s8.push-s2{:style => "margin-top: 30px;"}
+  .flash
+    = render partial: "shared/flash_messages", flash: flash
+.col.s5
+  %h6{:style => "margin-bottom: 30px"}
+    Upload supporting medical credential documents:
+.col.s10.push-s1
   .drop-area
-    .row
-      .col-md-12
-        = simple_form_for(:medical, html:{class: 'dropzone', id:'my-dropzone'}, url: med_upload_url(@medFolder.id))  {}
-  %form.form-horizontal{:role => "form", :method => "get", :action => medical_upload_path}
-    .form-group
-      .col-sm-6
-        %button.btn.btn-primary.btn-lg{:type => "submit"} Submit
+    = simple_form_for(:medical, html:{class: 'dropzone', id:'my-dropzone', :style => "height: 220px; margin-bottom: 40px"}, url: med_upload_url(@medFolder.id))  {}
+    %form.form-horizontal{:role => "form", :method => "get", :action => medical_upload_path}
+      .form-group
+        .col.s5
+          %button.waves-effect.btn.white.black-text{:type => "submit"} Submit

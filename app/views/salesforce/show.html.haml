@@ -1,9 +1,7 @@
 
 :css
-
-  .popover {
+  .popover
     max-width: 330px
-  }
 
 #myModal.modal.fade{:role => "dialog"}
   .modal-dialog.modal-md
@@ -33,7 +31,7 @@
           %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
         %h2 Pending Loan Documents
         .sub-title
-          = "Personal & shared files"
+          = "Shared files for the loan approval process"
       %table.table
         %thead
           %tr
@@ -43,10 +41,10 @@
             %th Actions
           %tbody
             %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
+              -# %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
+              -#   = link_to @myFolder.name, salesforce_id_path(@myFolder.id)
+              %li{:class => "#{'active' if '1' == '1'}", :id => "myvaultbtns"}
+                = link_to @salesforceFolder.name, salesforce_id_path(@salesforceFolder.id)
             / list file contents
             - @files.each do |f|
               %tr
@@ -58,14 +56,14 @@
                     = f.name
                     - puts f.name
                     = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
+                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit'}
                     #popover-content.hide
                       %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
                         %input#name.form-control{:type => "text", :name => "fileName"}
                         %input#fileid.form-control{:type => "hidden", :name => "fileId"}
                         %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
-                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
+                        %a.btn.btn-primary.btn-md{:type => "submit"} Save
+                        %a{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
 
                 %td.hidden-xs.hidden-sm
                   = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
@@ -74,10 +72,10 @@
                   .btn-group
                     %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
                       %span.glyphicon.glyphicon-eye-open
-                    - if (@currentFolder == @myFolder.id)
+                    - if (@currentFolder == @salesforceFolder.id)
                       %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
                         %span.glyphicon.glyphicon-share
-                    - elsif (@currentFolder == @sharedFolder.id)
+                    - elsif (@currentFolder == @salesforceFolder.id)
                       %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
                         %span.glyphicon.glyphicon-share
                     %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
@@ -102,9 +100,8 @@
 
     $('[data-toggle=popover]').popover({
         html: 'true',
-    placement: 'right',
-    title: "Edit File Name",
-    content : function() {
+        placement: 'right',
+        content : function() {
         return $('#popover-content').html();
     }
   })

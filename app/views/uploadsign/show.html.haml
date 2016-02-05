@@ -1,128 +1,127 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        // Title
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} spellcheck
+          Upload & Sign
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Upload and e-sign documents
+        .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+            info
+        // Tabs
+        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px;"}
+          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 88% !important;", "data-intro" => "These tabs represent folders in Box. Signing a file below will make an api call to move to the 'Signed Documents' folder in Box", "data-position" => "left"}
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a.active{:href => "#pendingSignature"}
+                Pending Signature
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#signed"}
+                Signed
 
-:css
+        // Pending Sig. or Signed Tab
+        .col.s12{:style => "margin-left: 30px"}
+          #pendingSignature
+            .col.s2.push-s10{:style => "margin-top: 30px;"}
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
+            .col.s12
+              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+                = render partial: "shared/flash_messages", flash: flash
+            - if (@pendingFiles.size > 0)
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "foop"} Actions
+                  %tbody
+                    / list file contents
+                    - @pendingFiles.each do |f|
+                      %tr
+                        %td{"data-lity" => "", :href => preview_url(f.id)}
+                          = image_tag(thumbnail_url(f.id), width: '40px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                        %td
+                          %span{:style => "inline"}
+                            = f.name
+                        / file action options
+                        %td
+                          .btn-group
+                            %a.btn.white.tooltipped{"data-lity" => "", :href => preview_url(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                            %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+                            %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-check{:style => "top: 3px; color: #263238"}
+            - else
+              .col.s5.push-s3
+                .h5{:style => "margin-top: 35px;"}
+                  You have no documents pending signature at this time
 
-  .popover {
-    max-width: 330px
-  }
+          #signed
+            .col.s2.push-s10{:style => "margin-top: 86px;"}
+            - if (@signedFiles.size > 0)
+              %table.highlight
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "foop"} Actions
+                  %tbody
+                    / list file contents
+                    - @signedFiles.each do |f|
+                      %tr
+                        %td{"data-lity" => "", :href => preview_url(f.id)}
+                          = image_tag(thumbnail_url(f.id), width: '40px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                        %td
+                          %span{:style => "inline"}
+                            = f.name
+                        / file action options
+                        %td
+                          .btn-group
+                            %a.btn.white.tooltipped{"data-lity" => "", :href => preview_url(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                            %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                              %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+            - else
+              .col.s12
+                .col.s5.push-s3
+                  .h5{:style => "margin-top: 35px;"}
+                    You have no signed documents at this time
 
-#myModal.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Upload a File
-      .modal-body
-        .drop-area
-          .row
-            .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
-
-.home
-.container
-  = render 'layouts/sidenav'
-  .col-md-9.col-sm-8.col-xs-9.pull-right
-    .flash
-      = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-    .panel.panel-default{:style => "margin-bottom: 0px"}
-      .panel-heading
-        .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
-        %h2 My Vault for Uploads
-        .sub-title
-          = "Personal & shared files"
-      %table.table
-        %thead
-          %tr
-            %th File
-            %th Name
-            %th.hidden-xs.hidden-sm Date Modified
-            %th Actions
-          %tbody
-            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @myFolder.name, uploadsign_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @sharedFolder.name, uploadsign_id_path(@sharedFolder.id)
-            / list file contents
-            - @files.each do |f|
-              %tr
-                %td
-                  = link_to view_doc_path(f.id) do
-                    = image_tag(thumbnail_url(f.id), width: '30px')
-                %td
-                  %span{:style => "inline"}
-                    = f.name
-                    - puts f.name
-                    = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
-                    #popover-content.hide
-                      %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
-                        %input#name.form-control{:type => "text", :name => "fileName"}
-                        %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-                        %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
-                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
-
-                %td.hidden-xs.hidden-sm
-                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
-                %td
-                  / file action options
-                  .btn-group
-                    %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                      %span.glyphicon.glyphicon-eye-open
-                    - if (@currentFolder == @myFolder.id)
-                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
-                        %span.glyphicon.glyphicon-share
-                    - elsif (@currentFolder == @sharedFolder.id)
-                      %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
-                        %span.glyphicon.glyphicon-share
-                    %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                      %span.glyphicon.glyphicon-cloud-download
-                    %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
-                      %span.glyphicon.glyphicon-trash
-                    %a.btn.btn-default.btn-md{href: start_docusign_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Docusign'}
-                      %span.glyphicon.glyphicon-check
-      - if @files.size == 0
+#uploadModal.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Upload a PDF
+    .drop-area
+      .row
         .col-md-12
-          .h4
-            No files currently exist. Upload by clicking the "Upload" button above.
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: sign_upload_url(@pendingFolder.id))  {}
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
-      - if (session[:progress] == 2)
-        .col-md-12.col-sm-12
-          %iframe{:src => @url, :width => '100%', :height => '600px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
-      - if (session[:progress] == 3)
-        .col-md-12.col-sm-12
-          %h3
-            Completed Onboarding Form:
-          %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+%p{:style=>"text-align: right; font-size: 10px;"}
+  = link_to "reset", reset_uploadnsign_path, {:style => "text-decoration: none; z-index: 9999999;", "data-intro" => "Reset the Upload & Sign workflow", "data-position" => "top"}
 
 :javascript
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
-        setTimeout(function() {location.reload();}, 2000);
+        setTimeout(function() {location.reload();}, 1000);
       });
     }
   };
 
-  $(document).ready(function() {
-
-    $('[data-toggle=popover]').popover({
-        html: 'true',
-    placement: 'right',
-    title: "Edit File Name",
-    content : function() {
-        return $('#popover-content').html();
-    }
-  })
-
-
-  })
-
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
 
 :javascript
   $(function () {$('[data-toggle="tooltip"]').tooltip()})
+
+    function chardinToggle() {
+      $('body').chardinJs('toggle');
+    }

@@ -1,94 +1,59 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        // Title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %i.material-icons.prefix{:style => "font-size: 28px;"} lock_outline
+            My Vault
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Your personal and shared files
+          .help.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+            %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+            %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+              info
+        // Tabs
+        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px", "data-intro" => "These tabs represent folders in Box. Sharing a file below will make an api call to move to the 'Shared Files' folder where Company Employee, a Box managed user, is a collaborator (Editor)", "data-position" => "left"}
+          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
+                = @myFolder.name
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
+                = @sharedFolder.name
+        // Table + upload button
+        .col.s12{:style => "margin-left: 30px"}
+          #myfiles
+            .col.s2.push-s10{:style => "margin-top: 30px;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"}
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+            .col.s12
+              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+                - if @myFolder.id == @currentFolder
+                  = render partial: "shared/flash_messages", flash: flash
+            = render 'dashboard/myfiles'
+          #sharedfiles
+            .col.s2.push-s10{:style => "margin-top: 30px;"}
+              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none; z-index: 999999 !important;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
+            .col.s12
+              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+                - if @sharedFolder.id == @currentFolder
+                  = render partial: "shared/flash_messages", flash: flash
+            = render 'dashboard/sharedfiles'
 
-:css
+#popover-content.hide{:style => "padding: 5px 10px"}
+  %form.form-inline{:role => "form", :method => "post", :action => edit_name_path(@currentFolder)}
+    %input#name{:type => "text", :name => "fileName", :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
+    %input#fileid.form-control{:type => "hidden", :name => "fileId"}
+    %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
+    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
+    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
 
-  .popover {
-    max-width: 330px
-  }
-
-#myModal.modal.fade{:role => "dialog"}
-  .modal-dialog.modal-md
-    .modal-content
-      .modal-header-primary
-        %button.close{"data-dismiss" => "modal", :type => "button"} &times;
-        %h4.modal-title
-          Upload a File
-      .modal-body
-        .drop-area
-          .row
-            .col-md-12
-              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@currentFolder))  {}
-      .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
-
-.home
-.container
-  = render 'layouts/sidenav'
-  .col-md-9.col-sm-8.col-xs-9.pull-right
-    .flash
-      = render partial: "shared/flash_messages", flash: flash
-  .col-md-9.col-sm-8.col-xs-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-    .panel.panel-default{:style => "margin-bottom: 0px"}
-      .panel-heading
-        .pull-right.h4
-          %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Upload
-        %h2 My Vault
-        .sub-title
-          = "Personal & shared files"
-      %table.table
-        %thead
-          %tr
-            %th File
-            %th Name
-            %th.hidden-xs.hidden-sm Date Modified
-            %th Actions
-          %tbody
-            %ul#tabs.nav.nav-pills{:role => "tablist", :style => "margin-top: 10px; font-size: 110%; font-weight: 400", :class => "sidebyside"}
-              %li{:class => "#{'active' if @myFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @myFolder.name, dashboard_id_path(@myFolder.id)
-              %li{:class => "#{'active' if @sharedFolder.id == @currentFolder}", :id => "myvaultbtns"}
-                = link_to @sharedFolder.name, dashboard_id_path(@sharedFolder.id)
-            / list file contents
-            - @files.each do |f|
-              %tr
-                %td
-                  = link_to view_doc_path(f.id) do
-                    = image_tag(thumbnail_url(f.id), width: '30px')
-                %td
-                  %span{:style => "inline"}
-                    = f.name
-                    = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey" do
-                      %span.glyphicon.glyphicon-pencil{"filename" => "#{f.name}", :style => "font-size: 80%", 'data-toggle'=>'tooltip', 'data-hover'=>"tooltip", 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Edit Name'}
-                    #popover-content.hide
-                      %form.form-inline{:role => "form", :method => "post", :style => "width: 330px", :action => edit_name_path(@currentFolder)}
-                        %input#name.form-control{:type => "text", :name => "fileName"}
-                        %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-                        %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-                        %button.btn.btn-primary.btn-md{:type => "submit"} Save
-                        %button.btn.btn-default.btn-md{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');"} Close
-
-                %td.hidden-xs.hidden-sm
-                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
-                %td
-                  / file action options
-                  .btn-group
-                    %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                      %span.glyphicon.glyphicon-eye-open
-                    - if (@currentFolder == @myFolder.id)
-                      %a.btn.btn-default.btn-md{href: share_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Share with Employee'}
-                        %span.glyphicon.glyphicon-share
-                    - elsif (@currentFolder == @sharedFolder.id)
-                      %a.btn.btn-default.btn-md{href: unshare_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Unshare'}
-                        %span.glyphicon.glyphicon-share
-                    %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                      %span.glyphicon.glyphicon-cloud-download
-                    %a.btn.btn-default.btn-md{href: delete_file_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Delete'}
-                      %span.glyphicon.glyphicon-trash
-      - if @files.size == 0
-        .col-md-12
-          .h4
-            No files currently exist. Upload by clicking the "Upload" button above.
 
 :javascript
+
+  // dropzone uploading
   Dropzone.options.myDropzone = {
     init: function() {
       this.on("queuecomplete", function(file) {
@@ -97,20 +62,22 @@
     }
   };
 
-  $(document).ready(function() {
+  // trigger modals
+  $(document).ready(function(){
+    $('.modal-trigger').leanModal();
+  });
 
+  // edit filename popover
+  $(document).ready(function(){
     $('[data-toggle=popover]').popover({
-        html: 'true',
-    placement: 'right',
-    title: "Edit File Name",
-    content : function() {
+      html: 'true',
+      placement: 'right',
+      content : function() {
         return $('#popover-content').html();
-    }
-  })
+      }
+    })
+  });
 
-
-  })
-
-
-:javascript
-  $(function () {$('[data-toggle="tooltip"]').tooltip()})
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }

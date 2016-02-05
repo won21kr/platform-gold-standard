@@ -18,19 +18,15 @@ class DashboardController < SecuredController
     @sharedFolder.name = "Shared Files"
 
     # set active folder ID, either "My Files" or "Shared Files" folder
-    if(params[:id])
-      @currentFolder = params[:id]
-    else
+    if(session[:current_folder].nil?)
       @currentFolder = @myFolder.id
+    else
+      @currentFolder = session[:current_folder]
     end
-    session[:current_folder] = @currentFolder
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    if(@currentFolder == @myFolder.id)
-      @files = client.folder_items(@myFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    elsif(@currentFolder == @sharedFolder.id)
-      @files = client.folder_items(@sharedFolder, fields: [:name, :id, :created_at, :modified_at]).files
-    end
+    @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at]).files
+    @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
 
   end
 
@@ -39,7 +35,7 @@ class DashboardController < SecuredController
 
     client = user_client
 
-    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+    vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 8.minutes) do
       puts "miss"
       client.folder_from_path("My Files")
     end
@@ -54,9 +50,13 @@ class DashboardController < SecuredController
 
     client = user_client
 
-    file = client.file_from_id(params[:fileId])
+    file = client.file_from_id(params[:fileId], fields: [:parent])
+
+    # set current folder id & new file name
+    session[:current_folder] = file.parent.id
     newName = params[:fileName] + '.' + params[:fileExt]
 
+    # make Box API call to update file name
     begin
       client.update_file(file, name: newName)
       flash[:notice] = "File name changed to \"#{params[:fileName]}\""
@@ -64,25 +64,24 @@ class DashboardController < SecuredController
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to dashboard_id_path(session[:current_folder])
+    redirect_to dashboard_path
   end
 
   # upload files to parameter specified folder ID
   def upload
 
     #http://www.dropzonejs.com/
+    session[:current_folder] = params[:folder_id]
     uploaded_file = params[:file]
     folder = params[:folder_id]
 
+    # upload file to box from tmp folder
     temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
     begin
       temp_file.write(uploaded_file.read)
       temp_file.close
-
       box_user = Box.user_client(session[:box_id])
-
       box_file = box_user.upload_file(temp_file.path, folder)
-      #box_user.create_metadata(box_file, session[:meta])
 
     rescue => ex
       puts ex.message
@@ -110,6 +109,7 @@ class DashboardController < SecuredController
   # download file from file ID
   def download
 
+    session[:current_folder] = params[:folder]
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
     end
@@ -119,9 +119,11 @@ class DashboardController < SecuredController
   # delete file
   def delete_file
 
-    id = params[:id]
+    session[:current_folder] = params[:folder]
     client = user_client
-    client.delete_file(id)
+
+    # delete file
+    client.delete_file(params[:id])
     flash[:notice] = "File successfully deleted!"
 
     redirect_to dashboard_id_path(session[:current_folder])
@@ -131,6 +133,7 @@ class DashboardController < SecuredController
   def share_file
 
     id = params[:id]
+    session[:current_folder] = params[:folder]
     client = user_client
 
     # get shared folder, then move file into shared folder
@@ -145,6 +148,7 @@ class DashboardController < SecuredController
   def unshare_file
 
     id = params[:id]
+    session[:current_folder] = params[:folder]
     client = user_client
 
     # get my folder, then move file into my folder

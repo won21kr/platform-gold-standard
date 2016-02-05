@@ -1,10 +1,18 @@
-.col-md-12.col-sm-12
+.col.s2.push-s10{:style => "margin-top:-20px;"}
+  %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+    Step 3 of 3
+.col.s8.push-s2{:style => "margin-top: 30px;"}
+  .flash
+    = render partial: "shared/flash_messages", flash: flash
+.col.s5
+  %h6{:style => "margin-bottom: 40px"}
+    Wait for credentialing specialist to review & approve:
+.col.s10.push-s1
   .panel.panel-default{:style => "margin-bottom: 0px"}
     .panel-heading
-      %h2 Shared Medical Credential Documents
-      .sub-title
-        = "Medical documents vault shared with credentialing specialist"
-    %table.table
+      %h6{:style => "height: 130%"}
+        Shared Medical Credential Documents
+    %table.highlight
       %thead
         %tr
           %th File
@@ -13,20 +21,20 @@
           %th Actions
         %tbody
           / list file contents
-          - @medFiles.each do |f|
+          - @medFiles.each_with_index do |f, i|
             %tr
               %td
                 = link_to view_doc_path(f.id) do
-                  = image_tag(thumbnail_url(f.id), width: '30px')
+                  = image_tag(thumbnail_url(f.id), width: '40px')
               %td
                 %span{:style => "inline"}
                   = f.name
               %td.hidden-xs.hidden-sm
                 = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
-              %td
+              %td{"data-intro" => i==0 ? "View and download files files from Box" : nil,  "data-position" => i==0 ? "left" : nil}
                 / file action options
                 .btn-group
-                  %a.btn.btn-default.btn-md{href: view_doc_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'View'}
-                    %span.glyphicon.glyphicon-eye-open
-                  %a.btn.btn-default.btn-md{href: download_path(f.id), 'data-toggle'=>'tooltip', 'data-placement'=>'top', 'data-container'=>'body', 'title'=>'Download'}
-                    %span.glyphicon.glyphicon-cloud-download
+                  %a.btn.white.tooltipped{href: view_doc_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                  %a.btn.white.tooltipped{href: download_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
