@@ -51,7 +51,6 @@ class HomeController < ApplicationController
     redirect_to home_path
   end
 
-<<<<<<< HEAD
   private
 
   def check_config
@@ -109,4 +108,5 @@ class HomeController < ApplicationController
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
+end
 end
