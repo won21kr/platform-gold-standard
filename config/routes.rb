@@ -37,8 +37,11 @@ Rails.application.routes.draw do
   get "/onboarding-tasks/reset-workflow" => "workflow#reset_workflow", :as => "reset_workflow"
 
   #ProductCatalog ( Box View API)
+  ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
+  ###################################################################################################
+  ##################################################################################################
   # get "/catalog/:id" => "catalog#home", :as => "catalog"
-  get "/catalog" => "catalog#show", :as => "catalog_id"
+  # get "/catalog" => "catalog#show", :as => "catalog_id"
 
   # Upload and Sign
   get "/upload-sign" => "uploadsign#show", :as => "uploadsign"
