@@ -1,23 +1,28 @@
-.home
-  = render 'layouts/sidenav'
-
-.container
-  .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
-    .page-header{:style => "margin-top: 0px"}
-      %h1 Product Catalogs
-      %p Browse through the various catalogs
-    .col-md-9
-      .col-sm-3
-        .thumb-image-border{:style => "padding:20px; margin-right:10px; border-radius:100px"}
-          = image_tag "Catalog-Thumbnail.png", :width => 150, :height => 150
-          =link_to 'Fall Catalog'
-      .col-sm-3
-        .thumb-image-border{:style => "padding:20px; margin-right:10px; margin-left:50px; -webkit-border-radius: 10% !important; -moz-border-radius: 10% !important; border-radius: 10% !important"}
-          = image_tag "Catalog-Thumbnail.png", :width => 150, :height => 150
-          %a{href: '/catalog#show'} Summer Catalog
+-########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
+-###################################################################################################
+-##################################################################################################
 
 
-      .col-sm-3
-        .thumb-image-border{:style => "padding:20px; margin-right:10px; margin-left:100px; border-radius:5px"}
-          = image_tag "Catalog-Thumbnail.png", :width => 150, :height => 150
-          =link_to 'Spring Catalog'
+-# .home
+-#   = render 'layouts/sidenav'
+-#
+-# .container
+-#   .col-md-9.col-sm-9.pull-right{:style => "padding: 20px; background: #fff;", :class => "myvaulttable"}
+-#     .page-header{:style => "margin-top: 0px"}
+-#       %h1 Product Catalogs
+-#       %p Browse through the various catalogs
+-#     .col-md-9
+-#       .col-sm-3
+-#         .thumb-image-border{:style => "padding:20px; margin-right:10px; border-radius:100px"}
+-#           = image_tag "Catalog-Thumbnail.png", :width => 150, :height => 150
+-#           =link_to 'Fall Catalog'
+-#       .col-sm-3
+-#         .thumb-image-border{:style => "padding:20px; margin-right:10px; margin-left:50px; -webkit-border-radius: 10% !important; -moz-border-radius: 10% !important; border-radius: 10% !important"}
+-#           = image_tag "Catalog-Thumbnail.png", :width => 150, :height => 150
+-#           %a{href: '/catalog#show'} Summer Catalog
+-#
+-#
+-#       .col-sm-3
+-#         .thumb-image-border{:style => "padding:20px; margin-right:10px; margin-left:100px; border-radius:5px"}
+-#           = image_tag "Catalog-Thumbnail.png", :width => 150, :height => 150
+-#           =link_to 'Spring Catalog'

@@ -130,11 +130,9 @@ class LoanDocumentsController < SecuredController
       fileName = fileName + "." + ext
 
       uploadedFile = client.update_file(box_file, name: fileName)
-      # client.create_metadata(uploadedFile, "Status" => "In Review")
       msg = "Please review and complete the task"
       task = client.create_task(uploadedFile, action: :review, message: msg)
       client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
-      #box_user.create_metadata(box_file, session[:meta])
 
     rescue => ex
       puts ex.message
