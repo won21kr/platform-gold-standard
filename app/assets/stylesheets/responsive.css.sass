@@ -1,13 +1,9 @@
 
 
-@media all and (min-width: 500px) and (max-width: 1024px)
-  .index-banner
-    background-color: #00184d
-    height: 60px
-    width: 100%
-    position: fixed
-    left: 0
 
+
+/* Smartphones (portrait) ----------- */
+@media all and (min-width : 0px) and (max-width : 320px)
 
 /* Smartphones (landscape) ----------- */
 @media all and (min-width : 321px) and (max-width : 480px)
@@ -18,18 +14,49 @@
     position: fixed
     left: 0
 
-/* Smartphones (portrait) ----------- */
-@media all and (min-width : 0px) and (max-width : 320px)
+  .help.btn
+    display: none !important
 
-/* iPads (landscape) ----------- */
-@media all  and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape)
+  .uploadbtn
+    margin-left: -90px
+
+  #mobile-menu
+    z-index: 999999 !important
+
+/* Weird Small Tablets (landscape and portrait) ----------- */
+@media all and (min-width: 480px) and (max-width: 768px)
+  .index-banner
+    background-color: #00184d
+    height: 60px
+    width: 100%
+    position: fixed
+    left: 0
+
+  .help.btn
+    display: none !important
+
+  .uploadbtn
+    margin-left: -55px
+
+/* Mobile to iPad (landscape and portrait) ----------- */
+@media all and (min-width: 768px) and (max-width: 992px)
+  .index-banner
+    background-color: #00184d
+    height: 60px
+    width: 100%
+    position: fixed
+    left: 0
+
+  .help.btn
+    display: none !important
 
 
-/* iPads (portrait) ----------- */
-@media all  and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)
 
 /* Desktops and laptops ----------- */
-@media all  and (min-width : 1224px)
-
+@media all  and (min-width : 993) and (max-width : 1224px)
+  #mobile-menu
+    display: none
 /* Large s ----------- */
 @media all  and (min-width : 1824px)
+  #mobile-menu
+    display: none
