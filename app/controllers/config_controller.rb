@@ -27,6 +27,7 @@ class ConfigController < ApplicationController
       session[:upload_sign] = "off"
       session[:tax_return] = "off"
       session[:create_claim] = "off"
+      session[:account_sub] = "off"
       session[:dicom_viewer] = "off"
 
     end
@@ -68,7 +69,8 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-    # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
+    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end
