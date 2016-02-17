@@ -8,7 +8,6 @@ class AccountSubmissionController < SecuredController
     client = user_client
     session[:current_page] = "account_sub"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
-    docStatus = Hash.new
     threads = []
 
     # get account submission folder, if it doesn't exist create one
@@ -59,7 +58,7 @@ class AccountSubmissionController < SecuredController
 
     elsif (@accountSubFolder.size > 0)
       @status = "approved"
-      @approvedItems = client.folder_items(@accountSubFolder, fields: [:id, :name, :modified_at]).folders
+      @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
     end
 
 
@@ -88,13 +87,11 @@ class AccountSubmissionController < SecuredController
 
   # Upload a new file version
   def upload_new_version
-    # ap params[:file_name]
-    ap params
 
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions/" + params[:file].original_filename
-    # ap path
     client = user_client
-    file = client.file_from_id(params[:id], fields: [:id, :name])
+
+    file = client.file_from_id(params[:fileId], fields: [:id, :name])
 
     # get both old and new file extensions and check if they match
     newExt = params[:file].original_filename.split('.').last
@@ -114,7 +111,7 @@ class AccountSubmissionController < SecuredController
         File.delete(temp_file)
       end
     else
-      flash[:error] = "Error: you must upload a new file version of the same file type"
+      flash[:notice] = "Error: you must upload a new file version of the same file type"
     end
 
     redirect_to "/account-submission"
@@ -148,57 +145,83 @@ class AccountSubmissionController < SecuredController
       File.delete(temp_file)
     end
 
+    flash[:notice] = "Business application files submitted. Wait for company approval."
+
     respond_to do |format|
       format.json{ render :json => {} }
     end
   end
 
   def prequal_submit
+
+    client = user_client
+    path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
+
+    @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder", :expires_in => 10.minutes) do
+      client.folder_from_path(path)
+    end
+    items = client.folder_items(@accountFolder, fields: [:id, :name, :modified_at]).files
+    folder = client.create_folder("Pre Qualification", @accountFolder)
+
+    items.each do |f|
+      client.move_file(f, folder)
+    end
+    flash[:notice] = "Business application submitted for Pre-Qualification"
+
     redirect_to "/account-submission"
   end
 
   # copy over a document from the user's vault to Loan Docs folder
-  def copy_from_vault
-
-    puts "copy from vault"
-    fileId = params[:file_id]
-    oldName = params[:old_name].split(".")
-    newName = params[:new_name] + "." + oldName.last
-    path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
-
-    # get loan docs folder, copy vault file into it
-    client = user_client
-    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
-      client.folder_from_path(path)
-    end
-    # folder = client.folder_from_path(path)
-    toCopy = client.file_from_id(fileId, fields: [:name, :id])
-    copiedFile = client.copy_file(toCopy, folder, name: newName)
-
-    # assign task to Box managed user
-    msg = "Please review and complete the task"
-    task = client.create_task(copiedFile, action: :review, message: msg)
-    client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
-    flash[:notice] = "Successfully copied over \"#{oldName.first}\" from your vault"
-
-    redirect_to loan_docs_path
-  end
+  # def copy_from_vault
+  #
+  #   puts "copy from vault"
+  #   fileId = params[:file_id]
+  #   oldName = params[:old_name].split(".")
+  #   newName = params[:new_name] + "." + oldName.last
+  #   path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
+  #
+  #   # get loan docs folder, copy vault file into it
+  #   client = user_client
+  #   folder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
+  #     client.folder_from_path(path)
+  #   end
+  #   # folder = client.folder_from_path(path)
+  #   toCopy = client.file_from_id(fileId, fields: [:name, :id])
+  #   copiedFile = client.copy_file(toCopy, folder, name: newName)
+  #
+  #   # assign task to Box managed user
+  #   msg = "Please review and complete the task"
+  #   task = client.create_task(copiedFile, action: :review, message: msg)
+  #   client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
+  #   flash[:notice] = "Successfully copied over \"#{oldName.first}\" from your vault"
+  #
+  #   redirect_to loan_docs_path
+  # end
 
   # delete folder, reset loan process
-  def reset_loan
-    path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
+  def reset_accts
+
+    puts "reset accounts"
+
+    path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
 
     # get loan docs folder, copy vault file into it
     client = user_client
     folder = client.folder_from_path(path)
     items = client.folder_items(folder, fields: [:id])
+    files = items.files
+    folders = items.folders
     # client.delete_folder(folder, recursive: true)
 
-    items.each do |f|
+    files.each do |f|
       client.delete_file(f)
     end
 
-    redirect_to loan_docs_path
+    folders.each do |f|
+      client.delete_folder(f, recursive: true)
+    end
+
+    redirect_to acct_sub_path
   end
 
 
