@@ -72,9 +72,9 @@ class ApplicationController < ActionController::Base
     if query['onboarding'] != "" and query['onboarding'] != nil
       session[:onboarding] = query['onboarding']
     end
-    if query['catalog'] != "" and query['catalog'] != nil
-      session[:catalog] = query['catalog']
-    end
+    # if query['catalog'] != "" and query['catalog'] != nil
+    #   session[:catalog] = query['catalog']
+    # end
     if query['med_credentialing'] != "" and query['med_credentialing'] != nil
       session[:medical_credentialing] = query['med_credentialing']
     end
@@ -84,23 +84,23 @@ class ApplicationController < ActionController::Base
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
-    if query['catalog_file'] != "" and query['catalog_file'] != nil
-      session[:catalog_file] = query['catalog_file']
-    end
+    # if query['catalog_file'] != "" and query['catalog_file'] != nil
+    #   session[:catalog_file] = query['catalog_file']
+    # end
     if query['upload_sign'] != "" and query['upload_sign'] != nil
       session[:upload_sign] = query['upload_sign']
     end
     if query['create_claim'] != "" and query['create_claim'] != nil
       session[:create_claim] = query['create_claim']
     end
-    if query['dicom_viewer'] != "" and query['dicom_viewer'] != nil
-      session[:dicom_viewer] = query['dicom_viewer']
-    end
+    # if query['dicom_viewer'] != "" and query['dicom_viewer'] != nil
+    #   session[:dicom_viewer] = query['dicom_viewer']
+    # end
 
-    # temp
-    if query['salesforce'] != "" and query['salesforce'] != nil
-      session[:salesforce] = query['salesforce']
-    end
+    # # temp
+    # if query['salesforce'] != "" and query['salesforce'] != nil
+    #   session[:salesforce] = query['salesforce']
+    # end
     if query['tax_return'] != "" and query['tax_return'] != nil
       session[:tax_return] = query['tax_return']
     end
