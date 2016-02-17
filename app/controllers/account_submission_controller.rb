@@ -25,16 +25,21 @@ class AccountSubmissionController < SecuredController
     end
 
     # get all submission account files
-    @accountItems = client.folder_items(@accountFolder, fields: [:id, :name, :modified_at]).files
-    @accountSubFolder = client.folder_items(@accountFolder, fields: [:id, :name, :modified_at]).folders
+    folderItems = client.folder_items(@accountFolder, fields: [:id, :name])
+    @accountItems = folderItems.files
+    @accountSubFolder = folderItems.folders
 
     if(@accountItems.size == 0 && @accountSubFolder.size == 0)
+      # still need to upload items
+
       @status = "toUpload"
     elsif (@accountItems.size > 0)
+      # uploaded account documents exist
+
       @status = "pendingApproval"
       @readyForPrequal = true
 
-      #also determine if all tasks have been approved
+      # parse each file. get associated task and comments
       @accountItems.each do |file|
 
         threads << Thread.new do
@@ -57,6 +62,8 @@ class AccountSubmissionController < SecuredController
       threads.each { |thr| thr.join }
 
     elsif (@accountSubFolder.size > 0)
+      # documents were approved, parse folder
+
       @status = "approved"
       @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
     end

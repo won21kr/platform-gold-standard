@@ -9,7 +9,7 @@
     Upload new business application documents:
 .col.s10.push-s1
   .drop-area
-    = simple_form_for(:medical, html:{class: 'dropzone', id:'my-dropzone', :style => "height: 220px; margin-bottom: 40px"}, url: account_doc_upload_url(@accountFolder.id))  {}
+    = simple_form_for(:medical, html:{class: 'dropzone', id:'my-dropzone', :style => "margin-bottom: 40px"}, url: account_doc_upload_url(@accountFolder.id))  {}
     %form.form-horizontal{:role => "form", :method => "get", :action => acct_sub_path}
       .form-group
         .col.s5
