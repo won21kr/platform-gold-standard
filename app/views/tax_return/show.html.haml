@@ -1,14 +1,3 @@
-#modal1.modal
-  .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Upload a File
-    .drop-area
-      .row
-        .col-md-12
-          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: tax_upload_url(@myFolder.id))  {}
-  .modal-footer
-    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
-
-
 #index-banner.section.no-pad-bot
   .container
     = render 'layouts/sidenav'
@@ -46,51 +35,51 @@
                   %tbody
                     -# Loan Agreement
                     %tr
-                      %td.td
-                        = image_tag @docStatus["Loan Image"], width: '40px'
-                      %td.td
+                      %td.td{:id => "formStatus"}
+                        = image_tag @docStatus["Forms Image"], width: '40px'
+                      %td.td{:id => "formStatus"}
                         Forms
+                      %td.td{:id => "formStatus"}
+                        = @docStatus["Forms"]
                       %td.td
-                        = @docStatus["Loan Agreement"]
-                      %td.td
-                        - if @docStatus["Loan Agreement"] == "Missing"
-                          %a.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "/loan_file", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px;"} Upload
-                        - elsif @docStatus["Loan Agreement"] == "Signature Needed"
-                          %form{:method => "get", :action => tax_loan_docusign_path(@fileId["Loan Agreement"])}
+                        - if @docStatus["Forms"] == "Missing"
+                          %a.waves-effect.btn.white.black-text.modal-trigger#uploadButton{:href => @searchFiles["Forms"].size > 0 ? "#formsDocs" : "/forms_file", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px;"} Upload
+                        - elsif @docStatus["Forms (Not Signed)"] == "Signature Needed"
+                          %form{:method => "get", :action => tax_loan_docusign_path(@fileId["Forms"])}
                             %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
                               Sign
                         - else
-                          %form{:method => "get", :action => view_doc_path(@fileId["Loan Agreement"])}
+                          %form{:method => "get", :action => view_doc_path(@fileId["Forms"])}
                             %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
                               View
                     -# W2 Form
                     %tr
-                      %td.td
-                        = image_tag @docStatus["W2 Image"], width: '40px'
-                      %td.td
+                      %td.td{:id => "incomeStatus"}
+                        = image_tag @docStatus["Income Image"], width: '40px'
+                      %td.td{:id => "incomeStatus"}
                         Income/Investments
+                      %td.td{:id => "incomeStatus"}
+                        = @docStatus["Income"]
                       %td.td
-                        = @docStatus["W2 Form"]
-                      %td.td
-                        - if @docStatus["W2 Form"] == "Missing"
-                          %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "/tax_file", :style => "text-decoration: none; font-size: 10px;"} Upload
+                        - if @docStatus["Income"] == "Missing"
+                          %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Income"].size > 0 ? "#incomeDocs" : "/income_file", :style => "text-decoration: none; font-size: 10px;"} Upload
                         - else
-                          %form{:method => "get", :action => view_doc_path(@fileId["W2 Form"])}
+                          %form{:method => "get", :action => view_doc_path(@fileId["Income"])}
                             %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                              View 
+                              View
                     -# Tax Return
                     %tr
-                      %td.td
-                        = image_tag @docStatus["Tax Image"], width: '40px'
-                      %td.td
+                      %td.td{:id => "deductionsStatus"}
+                        = image_tag @docStatus["Deductions Image"], width: '40px'
+                      %td.td{:id => "deductionsStatus"}
                         Deductions/Expenses
+                      %td.td{:id => "deductionsStatus"}
+                        = @docStatus["Deductions"]
                       %td.td
-                        = @docStatus["Tax Return"]
-                      %td.td
-                        - if @docStatus["Tax Return"] == "Missing"
-                          %button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Tax"].size > 0 ? "#taxVaultDocs" : "#taxModal", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
+                        - if @docStatus["Deductions"] == "Missing"
+                          %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Deductions"].size > 0 ? "#deductionsDocs" : "/deductions_file", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
                         - else
-                          %form{:method => "get", :action => view_doc_path(@fileId["Tax Return"])}
+                          %form{:method => "get", :action => view_doc_path(@fileId["Deductions"])}
                             %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
                               View
 
@@ -99,40 +88,38 @@
           .col.s10.push-s1
             = render partial: "shared/flash_messages", flash: flash
 
-          %table.highlight{:style => "margin-top: 45px; margin-left: 30px"}
+          %table{:style => "margin-top: 45px; margin-left: 30px"}
             %thead
               %tr
-                %th{"data-field" => "id"} File Name
-                %th{"data-field" => "name"} Date Submitted
-                %th{"data-field" => "price"} Category
-                %th#claim-descr{"data-field" => "desc"} Subcategory
-                %th{} Actions
-
-            -@taxes.each do |result|
-              %td
-                = result.name
-              %td
-                = result.content_created_at[0,10]
-              %td
-                = result.category
-              %td#claim-descr
-                %div{:style => "text-overflow: ellipsis; width: 20em; overflow: hidden; white-space: wrap"}
+                %th File Name
+                %th Date Submitted
+                %th Category
+                %th Subcategory
+                %th Actions
+            %tbody
+            -@taxItems.each do |result|
+              %tr
+                %td
+                  = result.name
+                %td
+                  = result.content_created_at[0,10]
+                %td
+                  = result.category
+                %td
                   = result.subcategory
-              %td
-                .btn-group{:style => "z-index: 99999;"}
-                  %a.btn.white.tooltipped{href: view_doc_path(result.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}
-                    %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                  -# %a.btn.white.tooltipped{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Employee", :style => "padding-right: 9px; padding-left: 9px;"}
-                  -#   %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
-                  %a.btn.white.tooltipped{href: download_tax_file_path(result.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
-                    %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
-                  %a.btn.white.tooltipped{href: delete_tax_file_path(result.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                    %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
-                  %a.btn.white.tooltipped{href: tax_loan_docusign_path(result.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"E-Sign", :style => "padding-right: 9px; padding-left: 9px;"}
-                    %span.glyphicon.glyphicon-exclamation-sign{:style => "top: 3px; color: #263238"}
+                %td
+                  .btn-group{:style => "z-index: 99999;"}
+                    %a.btn.white.tooltipped{href: view_doc_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}
+                      %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                    %a.btn.white.tooltipped{href: download_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
+                    %a.btn.white.tooltipped{href: delete_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+                    - if(result.name.split(" ").last.split(".").first != "(Signed)")
+                      %a.btn.white.tooltipped{href: tax_loan_docusign_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"E-Sign", :style => "padding-right: 9px; padding-left: 9px;"}
+                        %span.glyphicon.glyphicon-exclamation-sign{:style => "top: 3px; color: #263238"}
 
-
-          - if @taxes.size == 0
+          - if @taxItems.size == 0
             %h6{:style => "text-align: center; margin-top:35px;"}
               You have not yet submitted any tax documents
 
@@ -154,79 +141,48 @@
 
 -# All modals on this page
 -# ============================================================================================================================-#
--# Modals for local upload
-#loanModal.modal
-  .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Upload Your Loan Agreement
-    .drop-area
-      .row
-        .col-md-12
-          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: tax_loan_upload_url("Loan Agreement - Signature Needed"))  {}
-  .modal-footer
-    %a.modal-action.modal-close.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
-
-#w2Modal.modal
-  .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Upload Your W2 Form
-    .drop-area
-      .row
-        .col-md-12
-          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: tax_loan_upload_url("W2 Form"))  {}
-  .modal-footer
-    %a.modal-action.modal-close.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
-
-#taxModal.modal
-  .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Upload Your Tax Return
-    .drop-area
-      .row
-        .col-md-12
-          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: tax_loan_upload_url("Tax Return"))  {}
-  .modal-footer
-    %a.modal-action.modal-close.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
-
 -# Modals for upload suggestions
-#loanVaultDocs.modal
+#formsDocs.modal
   .modal-content
     %h5{:style => "margin-bottom: 35px;"} Loan Agreement Suggestions
     .collection.with-header
       .collection-header
         Suggested items from your vault
-      - if !@searchFiles["Loan"].nil?
-        - @searchFiles["Loan"].each do |f|
-          %a.collection-item{:href => tax_copy_from_vault_path(f.id, new_name: "Loan Agreement - Signature Needed", old_name: f.name), :style => "text-decoration: none;"}
+      - if !@searchFiles["Forms"].nil?
+        - @searchFiles["Forms"].each do |f|
+          %a.collection-item{:href => tax_copy_from_vault_path(f.id, new_name: "Forms (Not Signed)", old_name: f.name), :style => "text-decoration: none;"}
             = f.name
   .modal-footer
-    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#loanModal", :style => "text-decoration: none;"}
-      Upload New Loan Agreement
+    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "/forms_file", :style => "text-decoration: none;"}
+      Upload New Forms
 
-#w2VaultDocs.modal
+#incomeDocs.modal
   .modal-content
     %h5{:style => "margin-bottom: 35px;"} W2 Form Suggestions
     .collection.with-header
       .collection-header
         Suggested items from your vault
-      - if !@searchFiles["W2"].nil?
-        - @searchFiles["W2"].each do |f|
-          %a.collection-item{:href => tax_copy_from_vault_path(f.id, new_name: "W2 Form", old_name: f.name), :style => "text-decoration: none;"}
+      - if !@searchFiles["Income"].nil?
+        - @searchFiles["Income"].each do |f|
+          %a.collection-item{:href => tax_copy_from_vault_path(f.id, new_name: "Income", old_name: f.name), :style => "text-decoration: none;"}
             = f.name
   .modal-footer
-    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#w2Modal", :style => "text-decoration: none;"}
-      Upload New W2 Form
+    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "/income_file", :style => "text-decoration: none;"}
+      Upload New Income Document
 
-#taxVaultDocs.modal
+#deductionsDocs.modal
   .modal-content
     %h5{:style => "margin-bottom: 35px;"} Tax Return Suggestions
     .collection.with-header
       .collection-header
         Suggested items from your vault
-      - if !@searchFiles["Tax"].nil?
-        - @searchFiles["Tax"].each do |f|
-          %a.collection-item{:href => tax_copy_from_vault_path(f.id, new_name: "Tax Return", old_name: f.name), :style => "text-decoration: none;"}
+      - if !@searchFiles["Deductions"].nil?
+        - @searchFiles["Deductions"].each do |f|
+          %a.collection-item{:href => tax_copy_from_vault_path(f.id, new_name: "Deductions", old_name: f.name), :style => "text-decoration: none;"}
             = f.name
   .modal-footer
-    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#taxModal", :style => "text-decoration: none;"}
-      Upload New Tax Return
+    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "/deductions_file", :style => "text-decoration: none;"}
+      Upload New Deductions
 
 :javascript
     Dropzone.options.myAwesomeDropzone = {
@@ -252,41 +208,30 @@
       $('#' + targID).show ();
   })
 
-  $(document).on('change', '.btn-file :file', function() {
-    var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      files = input.get(0).files,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    var theInput = input.parent().get(0);
-    theInput.innerText = "Uploading Photo...";
+  var docStatus = #{@docStatus.to_json}
 
-    console.log(label);
+   $(window).on('load', function() {
+     if(docStatus["Forms"] == "Signed"){
+       var formClass = document.querySelectorAll("#formStatus");
 
-    // The Box OAuth 2 Header. Add your access token.
-    var headers = { Authorization: 'Bearer #{@user_access_token}'};
-    var uploadUrl = 'https://upload.box.com/api/2.0/files/content';
+       $.each( [formClass], function( i, l ){
+          $(l).addClass( "grayout" );
+       });
+     }
 
-    var formData = new FormData();
-    var id = Math.floor(Math.random() * 1000000000);
-    var fileName = id + '-' + files[0].name
+     if(docStatus["Income"] == "Signed"){
+       var incomeClass = document.querySelectorAll("#incomeStatus");
 
-    var claimName = "Claim-" + id +  files[0].name.substr(files[0].name.lastIndexOf('.'));
+       $.each( [incomeClass], function( i, l ){
+          $(l).addClass( "grayout" );
+       });
+     }
 
-    formData.append('files', files[0], claimName);
+     if(docStatus["Deductions"] == "Signed"){
+       var deductionsClass = document.querySelectorAll("#deductionsStatus");
 
-    // Add the destination folder for the upload to the form
-    formData.append('parent_id', '#{@taxReturnFolder.id}');
-
-    $.ajax({
-      url: uploadUrl,
-      headers: headers,
-      type: 'POST',
-      // This prevents JQuery from trying to append the form as a querystring
-      processData: false,
-      contentType: false,
-      data: formData
-    }).complete(function ( data ) {
-      location.href = "/claim-info/" + "Claim-" + id;
-    });
-
-  });
+       $.each( [deductionsClass], function( i, l ){
+          $(l).addClass( "grayout" );
+       });
+     }
+   });
