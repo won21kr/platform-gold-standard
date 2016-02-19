@@ -104,7 +104,7 @@ Rails.application.routes.draw do
   get "/tax_loan-agreement-sign/:file_id" => "tax_return#tax_loan_docusign", :as => "tax_loan_docusign"
   get "tax_docusign_response_loan/:envelope_id" => "tax_return#tax_docusign_response_loan", :as => "tax_docusign_response_loan"
 
-  get "/delete/:id" => "tax_return#delete_file", :as => "delete_tax_file"
+  get "/delete-tax-file/:id" => "tax_return#delete_file", :as => "delete_tax_file"
   get "/download/:id" => 'tax_return#download', :as => "download_tax_file"
   get "/income_file" => "tax_return#income_file_upload", :as => "income_file_upload"
   get "/forms_file" => "tax_return#forms_file_upload", :as => "forms_file_upload"

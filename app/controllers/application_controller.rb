@@ -102,8 +102,6 @@ class ApplicationController < ActionController::Base
     #   session[:salesforce] = query['salesforce']
     # end
 
-    puts "BEFORE TAX RETURN IF"
-    puts query
     if query['tax_return'] != "" and query['tax_return'] != nil
       puts "INSIDE TAX RETURN IF"
       session[:tax_return] = query['tax_return']

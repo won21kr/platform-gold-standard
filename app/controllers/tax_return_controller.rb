@@ -52,13 +52,11 @@ class TaxReturnController < SecuredController
 
         if(signedStatus == "Signed")
           # task completed
-          ap "INSIDE THE FIRST IF"
           @docStatus[name] = "Signed"
           @docStatus[imageName] = "file_success.png"
           @fileId[name] = file.id
         elsif(signedStatus == "Not Signed")
           #task not completed yet
-          puts "tax file exists, task not complete"
           @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; Pending signature"
           @docStatus[imageName] = "file_process.png"
           @fileId[name] = file.id
@@ -334,6 +332,7 @@ class TaxReturnController < SecuredController
 
   # delete file
   def delete_file
+    puts "INSIDE DELETE METHOD"
     session[:current_folder] = params[:folder]
     client = user_client
 
@@ -341,7 +340,7 @@ class TaxReturnController < SecuredController
     client.delete_file(params[:id])
     flash[:notice] = "File successfully deleted!"
 
-    redirect_to dashboard_id_path(session[:current_folder])
+    redirect_to tax_return_path
   end
 
 
