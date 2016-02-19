@@ -99,15 +99,18 @@
             %p
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
               %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
-            -# %p
-            -#   %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
-            -#   %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
+            %p
+              %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
+              %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            -# %p
-            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            %p
+              %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
+              %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
+            %p
+              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
 
 
           .col.s12{:style => "margin-top: 20px"}
@@ -149,8 +152,8 @@
                   = ", Loan Origination"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
-                -# - if (session[:tax_return] == 'on')
-                -#   = ", Tax Return"
+                - if (session[:tax_return] == 'on')
+                  = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
             %tr
@@ -170,7 +173,7 @@
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
         %form.item{:action => reset_config_path, :method => "get"}
-          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset  
+          %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
         -#   Documentation
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none;", href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}

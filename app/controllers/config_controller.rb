@@ -27,6 +27,7 @@ class ConfigController < ApplicationController
       session[:upload_sign] = "off"
       session[:tax_return] = "off"
       session[:create_claim] = "off"
+      session[:account_sub] = "off"
       session[:dicom_viewer] = "off"
 
     end
@@ -62,14 +63,13 @@ class ConfigController < ApplicationController
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
     session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
-
-    # session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
     session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
     session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-    # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
+    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end
