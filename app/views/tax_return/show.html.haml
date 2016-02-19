@@ -23,8 +23,6 @@
         .col.s12#newclaim{:style => "margin-top: 10px"}
           .col.s10.push-s1
             .col.s12{:style => "margin-top: 45px; margin-left: 30px"}
-              .col.s8.push-s2.flash
-                = render partial: "shared/flash_messages", flash: flash
               %table.highlight
                 %thead
                   %tr
@@ -82,7 +80,6 @@
                           %form{:method => "get", :action => view_doc_path(@fileId["Deductions"])}
                             %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
                               View
-
 
         .col.s12#submittedclaims{:style => "margin-top: 20px"}
           .col.s10.push-s1
@@ -144,7 +141,7 @@
 -# Modals for upload suggestions
 #formsDocs.modal
   .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Loan Agreement Suggestions
+    %h5{:style => "margin-bottom: 35px;"} Suggested Tax Forms
     .collection.with-header
       .collection-header
         Suggested items from your vault
@@ -158,7 +155,7 @@
 
 #incomeDocs.modal
   .modal-content
-    %h5{:style => "margin-bottom: 35px;"} W2 Form Suggestions
+    %h5{:style => "margin-bottom: 35px;"} Suggested Income Documents
     .collection.with-header
       .collection-header
         Suggested items from your vault
@@ -172,7 +169,7 @@
 
 #deductionsDocs.modal
   .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Tax Return Suggestions
+    %h5{:style => "margin-bottom: 35px;"} Suggested Deductions Documents
     .collection.with-header
       .collection-header
         Suggested items from your vault
@@ -184,6 +181,18 @@
     %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "/deductions_file", :style => "text-decoration: none;"}
       Upload New Deductions
 
+#taskModal.modal.modal-fixed-footer
+  .modal-content{:style => "height: 50%;"}
+    %h4 Modal Header
+    %form.form-inline{:role => "form", :action => advisor_task_path, :method => "post"}
+      .commentbox
+        %label{:for => "message", :style => "left: 0"} Ask a Specialist
+        %textarea.input{:style => "width: 100%; height: 100%; background-color: #fff;", :rows => "4", :cols => "50", :name => "comment", :required => true}
+      .form-group{:style => "margin-bottom: 30px"}
+        %button.waves-effect.btn.white.black-text{:style => "margin-top: 5px"} Send
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!"} Agree
+
 :javascript
     Dropzone.options.myAwesomeDropzone = {
     init: function() {
@@ -192,7 +201,6 @@
       });
     }
   };
-
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
@@ -208,21 +216,22 @@
       $('#' + targID).show ();
   })
 
+
   var docStatus = #{@docStatus.to_json}
 
-   $(window).on('load', function() {
-     if(docStatus["Forms"] == "Signed"){
-       var formClass = document.querySelectorAll("#formStatus");
+  $(window).on('load', function() {
+    if(docStatus["Forms"] == "Signed"){
+      var formClass = document.querySelectorAll("#formStatus");
 
-       $.each( [formClass], function( i, l ){
-          $(l).addClass( "grayout" );
-       });
-     }
+      $.each( [formClass], function( i, l ){
+        $(l).addClass( "grayout" );
+      });
+    }
 
-     if(docStatus["Income"] == "Signed"){
-       var incomeClass = document.querySelectorAll("#incomeStatus");
+    if(docStatus["Income"] == "Signed"){
+      var incomeClass = document.querySelectorAll("#incomeStatus");
 
-       $.each( [incomeClass], function( i, l ){
+      $.each( [incomeClass], function( i, l ){
           $(l).addClass( "grayout" );
        });
      }
@@ -234,4 +243,18 @@
           $(l).addClass( "grayout" );
        });
      }
+   });
+
+   $(document).on("click", ".taskValue", function () {
+     var value = $(this).data('id');
+     $(".modal-body").val(value);
+     $.ajax({
+          url: "/advisor_task",
+          data: {fileValue: value},
+          type: 'POST',
+          success: function(data){
+              alert(data);
+              $("#stage").html(data);
+          }
+      });
    });
