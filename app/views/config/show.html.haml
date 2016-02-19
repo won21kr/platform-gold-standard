@@ -105,9 +105,12 @@
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            -# %p
-            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            %p
+              %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
+              %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
+            %p
+              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
 
 
           .col.s12{:style => "margin-top: 20px"}

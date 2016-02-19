@@ -26,15 +26,18 @@
   - if session[:upload_sign] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
       %a{:href => "/upload-sign", :style => "text-decoration: none;"} Upload & Sign
-  -# - if session[:tax_return] == 'on'
-  -#   %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
-  -#     %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
+  - if session[:tax_return] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
+      %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
-  -# - if session[:dicom_viewer] == 'on'
-  -#   %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
-  -#     %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
+  - if session[:dicom_viewer] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+      %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
+  - if session[:account_sub] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
+      %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
@@ -54,9 +57,9 @@
                 %span{:class => 'title'}
                   %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
 
--# %a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#", :style => "color: #002e5e"}
--#   %i.medium.material-icons
--#     reorder
+%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#", :style => "color: #002e5e"}
+  %i.medium.material-icons
+    reorder
 
 //asdhfalksjdhflkashjdflkasjhdflkashdflkasjhdflkasjhdf
 

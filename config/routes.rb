@@ -61,6 +61,15 @@ Rails.application.routes.draw do
   get "/loan-agreement-sign/:file_id" => "loan_documents#loan_docusign", :as => "loan_docusign"
   get "docusign_response_loan/:envelope_id" => "loan_documents#docusign_response_loan", :as => "docusign_response_loan"
 
+  # account submission
+  get "/account-submission" => "account_submission#show", :as => "acct_sub"
+  post "/account-submission" => "account_submission#upload_new_version", :as => "acct_sub_version"
+  # post "/account-submission/new-version/:id" => "account_submission#upload_new_version", :as => "upload_new_version"
+  post "/account-submission/:folder_id" => "account_submission#account_doc_upload", :as => "account_doc_upload"
+  get "/copy-from-vault/:file_id" => "account_submission#copy_from_vault", :as => "copy_from_vault_acct"
+  get "/reset-acct-docs" => "account_submission#reset_accts", :as => "reset_acct_docs"
+  get "/prequal-submit" => "account_submission#prequal_submit", :as => "prequal_submit"
+
   # create a claim
   get "/submit-claim" => "create_claim#show", :as => "create_claim"
   get "/claim-info/:file_id" => "create_claim#claim_info", :as => "claim_info"
