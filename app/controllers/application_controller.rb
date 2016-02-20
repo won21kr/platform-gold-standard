@@ -54,9 +54,6 @@ class ApplicationController < ActionController::Base
   # fetches config query from encoded URL and updates the config session variables
   def insert_query(query)
 
-    if query['message'] != "" and query['message'] != nil
-      session[:home_message] = query['message']
-    end
     if query['logo'] != "" and query['logo'] != nil
       session[:logo] = query['logo']
     end
@@ -72,9 +69,6 @@ class ApplicationController < ActionController::Base
     if query['onboarding'] != "" and query['onboarding'] != nil
       session[:onboarding] = query['onboarding']
     end
-    # if query['catalog'] != "" and query['catalog'] != nil
-    #   session[:catalog] = query['catalog']
-    # end
     if query['med_credentialing'] != "" and query['med_credentialing'] != nil
       session[:medical_credentialing] = query['med_credentialing']
     end
@@ -84,9 +78,6 @@ class ApplicationController < ActionController::Base
     if query['background'] != "" and query['background'] != nil
       session[:background] = query['background']
     end
-    # if query['catalog_file'] != "" and query['catalog_file'] != nil
-    #   session[:catalog_file] = query['catalog_file']
-    # end
     if query['upload_sign'] != "" and query['upload_sign'] != nil
       session[:upload_sign] = query['upload_sign']
     end
@@ -103,9 +94,7 @@ class ApplicationController < ActionController::Base
     # end
 
     if query['tax_return'] != "" and query['tax_return'] != nil
-      puts "INSIDE TAX RETURN IF"
       session[:tax_return] = query['tax_return']
-      ap session[:tax_return]
     end
   end
 

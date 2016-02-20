@@ -27,8 +27,8 @@ class ConfigController < ApplicationController
       session[:upload_sign] = "off"
       session[:tax_return] = "off"
       session[:create_claim] = "off"
-      session[:account_sub] = "off"
-      session[:dicom_viewer] = "off"
+      # session[:account_sub] = "off"
+      # session[:dicom_viewer] = "off"
 
     end
 
@@ -40,9 +40,6 @@ class ConfigController < ApplicationController
     puts 'posting configuration page....'
 
     # check if new branding parameters were saved
-    if !params[:message].nil? and params[:message] != ""
-      session[:home_message] = params[:message]
-    end
     if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
     end
@@ -56,9 +53,6 @@ class ConfigController < ApplicationController
         session[:navbar_color] = '#' + params[:navbar_color]
       end
     end
-    if !params[:catalog_file].nil? and params[:catalog_file] !=""
-      session[:catalog_file] = params[:catalog_file]
-    end
 
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
@@ -68,8 +62,8 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
-    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+    # session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
+    # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     redirect_to config_path
   end

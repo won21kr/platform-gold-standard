@@ -14,9 +14,6 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  -# - if session[:catalog] == 'on'
-  -#   %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-  -#     %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
   - if session[:medical_credentialing] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
       %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
@@ -32,12 +29,12 @@
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
-  - if session[:dicom_viewer] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
-      %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
-  - if session[:account_sub] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
-      %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
+  -# - if session[:dicom_viewer] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+  -#     %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
+  -# - if session[:account_sub] == 'on'
+  -#   %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
+  -#     %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
@@ -58,8 +55,8 @@
                   %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
 
 
-%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#", :style => "color: #002e5e"}
-  %i.medium.material-icons
+%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#", :style => "color: #fff"}
+  %i.material-icons{:style => "font-size: 38px; margin-top: 10px; margin-left: 5px;"}
     reorder
 
 

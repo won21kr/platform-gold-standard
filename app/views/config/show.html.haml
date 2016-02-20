@@ -47,23 +47,12 @@
           .col.s6
             %b Custom Branding
             .br{:style => "margin-bottom: 12px"}
-            -# %label.label-div{:for => "message"} Home Page Message
-            -# %input.form-control#message{:type => "text", :name => "message", :placeholder => session[:home_message].nil? ? "The Box Platform" : session[:home_message]}
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
 
             %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
             %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
-
-            -# %label.label-div{:style => "color: black"} Product Catalog
-            -# .input-field{:style => "margin-top: 0 !important; margin-bottom: 30px"}
-            -#   %select{:name => "catalog_file"}
-            -#     %option{:disabled => "", :selected => "", :value => ""} Choose your option
-            -#     %option{:value => "Retail", :placeholder => session[:catalog_file].nil? ? "Retail" : session[:catalog_file]} Retail - Default
-            -#     %option{:value => "Healthcare", :placeholder => session[:catalog_file].nil? ? "Healthcare" : session[:catalog_file]} Healthcare
-            -#     %option{:value => "Financial Services", :placeholder => session[:catalog_file].nil? ? "Financial Services" : session[:catalog_file]} Financial Services
-            -#     %option{:value => "AEC", :placeholder => session[:catalog_file].nil? ? "AEC" : session[:catalog_file]} AEC
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
@@ -87,9 +76,6 @@
             %p
               %input#onboarding{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'}
               %label.checkbox{:for => "onboarding", :style => "color: black"} Onboarding Tasks
-            -# %p
-            -#   %input#catalog{:type => "checkbox", :name => "catalog", :checked => session[:catalog] == 'on'}
-            -#   %label.checkbox{:for => "catalog", :style => "color: black"} Product Catalog
             %p
               %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'}
               %label.checkbox{:for => "credentialing", :style => "color: black"} Medical Credentialing (Healthcare)
@@ -105,12 +91,12 @@
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            %p
-              %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
-              %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
-            %p
-              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            -# %p
+            -#   %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
+            -#   %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
+            -# %p
+            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
 
 
           .col.s12{:style => "margin-top: 20px"}
@@ -144,8 +130,6 @@
                   = ", Resources"
                 - if (session[:onboarding] == 'on')
                   = ", Onboarding Tasks"
-                -# - if (session[:catalog] == 'on')
-                -#   = ", Product Catalog"
                 - if (session[:medical_credentialing] == 'on')
                   = ", Medical Credentialing"
                 - if (session[:loan_docs] == 'on')
@@ -156,10 +140,6 @@
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
-            %tr
-              %td Customized Product Catalog:
-              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
-                = session[:catalog_file]
             %tr
               %td Home Page Background URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
