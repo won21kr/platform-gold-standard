@@ -1,0 +1,70 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} done
+          Account Submissions
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Submit a new business application
+
+        .col.s2.push-s10{:style => "margin-top:-20px;"}
+          %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+            Step 2 of 2
+        .col.s10.push-s1{:style => "margin-top: 30px;"}
+          .flash
+            = render partial: "shared/flash_messages", flash: flash
+        .col.s5
+          %h6{:style => "margin-bottom: 40px"}
+            Wait for company approval:
+        .col.s10.push-s1
+          .panel.panel-default{:style => "margin-bottom: 0px"}
+            .panel-heading
+              %h6{:style => "height: 130%"}
+                New Business Application Documents
+            %table.highlight
+              %thead
+                %tr
+                  %th File
+                  %th Name
+                  %th Status
+                  %th Actions
+                %tbody
+                  / list file contents
+        -#           - @accountItems.each_with_index do |f|
+        -#             %tr
+        -#               %td
+        -#                 = link_to view_doc_path(f.id) do
+        -#                   = image_tag(thumbnail_url(f.id), width: '40px')
+        -#               %td
+        -#                 %span{:style => "inline"}
+        -#                   = f.name
+        -#               %td
+        -#                 = f.status
+        -#               %td
+        -#                 / file action options
+        -#                 .btn-group
+        -#                   %a.btn.white.tooltipped{href: view_doc_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px; text-decoration: none"}
+        -#                     %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+        -#                     %i.fa.fa-comment.unread-count{:style => "font-size: 14px; margin-left: 2px; margin-right: -7px; color: black", "data-count" => "#{f.comments}"}
+        -#                   -# %a.btn.white.tooltipped{href: upload_new_version_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Upload New Version", :style => "padding-right: 9px; padding-left: 9px;"}
+        -#                   -#   %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238"}
+        -#                   %form{:enctype => "multipart/form-data", :method => "POST", :style => "display: inline"}
+        -#                     -# %strong Upload file:
+        -#                     -# %input{:name => "file", :type => "file"}/
+        -#                     -# %input{:style => "float:right;", :type => "submit", :value => "Upload"}
+        -#                     %input#fileId{:name => "fileId", :type => "hidden"}
+        -#                     %input#upload{:style => "position: absolute; visibility: hidden", :type => "file", :name => "file", :onChange => "form.submit()"}/
+        -#                     %label.btn.white.tooltipped{:for => "upload", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Upload New Version", :style => "padding-right: 9px; padding-left: 9px;", :onclick => "$('#fileId').attr('value','#{f.id}');"}
+        -#                       %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238; font-size: 14px"}
+        -# - if !@readyForPrequal.nil? and @readyForPrequal == true
+        -#   %form.form-horizontal{:role => "form", :method => "get", :action => prequal_submit_path}
+        -#     .form-group
+        -#       .col.s5
+        -#         %button.waves-effect.btn.white.black-text{:type => "submit", :style => "margin-top: 50px"} Submit for Pre-Qualification
+
+:javascript
+  document.getElementById("file").onchange = function() {
+    document.getElementById("form").submit();
+  };
