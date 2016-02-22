@@ -5,7 +5,7 @@ Rails.application.configure do
     { :username => ENV["MEMCACHIER_USERNAME"],
       :password => ENV["MEMCACHIER_PASSWORD"],
       :namespace => 'blue-insurance',
-      :expires_in => 7.days,
+      :expires_in => 7.hours,
       :compress => true,
       :pool_size => 8 }
 
