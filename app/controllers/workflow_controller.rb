@@ -198,8 +198,6 @@ class WorkflowController < SecuredController
       temp_file.delete
     end
 
-    ap envelope
-
     envelope
   end
 
@@ -210,6 +208,7 @@ class WorkflowController < SecuredController
     # either "toFill", "pendingApproval", "approved", "pendingSig", "signed"
     @status = nil
     client = user_client
+    threads = []
 
     # get workflow folder paths
     path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
@@ -217,19 +216,51 @@ class WorkflowController < SecuredController
     sigReqPath = "#{path}/Signature\ Required/"
     completedPath = "#{path}/Completed/"
 
-    # get all workflow folders, utilize cache
-    approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
-      client.folder_from_path(approvalPath)
-    end
-    sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
-      client.folder_from_path(sigReqPath)
-    end
-    completedFolder = Rails.cache.fetch("/folder/#{completedPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
-      client.folder_from_path(completedPath)
+    workflowFolder = Rails.cache.fetch("/folder/workflowFolder/#{session[:box_id]}", :expires_in => 15.minutes) do
+      client.folder_from_path(path)
     end
 
+    threads << Thread.new do
+
+      # get all workflow folders, utilize cache
+      @approvalFolder = Rails.cache.fetch("/folder/#{approvalPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
+        begin
+          client.folder_from_path(approvalPath)
+        rescue
+          # folder doesn't exist, create
+          client.create_folder("Pending Approval", workflowFolder)
+        end
+      end
+    end
+
+    threads << Thread.new do
+
+      @sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
+        begin
+          client.folder_from_path(sigReqPath)
+        rescue
+          # folder doesn't exist, create
+          client.create_folder("Signature Required", workflowFolder)
+        end
+      end
+    end
+
+    threads << Thread.new do
+
+      @completedFolder = Rails.cache.fetch("/folder/#{completedPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
+        begin
+          client.folder_from_path(completedPath)
+        rescue
+          # folder doesn't exist, create
+          client.create_folder("Completed", workflowFolder)
+        end
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
     # determine where we are in the onboarding workflow process
-    if ((file = client.folder_items(approvalFolder, fields: [:id]).files).size > 0)
+    if ((file = client.folder_items(@approvalFolder, fields: [:id]).files).size > 0)
 
       # get the approval task status on the document
       task = client.file_tasks(file.first, fields: [:is_completed])
@@ -237,17 +268,17 @@ class WorkflowController < SecuredController
       if (task.first.is_completed == true)
         # task has been approved, move file to sig required folder
         @status = "approved"
-        client.move_file(file.first, sigReqFolder.id)
+        client.move_file(file.first, @sigReqFolder.id)
 
       else
         # task has not yet been approved, wait for approval
         @status = "pendingApproval"
       end
-    elsif((file = client.folder_items(sigReqFolder, fields: [:id]).files).size > 0)
+    elsif((file = client.folder_items(@sigReqFolder, fields: [:id]).files).size > 0)
       # document in signature required folder, needs to be signed
       @status = "pendingSig"
 
-    elsif((file = client.folder_items(completedFolder, fields: [:id]).files).size > 0)
+    elsif((file = client.folder_items(@completedFolder, fields: [:id]).files).size > 0)
       # document has already been signed
       @status = "signed"
 

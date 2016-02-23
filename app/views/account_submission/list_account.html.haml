@@ -58,11 +58,6 @@
         -#                     %input#upload{:style => "position: absolute; visibility: hidden", :type => "file", :name => "file", :onChange => "form.submit()"}/
         -#                     %label.btn.white.tooltipped{:for => "upload", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Upload New Version", :style => "padding-right: 9px; padding-left: 9px;", :onclick => "$('#fileId').attr('value','#{f.id}');"}
         -#                       %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238; font-size: 14px"}
-        -# - if !@readyForSumbit.nil? and @readyForPrequal == true
-        -#   %form.form-horizontal{:role => "form", :method => "get", :action => prequal_submit_path}
-        -#     .form-group
-        -#       .col.s5
-        -#         %button.waves-effect.btn.white.black-text{:type => "submit", :style => "margin-top: 50px"} Submit for Pre-Qualification
 
 :javascript
   document.getElementById("file").onchange = function() {

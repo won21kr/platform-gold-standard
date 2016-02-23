@@ -13,29 +13,35 @@
         -#   %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
         -#     info
         .col.s12{:style => "margin-top: 35px; margin-left: 30px"}
-          -# .col.s8.push-s2.flash
-          -#   = render partial: "shared/flash_messages", flash: flash
+          .col.s8.push-s2{:style => "margin-top: 10px;"}
+            .flash
+              = render partial: "shared/flash_messages", flash: flash
+          .col.s5
+            %h6{:style => "margin-bottom: 30px"}
+              Create a new business application:
+          .col.s8.push-s2{:style => "margin-top: 20px"}
+            %form.form-horizontal{:role => "form", :method => "post", :action => create_acct_path, :name => "myForm"}
+              .form-group
+                %label.control-label.col-sm-2{:for => "name"} Insured Name:
+                %input#name.form-control.validate{:placeholder => "Sample Company", :type => "text", :name => "name", :required => ""}
+              .form-group
+                %label.control-label.col-sm-2{:for => "address"} Address:
+                %input#address.form-control.validate{:placeholder => "100 First Street", :type => "text", :name => "address", :required => ""}
+              %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+              .form-group
+                -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
+                %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Create
 
-
-          - if (@status == "toUpload")
-            = render 'upload_docs'
-          - elsif (@status == "pendingApproval")
-            = render 'submission_pending'
-          - elsif (@status == "approved")
-            = render 'submission_approved'
+          -# - if (@status == "toUpload")
+          -#   = render 'upload_docs'
+          -# - elsif (@status == "pendingApproval")
+          -#   = render 'submission_pending'
+          -# - elsif (@status == "approved")
+          -#   = render 'submission_approved'
 
   %p{:style=>"text-align: right; font-size: 10px;"}
     = link_to "reset", reset_acct_docs_path, {:style => "text-decoration: none;"}
 
-:javascript
-
-  Dropzone.options.myDropzone = {
-    init: function() {
-      this.on("queuecomplete", function(file) {
-        // setTimeout(function() {location.reload();}, 2000);
-      });
-    }
-  };
 
   // function chardinToggle() {
   //   $('body').chardinJs('toggle');

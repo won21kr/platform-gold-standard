@@ -25,48 +25,48 @@ class AccountSubmissionController < SecuredController
     end
 
     # get all submission account files
-    folderItems = client.folder_items(@accountFolder, fields: [:id, :name])
-    @accountItems = folderItems.files
-    @accountSubFolder = folderItems.folders
-
-    if(@accountItems.size == 0 && @accountSubFolder.size == 0)
-      # still need to upload items
-
-      @status = "toUpload"
-    elsif (@accountItems.size > 0)
-      # uploaded account documents exist
-
-      @status = "pendingApproval"
-      @readyForPrequal = true
-
-      # parse each file. get associated task and comments
-      @accountItems.each do |file|
-
-        threads << Thread.new do
-          class << file
-            attr_accessor :comments, :status
-          end
-          task = client.file_tasks(file, fields: [:is_completed]).first
-          numComments = client.file_comments(file.id, fields: [:id]).size
-          if(task.is_completed)
-            status = "Approved"
-          else
-            status = "Pending"
-            @readyForPrequal = false
-          end
-          file.status = status
-          file.comments = numComments
-        end
-      end
-
-      threads.each { |thr| thr.join }
-
-    elsif (@accountSubFolder.size > 0)
-      # documents were approved, parse folder
-
-      @status = "approved"
-      @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
-    end
+    # folderItems = client.folder_items(@accountFolder, fields: [:id, :name])
+    # @accountItems = folderItems.files
+    # @accountSubFolder = folderItems.folders
+    #
+    # if(@accountItems.size == 0 && @accountSubFolder.size == 0)
+    #   # still need to upload items
+    #
+    #   @status = "toUpload"
+    # elsif (@accountItems.size > 0)
+    #   # uploaded account documents exist
+    #
+    #   @status = "pendingApproval"
+    #   @readyForPrequal = true
+    #
+    #   # parse each file. get associated task and comments
+    #   @accountItems.each do |file|
+    #
+    #     threads << Thread.new do
+    #       class << file
+    #         attr_accessor :comments, :status
+    #       end
+    #       task = client.file_tasks(file, fields: [:is_completed]).first
+    #       numComments = client.file_comments(file.id, fields: [:id]).size
+    #       if(task.is_completed)
+    #         status = "Approved"
+    #       else
+    #         status = "Pending"
+    #         @readyForPrequal = false
+    #       end
+    #       file.status = status
+    #       file.comments = numComments
+    #     end
+    #   end
+    #
+    #   threads.each { |thr| thr.join }
+    #
+    # elsif (@accountSubFolder.size > 0)
+    #   # documents were approved, parse folder
+    #
+    #   @status = "approved"
+    #   @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
+    # end
 
 
     # # if one of the loan documents is "missing", then
@@ -90,6 +90,83 @@ class AccountSubmissionController < SecuredController
     #   @searchFiles["Tax"] = tmpSearchFiles.select {|item| item.name.include?("Tax") }
     # end
 
+  end
+
+  def create_acct
+    client = user_client
+    path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
+
+
+    # get account submission folder
+    begin
+      @accountsFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder", :expires_in => 10.minutes) do
+        client.folder_from_path(path)
+      end
+    rescue
+      puts "Error: should never be here"
+    end
+
+    # create new acct submission folder, check if same folder name already exists
+    begin
+      @newAccount = client.create_folder(params["name"], @accountsFolder)
+      client.update_folder(@newAccount, description: params["address"])
+    rescue
+      flash[:notice] = "Error: account with the same name already exists"
+      redirect_to "/account-submission"
+    end
+
+  end
+
+  def list_account
+    client = user_client
+    session[:current_page] = "account_sub"
+    path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
+    threads = []
+
+    # get account submission folder, if it doesn't exist create one
+    begin
+      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder/#{params[:id]}", :expires_in => 10.minutes) do
+        client.folder_from_path(path)
+      end
+      # @loanFolder = client.folder_from_path(path)
+    rescue
+      puts "should not be here"
+      flash[:notice] = "Error: something went wrong"
+      redirect_to "/account-submission"
+    end
+
+    # get all submission account files
+    @accountItems = client.folder_items(@accountFolder, fields: [:id, :name]).files
+    @readyForSumbit = true
+
+    # parse each file. get associated task and comments
+    @accountItems.each do |file|
+
+      threads << Thread.new do
+        class << file
+          attr_accessor :comments, :status
+        end
+        task = client.file_tasks(file, fields: [:is_completed]).first
+        numComments = client.file_comments(file.id, fields: [:id]).size
+        if(task.is_completed)
+          status = "Approved"
+        else
+          status = "Pending"
+          @readyForSubmit = false
+        end
+        file.status = status
+        file.comments = numComments
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+    # elsif (@accountSubFolder.size > 0)
+    #   # documents were approved, parse folder
+    #
+    #   @status = "approved"
+    #   @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
+    # end
   end
 
   # Upload a new file version
