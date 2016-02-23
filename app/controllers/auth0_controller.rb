@@ -29,24 +29,33 @@ class Auth0Controller < ApplicationController
 
   private
 
+  # create folders for user and add to group
   def setup_box_account
-    #puts "user: #{session[:box_id]}"
+
+    threads = []
     box_user = Box.user_client(session[:box_id])
 
-    # add user to "Customers" group
-    Box.admin_client.add_user_to_group(session[:box_id], ENV['CUSTOMER_GROUP'])
+    threads << Thread.new do
+      # create shared folder, add collaborator
+      sharedFolder = box_user.create_folder("#{session[:userinfo]['info']['name']} - Shared Files", Boxr::ROOT)
+      box_user.add_collaboration(sharedFolder, {id: ENV['EMPL_ID'], type: :user}, :editor)
 
-    # create new user folders and add collaborator
-    sharedFolder = box_user.create_folder("#{session[:userinfo]['info']['name']} - Shared Files", Boxr::ROOT)
-    box_user.add_collaboration(sharedFolder, {id: ENV['EMPL_ID'], type: :user}, :editor)
-    box_user.create_folder("My Files", Boxr::ROOT)
+      # create onboarding workflow folders
+      workflowFolder = box_user.create_folder("Onboarding Workflow", sharedFolder)
+    end
 
-    # create onboarding workflow folders, add automation
-    workflowFolder = box_user.create_folder("Onboarding Workflow", sharedFolder)
-    box_user.create_folder("Pending Approval", workflowFolder)
-    box_user.create_folder("Signature Required", workflowFolder)
-    box_user.create_folder("Completed", workflowFolder)
+    threads << Thread.new do
+      # add user to "Customers" group
+      Box.admin_client.add_user_to_group(session[:box_id], ENV['CUSTOMER_GROUP'])
+    end
 
+    threads << Thread.new do
+      # create my Files folder
+      box_user.create_folder("My Files", Boxr::ROOT)
+    end
+
+
+    threads.each { |thr| thr.join }
   end
 
 end
