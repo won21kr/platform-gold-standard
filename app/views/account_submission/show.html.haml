@@ -19,7 +19,7 @@
           .col.s5
             %h6{:style => "margin-bottom: 30px"}
               Create a new business application:
-          .col.s8.push-s2{:style => "margin-top: 20px"}
+          .col.s10.push-s1{:style => "margin-top: 20px"}
             %form.form-horizontal{:role => "form", :method => "post", :action => create_acct_path, :name => "myForm"}
               .form-group
                 %label.control-label.col-sm-2{:for => "name"} Insured Name:
@@ -31,6 +31,31 @@
               .form-group
                 -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
                 %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Create
+          .col.s5
+            %h6{:style => "margin-bottom: 30px; margin-top: 40px"}
+              Current Business Applications:
+          .col.s10.push-s1
+            .panel.panel-default{:style => "margin-bottom: 0px"}
+              %table.highlight
+                %thead
+                  %tr
+                    %th Insured Name
+                    %th Address
+                    %th Last Modified
+                    %th Status
+                  %tbody
+                    / list file contents
+                    - @accounts.each do |f|
+                      %tr{:onclick => "location.href = '/account-submission/list-acct/#{f.id}'"}
+                        %td
+                          = f.name
+                        %td
+                          %span{:style => "inline"}
+                            = f.description
+                        %td
+                          = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+                        %td
+                          Pending
 
           -# - if (@status == "toUpload")
           -#   = render 'upload_docs'

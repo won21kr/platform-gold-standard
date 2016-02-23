@@ -24,6 +24,9 @@ class AccountSubmissionController < SecuredController
       @accountFolder = client.create_folder("Account Submissions", parent)
     end
 
+    # get all account folders
+    @accounts = client.folder_items(@accountFolder, fields: [:id, :name, :description, :modified_at]).folders
+
     # get all submission account files
     # folderItems = client.folder_items(@accountFolder, fields: [:id, :name])
     # @accountItems = folderItems.files
@@ -125,8 +128,9 @@ class AccountSubmissionController < SecuredController
 
     # get account submission folder, if it doesn't exist create one
     begin
-      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder/#{params[:id]}", :expires_in => 10.minutes) do
-        client.folder_from_path(path)
+      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder/#{params[:id]}", :expires_in => 1.minutes) do
+        puts "miss"
+        client.folder_from_id(params[:id], fields: [:id, :name, :description])
       end
       # @loanFolder = client.folder_from_path(path)
     rescue
