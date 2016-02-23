@@ -349,16 +349,12 @@ class TaxReturnController < SecuredController
     box_file = client.file_from_id(fileId)
     enterprise = "enterprise_#{ENV['BOX_ENTERPRISE_ID']}"
 
-    begin
-      @metaValueHash = Rails.cache.fetch("/folder/#{session[:box_id]}/meta_value_folder", :expires_in => 10.minutes) do
-        #why is this a thing??
-        @metaValueHash = client.metadata(box_file, scope: enterprise, template: :taxCategory)
-        session[:category] = @metaValueHash["category"]
-        session[:subcategory] = @metaValueHash["subcategory"]
-        session[:fileName] = box_file.name
-        ap session[:fileName]
-      end
-    end
+
+    #why is this a thing??
+    @metaValueHash = client.metadata(box_file, scope: enterprise, template: :taxCategory)
+    session[:category] = @metaValueHash["category"]
+    session[:subcategory] = @metaValueHash["subcategory"]
+    session[:fileName] = box_file.name
 
     envelope_response = tax_create_docusign_envelope(fileId)
 
