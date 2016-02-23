@@ -43,21 +43,21 @@ class TaxReturnController < SecuredController
       threads << Thread.new do
         # configure names and get file task if exists
         name = file.name.split(" ").first
+        signedStatus = file.name.split("(").last.split(")").first
+        ap "file status here: #{signedStatus}"
         imageName = name.split(" ").first + " Image"
         searchName = name.split(" ").first
         task = client.file_tasks(file, fields: [:is_completed]).first
         ap name
 
-        if(name == "Forms" || name == "Income" || name == "Deductions" and task == nil)
+        if(signedStatus == "Signed")
           # task completed
-          ap "INSIDE THE FIRST IF"
           @docStatus[name] = "Signed"
           @docStatus[imageName] = "file_success.png"
           @fileId[name] = file.id
-        elsif(task != nil and !task.is_completed)
+        elsif(signedStatus == "Not Signed")
           #task not completed yet
-          puts "tax file exists, task not complete"
-          @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; In review"
+          @docStatus[name] = "Received #{DateTime.strptime(file.modified_at).strftime("%m/%d/%y at %l:%M %p")}; Pending signature"
           @docStatus[imageName] = "file_process.png"
           @fileId[name] = file.id
         else
@@ -196,11 +196,6 @@ class TaxReturnController < SecuredController
     copiedFile = client.copy_file(toCopy, folder, name: newName)
     session[:taxUploadedFileId] = copiedFile.id
 
-
-    # assign task to Box managed user
-    msg = "Please review and complete the task"
-    task = client.create_task(copiedFile, action: :review, message: msg)
-    client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
     flash[:notice] = "Successfully copied over \"#{oldName.first}\" from your vault"
 
     redirect_to "/metadata_upload"
@@ -312,11 +307,6 @@ class TaxReturnController < SecuredController
       name = name + "." + ext
 
       uploadedFile = client.update_file(box_file, name: name)
-      # client.create_metadata(uploadedFile, "Status" => "In Review")
-      msg = "Please review and complete the task"
-      task = client.create_task(uploadedFile, action: :review, message: msg)
-      client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
-      #box_user.create_metadata(box_file, session[:meta])
     rescue => ex
       puts ex.message
     ensure
@@ -342,6 +332,7 @@ class TaxReturnController < SecuredController
 
   # delete file
   def delete_file
+    puts "INSIDE DELETE METHOD"
     session[:current_folder] = params[:folder]
     client = user_client
 
@@ -349,7 +340,7 @@ class TaxReturnController < SecuredController
     client.delete_file(params[:id])
     flash[:notice] = "File successfully deleted!"
 
-    redirect_to dashboard_id_path(session[:current_folder])
+    redirect_to tax_return_path
   end
 
 
@@ -479,6 +470,22 @@ class TaxReturnController < SecuredController
       flash[:error] = "You chose not to sign the document."
       render :text => utility.breakout_path(tax_return_path), content_type: 'text/html'
     end
+  end
+
+  def advisor_task
+    client = user_client
+    puts "FILE ID HERE: #{@taxFileId}"
+    file = client.file_from_id(params[:fileValue], fields: [:name, :id])
+
+    puts "FILE OBJECT HERE: #{file}"
+    # task = client.create_task(uploadedFile, action: :review, message: msg)
+    # client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
+    redirect_to tax_return_path
+  end
+
+  def file_value
+    # @taxFileId = params[:fileValue]
+    # puts "FILE SESSION: #{session[:currFileId]}"
   end
 
   def income_file_upload

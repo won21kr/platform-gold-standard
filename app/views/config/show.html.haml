@@ -152,8 +152,8 @@
                   = ", Loan Origination"
                 - if (session[:upload_sign] == 'on')
                   = ", Upload & Sign"
-                -# - if (session[:tax_return] == 'on')
-                -#   = ", Tax Return"
+                - if (session[:tax_return] == 'on')
+                  = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
             %tr
