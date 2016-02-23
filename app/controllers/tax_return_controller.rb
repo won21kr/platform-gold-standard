@@ -213,14 +213,10 @@ class TaxReturnController < SecuredController
 
     client = user_client
 
-    begin
-      @metadataHash = Rails.cache.fetch("/folder/#{session[:box_id]}/meta_cat_folder", :expires_in => 10.minutes) do
-        @metadataHash = {
-          "category" => params[:category],
-          "subcategory" => params[:subcategory]
-        }
-      end
-    end
+    @metadataHash = {
+      "category" => params[:category],
+      "subcategory" => params[:subcategory]
+    }
 
     meta = {'category' => @metadataHash["category"],
             'subcategory' => @metadataHash["subcategory"]}
