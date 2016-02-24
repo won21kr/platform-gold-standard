@@ -27,71 +27,20 @@ class AccountSubmissionController < SecuredController
     # get all account folders
     @accounts = client.folder_items(@accountFolder, fields: [:id, :name, :description, :modified_at]).folders
 
-    # get all submission account files
-    # folderItems = client.folder_items(@accountFolder, fields: [:id, :name])
-    # @accountItems = folderItems.files
-    # @accountSubFolder = folderItems.folders
-    #
-    # if(@accountItems.size == 0 && @accountSubFolder.size == 0)
-    #   # still need to upload items
-    #
-    #   @status = "toUpload"
-    # elsif (@accountItems.size > 0)
-    #   # uploaded account documents exist
-    #
-    #   @status = "pendingApproval"
-    #   @readyForPrequal = true
-    #
-    #   # parse each file. get associated task and comments
-    #   @accountItems.each do |file|
-    #
-    #     threads << Thread.new do
-    #       class << file
-    #         attr_accessor :comments, :status
-    #       end
-    #       task = client.file_tasks(file, fields: [:is_completed]).first
-    #       numComments = client.file_comments(file.id, fields: [:id]).size
-    #       if(task.is_completed)
-    #         status = "Approved"
-    #       else
-    #         status = "Pending"
-    #         @readyForPrequal = false
-    #       end
-    #       file.status = status
-    #       file.comments = numComments
-    #     end
-    #   end
-    #
-    #   threads.each { |thr| thr.join }
-    #
-    # elsif (@accountSubFolder.size > 0)
-    #   # documents were approved, parse folder
-    #
-    #   @status = "approved"
-    #   @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
-    # end
+    # check the status of each accounts folder
+    @accounts.each do |f|
+      class << f
+        attr_accessor :status
+      end
 
+      if (f.name.include? "(Submitted)")
+        f.status = "Submitted"
+        f.name = f.name.split("(").first
+      else
+        f.status = "Pending"
+      end
 
-    # # if one of the loan documents is "missing", then
-    # # get vault folder and search for items by name
-    # if (@docStatus["Loan Agreement"] == "Missing" or @docStatus["W2 Form"] == "Missing" or @docStatus["Tax Return"] == "Missing")
-    #
-    #   vaultFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
-    #     puts "miss"
-    #     client.folder_from_path("My Files")
-    #   end
-    #
-    #   # search for loan related documents
-    #   tmpSearchFiles = Rails.cache.fetch("/loan_docs_search/#{session[:box_id]}", :expires_in => 4.minutes) do
-    #     puts "miss"
-    #     client.search("W2 || Tax || Loan", content_types: :name, file_extensions: 'pdf', ancestor_folder_ids: vaultFolder.id)
-    #   end
-    #
-    #   # parse through search results
-    #   @searchFiles["W2"] = tmpSearchFiles.select {|item| item.name.include?("W2") }
-    #   @searchFiles["Loan"] = tmpSearchFiles.select {|item| item.name.include?("Loan") }
-    #   @searchFiles["Tax"] = tmpSearchFiles.select {|item| item.name.include?("Tax") }
-    # end
+    end
 
   end
 
@@ -165,17 +114,12 @@ class AccountSubmissionController < SecuredController
 
     threads.each { |thr| thr.join }
 
-    # if (!@accountFolder.tags.nil?)
-    #   @readyForSubmit = false
-    #   puts "found tag!"
-    # end
+    # check if account has been submitted
+    if (@accountFolder.name.include? "(Submitted)")
+      @readyForSubmit = false
+      @submitted = true
+    end
 
-    # elsif (@accountSubFolder.size > 0)
-    #   # documents were approved, parse folder
-    #
-    #   @status = "approved"
-    #   @approvedItems = client.folder_items(@accountSubFolder.first, fields: [:id, :name, :modified_at])
-    # end
   end
 
   # Upload a new file version
@@ -256,48 +200,22 @@ class AccountSubmissionController < SecuredController
         puts "miss"
         client.folder_from_id(params[:id], fields: [:id, :name, :description])
       end
+      client.update_folder(@accountFolder, name: "#{@accountFolder.name} (Submitted)")
       # @loanFolder = client.folder_from_path(path)
     rescue
       puts "should not be here"
       flash[:notice] = "Error: something went wrong"
       redirect_to "/account-submission"
     end
-    # client.update_folder(@accountFolder, tags: "complete")
-    # Rails.cache.delete("/folder/#{session[:box_id]}/accountFolder/#{params[:folderId]}")
 
+    Rails.cache.delete("/folder/#{session[:box_id]}/accountFolder/#{params[:folderId]}")
     flash[:notice] = "Business application submission complete"
 
     redirect_to "/account-submission/list-acct/#{params[:folderId]}"
   end
 
-  # copy over a document from the user's vault to Loan Docs folder
-  # def copy_from_vault
-  #
-  #   puts "copy from vault"
-  #   fileId = params[:file_id]
-  #   oldName = params[:old_name].split(".")
-  #   newName = params[:new_name] + "." + oldName.last
-  #   path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
-  #
-  #   # get loan docs folder, copy vault file into it
-  #   client = user_client
-  #   folder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
-  #     client.folder_from_path(path)
-  #   end
-  #   # folder = client.folder_from_path(path)
-  #   toCopy = client.file_from_id(fileId, fields: [:name, :id])
-  #   copiedFile = client.copy_file(toCopy, folder, name: newName)
-  #
-  #   # assign task to Box managed user
-  #   msg = "Please review and complete the task"
-  #   task = client.create_task(copiedFile, action: :review, message: msg)
-  #   client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
-  #   flash[:notice] = "Successfully copied over \"#{oldName.first}\" from your vault"
-  #
-  #   redirect_to loan_docs_path
-  # end
 
-  # delete folder, reset loan process
+  # delete account folders, reset process
   def reset_accts
 
     puts "reset accounts"

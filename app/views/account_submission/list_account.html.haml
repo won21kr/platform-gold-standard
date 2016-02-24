@@ -11,12 +11,15 @@
 
         .col.s2.push-s10{:style => "margin-top:-20px;"}
           %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
-            Step 2 of 2
+            - if @submitted
+              Complete!
+            - else
+              Step 2 of 2
         .col.s10.push-s1{:style => "margin-top: 30px;"}
           .flash
             = render partial: "shared/flash_messages", flash: flash
         .col.s5
-          %h6{:style => "margin-bottom: 40px"}
+          %h6{:style => "margin-bottom: 30px"}
             = "#{@accountFolder.name} - #{@accountFolder.description}"
         .col.s10.push-s1
           .panel.panel-default{:style => "margin-bottom: 0px"}
@@ -48,19 +51,15 @@
                           %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @accountFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px; text-decoration: none"}
                             %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
                             %i.fa.fa-comment.unread-count{:style => "font-size: 14px; margin-left: 2px; margin-right: -7px; color: black", "data-count" => "#{f.comments}"}
-                          -# %a.btn.white.tooltipped{href: upload_new_version_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Upload New Version", :style => "padding-right: 9px; padding-left: 9px;"}
-                          -#   %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238"}
-                          %form{:enctype => "multipart/form-data", :method => "POST", :style => "display: inline"}
-                            -# %strong Upload file:
-                            -# %input{:name => "file", :type => "file"}/
-                            -# %input{:style => "float:right;", :type => "submit", :value => "Upload"}
-                            %input#fileId{:name => "fileId", :type => "hidden"}
-                            %input#upload{:style => "position: absolute; visibility: hidden", :type => "file", :name => "file", :onChange => "form.submit()"}/
-                            %label.btn.white.tooltipped{:for => "upload", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Upload New Version", :style => "padding-right: 9px; padding-left: 9px;", :onclick => "$('#fileId').attr('value','#{f.id}');"}
-                              %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238; font-size: 14px"}
+                          - if !@submitted
+                            %form{:enctype => "multipart/form-data", :method => "POST", :style => "display: inline"}
+                              %input#fileId{:name => "fileId", :type => "hidden"}
+                              %input#upload{:style => "position: absolute; visibility: hidden", :type => "file", :name => "file", :onChange => "form.submit()"}/
+                              %label.btn.white.tooltipped{:for => "upload", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Upload New Version", :style => "padding-right: 9px; padding-left: 9px;", :onclick => "$('#fileId').attr('value','#{f.id}');"}
+                                %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238; font-size: 14px"}
         .col.s12
           %a.waves-effect.btn.white.black-text{:href => "/account-submission", :style => "margin-top: 40px; text-decoration: none"} Back
-          - if !@readyForSubmit.nil? and @readyForSubmit == true
+          - if @readyForSubmit == true
             %a.waves-effect.btn.white.black-text{:href => "/prequal-submit/#{@accountFolder.id}", :style => "margin-top: 40px; text-decoration: none"} Complete Submission
         -# - if !@readyForSumbit.nil? and @readyForSumbit == true
         -#   %form.form-horizontal{:role => "form", :method => "get", :action => prequal_submit_path}

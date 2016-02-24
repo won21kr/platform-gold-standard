@@ -17,7 +17,7 @@
             .flash
               = render partial: "shared/flash_messages", flash: flash
           .col.s5
-            %h6{:style => "margin-bottom: 30px"}
+            %h6{:style => "margin-bottom: 10px"}
               Create a new business application:
           .col.s10.push-s1{:style => "margin-top: 20px"}
             %form.form-horizontal{:role => "form", :method => "post", :action => create_acct_path, :name => "myForm"}
@@ -32,8 +32,8 @@
                 -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
                 %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Create
           .col.s5
-            %h6{:style => "margin-bottom: 30px; margin-top: 40px"}
-              Current Business Applications:
+            %h6{:style => "margin-bottom: 10px; margin-top: 50px"}
+              Current business applications:
           .col.s10.push-s1
             .panel.panel-default{:style => "margin-bottom: 0px"}
               %table.highlight
@@ -55,7 +55,7 @@
                         %td
                           = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
                         %td
-                          Pending
+                          = f.status
 
           -# - if (@status == "toUpload")
           -#   = render 'upload_docs'
