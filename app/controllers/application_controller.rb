@@ -53,60 +53,16 @@ class ApplicationController < ActionController::Base
 
   # fetches config query from encoded URL and updates the config session variables
   def insert_query(query)
-
-    if query['message'] != "" and query['message'] != nil
-      session[:home_message] = query['message']
-    end
-    if query['logo'] != "" and query['logo'] != nil
-      session[:logo] = query['logo']
-    end
-    if query['back_color'] != "" and query['back_color'] != nil
-      session[:navbar_color] = '#' + query['back_color']
-    end
-    if query['vault'] != "" and query['vault'] != nil
-      session[:vault] = query['vault']
-    end
-    if query['resources'] != "" and query['resources'] != nil
-      session[:resources] = query['resources']
-    end
-    if query['onboarding'] != "" and query['onboarding'] != nil
-      session[:onboarding] = query['onboarding']
-    end
-    # if query['catalog'] != "" and query['catalog'] != nil
-    #   session[:catalog] = query['catalog']
-    # end
-    if query['med_credentialing'] != "" and query['med_credentialing'] != nil
-      session[:medical_credentialing] = query['med_credentialing']
-    end
-    if query['loan_docs'] != "" and query['loan_docs'] != nil
-      session[:loan_docs] = query['loan_docs']
-    end
-    if query['background'] != "" and query['background'] != nil
-      session[:background] = query['background']
-    end
-    # if query['catalog_file'] != "" and query['catalog_file'] != nil
-    #   session[:catalog_file] = query['catalog_file']
-    # end
-    if query['upload_sign'] != "" and query['upload_sign'] != nil
-      session[:upload_sign] = query['upload_sign']
-    end
-    if query['create_claim'] != "" and query['create_claim'] != nil
-      session[:create_claim] = query['create_claim']
-    end
-    # if query['dicom_viewer'] != "" and query['dicom_viewer'] != nil
-    #   session[:dicom_viewer] = query['dicom_viewer']
-    # end
-
-    # # temp
-    # if query['salesforce'] != "" and query['salesforce'] != nil
-    #   session[:salesforce] = query['salesforce']
-    # end
-
-    if query['tax_return'] != "" and query['tax_return'] != nil
-      puts "INSIDE TAX RETURN IF"
-      session[:tax_return] = query['tax_return']
-      ap session[:tax_return]
-    end
+    session[:logo] = query['logo'] unless query['logo'].blank?
+    session[:navbar_color] = '#' + query['back_color'] unless query['back_color'].blank?
+    session[:vault] = query['vault'] unless query['vault'].blank?
+    session[:resources] = query['resources'] unless query['resources'].blank?
+    session[:onboarding] = query['onboarding'] unless query['onboarding'].blank?
+    session[:medical_credentialing] = query['med_credentialing'] unless query['med_credentialing'].blank?
+    session[:loan_docs] = query['loan_docs'] unless query['loan_docs'].blank?
+    session[:background] = query['background'] unless query['background'].blank?
+    session[:upload_sign] = query['upload_sign'] unless query['upload_sign'].blank?
+    session[:create_claim] = query['create_claim'] unless query['create_claim'].blank?
+    session[:tax_return] = query['tax_return'] unless query['tax_return'].blank?
   end
-
 end

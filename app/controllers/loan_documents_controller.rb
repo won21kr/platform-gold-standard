@@ -94,9 +94,9 @@ class LoanDocumentsController < SecuredController
       end
 
       # parse through search results
-      @searchFiles["W2"] = tmpSearchFiles.select {|item| item.name.include?("W2") }
-      @searchFiles["Loan"] = tmpSearchFiles.select {|item| item.name.include?("Loan") }
-      @searchFiles["Tax"] = tmpSearchFiles.select {|item| item.name.include?("Tax") }
+      @searchFiles["W2"] = tmpSearchFiles.select {|item| item.name.upcase.include?("w2".upcase) }
+      @searchFiles["Loan"] = tmpSearchFiles.select {|item| item.name.upcase.include?("loan".upcase) }
+      @searchFiles["Tax"] = tmpSearchFiles.select {|item| item.name.upcase.include?("tax".upcase) }
     end
 
   end

@@ -1,2 +1,0 @@
-.env merge=ours
-jwt/private_key.pem merge=ours

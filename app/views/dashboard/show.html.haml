@@ -27,7 +27,8 @@
         .col.s12{:style => "margin-left: 30px"}
           #myfiles
             .col.s2.push-s10{:style => "margin-top: 30px;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+              .uploadbtn
+                %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
             .col.s12
               .flash.col.s8.push-s2{:style => "margin-top: 20px"}
                 - if @myFolder.id == @currentFolder

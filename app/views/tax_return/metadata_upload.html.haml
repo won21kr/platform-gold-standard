@@ -19,7 +19,6 @@
                 %option{:value => "Taxes"} Taxes
                 %option{:value => "Income"} Income
                 %option{:value => "Credits"} Credits
-                %option{:value => "Adj_Deduc"} Adjustments & Deductions
             .form-group
               #Taxes.style-sub-1{:name => "stylesub1", :onchange => "ChangeDropdowns(this.value)", :style => "display: none;"}
                 %label{:for => "subcategory"}
@@ -47,17 +46,6 @@
                     %option Child and Dependent Care Expenses
                     %option Form 1098-T (Tuition and Expenses)
                     %option Mortgage Interest Credit
-              #Adj_Deduc.style-sub-1{:name => "stylesub1", :onchange => "ChangeDropdowns(this.value)", :style => "display: none;"}
-                %label{:for => "subcategory"}
-                  %select#type{:placeholder => "subCategory", :type => "text", :name => "subcategory"}
-                    %option{:disabled => "", :selected => "", :value => ""}
-                    %option Form 1098 (Mortgage Interest)
-                    %option Form 1098-E (Student Loan Interest)
-                    %option Form 1098-T (Tuition and Expenses)
-                    %option Cash Contributions
-                    %option Medical Expenses
-                    %option Miscellaneous Deductions
-                    %option Charitable Contributions
             %input{:name => "formSubmit", :type => "hidden", :value => "true"}
             .form-group
               -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval

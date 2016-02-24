@@ -1,5 +1,3 @@
-%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
-
 %ul#slide-out.side-nav.fixed
   .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px;" : "background-color: #{session[:navbar_color]}; padding: 15px;"}
     .defaultsize
@@ -14,9 +12,6 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  -# - if session[:catalog] == 'on'
-  -#   %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-  -#     %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
   - if session[:medical_credentialing] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
       %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
@@ -60,6 +55,7 @@
 %a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#"}
   %i.material-icons{:style => "font-size: 38px; margin-top: 10px; margin-left: 5px;"}
     reorder
+
 
 :javascript
   // Initialize collapse button

@@ -40,9 +40,6 @@ class ConfigController < ApplicationController
     puts 'posting configuration page....'
 
     # check if new branding parameters were saved
-    if !params[:message].nil? and params[:message] != ""
-      session[:home_message] = params[:message]
-    end
     if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
     end
@@ -55,9 +52,6 @@ class ConfigController < ApplicationController
       else
         session[:navbar_color] = '#' + params[:navbar_color]
       end
-    end
-    if !params[:catalog_file].nil? and params[:catalog_file] !=""
-      session[:catalog_file] = params[:catalog_file]
     end
 
     # check feature tab configuration
@@ -99,7 +93,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&tax_return=#{session[:tax_return]}"
     session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&create_claim=#{session[:create_claim]}"
-    # session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
+    session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
 
 
   end
