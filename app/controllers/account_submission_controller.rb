@@ -221,21 +221,22 @@ class AccountSubmissionController < SecuredController
     puts "reset accounts"
 
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
-
-    # get loan docs folder, copy vault file into it
     client = user_client
-    folder = client.folder_from_path(path)
-    items = client.folder_items(folder, fields: [:id])
-    files = items.files
-    folders = items.folders
-    # client.delete_folder(folder, recursive: true)
 
-    files.each do |f|
-      client.delete_file(f)
-    end
-
-    folders.each do |f|
-      client.delete_folder(f, recursive: true)
+    # get account submission folder
+    begin
+      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder", :expires_in => 10.minutes) do
+        client.folder_from_path(path)
+      end
+      # get all account folders
+      @accounts = client.folder_items(@accountFolder, fields: [:id, :name, :description, :modified_at]).folders
+      @accounts.each do |f|
+        client.delete_folder(f, recursive: true)
+      end
+    rescue
+      puts "should not be here"
+      flash[:notice] = "Error: something went wrong"
+      redirect_to "/account-submission"
     end
 
     redirect_to acct_sub_path
