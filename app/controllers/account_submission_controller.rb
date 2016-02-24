@@ -126,9 +126,9 @@ class AccountSubmissionController < SecuredController
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
     threads = []
 
-    # get account submission folder, if it doesn't exist create one
+    # get account submission folder
     begin
-      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder/#{params[:id]}", :expires_in => 1.minutes) do
+      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder/#{params[:id]}", :expires_in => 10.minutes) do
         puts "miss"
         client.folder_from_id(params[:id], fields: [:id, :name, :description])
       end
@@ -141,7 +141,7 @@ class AccountSubmissionController < SecuredController
 
     # get all submission account files
     @accountItems = client.folder_items(@accountFolder, fields: [:id, :name]).files
-    @readyForSumbit = true
+    @readyForSubmit = true
 
     # parse each file. get associated task and comments
     @accountItems.each do |file|
@@ -165,6 +165,11 @@ class AccountSubmissionController < SecuredController
 
     threads.each { |thr| thr.join }
 
+    # if (!@accountFolder.tags.nil?)
+    #   @readyForSubmit = false
+    #   puts "found tag!"
+    # end
+
     # elsif (@accountSubFolder.size > 0)
     #   # documents were approved, parse folder
     #
@@ -178,6 +183,8 @@ class AccountSubmissionController < SecuredController
 
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions/" + params[:file].original_filename
     client = user_client
+
+    ap params
 
     file = client.file_from_id(params[:fileId], fields: [:id, :name])
 
@@ -202,7 +209,7 @@ class AccountSubmissionController < SecuredController
       flash[:notice] = "Error: you must upload a new file version of the same file type"
     end
 
-    redirect_to "/account-submission"
+    redirect_to "/account-submission/list-acct/#{params[:id]}"
   end
 
   # upload files to parameter specified folder ID
@@ -243,20 +250,24 @@ class AccountSubmissionController < SecuredController
   def prequal_submit
 
     client = user_client
-    path = "#{session[:userinfo]['info']['name']} - Shared Files/Account Submissions"
-
-    @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder", :expires_in => 10.minutes) do
-      client.folder_from_path(path)
+    # get account submission folder
+    begin
+      @accountFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/accountFolder/#{params[:folderId]}", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_id(params[:id], fields: [:id, :name, :description])
+      end
+      # @loanFolder = client.folder_from_path(path)
+    rescue
+      puts "should not be here"
+      flash[:notice] = "Error: something went wrong"
+      redirect_to "/account-submission"
     end
-    items = client.folder_items(@accountFolder, fields: [:id, :name, :modified_at]).files
-    folder = client.create_folder("Pre Qualification", @accountFolder)
+    # client.update_folder(@accountFolder, tags: "complete")
+    # Rails.cache.delete("/folder/#{session[:box_id]}/accountFolder/#{params[:folderId]}")
 
-    items.each do |f|
-      client.move_file(f, folder)
-    end
-    flash[:notice] = "Business application submitted for Pre-Qualification"
+    flash[:notice] = "Business application submission complete"
 
-    redirect_to "/account-submission"
+    redirect_to "/account-submission/list-acct/#{params[:folderId]}"
   end
 
   # copy over a document from the user's vault to Loan Docs folder

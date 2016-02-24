@@ -60,8 +60,8 @@
                               %span.glyphicon.glyphicon-upload{:style => "top: 3px; color: #263238; font-size: 14px"}
         .col.s12
           %a.waves-effect.btn.white.black-text{:href => "/account-submission", :style => "margin-top: 40px; text-decoration: none"} Back
-          - if !@readyForSumbit.nil? and @readyForSumbit == true
-            %button.waves-effect.btn.white.black-text{:href => "/prequal-submit", :style => "margin-top: 40px; text-decoration: none"} Submission Complete
+          - if !@readyForSubmit.nil? and @readyForSubmit == true
+            %a.waves-effect.btn.white.black-text{:href => "/prequal-submit/#{@accountFolder.id}", :style => "margin-top: 40px; text-decoration: none"} Complete Submission
         -# - if !@readyForSumbit.nil? and @readyForSumbit == true
         -#   %form.form-horizontal{:role => "form", :method => "get", :action => prequal_submit_path}
         -#     .form-group
