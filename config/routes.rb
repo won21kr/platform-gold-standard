@@ -112,4 +112,7 @@ Rails.application.routes.draw do
   get "/metadata_upload" => "tax_return#metadata_upload", :as => "tax_metadata_upload"
   post "/advisor_task" => "tax_return#advisor_task", :as => "advisor_task"
   # post "/file_value" => "tax_return#file_value"
+
+  #request for proposal
+  get "/request_for_proposal" => "request_for_proposal#show", :as => "request_for_proposal"
 end

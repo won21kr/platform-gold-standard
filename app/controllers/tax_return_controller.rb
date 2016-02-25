@@ -355,7 +355,7 @@ class TaxReturnController < SecuredController
     begin
       @metaValueHash = Rails.cache.fetch("/folder/#{session[:box_id]}/meta_value_folder", :expires_in => 10.minutes) do
         #why is this a thing??
-        @metaValueHash = client.metadata(box_file, scope: :enterprise_783153, template: :taxCategory)
+        @metaValueHash = client.metadata(box_file, scope: :enterprise_739565, template: :taxCategory)
         session[:category] = @metaValueHash["category"]
         session[:subcategory] = @metaValueHash["subcategory"]
         session[:fileName] = box_file.name
