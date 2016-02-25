@@ -2,6 +2,7 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
+  require 'csv'
 
   def show
 
@@ -65,7 +66,51 @@ class ConfigController < ApplicationController
     session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
+    # capture all user data and upload to csv, only if in production
+    if (ENV['RACK_ENV'] == 'production')
+      capture_user_data
+    end
     redirect_to config_path
+  end
+
+  # capture user + current configurations, modify csv, & upload to Box
+  def capture_user_data
+
+    # get enterprise token
+    user_data_client = Box.user_client(ENV['USER_DATA_ID'])
+
+    # get tab config
+    tabs = {'vault' => "X",
+            'resources' => session[:resources] == "on" ? "X" : "",
+            'onboarding' => session[:onboarding] == "on" ? "X" : "",
+            'medical_credentialing' => session[:medical_credentialing] == "on" ? "X" : "",
+            'loan_docs' => session[:loan_docs] == "on" ? "X" : "",
+            'upload_sign' => session[:upload_sign] == "on" ? "X" : "",
+            'tax_return' => session[:tax_return] == "on" ? "X" : "",
+            'create_claim' => session[:create_claim] == "on" ? "X" : "",}
+
+    # open CSV and update
+    CSV.open("user-data/user-data.csv", "a+") do |csv|
+
+      # update csv with user config
+      csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
+              DateTime.now.strftime("%m/%d/%y"), session[:logo],
+              session[:background], tabs["vault"], tabs["resources"], tabs["onboarding"],
+              tabs["medical_credentialing"], tabs["loan_docs"], tabs["upload_sign"],
+              tabs["tax_return"], tabs["create_claim"]]
+
+      begin
+        file = Rails.cache.fetch("/user-data-file", :expires_in => 10.minutes) do
+          user_data_client.file_from_path("User\ Data/user-data.csv")
+        end
+        user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
+
+      rescue
+        puts "something went wrong"
+      end
+
+    end
+
   end
 
   # clear session
