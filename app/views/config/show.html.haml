@@ -48,6 +48,10 @@
             %b Custom Branding
             .br{:style => "margin-bottom: 12px"}
 
+            %label.label-div{:for => "company", :style => "color: black"} Company Name
+            %input.form-control#company{:type => "text", :name => "company", :placeholder => session[:company].nil? ? "Box" : session[:company], :style => "color: black"}
+
+
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
 

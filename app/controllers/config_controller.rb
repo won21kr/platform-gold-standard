@@ -41,6 +41,9 @@ class ConfigController < ApplicationController
     puts 'posting configuration page....'
 
     # check if new branding parameters were saved
+    if !params[:company].nil? and params[:company] != ""
+      session[:company] = params[:company]
+    end
     if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
     end
@@ -94,7 +97,7 @@ class ConfigController < ApplicationController
 
       # update csv with user config
       csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
-              DateTime.now.strftime("%m/%d/%y"), session[:logo],
+              DateTime.now.strftime("%m/%d/%y"), session[:company], session[:logo],
               session[:background], tabs["vault"], tabs["resources"], tabs["onboarding"],
               tabs["medical_credentialing"], tabs["loan_docs"], tabs["upload_sign"],
               tabs["tax_return"], tabs["create_claim"]]
