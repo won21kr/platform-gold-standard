@@ -1,4 +1,5 @@
-User,Date,Logo URL,Home Page URL,Vault,Resources,Onboarding Tasks,Medical Credentialing,Loan Origination,Upload & Sign,Tax Return,Submit A Claim
-"",02/25/16,,,X,X,X,"","","","",""
-customer@example.com,02/25/16,,,X,X,X,X,"","","",""
-customer@example.com,02/25/16,,,X,"","","",X,"","",""
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+User,Date Accessed,Logo URL,Home Page URL,Vault,Resources,Onboarding Tasks,Medical Credentialing,Loan Origination,Upload & Sign,Tax Return,Submit A Claim
