@@ -67,7 +67,9 @@ class ConfigController < ApplicationController
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
+    puts "pre-capture"
     if (ENV['RACK_ENV'] == 'production')
+      puts "production app confirmed"
       capture_user_data
     end
     redirect_to config_path
@@ -92,6 +94,7 @@ class ConfigController < ApplicationController
     # open CSV and update
     CSV.open("user-data/user-data.csv", "a+") do |csv|
 
+      puts "opened csv"
       # update csv with user config
       csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
               DateTime.now.strftime("%m/%d/%y"), session[:logo],
