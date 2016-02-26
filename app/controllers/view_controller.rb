@@ -7,7 +7,9 @@ class ViewController < SecuredController
   def show
 
     # get user client obj and file ID
-    session[:current_folder] = params[:folder]
+    if (params[:folder] != nil)
+      session[:current_folder] = params[:folder]
+    end
     client = user_client
     @fileId = params[:id]
     session[:fileId] = @fileId

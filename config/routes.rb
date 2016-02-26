@@ -64,12 +64,12 @@ Rails.application.routes.draw do
   # account submission
   get "/account-submission" => "account_submission#show", :as => "acct_sub"
   post "/account-submission/create-acct" => "account_submission#create_acct", :as => "create_acct"
-  get "/account-submission/list-acct/:id" => "account_submission#list_account", :as => "list_account"  
-  post "/account-submission" => "account_submission#upload_new_version", :as => "acct_sub_version"
+  get "/account-submission/list-acct/:id" => "account_submission#list_account", :as => "list_account"
+  post "/account-submission/list-acct/:id" => "account_submission#upload_new_version", :as => "acct_sub_version"
   post "/account-submission/:folder_id" => "account_submission#account_doc_upload", :as => "account_doc_upload"
-  get "/copy-from-vault/:file_id" => "account_submission#copy_from_vault", :as => "copy_from_vault_acct"
+  # get "/copy-from-vault/:file_id" => "account_submission#copy_from_vault", :as => "copy_from_vault_acct"
   get "/reset-acct-docs" => "account_submission#reset_accts", :as => "reset_acct_docs"
-  get "/prequal-submit" => "account_submission#prequal_submit", :as => "prequal_submit"
+  get "/prequal-submit/:folderId" => "account_submission#prequal_submit", :as => "prequal_submit"
 
   # create a claim
   get "/submit-claim" => "create_claim#show", :as => "create_claim"

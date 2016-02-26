@@ -19,3 +19,6 @@
 .ruby-version
 
 .sass-cache
+
+# ignore so we don't overwrite current csv
+#/user-data/user-data.csv
