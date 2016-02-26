@@ -66,8 +66,8 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
-    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+    # session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
+    # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
