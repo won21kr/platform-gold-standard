@@ -4,6 +4,7 @@ class ConfigController < ApplicationController
 
   require 'csv'
 
+
   def show
 
     puts "config page get..."
@@ -67,49 +68,70 @@ class ConfigController < ApplicationController
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
-    if (ENV['RACK_ENV'] == 'production')
-      capture_user_data
-    end
+    # if (ENV['RACK_ENV'] == 'production')
+    capture_user_data
+    # end
     redirect_to config_path
   end
 
   # capture user + current configurations, modify csv, & upload to Box
   def capture_user_data
 
-    # get enterprise token
-    user_data_client = Box.user_client(ENV['USER_DATA_ID'])
+    # session = GoogleDrive.saved_session("config.json")
+    # ap session
+    # client = Google::APIClient.new
+    #
+    # clientId = '265641873785-1feckv9hh4o2lelimael022rvb5clrke.apps.googleusercontent.com'
+    # secret = '0-Tus_I3fcqFd8UIsO8hhneF'
+    #
+    # auth = client.authorization
+    # auth.client_id = clientId
+    # auth.client_secret = secret
+    # auth.scope = "https://spreadsheets.google.com/feeds/"
+    # auth.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
+    # puts "1. Open this page: " + auth.authorization_uri
+    # puts "2. Enter the authorization code shown in the page: "
+    # auth.code = $stdin.gets.chomp
+    # auth.fetch_access_token!
+    # access_token = auth.access_token
+    #
+    # ap auth
+    # ap access_token
+#
+    # $session = GoogleDrive.login_with_oauth(access_token)
 
-    # get tab config
-    tabs = {'vault' => "X",
-            'resources' => session[:resources] == "on" ? "X" : "",
-            'onboarding' => session[:onboarding] == "on" ? "X" : "",
-            'medical_credentialing' => session[:medical_credentialing] == "on" ? "X" : "",
-            'loan_docs' => session[:loan_docs] == "on" ? "X" : "",
-            'upload_sign' => session[:upload_sign] == "on" ? "X" : "",
-            'tax_return' => session[:tax_return] == "on" ? "X" : "",
-            'create_claim' => session[:create_claim] == "on" ? "X" : "",}
-
-    # open CSV and update
-    CSV.open("user-data/user-data.csv", "a+") do |csv|
-
-      # update csv with user config
-      csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
-              DateTime.now.strftime("%m/%d/%y"), session[:logo],
-              session[:background], tabs["vault"], tabs["resources"], tabs["onboarding"],
-              tabs["medical_credentialing"], tabs["loan_docs"], tabs["upload_sign"],
-              tabs["tax_return"], tabs["create_claim"]]
-
-      begin
-        file = Rails.cache.fetch("/user-data-file", :expires_in => 10.minutes) do
-          user_data_client.file_from_path("User\ Data/user-data.csv")
-        end
-        user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
-
-      rescue
-        puts "something went wrong"
-      end
-
-    end
+    # # get enterprise token
+    # user_data_client = Box.user_client(ENV['USER_DATA_ID'])
+    #
+    # # get tab config
+    # tabs = {'vault' => "X",
+    #         'resources' => session[:resources] == "on" ? "X" : "",
+    #         'onboarding' => session[:onboarding] == "on" ? "X" : "",
+    #         'medical_credentialing' => session[:medical_credentialing] == "on" ? "X" : "",
+    #         'loan_docs' => session[:loan_docs] == "on" ? "X" : "",
+    #         'upload_sign' => session[:upload_sign] == "on" ? "X" : "",
+    #         'tax_return' => session[:tax_return] == "on" ? "X" : "",
+    #         'create_claim' => session[:create_claim] == "on" ? "X" : "",}
+    #
+    # # open CSV and update
+    # CSV.open("user-data/user-data.csv", "a+") do |csv|
+    #
+    #   # update csv with user config
+    #   csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
+    #           DateTime.now.strftime("%m/%d/%y"), session[:logo],
+    #           session[:background], tabs["vault"], tabs["resources"], tabs["onboarding"],
+    #           tabs["medical_credentialing"], tabs["loan_docs"], tabs["upload_sign"],
+    #           tabs["tax_return"], tabs["create_claim"]]
+    #
+    #   begin
+    #     file = Rails.cache.fetch("/user-data-file", :expires_in => 10.minutes) do
+    #       user_data_client.file_from_path("User\ Data/user-data.csv")
+    #     end
+    #     user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
+    #
+    #   rescue
+    #     puts "something went wrong"
+    #   endbu
 
   end
 
