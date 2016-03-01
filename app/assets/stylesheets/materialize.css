@@ -5559,7 +5559,7 @@ nav {
 .navbar-fixed {
   position: relative;
   height: 56px;
-  z-index: 998; }
+  z-index: 9999; }
   .navbar-fixed nav {
     position: fixed; }
 
@@ -7278,9 +7278,10 @@ select {
   height: -moz-calc(100%);
   padding-bottom: 60px;
   background-color: #fff;
-  z-index: 999;
+  z-index: 6000;
   overflow-y: auto;
   will-change: left; }
+
   .side-nav.right-aligned {
     will-change: right;
     right: -105%;
@@ -7310,7 +7311,8 @@ select {
 .side-nav.fixed a {
   display: block;
   padding: 0 15px;
-  color: #444; }
+  color: #444;
+ }
 
 .side-nav.fixed {
   left: 0;
@@ -7338,7 +7340,7 @@ select {
   right: 0;
   height: 120vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 997;
+  z-index: 8000;
   will-change: opacity; }
 
 /*

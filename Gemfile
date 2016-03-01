@@ -1,6 +1,6 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
-ruby "2.0.0"
+ruby "2.2.1"
 
 gem 'rails', '4.1.9'
 
@@ -42,6 +42,9 @@ gem 'awesome_print'
 gem 'protected_attributes'
 gem 'fatalistic'
 gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
+gem 'google-api-client'
+gem 'google_drive', '~> 1.0.5'
+gem 'googleauth', '~> 0.5.1'
 
 
 gem 'omniauth', '~> 1.2'

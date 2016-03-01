@@ -3,7 +3,29 @@ class ConfigController < ApplicationController
   # before_action :check_config
 
 
+
   def show
+
+    # @email = "service-account-test@turing-course-123321.iam.gserviceaccount.com"
+    # @key = "/Users/aringer/Sites/platform-gold-standard/app/helpers/google_authentication/key.p12"
+    #
+    # key = Google::APIClient::KeyUtils.load_from_pkcs12(@key, 'notasecret')
+    #
+    # auth = Signet::OAuth2::Client.new(
+    #   token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
+    #   audience: 'https://accounts.google.com/o/oauth2/token',
+    #   scope: ["https://www.googleapis.com/auth/drive", "https://spreadsheets.google.com/feeds/"].join(' '),
+    #   issuer: @email,
+    #   access_type: 'offline',
+    #   signing_key: key
+    # )
+    #
+    # auth.fetch_access_token!
+    # return auth.access_token
+    #
+    # puts ';sadjhfa;sldfkj;alskdjfa;lskdjf;alskdjf;alskdfja;lsdkfja;lsdkjfa;lskdjfals;kdjfa;lskjdfa;lskdjfa;slkdjfa;slkdj'
+    # puts auth.access_token
+    # ap auth.access_token
 
     puts "config page get..."
 
@@ -62,13 +84,6 @@ class ConfigController < ApplicationController
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
     session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
-<<<<<<< HEAD
-=======
-
-    ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
-    ###################################################################################################
-    ##################################################################################################
->>>>>>> 4c8d57219d42c8f03ae4cc8d74e8ee12c3a1a492
     # session[:catalog] = !params[:catalog].nil? ? 'on' : 'off'
     session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
     session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
@@ -99,29 +114,15 @@ class ConfigController < ApplicationController
     session[:config_url] << "&vault=#{session[:vault]}"
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"
-<<<<<<< HEAD
-=======
-
-    ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
-    ###################################################################################################
-    ##################################################################################################
->>>>>>> 4c8d57219d42c8f03ae4cc8d74e8ee12c3a1a492
     # session[:config_url] << "&catalog=#{session[:catalog]}"
     session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
     session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
     session[:config_url] << "&background=#{session[:background]}"
-<<<<<<< HEAD
-    # session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
-=======
-
 
     ########################### COMMMENTING OUT DUE TO VIEW API DEPRECATE #############################
     ###################################################################################################
     ##################################################################################################
     # session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
-
-    session[:config_url] << "&catalog_file=#{session[:catalog_file]}"
->>>>>>> 4c8d57219d42c8f03ae4cc8d74e8ee12c3a1a492
     session[:config_url] << "&tax_return=#{session[:tax_return]}"
     session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&create_claim=#{session[:create_claim]}"
