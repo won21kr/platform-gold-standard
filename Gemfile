@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.2.1"
+ruby "2.2.3"
 
 gem 'rails', '4.1.9'
 
@@ -56,7 +56,13 @@ gem 'gon'
 gem "chardinjs-rails"
 gem "skylight"
 
+gem 'google-api-client', '~> 0.8.1'
+# gem 'googleauth'
+gem "google_drive"
+
 # Gems only used on heroku
+
+
 group :production, :staging do
   gem 'wkhtmltopdf-heroku'
 end

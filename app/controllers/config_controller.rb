@@ -3,7 +3,8 @@ class ConfigController < ApplicationController
   # before_action :check_config
 
   require 'csv'
-
+  require 'google/api_client'
+  require "google_drive"
 
   def show
 
@@ -77,6 +78,39 @@ class ConfigController < ApplicationController
   # capture user + current configurations, modify csv, & upload to Box
   def capture_user_data
 
+    client = Google::APIClient.new(
+      :application_name => 'Drive App'
+    )
+    # client.authorization.fetch_access_token!(:connection => client.connection)
+    key = Google::APIClient::KeyUtils.load_from_pkcs12('Ruby Project-abbf5e0f0db3.p12', 'notasecret')
+
+    client.authorization = Signet::OAuth2::Client.new(
+      :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
+      :audience => 'https://accounts.google.com/o/oauth2/token',
+      :scope => 'https://www.googleapis.com/auth/drive',
+      :issuer => 'ruby-project-1236@appspot.gserviceaccount.com',
+      :signing_key => key)
+    ## Request a token for our service account
+    token = client.authorization.fetch_access_token!(:connection => client.connection)
+    ap token
+    @drive = client.discovered_api('drive', 'v2')
+    ap @drive
+    @drive.list_files(page_size: 10)
+    # result = @client.execute(
+    #       api_method: @drive.files.list,
+    #       parameters: {
+    #         q: %()
+    #       }
+    #     ) 
+    # response = client.list_files(page_size: 10,
+    #                               fields: 'nextPageToken, files(id, name)')
+    # puts 'Files:'
+    # puts 'No files found' if response.files.empty?
+    # response.files.each do |file|
+    #   puts "#{file.name} (#{file.id})"
+    # end
+    # client.authorization.fetch_access_token!
+
     # session = GoogleDrive.saved_session("config.json")
     # ap session
     # client = Google::APIClient.new
@@ -86,7 +120,7 @@ class ConfigController < ApplicationController
     #
     # auth = client.authorization
     # auth.client_id = clientId
-    # auth.client_secret = secret
+  # auth.client_secret = secret
     # auth.scope = "https://spreadsheets.google.com/feeds/"
     # auth.redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
     # puts "1. Open this page: " + auth.authorization_uri
