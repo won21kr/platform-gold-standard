@@ -5,7 +5,7 @@ Rails.application.configure do
     { :username => ENV["MEMCACHIER_USERNAME"],
       :password => ENV["MEMCACHIER_PASSWORD"],
       :namespace => 'platform-gold-standard-production',
-      :expires_in => 7.hours,
+      :expires_in => 7.days,
       :compress => true,
       :pool_size => 8 }
 
