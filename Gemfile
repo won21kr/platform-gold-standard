@@ -6,9 +6,7 @@ gem 'rails', '4.1.9'
 
 gem 'pry', group: :development
 
-
 gem 'pg', '~> 0.18.3'
-
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -33,7 +31,6 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 
-gem 'unicorn'
 gem 'haml'
 gem 'memcachier'
 gem 'dalli'
@@ -45,7 +42,6 @@ gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
 gem 'google-api-client'
 gem 'google_drive', '~> 1.0.5'
 gem 'googleauth', '~> 0.5.1'
-
 
 gem 'omniauth', '~> 1.2'
 gem 'omniauth-auth0', '~> 1.1'
