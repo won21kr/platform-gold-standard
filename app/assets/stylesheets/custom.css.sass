@@ -287,3 +287,30 @@ tbody.collapse.in
 .grayout
   opacity: 0.6
   filter: alpha(opacity = 60)
+
+
+// tooltip in Settings > Home Page Background
+a.tooltip
+  outline: none
+a.tooltip strong
+  line-height: 30px
+a.tooltip:hover
+  text-decoration: none
+a.tooltip span
+  display: none
+
+a.tooltip:hover span
+  display: inline
+  position: absolute
+  background: none
+.callout
+  z-index: 20
+  position: absolute
+  top: 30px
+  border: 0
+  left: -12px
+
+/*CSS3 extras*/
+a.tooltip span
+  border-radius: 4px
+  box-shadow: 5px 5px 8px #CCC
