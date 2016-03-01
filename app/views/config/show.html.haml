@@ -6,8 +6,11 @@
       %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
         %i.material-icons.prefix{:style => "font-size: 28px;"} settings
         Settings
+
       %h6.caption.thin{:style => "margin-top: -25px; margin-bottom: 45px;"}
         Build a truly custom app to demo Box Platform, in seconds
+
+
 
       // How it works...
       %h6{:style => "margin-top: 20px; margin-bottom: 5;"}
@@ -36,7 +39,7 @@
               %b
                 Give a Kickass Demo
             %p{:style => "text-align: left;"}
-              Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app in the future and click "Reset" below or clear your browser data to revert changes.
+              Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app and click "Reset" below or clear your browser data to revert changes. If you'd like to get technical about things <a href="https://cloud.box.com/s/zyrq7voff68h14q7h05zdnlcfh2z6y9d">read more</a>.
 
       // Build your own app
       .col.s12
@@ -158,10 +161,13 @@
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
-        -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
-        -#   Documentation
-        -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none;", href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
-        -#   Demo Feedback
+
+    .footer-copyright
+      .container
+        .center{:style => "margin-top: 60px; margin-bottom: 25px; color: #505050; letter-spacing: .7px;"}
+          %h6
+          We take <a href="https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/edit">feedback</a> seriously.     &nbsp;&nbsp;-DemoEng
+          %a.grey-text.text-lighten-4.right{:href => "#!"} More Links
 
 :javascript
   $(document).ready(function() {

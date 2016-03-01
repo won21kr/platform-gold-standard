@@ -4,8 +4,8 @@ class ConfigController < ApplicationController
 
   require 'csv'
 
-  def show
 
+  def show
     puts "config page get..."
 
     # check if the tabs have been configured yet
