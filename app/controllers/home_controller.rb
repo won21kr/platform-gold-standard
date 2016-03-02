@@ -9,6 +9,12 @@ class HomeController < ApplicationController
   DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], ENV['CRED_SPECIALIST'],
                       '260539217', ENV['USER_DATA_ID']]
 
+  def show
+    puts "main page..."
+    user_data = Configinfo.new(username: "Matt", date: "now", company: "Box")
+    user_data.save
+    ap user_data
+  end
 
   def login
     puts "login background page"

@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
   encoding: utf8
-  database: rails_template_development
+  database: platform_standard_development
   host: localhost
   min_messages: warning
   pool: 20
@@ -9,7 +9,7 @@ development:
 production:
   adapter: postgresql
   encoding: utf8
-  database: rails_template_production
+  database: platform_standard_production
   host: localhost
   min_messages: warning
   pool: 20
