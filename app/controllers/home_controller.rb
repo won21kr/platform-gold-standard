@@ -10,10 +10,6 @@ class HomeController < ApplicationController
                       '260539217', ENV['USER_DATA_ID']]
 
   def show
-    puts "main page..."
-    user_data = Configinfo.new(username: "Matt", date: "now", company: "Box")
-    user_data.save
-    ap user_data
   end
 
   def login

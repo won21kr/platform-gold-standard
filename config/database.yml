@@ -19,6 +19,6 @@ production:
 test:
   adapter: postgresql
   encoding: utf8
-  database: rails_template_test
+  database: platform_standard_test
   host: localhost
   min_messages: warning
