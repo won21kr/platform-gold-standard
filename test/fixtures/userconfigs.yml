@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  username: MyString
+  date: MyString
+  company: MyString
+  logo_url: MyString
+  home_url: MyString
+  vault: MyString
+  resources: MyString
+  onboarding_tasks: MyString
+  medical_credentialing: MyString
+  loan_origination: MyString
+  upload_sign: MyString
+  tax_return: MyString
+  submit_claim: MyString
+
+two:
+  username: MyString
+  date: MyString
+  company: MyString
+  logo_url: MyString
+  home_url: MyString
+  vault: MyString
+  resources: MyString
+  onboarding_tasks: MyString
+  medical_credentialing: MyString
+  loan_origination: MyString
+  upload_sign: MyString
+  tax_return: MyString
+  submit_claim: MyString
