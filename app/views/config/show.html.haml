@@ -1,3 +1,31 @@
+#twilioModal.modal
+  .modal-content{:style => "height: 500px;"}
+    %h3.thin{:style => "font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"} Enter your mobile number
+    %form{:action => send_twilio_message_path, :method => "post", :role => "form"}
+      %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
+        Get this customized instance on your phone instantly
+      .row
+        .input-field.col.s4
+          %select{:name => "region"}
+            %option{:disabled => "", :selected => "", :value => ""} Choose an option
+            %option{:value => "+14087695509"} United States
+            %option{:value => "+447481339419"} Great Britain
+            %option{:value => "+61427903469"} Australia
+          %label Region
+        .input-field.col.s7
+          %label.h4{:for => "phoneNumber"} Mobile Number:
+          %input.validate.form-control{:type => "text", :name => "phoneNumber"}
+        %button.btn.waves-effect.waves-light.right{:type => "submit", :style => "margin-left: 3%; margin-right: 7%"} Via Text
+        %button.btn.waves-effect.waves-light.right{:type => "button", :href => "#sendGrid", "data-toggle" => "collapse"} Via Email
+    #sendGrid.collapse
+      %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
+        Alternatively, get this customized instance sent straight to your mail for later use
+      %form{:action => send_grid_method_path, :method => "post", :role => "form"}
+        .input-field.col.s3
+          %label{:for => "emailAddress"} Email (No Corporate Email)
+          %input.validate.form-control{:type => "text", :name => "emailAddress", :style => "width: 92%;"}
+        %button.btn.waves-effect.waves-light{:type => "submit", :style => "margin-bottom: 5%;"} Email Me
+
 
 #index-banner.section.no-pad-bot
   .container
@@ -155,6 +183,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
+          %button.btn.waves-effect.white.black-text.modal-trigger{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Mobile
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
         -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
@@ -165,4 +194,9 @@
 :javascript
   $(document).ready(function() {
     $('select').material_select();
+  });
+
+  $(document).ready(function(){
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
   });
