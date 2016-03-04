@@ -6,6 +6,8 @@
 
   %li{:class => "#{'active' if session[:current_page] == "vault"}"}
     %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
+  %li{:class => "#{'active' if session[:current_page] == "qms"}"}
+    %a{:href => "/qms", :style => "text-decoration: none;"} QMS    
   - if session[:resources] == 'on' or session[:resources].nil?
     %li{:class => "#{'active' if session[:current_page] == "search"}"}
       %a{:href => "/resources", :style => "text-decoration: none;"} Resources

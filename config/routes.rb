@@ -14,6 +14,18 @@ Rails.application.routes.draw do
   post "/upload/:folder_id" => "dashboard#upload", :as => "upload"
   post "/edit_name/:folder_id" => "dashboard#edit_filename", :as => "edit_name"
 
+  # qms - Quality Management 
+  get "/qms" => "qms#show", :as => 'qms'
+  get "/qms/:id" => "qms#show", :as => 'qms_id'
+  get "/delete/:id" => "qms#delete_file", :as => "qms_delete_file"
+  get "/download/:id" => 'qms#download', :as => "qms_download"
+  get "/share/:id" => "qms#share_file", :as => "qms_share_file"
+  get "/unshare/:id" => "qms#unshare_file", :as => "qms_unshare_file"
+  post "/upload/:folder_id" => "qms#upload", :as => "qms_upload"
+  post "/edit_name/:folder_id" => "qms#edit_filename", :as => "qms_edit_name"
+  get "/doc/:id" => "qms#doc", :as => 'qms_doc'
+  get "/thumbnail/:id" => 'qms#thumbnail', :as => "qms_thumbnail"
+
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"
   get "/download_file/:id" => 'view#download', :as => "download_file"
