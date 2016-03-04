@@ -2,9 +2,10 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
+  require 'csv'
+
 
   def show
-
     puts "config page get..."
 
     # check if the tabs have been configured yet
@@ -27,8 +28,8 @@ class ConfigController < ApplicationController
       session[:upload_sign] = "off"
       session[:tax_return] = "off"
       session[:create_claim] = "off"
-      # session[:account_sub] = "off"
-      # session[:dicom_viewer] = "off"
+      session[:account_sub] = "off"
+      session[:dicom_viewer] = "off"
 
     end
 
@@ -81,6 +82,9 @@ class ConfigController < ApplicationController
     puts 'posting configuration page....'
 
     # check if new branding parameters were saved
+    if !params[:company].nil? and params[:company] != ""
+      session[:company] = params[:company]
+    end
     if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
     end
@@ -103,11 +107,78 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
+<<<<<<< HEAD
     session[:request_for_proposal] = !params[:requestforproposal].nil? ? 'on' : 'off'
     # session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
     # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+=======
+    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
+    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+>>>>>>> 2e4b817e1a89d6489bc7f69055a0ca0450f28ed1
 
+    # capture all user data and upload to csv, only if in production
+    # if (ENV['RACK_ENV'] == 'production')
+      capture_user_data
+    # end
     redirect_to config_path
+  end
+
+  # capture user + current configurations, modify csv, & upload to Box
+  def capture_user_data
+
+    # add user config database entry
+    user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
+                               date: DateTime.now.strftime("%m/%d/%y"),
+                               company: session[:company],
+                               logo_url: session[:logo],
+                               home_url: session[:background],
+                               vault: "X",
+                               resources: session[:resources] == "on" ? "X" : "",
+                               onboarding_tasks: session[:onboarding] == "on" ? "X" : "",
+                               medical_credentialing: session[:medical_credentialing] == "on" ? "X" : "",
+                               loan_origination: session[:loan_docs] == "on" ? "X" : "",
+                               upload_sign: session[:upload_sign] == "on" ? "X" : "",
+                               tax_return: session[:tax_return] == "on" ? "X" : "",
+                               submit_claim: session[:create_claim] == "on" ? "X" : "")
+    user_data.save
+    # ap user_data
+    # ap Userconfig.all
+
+
+    # get enterprise token
+    # user_data_client = Box.user_client(ENV['USER_DATA_ID'])
+    #
+    # # get tab config
+    # tabs = {'vault' => "X",
+    #         'resources' => session[:resources] == "on" ? "X" : "",
+    #         'onboarding' => session[:onboarding] == "on" ? "X" : "",
+    #         'medical_credentialing' => session[:medical_credentialing] == "on" ? "X" : "",
+    #         'loan_docs' => session[:loan_docs] == "on" ? "X" : "",
+    #         'upload_sign' => session[:upload_sign] == "on" ? "X" : "",
+    #         'tax_return' => session[:tax_return] == "on" ? "X" : "",
+    #         'create_claim' => session[:create_claim] == "on" ? "X" : ""}
+    #
+    # # open CSV and update
+    # CSV.open("user-data/user-data.csv", "a+") do |csv|
+    #
+    #   # update csv with user config
+    #   csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
+    #           DateTime.now.strftime("%m/%d/%y"), session[:company], session[:logo],
+    #           session[:background], tabs["vault"], tabs["resources"], tabs["onboarding"],
+    #           tabs["medical_credentialing"], tabs["loan_docs"], tabs["upload_sign"],
+    #           tabs["tax_return"], tabs["create_claim"]]
+    # end
+    #
+    # # upload new file version
+    # begin
+    #   file = Rails.cache.fetch("/user-data-file", :expires_in => 10.minutes) do
+    #     user_data_client.file_from_path("User\ Data/user-data.csv")
+    #   end
+    #   user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
+    # rescue
+    #   puts "something went wrong"
+    # end
+
   end
 
   # clear session
@@ -135,8 +206,12 @@ class ConfigController < ApplicationController
     session[:config_url] << "&tax_return=#{session[:tax_return]}"
     session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&create_claim=#{session[:create_claim]}"
+<<<<<<< HEAD
     session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
     # session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
+=======
+    session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
+>>>>>>> 2e4b817e1a89d6489bc7f69055a0ca0450f28ed1
 
 
   end

@@ -7,8 +7,10 @@ class HomeController < ApplicationController
   # Matt - "CUSTOMER ID"
   # Credentialing Specialist = 260539217, cred-specialist@box.com
   DO_NOT_DELETE_IDS = [ENV['EMPL_ID'], ENV['CUSTOMER_ID'], ENV['CRED_SPECIALIST'],
-                      '260539217']
+                      '260539217', ENV['USER_DATA_ID']]
 
+  def show
+  end
 
   def login
     puts "login background page"
