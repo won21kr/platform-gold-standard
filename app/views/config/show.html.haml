@@ -131,24 +131,14 @@
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
             %p
-<<<<<<< HEAD
               %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
               %label.checkbox{:for => "requestforproposal", :style => "color: black"} Request For Proposal
-            -# %p
-            -#   %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
-            -#   %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
-            -# %p
-            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
-=======
+            %p
               %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
               %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
             %p
               %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
               %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
->>>>>>> 2e4b817e1a89d6489bc7f69055a0ca0450f28ed1
-
-
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit
@@ -202,7 +192,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
-          %button.btn.waves-effect.white.black-text.modal-trigger{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Mobile
+          -# %button.btn.waves-effect.white.black-text.modal-trigger{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Mobile
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
 

@@ -107,14 +107,9 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-<<<<<<< HEAD
     session[:request_for_proposal] = !params[:requestforproposal].nil? ? 'on' : 'off'
-    # session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
-    # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
-=======
     session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
->>>>>>> 2e4b817e1a89d6489bc7f69055a0ca0450f28ed1
 
     # capture all user data and upload to csv, only if in production
     # if (ENV['RACK_ENV'] == 'production')
@@ -206,12 +201,8 @@ class ConfigController < ApplicationController
     session[:config_url] << "&tax_return=#{session[:tax_return]}"
     session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&create_claim=#{session[:create_claim]}"
-<<<<<<< HEAD
     session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
-    # session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
-=======
     session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
->>>>>>> 2e4b817e1a89d6489bc7f69055a0ca0450f28ed1
 
 
   end
