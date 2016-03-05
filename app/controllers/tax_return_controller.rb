@@ -109,10 +109,6 @@ class TaxReturnController < SecuredController
         end
 
         begin
-          # meta = Rails.cache.fetch("/claim-metadata/#{c.id}", :expires_in => 10.minutes) do
-          #   puts "miss"
-          #   client.all_metadata(c)["entries"]
-          # end
           meta = client.all_metadata(c)["entries"]
 
           meta.each do |m|

@@ -4,34 +4,57 @@ class QmsController < SecuredController
   # main controller for customer vault
   def show
 
-    # get user client obj for Box API calls
     client = user_client
-    session[:current_page] = "qms"
+    threads = []
 
-    # get "My Files" and "Shared Files" folder objects
-    @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
-      client.folder_from_path('My Files')
-    end
-    @sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
-      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
-    end
-    @sharedFolder.name = "Shared Files"
+    # get loan documents folder, if it doesn't exist create one
+    path = "#{session[:userinfo]['info']['name']} - Shared Files/QMS Folder"
 
-    # set active folder ID, either "My Files" or "Shared Files" folder
-    if(session[:current_folder].nil?)
-      @currentFolder = @myFolder.id
-    else
-      @currentFolder = session[:current_folder]
+    begin
+      @qmsFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/qms_folder", :expires_in => 10.minutes) do
+        client.folder_from_path(path)
+      end
+    rescue
+      parent = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
+        puts "miss"
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+      end
+      @qmsFolder = client.create_folder("QMS Folder", parent)
     end
 
-    # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at]).files
-    @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
+    @workflowItems = client.folder_items(@qmsFolder, fields: [:id, :name, :modified_at, :content_created_at])
+    # attach file metadata template to each file
+    # attach file metadata template to each file
+    @workflowItems.each do |c|
+      threads << Thread.new do
+        class << c
+          attr_accessor :qualityManagerApproval, :documentManagerApproval, :customerApproverApproval
+        end
+
+        begin
+          meta = client.all_metadata(c)["entries"]
+
+          meta.each do |m|
+            if (m["$template"] == "qmsMetadata")
+              c.qualityManagerApproval = m["qualityManagerApproval"]
+              c.documentManagerApproval = m["documentManagerApproval"]
+              c.customerApproverApproval = m["customerApproverApproval"]
+            end
+          end
+
+        rescue
+          c.qualityManagerApproval = ""
+          c.documentManagerApproval = ""
+          c.customerApproverApproval = ""
+        end
+      end
+    end
+
+    threads.each { |thr| thr.join }
 
   end
 
   def search_vault(name)
-
 
     client = user_client
 
@@ -159,4 +182,87 @@ class QmsController < SecuredController
     redirect_to dashboard_id_path(myFolder.id)
   end
 
+  def create_folder
+    client = user_client
+
+    parentFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/QMS Folder")
+    session[:workflowFolder] = client.create_folder(params[:proposal], parentFolder)
+
+    render 'qms/workflow_upload'
+  end
+
+  def upload_file
+    #http://www.dropzonejs.com/
+    client = user_client
+
+    puts "inside the upload method"
+    uploaded_file = params[:file]
+
+    folder = client.folder_from_id(session[:workflowFolder].id)
+
+    puts "folder grabbed here: "
+    ap folder
+
+    temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
+    begin
+      temp_file.write(uploaded_file.read)
+      temp_file.close
+      box_file = client.upload_file(temp_file.path, folder)
+      session[:workflowFile] = box_file.id
+
+    rescue => ex
+      puts ex.message
+    ensure
+      File.delete(temp_file)
+    end
+
+    flash[:notice] = "Successfully Uploaded!"
+    respond_to do |format|
+      format.json{ render :json => {} }
+    end
+  end
+
+  def reset
+    client = user_client
+
+    #clear cache of file id and delete folder and folder items
+    client.delete_folder(session[:workflowFolder], recursive: true)
+    session.delete(:workflowFolder)
+
+    redirect_to qms_path
+  end
+
+  def qms_submit_metadata
+
+    client = user_client
+
+    @metadataHash = {
+      "qualityManagerApproval" => params[:quality_manager_approval],
+      "documentManagerApproval" => params[:document_manager_approval],
+      "customerApproverApproval" => params[:customer_approver_approval]
+    }
+
+    meta = {'qualityManagerApproval' => @metadataHash["qualityManagerApproval"],
+            'documentManagerApproval' => @metadataHash["documentManagerApproval"],
+            'customerApproverApproval' => @metadataHash["customerApproverApproval"]
+          }
+    begin
+      ap session[:workflowFile]
+      file = client.file_from_id(session[:workflowFile], fields: [:id])
+      ap file
+      client.create_metadata(file, meta, scope: :enterprise, template: 'qmsMetadata')
+      puts "file object: "
+      ap file
+      session[:claimPage] = 'submitted'
+    rescue Exception => e
+      ap e
+      puts "error. Folder not found"
+      flash[:error] = "Error. Something went wrong."
+      session[:claimPage] = 'newClaim'
+    end
+      redirect_to qms_path
+  end
+
+  def qms_metadata_upload
+  end
 end

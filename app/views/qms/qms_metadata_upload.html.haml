@@ -1,0 +1,45 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.s10.push-s2
+        .col.s2.push-s10{:style => "margin-top: 80px;"}
+          %h7
+            Step 2 of 2
+        .col.s12{:style => "margin-top: 30px"}
+          .col.s5
+            %h6
+              Specify Workflow Status
+        .col.s8.push-s2{:style => "margin-top: 20px"}
+
+          %form{:role => "form", :method => "post", :action => qms_submit_metadata_path}
+            %label{:for => "category"}
+              %select#type{:placeholder => "Quality Manager Approval", :type => "text", :name => "quality_manager_approval"}
+                %option{:disabled => "", :selected => "", :value => ""} Quality Manager Approval
+                %option{:value => "Approved"} Approved
+                %option{:value => "Not Approved"} Not Approved
+              %br
+              %select#type{:placeholder => "Document Manager Approval", :type => "text", :name => "document_manager_approval"}
+                %option{:disabled => "", :selected => "", :value => ""} Document Manager Approval
+                %option{:value => "Approved"} Approved
+                %option{:value => "Not Approved"} Not Approved
+              %br
+              %select#type{:placeholder => "Customer Approver Approval", :type => "text", :name => "customer_approver_approval"}
+                %option{:disabled => "", :selected => "", :value => ""} Customer Approver Approval
+                %option{:value => "Approved"} Approved
+                %option{:value => "Not Approved"} Not Approved
+            %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+            .form-group
+              -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
+              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit
+
+:javascript
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
+  $("#type").change ( function () {
+      var targID  = $(this).val ();
+      $("div.style-sub-1").hide ();
+      $('#' + targID).show ();
+  })

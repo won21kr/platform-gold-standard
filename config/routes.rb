@@ -14,17 +14,24 @@ Rails.application.routes.draw do
   post "/upload/:folder_id" => "dashboard#upload", :as => "upload"
   post "/edit_name/:folder_id" => "dashboard#edit_filename", :as => "edit_name"
 
-  # qms - Quality Management 
+  # qms - Quality Management
+  #core functionalities
   get "/qms" => "qms#show", :as => 'qms'
   get "/qms/:id" => "qms#show", :as => 'qms_id'
   get "/delete/:id" => "qms#delete_file", :as => "qms_delete_file"
   get "/download/:id" => 'qms#download', :as => "qms_download"
   get "/share/:id" => "qms#share_file", :as => "qms_share_file"
   get "/unshare/:id" => "qms#unshare_file", :as => "qms_unshare_file"
-  post "/upload/:folder_id" => "qms#upload", :as => "qms_upload"
   post "/edit_name/:folder_id" => "qms#edit_filename", :as => "qms_edit_name"
   get "/doc/:id" => "qms#doc", :as => 'qms_doc'
   get "/thumbnail/:id" => 'qms#thumbnail', :as => "qms_thumbnail"
+
+  post "/qms_create_folder" => 'qms#create_folder', :as => "qms_create_folder"
+  post "/qms_upload" => 'qms#upload_file', :as => "qms_upload"
+  get "/qms_reset" => 'qms#reset', :as => 'qms_reset'
+  get "/qms_metadata_upload" => 'qms#qms_metadata_upload', :as => 'qms_metadata_upload'
+  post "/qms_submit-metadata" => "qms#qms_submit_metadata", :as => "qms_submit_metadata"
+
 
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"
@@ -125,4 +132,5 @@ Rails.application.routes.draw do
   get "/metadata_upload" => "tax_return#metadata_upload", :as => "tax_metadata_upload"
   post "/advisor_task" => "tax_return#advisor_task", :as => "advisor_task"
   # post "/file_value" => "tax_return#file_value"
+
 end
