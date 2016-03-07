@@ -46,13 +46,13 @@ class UserconfigController < ApplicationController
 
       # get user token, upload CSV file
       user_data_client = Box.user_client(ENV['USER_DATA_ID'])
-
       begin
-        file = Rails.cache.fetch("/user-data-file", :expires_in => 10.minutes) do
-          user_data_client.file_from_path("User\ Data/user-data.csv")
-        end
-        user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
-        flash[:notice] = "Successfully generated and uploaded user configuration CSV"
+        file = user_data_client.file_from_path("User\ Data/user-data.csv")
+        uploadedFile = user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
+
+        # create shared link
+        link = user_data_client.create_shared_link_for_file(uploadedFile, access: :open)
+        flash[:notice] = "Successfully generated and uploaded user configuration CSV. #{link.shared_link.url}"
       rescue
         flash[:notice] = "Error: something went wrong"
       end
