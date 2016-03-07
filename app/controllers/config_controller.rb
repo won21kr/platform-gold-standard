@@ -70,29 +70,29 @@ class ConfigController < ApplicationController
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
-    # if (ENV['RACK_ENV'] == 'production')
+    if (ENV['RACK_ENV'] == 'production')
       capture_user_data
-    # end
+    end
     redirect_to config_path
   end
 
   # capture user + current configurations, modify csv, & upload to Box
   def capture_user_data
 
-    # add user config database entry
+    # add user config database entry, ActiveRecord video tutorial!!!
     user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
-                               date: DateTime.now.strftime("%m/%d/%y"),
+                               date: DateTime.now, # .strftime("%m/%d/%y")
                                company: session[:company],
                                logo_url: session[:logo],
                                home_url: session[:background],
-                               vault: "X",
-                               resources: session[:resources] == "on" ? "X" : "",
-                               onboarding_tasks: session[:onboarding] == "on" ? "X" : "",
-                               medical_credentialing: session[:medical_credentialing] == "on" ? "X" : "",
-                               loan_origination: session[:loan_docs] == "on" ? "X" : "",
-                               upload_sign: session[:upload_sign] == "on" ? "X" : "",
-                               tax_return: session[:tax_return] == "on" ? "X" : "",
-                               submit_claim: session[:create_claim] == "on" ? "X" : "")
+                               vault: true,
+                               resources: session[:resources] == "on" ? true : false,
+                               onboarding_tasks: session[:onboarding] == "on" ? true : false,
+                               medical_credentialing: session[:medical_credentialing] == "on" ? true : false,
+                               loan_origination: session[:loan_docs] == "on" ? true : false,
+                               upload_sign: session[:upload_sign] == "on" ? true : false,
+                               tax_return: session[:tax_return] == "on" ? true : false,
+                               submit_claim: session[:create_claim] == "on" ? true : false)
     user_data.save
     # ap user_data
     # ap Userconfig.all

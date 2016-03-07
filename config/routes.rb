@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   get "/" => "home#show", :as => 'home'
   get "/home" => "home#login", :as => "home-page"
 
+  # generate user config info csv
+  get "/user-config-data" => "userconfig#show", :as => "user_config"
+  post "/user-config-data" => "userconfig#generate_csv", :as => "generate_csv"
+
+
   # dashboard
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
   get "/dashboard/:id" => "dashboard#show", :as => 'dashboard_id'
