@@ -56,6 +56,7 @@ gem 'puma'
 gem 'gon'
 gem "chardinjs-rails"
 gem "skylight"
+gem "sendgrid-ruby"
 
 # Gems only used on heroku
 group :production, :staging do

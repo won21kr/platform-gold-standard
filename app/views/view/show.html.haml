@@ -8,7 +8,13 @@
   - elsif (session[:current_page] == 'tax_return')
     = link_to '<< Back to my taxes', '/tax_return'
   - elsif (session[:current_page] == 'account_sub')
+<<<<<<< HEAD
+    = link_to '<< Back to Account Submissions', '/account-submission'
+  - elsif (session[:current_page] == 'request_for_proposal')
+    = link_to '<< Back to Proposal Builder', '/request_for_proposal'
+=======
     = link_to '<< Back to Account', '/account-submission/list-acct/' + session[:current_folder]
+>>>>>>> 2e4b817e1a89d6489bc7f69055a0ca0450f28ed1
   - else
     = link_to '<< Back to My Vault', dashboard_path
 

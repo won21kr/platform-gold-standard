@@ -164,12 +164,17 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sendgrid-ruby (1.1.6)
+      faraday (~> 0.9)
+      mimemagic
+      smtpapi (~> 0.1)
     simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
     skylight (0.10.3)
       activesupport (>= 3.0.0)
     slop (3.6.0)
+    smtpapi (0.1.0)
     spring (1.6.4)
     sprockets (2.12.4)
       hike (~> 1.2)
@@ -225,6 +230,7 @@ DEPENDENCIES
   rufus-scheduler
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
+  sendgrid-ruby
   simple_form
   skylight
   spring
@@ -235,4 +241,4 @@ DEPENDENCIES
   wkhtmltopdf-heroku
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
