@@ -1,0 +1,86 @@
+%table{:style => "margin-top: 45px; margin-left: 30px"}
+  %thead
+    %tr
+      %th Role
+      %th Assignee
+      %th Activity
+      %th Status
+      %th Deadline
+      %th Done On
+  %tbody
+  -@workflowItems.each do |result|
+    %tr
+      %td
+        = "Originator"
+      %td 
+        = "#{session[:userinfo][:info][:name]}"
+      %td
+        = "Create/Change Document"  
+      -if result.is_approved == "Document Ready"               
+        %td{:class => "green lighten-3"}
+          = "Document Ready"
+      -else     
+        %td{:class => "orange lighten-3"}
+          = "WIP" 
+      %td
+        = result.content_created_at[0,10]
+      %td
+        = result.content_created_at[0,10]
+    %tr
+      %td
+        = "Quality Manager #1"
+      %td 
+        = "rory@box.com"
+      %td
+        = "Review and Approve Document"
+      -if result.qualityManagerApproval == "Approved"            
+        %td{:class => "green lighten-3"}
+          = result.qualityManagerApproval
+      -else
+        %td{:class => "red lighten-3"}
+          = result.qualityManagerApproval          
+      %td
+        = result.content_created_at[0,10]
+      %td
+        = result.content_created_at[0,10]
+    %tr
+      %td
+        = "Dcoument Manager #1"
+      %td 
+        = "dcutler@box.com"
+      %td
+        = "Review and Approve Document"   
+      -if result.documentManagerApproval == "Approved"    
+        %td{:class => "green lighten-3"}
+          = result.documentManagerApproval        
+      -else
+        %td{:class => "red lighten-3"}
+          = result.documentManagerApproval
+      %td
+        = result.content_created_at[0,10]
+      %td
+        = result.content_created_at[0,10]
+    %tr
+      %td
+        = "Customer Approver"
+      %td 
+        = "joe.smith@doctordevicecreator.com"
+      %td
+        = "Confirm Customer Approval"  
+      -if result.customerApproverApproval == "Approved"    
+        %td{:class => "green lighten-3"}
+          = result.customerApproverApproval        
+      -else
+        %td{:class => "red lighten-3"}
+          = result.customerApproverApproval           
+      %td
+        = result.content_created_at[0,10]
+      %td
+        = result.content_created_at[0,10]
+    %tr
+      %td
+      %td
+      %td
+      %td
+      %td
+

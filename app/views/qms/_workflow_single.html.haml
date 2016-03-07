@@ -1,0 +1,25 @@
+%table{:style => "margin-top: 45px; margin-left: 30px"}
+  %thead
+    %tr
+      %th Document Number
+      %th Workflow Number
+      %th Workflow Status
+      %th QM Status
+      %th DM Status
+      %th CA Status
+  %tbody
+  -@workflowItems.each do |result|
+    %tr
+      %td
+        = result.name
+      %td 
+        %a{:href => "1/workflow"}
+          = "DC-12312012"
+      %td
+        = result.is_approved        
+      %td
+        = result.qualityManagerApproval
+      %td
+        = result.documentManagerApproval
+      %td
+        = result.customerApproverApproval

@@ -17,7 +17,8 @@ Rails.application.routes.draw do
   # qms - Quality Management
   #core functionalities
   get "/qms" => "qms#show", :as => 'qms'
-  get "/qms/:id" => "qms#show", :as => 'qms_id'
+  get "/qms/:id" => "qms#show_single", :as => 'qms_id'
+  get "/qms/:id/workflow" => "qms#show_workflow_single", :as => 'qms_id_workflow'
   get "/delete/:id" => "qms#delete_file", :as => "qms_delete_file"
   get "/download/:id" => 'qms#download', :as => "qms_download"
   get "/share/:id" => "qms#share_file", :as => "qms_share_file"

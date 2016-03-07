@@ -4,7 +4,10 @@ class QmsController < SecuredController
   # main controller for customer vault
   def show
 
+    puts "hi"
     client = user_client
+    session[:current_page] = "qms"
+
     threads = []
 
     # get loan documents folder, if it doesn't exist create one
@@ -26,33 +29,55 @@ class QmsController < SecuredController
     # attach file metadata template to each file
     # attach file metadata template to each file
     @workflowItems.each do |c|
+      puts "c => #{c}"
       threads << Thread.new do
         class << c
-          attr_accessor :qualityManagerApproval, :documentManagerApproval, :customerApproverApproval
+          attr_accessor :qualityManagerApproval, :documentManagerApproval, :customerApproverApproval, :is_approved
         end
 
-        begin
-          meta = client.all_metadata(c)["entries"]
+        @c_files = client.folder_items(c, fields: [:name, :id, :modified_at]).files
 
-          meta.each do |m|
-            if (m["$template"] == "qmsMetadata")
-              c.qualityManagerApproval = m["qualityManagerApproval"]
-              c.documentManagerApproval = m["documentManagerApproval"]
-              c.customerApproverApproval = m["customerApproverApproval"]
+        @c_files.each do |c_file|
+          begin
+            meta = client.all_metadata(c_file)["entries"]
+            c.is_approved = "Not Ready"
+            meta.each do |m|
+              puts "Entry : #{m}"
+              if (m["$template"] == "qmsMetadata")
+                c.qualityManagerApproval = m["qualityManagerApproval"]
+                c.documentManagerApproval = m["documentManagerApproval"]
+                c.customerApproverApproval = m["customerApproverApproval"]
+
+                if (c.qualityManagerApproval == "Approved" && c.documentManagerApproval == "Approved" && c.customerApproverApproval = "Approved" )
+                  c.is_approved = "Document Ready"
+                end
+
+              end
             end
-          end
 
-        rescue
-          c.qualityManagerApproval = ""
-          c.documentManagerApproval = ""
-          c.customerApproverApproval = ""
+          rescue
+            c.qualityManagerApproval = ""
+            c.documentManagerApproval = ""
+            c.customerApproverApproval = ""
+          end
         end
+
+
+        
       end
     end
 
     threads.each { |thr| thr.join }
 
   end
+
+  def show_single
+    show
+  end
+  def show_workflow_single
+    show
+  end
+
 
   def search_vault(name)
 

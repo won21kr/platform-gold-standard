@@ -4,16 +4,13 @@
       %th Document Number
       %th Date Submitted
       %th Type
-      %th Workflow Status
   %tbody
   -@workflowItems.each do |result|
     %tr
       %td
-        %a{:href => "qms/1"}
-          = result.name
+        = result.name
       %td
         = result.content_created_at[0,10]
       %td
         = "QMS Documents"
-      %td
-        = result.is_approved
+     
