@@ -1,0 +1,36 @@
+%form.col.s12{:style => "margin-top: 5%;", :method => "post", :action => rfp_create_folder_path}
+  .row
+    .input-field.col.s6
+      %i.material-icons.prefix assignment
+      %label{:for => "proposal"} Proposal Name
+      %input#proposal.validate{:type => "text", :name => "proposal"}
+        %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px; margin-left: 80%;"} Create
+        %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :type => "button", :style => "font-size: 10px; margin-left: 103%; margin-top: -13%;"} Upload
+
+#uploadModal.modal
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Upload a File
+    .drop-area
+      .row
+        .col-md-12
+          = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: rfp_upload_file_path)  {}
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
+
+:javascript
+  Dropzone.options.myAwesomeDropzone = {
+    init: function() {
+      this.on("queuecomplete", function(file) {
+        setTimeout(function() {location.reload();}, 1000);
+      });
+    }
+  };
+
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+
+  function myFunction() {
+    document.getElementById("myBtn").disabled = true;
+  }

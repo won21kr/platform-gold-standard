@@ -1,3 +1,31 @@
+#twilioModal.modal
+  .modal-content{:style => "height: 500px;"}
+    %h3.thin{:style => "font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"} Enter your mobile number
+    %form{:action => send_twilio_message_path, :method => "post", :role => "form"}
+      %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
+        Get this customized instance on your phone instantly
+      .row
+        .input-field.col.s4
+          %select{:name => "region"}
+            %option{:disabled => "", :selected => "", :value => ""} Choose an option
+            %option{:value => "+14087695509"} United States
+            %option{:value => "+447481339419"} Great Britain
+            %option{:value => "+61427903469"} Australia
+          %label Region
+        .input-field.col.s7
+          %label.h4{:for => "phoneNumber"} Mobile Number:
+          %input.validate.form-control{:type => "text", :name => "phoneNumber"}
+        %button.btn.waves-effect.waves-light.right{:type => "submit", :style => "margin-left: 3%; margin-right: 7%"} Via Text
+        %button.btn.waves-effect.waves-light.right{:type => "button", :href => "#sendGrid", "data-toggle" => "collapse"} Via Email
+    #sendGrid.collapse
+      %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
+        Alternatively, get this customized instance sent straight to your mail for later use
+      %form{:action => send_grid_method_path, :method => "post", :role => "form"}
+        .input-field.col.s3
+          %label{:for => "emailAddress"} Email (No Corporate Email)
+          %input.validate.form-control{:type => "text", :name => "emailAddress", :style => "width: 92%;"}
+        %button.btn.waves-effect.waves-light{:type => "submit", :style => "margin-bottom: 5%;"} Email Me
+
 
 #index-banner.section.no-pad-bot
   .container
@@ -6,6 +34,7 @@
       %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
         %i.material-icons.prefix{:style => "font-size: 28px;"} settings
         Settings
+
       %h6.caption.thin{:style => "margin-top: -25px; margin-bottom: 45px;"}
         Build a truly custom app to demo Box Platform, in seconds
 
@@ -36,7 +65,7 @@
               %b
                 Give a Kickass Demo
             %p{:style => "text-align: left;"}
-              Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app in the future and click "Reset" below or clear your browser data to revert changes.
+              Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app and click "Reset" below or clear your browser data to revert changes. If you'd like to get technical about things <a href="https://cloud.box.com/s/zyrq7voff68h14q7h05zdnlcfh2z6y9d">read more</a>.
 
       // Build your own app
       .col.s12
@@ -64,10 +93,16 @@
               %div{:style => "margin-top: 20px"}
               .col.s10{:style => "padding-left: 0"}
                 %label.label-div{:for => "background", :style => "color: black; margin-top: 20px"} Home Page Background URL
+                %a.tooltip{:style => "margin-left: 7px;"}
+                  ?
+                  %span
+                    %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
               .col.s1
-                %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"}
-                  Preview
+                %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
+
+
+
           .col.s5.push-s1
             -# Activate / Deactivate feature tabs
             %b{:for => "tab_select"} Active Feature Tabs
@@ -95,13 +130,6 @@
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            -# %p
-            -#   %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
-            -#   %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
-            -# %p
-            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-            -#   %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
-
 
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
@@ -156,14 +184,23 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
+          -# %button.btn.waves-effect.white.black-text.modal-trigger{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Mobile
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
-        -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none; margin-right: 2px", :type => "submit", href: "https://cloud.box.com/s/1j2y2ctvw6qu6pbwbadsm3d15sa64qoq"}
-        -#   Documentation
-        -# %a.btn.waves-effect.white.black-text.item{:style => "font-color: #263238 !important; text-decoration: none;", href: "https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/viewform"}
-        -#   Demo Feedback
+
+    .footer-copyright
+      .container
+        .center{:style => "margin-top: 60px; margin-bottom: 25px; color: #505050; letter-spacing: .7px;"}
+          %h6
+          We take <a href="https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/edit">feedback</a> seriously.     &nbsp;&nbsp;-DemoEng
+          %a.grey-text.text-lighten-4.right{:href => "#!"} More Links
 
 :javascript
   $(document).ready(function() {
     $('select').material_select();
+  });
+
+  $(document).ready(function(){
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
   });

@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   get "/" => "home#show", :as => 'home'
   get "/home" => "home#login", :as => "home-page"
 
+  # generate user config info csv
+  get "/user-config-data" => "userconfig#show", :as => "user_config"
+  post "/user-config-data" => "userconfig#generate_csv", :as => "generate_csv"
+
+
   # dashboard
   get "/dashboard" => "dashboard#show", :as => 'dashboard'
   get "/dashboard/:id" => "dashboard#show", :as => 'dashboard_id'
@@ -113,4 +118,17 @@ Rails.application.routes.draw do
   get "/metadata_upload" => "tax_return#metadata_upload", :as => "tax_metadata_upload"
   post "/advisor_task" => "tax_return#advisor_task", :as => "advisor_task"
   # post "/file_value" => "tax_return#file_value"
+
+  #request for proposal
+  get "/request_for_proposal" => "request_for_proposal#show", :as => "request_for_proposal"
+  post "/req_create_folder" => "request_for_proposal#create_folder", :as => "rfp_create_folder"
+  post "req_upload" => "request_for_proposal#upload_file", :as => "rfp_upload_file"
+  get "/rfp_reset" => "request_for_proposal#reset", :as => "rfp_reset"
+  get 'shared_link' => "request_for_proposal#enable_shared_link", :as => "rfp_enable_shared_link"
+  get 'disable_shared_link' => "request_for_proposal#disable_shared_link", :as => "rfp_disable_shared_link"
+  post "/rfp_send_grid_message" => "request_for_proposal#send_grid_method", :as => "rfp_send_grid" 
+
+  #third-party api's
+  post "/send_twilio_message" => "config#twilio_method"
+  post "/send_grid_message" => "config#send_grid_method", :as => "send_grid_method"
 end

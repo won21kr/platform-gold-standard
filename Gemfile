@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 ruby "2.2.1"
 
@@ -39,6 +39,7 @@ gem 'awesome_print'
 gem 'protected_attributes'
 gem 'fatalistic'
 gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
+gem 'rufus-scheduler'
 
 gem 'omniauth', '~> 1.2'
 gem 'omniauth-auth0', '~> 1.1'
@@ -55,6 +56,7 @@ gem 'puma'
 gem 'gon'
 gem "chardinjs-rails"
 gem "skylight"
+gem "sendgrid-ruby"
 
 # Gems only used on heroku
 group :production, :staging do

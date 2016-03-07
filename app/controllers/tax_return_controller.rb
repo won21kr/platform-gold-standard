@@ -349,7 +349,6 @@ class TaxReturnController < SecuredController
     box_file = client.file_from_id(fileId)
     enterprise = "enterprise_#{ENV['BOX_ENTERPRISE_ID']}"
 
-
     #why is this a thing??
     @metaValueHash = client.metadata(box_file, scope: enterprise, template: :taxCategory)
     session[:category] = @metaValueHash["category"]

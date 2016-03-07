@@ -1,5 +1,4 @@
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
 User,Date Accessed,Company,Logo URL,Home Page URL,Vault,Resources,Onboarding Tasks,Medical Credentialing,Loan Origination,Upload & Sign,Tax Return,Submit A Claim
+customer@example.com,03/07/16,Box,,,X,X,X,"","",X,X,""
+customer@example.com,03/07/16,Box,logo.png,,X,X,X,"",X,X,X,""
+customer@example.com,03/07/16,Test1,logo.png,,X,X,X,"",X,X,X,""
