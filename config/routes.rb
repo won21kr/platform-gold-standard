@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   get "/home" => "home#login", :as => "home-page"
 
   # generate user config info csv
-  get "/user-config-data" => "userconfig#show", :as => "user_config"
-  post "/user-config-data" => "userconfig#generate_csv", :as => "generate_csv"
+  get "/generate-userdata" => "userconfig#show", :as => "user_config"
+  post "/generate-userdata" => "userconfig#generate_csv", :as => "generate_csv"
 
 
   # dashboard
@@ -126,7 +126,7 @@ Rails.application.routes.draw do
   get "/rfp_reset" => "request_for_proposal#reset", :as => "rfp_reset"
   get 'shared_link' => "request_for_proposal#enable_shared_link", :as => "rfp_enable_shared_link"
   get 'disable_shared_link' => "request_for_proposal#disable_shared_link", :as => "rfp_disable_shared_link"
-  post "/rfp_send_grid_message" => "request_for_proposal#send_grid_method", :as => "rfp_send_grid" 
+  post "/rfp_send_grid_message" => "request_for_proposal#send_grid_method", :as => "rfp_send_grid"
 
   #third-party api's
   post "/send_twilio_message" => "config#twilio_method"
