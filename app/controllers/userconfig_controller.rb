@@ -47,12 +47,22 @@ class UserconfigController < ApplicationController
       # get user token, upload CSV file
       user_data_client = Box.user_client(ENV['USER_DATA_ID'])
       begin
-        file = user_data_client.file_from_path("User\ Data/user-data.csv")
-        uploadedFile = user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
 
+        begin
+          oldFile = user_data_client.file_from_path("User\ Data/user-data.csv")
+          user_data_client.delete_file(oldFile)
+        rescue
+          puts "file doesn't exist"
+        end
+
+        folder = user_data_client.folder_from_path("User\ Data")
+        ap folder
+        uploadedFile = user_data_client.upload_file("user-data/user-data.csv", folder)
+
+        puts "uploaded"
         # create shared link
-        link = user_data_client.create_shared_link_for_file(uploadedFile, access: :open)
-        flash[:notice] = "Successfully generated and uploaded user configuration CSV. #{link.shared_link.url}"
+        @link = user_data_client.create_shared_link_for_file(uploadedFile, access: :open)
+        flash[:notice] = "Generated and uploaded user configuration CSV. #{view_context.link_to('link', @link.shared_link.url)}".html_safe
       rescue
         flash[:notice] = "Error: something went wrong"
       end
