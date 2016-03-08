@@ -1,0 +1,62 @@
+#sharedLinkModal.modal
+  .modal-content{:style => "height: 500px;"}
+    %h3.thin{:style => "font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"} Send out your Proposal
+    %form{:action => rfp_send_grid_path, :method => "post", :role => "form"}
+      .row
+        .input-field.col.s7
+          %label.h4{:for => "emailAddress"} Email Link To:
+          %input.validate.form-control{:type => "text", :name => "emailAddress"}
+        %button.btn.waves-effect.waves-light.right{:type => "submit", :style => "margin-right: 25%; margin-top: 10%;"} Email
+  .modal-footer
+    %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!"} Agree
+
+= render partial: "shared/flash_messages", flash: flash    
+%table{:style => "margin-top: 45px; margin-left: 30px"}
+  %thead
+    %tr
+      %th Folder Name
+      %th Folder Items
+      %th Date Submitted
+      %th Access
+      %th{:style => "padding-left: 30px !important;"}
+        Send
+  %tbody
+    %tr
+      %td{:style => "vertical-align:top;"}
+        - if(session[:createdFolder] != nil)
+          = session[:createdFolder].name
+      %td
+        - if(session[:createdFolder] != nil)
+          - @folderItems.each do |f|
+            = link_to view_doc_path(f.id, folder: session[:createdFolder].id) do
+              = image_tag(thumbnail_url(f.id), width: '40px')
+            = f.name
+            %br
+            %br
+      %td{:style => "vertical-align:top;"}
+        - if(session[:createdFolder] != nil)
+          = session[:createdFolder].content_created_at[0,10]
+      %td{:style => "vertical-align:top;"}
+        - if(session[:createdFolder] != nil)
+          %span.border-select
+            %a.dropdown-button{"data-activates" => "level", :href => "#!", :style => "color: black"}
+              Level
+              %i.material-icons.right arrow_drop_down
+          %ul.dropdown-content{:id => "level"}
+            %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
+              %li
+                = link_to "Open", rfp_enable_shared_link_path, :method => :get, :style => "text-decoration: none"
+              %li
+                = link_to 'Close', rfp_disable_shared_link_path, :method => :get, :style => "text-decoration: none"
+
+      %td{:style => "vertical-align:top; padding-left: 30px !important;"}
+        - if(session[:createdFolder] != nil)
+          - puts "Access Column"
+          %a.modal-action.modal-close.button.waves-effect.btn.white.black-text.modal-trigger{href: "#sharedLinkModal",'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"SharedLink", :style => "padding-right: 9px; padding-left: 9px;"}
+            %span.glyphicon.glyphicon-plane{:style => "top: 3px; color: #263238"}
+
+:javascript
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });

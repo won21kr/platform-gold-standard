@@ -1,0 +1,15 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.s10.push-s2
+        .col.s2.push-s10{:style => "margin-top: 80px;"}
+          %h7
+            Step 1 of 2
+      .col.s10.push-s2
+        .drop-area
+          .row
+            .col-md-12{:style => "margin-top: 35px;"}
+              = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: tax_upload_url("Forms (Not Signed)"))  {}
+        %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => "tax_return", :style => "text-decoration: none; font-size: 10px;"} Back
+        %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => "metadata_upload", :style => "text-decoration: none; font-size: 10px;"} Next
