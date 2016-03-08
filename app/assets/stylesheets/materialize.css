@@ -7333,7 +7333,7 @@ select {
   .side-nav .collapsible-body li.active a, .side-nav.fixed .collapsible-body li.active a {
     color: #fff; }
 
-#sidenav-overlay {
+/*#sidenav-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -7341,7 +7341,7 @@ select {
   height: 120vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 8000;
-  will-change: opacity; }
+  will-change: opacity; }*/
 
 /*
     @license
