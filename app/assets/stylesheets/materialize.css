@@ -7278,7 +7278,7 @@ select {
   height: -moz-calc(100%);
   padding-bottom: 60px;
   background-color: #fff;
-  z-index: 6000;
+  z-index: 1000;
   overflow-y: auto;
   will-change: left; }
 
