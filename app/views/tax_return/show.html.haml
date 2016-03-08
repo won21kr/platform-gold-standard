@@ -112,6 +112,8 @@
                       %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
                     %a.btn.white.tooltipped{href: delete_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
                       %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+                    %a.btn.white.tooltipped{href: "#taskModal", 'data-id' => "#{result.id}",'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
                     - if(result.name.split(" ").last.split(".").first != "(Signed)")
                       %a.btn.white.tooltipped{href: tax_loan_docusign_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"E-Sign", :style => "padding-right: 9px; padding-left: 9px;"}
                         %span.glyphicon.glyphicon-exclamation-sign{:style => "top: 3px; color: #263238"}

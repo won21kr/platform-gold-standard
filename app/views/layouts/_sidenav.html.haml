@@ -27,6 +27,9 @@
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
+  - if session[:request_for_proposal] == 'on'
+    %li{:class => "#{'active' if session[:request_for_proposal] == "request_for_proposal"}"}
+      %a{:href => "/request_for_proposal", :style => "text-decoration: none;"} Request For Proposal
   - if session[:dicom_viewer] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
       %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer

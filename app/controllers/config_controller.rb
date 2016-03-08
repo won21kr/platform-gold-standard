@@ -36,6 +36,47 @@ class ConfigController < ApplicationController
     config_url
   end
 
+  def twilio_method
+    account_sid = "AC4c44fc31f1d7446784b3e065f92eb4e6"
+    auth_token = "5ad821b20cff339979cd0a9d42e1a05d"
+    client = Twilio::REST::Client.new account_sid, auth_token
+
+    from = params[:region] # Your Twilio number
+    puts "Values from the twilio modal:\nInput Phone Number: #{params[:phoneNumber]}\nInput Region: #{params[:region]}"
+
+    friends = {
+      params[:phoneNumber] => "Boxr"
+    }
+    friends.each do |key, value|
+      client.account.messages.create(
+      :from => from,
+      :to => key,
+      :body => "#{session[:config_url]}"
+      )
+    end
+    redirect_to config_path
+  end
+
+  def send_grid_method
+
+    puts "MADE IT TO THE METHOD: #{params[:emailAddress]}"
+    client = SendGrid::Client.new do |c|
+      c.api_user = 'carycheng77'
+      c.api_key =  'CaryCheng77' #'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'
+    end
+
+    mail = SendGrid::Mail.new do |m|
+      m.to = params[:emailAddress]
+      m.from = params[:emailAddress]
+      m.subject = 'Here is your customized Box Platform Standard'
+      m.text = "Files have been updated. Please take a look here: "
+    end
+
+    puts client.send(mail)
+    # {"message":"success"}
+    redirect_to config_path
+  end
+
   def post_config
 
     puts 'posting configuration page....'
@@ -66,6 +107,7 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
+    session[:request_for_proposal] = !params[:requestforproposal].nil? ? 'on' : 'off'
     session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
 
@@ -79,40 +121,23 @@ class ConfigController < ApplicationController
   # capture user + current configurations, modify csv, & upload to Box
   def capture_user_data
 
-    # get enterprise token
-    user_data_client = Box.user_client(ENV['USER_DATA_ID'])
-
-    # get tab config
-    tabs = {'vault' => "X",
-            'resources' => session[:resources] == "on" ? "X" : "",
-            'onboarding' => session[:onboarding] == "on" ? "X" : "",
-            'medical_credentialing' => session[:medical_credentialing] == "on" ? "X" : "",
-            'loan_docs' => session[:loan_docs] == "on" ? "X" : "",
-            'upload_sign' => session[:upload_sign] == "on" ? "X" : "",
-            'tax_return' => session[:tax_return] == "on" ? "X" : "",
-            'create_claim' => session[:create_claim] == "on" ? "X" : ""}
-
-    # open CSV and update
-    CSV.open("user-data/user-data.csv", "a+") do |csv|
-
-      # update csv with user config
-      csv << [session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
-              DateTime.now.strftime("%m/%d/%y"), session[:company], session[:logo],
-              session[:background], tabs["vault"], tabs["resources"], tabs["onboarding"],
-              tabs["medical_credentialing"], tabs["loan_docs"], tabs["upload_sign"],
-              tabs["tax_return"], tabs["create_claim"]]
-    end
-
-    # upload new file version
-    begin
-      file = Rails.cache.fetch("/user-data-file", :expires_in => 10.minutes) do
-        user_data_client.file_from_path("User\ Data/user-data.csv")
-      end
-      user_data_client.upload_new_version_of_file("user-data/user-data.csv", file)
-    rescue
-      puts "something went wrong"
-    end
-
+    # add user config database entry, ActiveRecord video tutorial!!!
+    user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
+                               date: DateTime.now, # .strftime("%m/%d/%y")
+                               company: session[:company],
+                               logo_url: session[:logo],
+                               home_url: session[:background],
+                               vault: true,
+                               resources: session[:resources] == "on" ? true : false,
+                               onboarding_tasks: session[:onboarding] == "on" ? true : false,
+                               medical_credentialing: session[:medical_credentialing] == "on" ? true : false,
+                               loan_origination: session[:loan_docs] == "on" ? true : false,
+                               upload_sign: session[:upload_sign] == "on" ? true : false,
+                               tax_return: session[:tax_return] == "on" ? true : false,
+                               submit_claim: session[:create_claim] == "on" ? true : false)
+    user_data.save
+    # ap user_data
+    # ap Userconfig.all
   end
 
   # clear session
@@ -140,6 +165,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&tax_return=#{session[:tax_return]}"
     session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
     session[:config_url] << "&create_claim=#{session[:create_claim]}"
+    session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
     session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
 
 
