@@ -39,7 +39,6 @@ gem 'awesome_print'
 gem 'protected_attributes'
 gem 'fatalistic'
 gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
-gem 'rufus-scheduler'
 
 gem 'omniauth', '~> 1.2'
 gem 'omniauth-auth0', '~> 1.1'
