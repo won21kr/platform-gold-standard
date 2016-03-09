@@ -139,6 +139,9 @@
             %p
               %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
               %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            %p
+              %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
+              %label.checkbox{:for => "media_content", :style => "color: black"} Media Content (Temp, M&E)
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit

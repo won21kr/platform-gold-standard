@@ -36,6 +36,9 @@
   - if session[:account_sub] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
       %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
+  - if session[:media_content] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "media_content"}"}
+      %a{:href => "/media-content", :style => "text-decoration: none;"} Your NBCU
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 

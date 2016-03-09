@@ -1,0 +1,74 @@
+#index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        // Title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %i.material-icons.prefix{:style => "font-size: 28px;"} theaters
+            Your NBCU
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Exclusive access to new media content
+          .col.s12{:style => "margin-top: 30px"}
+            .col.s4
+              %h6
+                Networks
+          .col.s12
+            %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+              %li.tab.active{:style => "font-size: 12px !important;"}
+                %a{:href => "#nbc"}
+                  NBC
+              %li.tab{:style => "font-size: 12px !important;"}
+                %a{:href => "#usa"}
+                  USA Networks
+              %li.tab{:style => "font-size: 12px !important;"}
+                %a{:href => "#cnbc"}
+                  CNBC
+              %li.tab{:style => "font-size: 12px !important;"}
+                %a{:href => "#e"}
+                  E!
+
+          -# TABS
+          .col.s12#nbc{:style => "margin-top: 30px"}
+            .col.s10.push-s1
+              .card
+                .card-image.waves-effect.waves-block.waves-light
+                  %img.activator{:src => download_url(@nbc.id)}
+                .card-content
+                  %span.card-title.activator.grey-text.text-darken-4
+                    Card Title
+                    %i.material-icons.right more_vert
+                  %p
+                    %a{:href => "#"} This is a link
+                .card-reveal
+                  %span.card-title.grey-text.text-darken-4
+                    Card Title
+                    %i.material-icons.right close
+                  %p Here is some more information about this product that is only revealed once clicked on.
+
+
+          .col.s12#usa{:style => "margin-top: 30px"}
+            .col.s10.push-s1
+              usa
+
+
+          -# .col.s12#first{:style => "margin-top: 30px"}
+          -#   .col.s10.push-s1
+              .card
+                .card-image.waves-effect.waves-block.waves-light
+                  %img.activator{:src => "images/office.jpg"}
+                .card-content
+                  %span.card-title.activator.grey-text.text-darken-4
+                    Card Title
+                    %i.material-icons.right more_vert
+                  %p
+                    %a{:href => "#"} This is a link
+                .card-reveal
+                  %span.card-title.grey-text.text-darken-4
+                    Card Title
+                    %i.material-icons.right close
+                  %p Here is some more information about this product that is only revealed once clicked on.
+
+          -# .col.s12#first{:style => "margin-top: 30px"}
+          -#   .col.s10.push-s1

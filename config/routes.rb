@@ -117,7 +117,9 @@ Rails.application.routes.draw do
   get "/deductions_file" => "tax_return#deductions_file_upload", :as => "deduction_file_upload"
   get "/metadata_upload" => "tax_return#metadata_upload", :as => "tax_metadata_upload"
   post "/advisor_task" => "tax_return#advisor_task", :as => "advisor_task"
-  # post "/file_value" => "tax_return#file_value"
+
+  # media content
+  get "media-content" => "media_content#show", :as => "media_content"
 
   #request for proposal
   get "/request_for_proposal" => "request_for_proposal#show", :as => "request_for_proposal"
