@@ -32,6 +32,7 @@ class ConfigController < ApplicationController
       session[:dicom_viewer] = "off"
       session[:media_content] = "off"
 
+
     end
 
     config_url
@@ -170,6 +171,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
     session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
     session[:config_url] << "&media_content=#{session[:media_content]}"
+
 
 
   end

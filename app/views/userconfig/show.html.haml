@@ -1,5 +1,5 @@
 
-#index-banner.section.no-pad-bot
+.index-banner.section.no-pad-bot
   .container
     .row
 
@@ -13,11 +13,8 @@
         .col.s8.push-s2{:style => "margin-top: 10px;"}
           .flash
             = render partial: "shared/flash_messages", flash: flash
-        .col.s5
-          %h6{:style => "margin-bottom: 10px"}
-            Enter password to generate CSV:
         .col.s12
-          .col.s4.push-s1{:style => "margin-top: 20px"}
+          .col.s4.push-s4{:style => "margin-top: 20px"}
             %form.form-horizontal{:role => "form", :method => "post", :action => generate_csv_path, :name => "myForm"}
               .form-group{:style => "inline"}
                 %label.control-label.col-sm-2{:for => "password"} Password:
