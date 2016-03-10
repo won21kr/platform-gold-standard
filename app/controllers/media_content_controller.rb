@@ -1,5 +1,7 @@
 class MediaContentController < SecuredController
 
+  skip_before_filter :verify_authenticity_token
+
   def show
 
     session[:current_page] = "media_content"
@@ -90,4 +92,25 @@ class MediaContentController < SecuredController
 
     threads.each { |thr| thr.join }
   end
+
+  # search for TV show
+  def search_show
+    query = params[:search]
+    client = user_client
+
+    @results = client.search(query, content_types: :name, type: :folder, ancestor_folder_ids: ENV['MEDIA_CONTENT_FOLDER'])
+    ap @results
+
+    if (@results.size == 0)
+      @message = "There are 0 shows matching your search of \"#{query}\""
+    elsif(@results.size == 1)
+      @message = "There is 1 show matching your search of \"#{query}\""
+    else
+      @message = "There are #{@results.size} shows matching your search of \"#{query}\""
+    end
+
+  end
+
+
+
 end

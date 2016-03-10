@@ -119,7 +119,8 @@ Rails.application.routes.draw do
   post "/advisor_task" => "tax_return#advisor_task", :as => "advisor_task"
 
   # media content
-  get "media-content" => "media_content#show", :as => "media_content"
+  get "/media-content" => "media_content#show", :as => "media_content"
+  post "/media-content/search" => "media_content#search_show", :as => "search_show"
 
   #request for proposal
   get "/request_for_proposal" => "request_for_proposal#show", :as => "request_for_proposal"
