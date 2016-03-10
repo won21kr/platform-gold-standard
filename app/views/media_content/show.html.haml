@@ -48,7 +48,7 @@
                     %img.activator{:src => download_url(f.imageId)}
                   .card-content
                     %span.card-title.activator.grey-text.text-darken-4
-                      NBC
+                      = f.network
                       %i.material-icons.right more_vert
                     %p
                       %a{"data-lity" => "", :href => preview_url(f.videoId)}
@@ -83,7 +83,7 @@
                     %img.activator{:src => download_url(f.imageId)}
                   .card-content
                     %span.card-title.activator.grey-text.text-darken-4
-                      USA
+                      = f.network
                       %i.material-icons.right more_vert
                     %p
                       %a{"data-lity" => "", :href => preview_url(f.videoId)}

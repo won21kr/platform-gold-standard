@@ -30,18 +30,18 @@ class MediaContentController < SecuredController
       threads << Thread.new do
         class << n
           attr_accessor :imageId, :videoId, :videoDescription, :videoName,
-                        :rating, :staring
+                        :rating, :staring, :network
         end
 
         # get network folder items
-        showFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/nbc_items/#{n.id}", :expires_in => 10.minutes) do
+        showFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}", :expires_in => 10.minutes) do
           client.folder_items(n, fields: [:id, :name, :description])
         end
         imageFile = showFolder.find {|s| s.name.split('.').last == 'jpg' }
         trailerFile = showFolder.find {|s| s.name.split('.').last == 'mp4' }
 
         # get video file metadata
-        meta = Rails.cache.fetch("/folder/#{session[:box_id]}/nbc_items/#{n.id}_meta", :expires_in => 10.minutes) do
+        meta = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}_meta", :expires_in => 10.minutes) do
           client.all_metadata(trailerFile)["entries"].first
         end
 
@@ -52,6 +52,7 @@ class MediaContentController < SecuredController
         n.videoName = trailerFile.name
         n.staring = meta["Related Names"]
         n.rating = meta["Content Rating"]
+        n.network = meta["Network"]
       end
 
     end
@@ -66,17 +67,17 @@ class MediaContentController < SecuredController
       threads << Thread.new do
         class << n
           attr_accessor :imageId, :videoId, :videoDescription, :videoName,
-                        :rating, :staring
+                        :rating, :staring, :network
         end
         # get network folder items
-        showFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/usa_items/#{n.id}", :expires_in => 10.minutes) do
+        showFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}", :expires_in => 10.minutes) do
           client.folder_items(n, fields: [:id, :name, :description])
         end
         imageFile = showFolder.find {|s| s.name.split('.').last == 'jpg' }
         trailerFile = showFolder.find {|s| s.name.split('.').last == 'mp4' }
 
         # get video file metadata
-        meta = Rails.cache.fetch("/folder/#{session[:box_id]}/usa_items/#{n.id}_meta", :expires_in => 10.minutes) do
+        meta = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}_meta", :expires_in => 10.minutes) do
           client.all_metadata(trailerFile)["entries"].first
         end
 
@@ -87,6 +88,7 @@ class MediaContentController < SecuredController
         n.videoName = trailerFile.name
         n.staring = meta["Related Names"]
         n.rating = meta["Content Rating"]
+        n.network = meta["Network"]
       end
     end
 
@@ -97,9 +99,10 @@ class MediaContentController < SecuredController
   def search_show
     query = params[:search]
     client = user_client
+    threads = []
 
+    # search shows
     @results = client.search(query, content_types: :name, type: :folder, ancestor_folder_ids: ENV['MEDIA_CONTENT_FOLDER'])
-    ap @results
 
     if (@results.size == 0)
       @message = "There are 0 shows matching your search of \"#{query}\""
@@ -108,6 +111,37 @@ class MediaContentController < SecuredController
     else
       @message = "There are #{@results.size} shows matching your search of \"#{query}\""
     end
+
+    @results.each do |n|
+      threads << Thread.new do
+        class << n
+          attr_accessor :imageId, :videoId, :videoDescription, :videoName,
+                        :rating, :staring, :network
+        end
+        # get network folder items
+        showFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}", :expires_in => 10.minutes) do
+          client.folder_items(n, fields: [:id, :name, :description])
+        end
+        imageFile = showFolder.find {|s| s.name.split('.').last == 'jpg' }
+        trailerFile = showFolder.find {|s| s.name.split('.').last == 'mp4' }
+
+        # get video file metadata
+        meta = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}_meta", :expires_in => 10.minutes) do
+          client.all_metadata(trailerFile)["entries"].first
+        end
+
+        # add file attributes
+        n.imageId = imageFile.id
+        n.videoId = trailerFile.id
+        n.videoDescription = trailerFile.description
+        n.videoName = trailerFile.name
+        n.staring = meta["Related Names"]
+        n.rating = meta["Content Rating"]
+        n.network = meta["Network"]
+      end
+    end
+
+    threads.each { |thr| thr.join }
 
   end
 
