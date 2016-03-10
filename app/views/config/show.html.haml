@@ -132,13 +132,16 @@
               %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
             %p
               %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
-              %label.checkbox{:for => "requestforproposal", :style => "color: black"} Request For Proposal
+              %label.checkbox{:for => "requestforproposal", :style => "color: black"} Request For Proposals
             %p
               %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
               %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
             %p
               %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
               %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            %p
+              %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
+              %label.checkbox{:for => "media_content", :style => "color: black"} Media Content (M&E)
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit

@@ -64,5 +64,6 @@ class ApplicationController < ActionController::Base
     session[:upload_sign] = query['upload_sign'] unless query['upload_sign'].blank?
     session[:create_claim] = query['create_claim'] unless query['create_claim'].blank?
     session[:tax_return] = query['tax_return'] unless query['tax_return'].blank?
+    session[:media_content] = query['media_content'] unless query['media_content'].blank?
   end
 end
