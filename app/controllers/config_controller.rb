@@ -172,8 +172,6 @@ class ConfigController < ApplicationController
     session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
     session[:config_url] << "&media_content=#{session[:media_content]}"
 
-
-
   end
 
 end
