@@ -21,17 +21,23 @@
                   NBC
               %li.tab{:style => "font-size: 12px !important;"}
                 %a{:href => "#usa"}
-                  USA Networks
-              %li.tab{:style => "font-size: 12px !important;"}
+                  USA Network
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
                 %a{:href => "#cnbc"}
                   CNBC
-              %li.tab{:style => "font-size: 12px !important;"}
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
+                %a{:href => "#cnbc"}
+                  NBCSN
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
                 %a{:href => "#e"}
                   E!
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
+                %a{:href => "#cnbc"}
+                  Telemundo
 
           -# TABS
           .col.s12#nbc{:style => "margin-top: 30px"}
-            .col.s10.push-s1
+            .col.s12
               - @nbcItems.each do |f|
                 .card
                   .card-image.waves-effect.waves-block.waves-light
@@ -41,17 +47,32 @@
                       NBC
                       %i.material-icons.right more_vert
                     %p
-                      %a{"data-lity" => "", :href => preview_url(f.videoId)} View Trailer
+                      %a{"data-lity" => "", :href => preview_url(f.videoId)}
+                        = f.videoName.split('.').first
                   .card-reveal
                     %span.card-title.grey-text.text-darken-4
-                      Description
+                      More Info
                       %i.material-icons.right close
+                    %h6{:style => "margin-top: 30px"}
+                      %b Description:
                     %p
-                      - f.description
+                      =  f.videoDescription
+                    %h6{:style => "margin-top: 30px"}
+                      %b Related Names:
+                    %p
+                      =  f.staring
+                    %h6{:style => "margin-top: 30px"}
+                      %b Content Rating:
+                    %p
+                      =  f.rating
+                    %h6{:style => "margin-top: 30px"}
+                      %b Date Added:
+                    %p
+                      = DateTime.strptime(f.created_at).strftime("%B %d, %Y")
 
 
           .col.s12#usa{:style => "margin-top: 30px"}
-            .col.s10.push-s1
+            .col.s12
               - @usaItems.each do |f|
                 .card
                   .card-image.waves-effect.waves-block.waves-light
@@ -61,13 +82,28 @@
                       USA
                       %i.material-icons.right more_vert
                     %p
-                      %a{"data-lity" => "", :href => preview_url(f.videoId)} View Trailer
+                      %a{"data-lity" => "", :href => preview_url(f.videoId)}
+                        = f.videoName.split('.').first
                   .card-reveal
                     %span.card-title.grey-text.text-darken-4
-                      Description
+                      More Info
                       %i.material-icons.right close
+                    %h6{:style => "margin-top: 30px"}
+                      %b Description:
                     %p
-                      - f.description
+                      =  f.videoDescription
+                    %h6{:style => "margin-top: 30px"}
+                      %b Related Names:
+                    %p
+                      =  f.staring
+                    %h6{:style => "margin-top: 30px"}
+                      %b Content Rating:
+                    %p
+                      =  f.rating
+                    %h6{:style => "margin-top: 30px"}
+                      %b Date Added:
+                    %p
+                      = DateTime.strptime(f.created_at).strftime("%B %d, %Y")
 
           -# .col.s12#first{:style => "margin-top: 30px"}
           -#   .col.s10.push-s1
