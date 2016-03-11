@@ -7,6 +7,7 @@ class MediaContentController < SecuredController
     session[:current_page] = "media_content"
     client = user_client
     path = "/Media\ Content"
+    threads = []
 
     # get parent media folder
     mediaFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/media_folder", :expires_in => 10.minutes) do
@@ -19,20 +20,26 @@ class MediaContentController < SecuredController
     end
 
     # NBC Network items
-    @nbc = @networks.find {|s| s.name == 'NBC' }
-    nbcItems = Rails.cache.fetch("/folder/#{session[:box_id]}/nbc_items", :expires_in => 10.minutes) do
-      client.folder_items(@nbc, fields: [:id, :name, :description, :created_at])
+    threads << Thread.new do
+      @nbc = @networks.find {|s| s.name == 'NBC' }
+      nbcItems = Rails.cache.fetch("/folder/#{session[:box_id]}/nbc_items", :expires_in => 10.minutes) do
+        client.folder_items(@nbc, fields: [:id, :name, :description, :created_at])
+      end
+      # add show's metadata
+      @nbcItems = traverse_shows(nbcItems, client)
     end
-    # add show's metadata
-    @nbcItems = traverse_shows(nbcItems, client)
 
-    # USA Network items
-    @usa = @networks.find {|s| s.name == 'USA Network' }
-    usaItems = Rails.cache.fetch("/folder/#{session[:box_id]}/usa_items", :expires_in => 10.minutes) do
-      client.folder_items(@usa, fields: [:id, :name, :description, :created_at])
+    threads << Thread.new do
+      # USA Network items
+      @usa = @networks.find {|s| s.name == 'USA Network' }
+      usaItems = Rails.cache.fetch("/folder/#{session[:box_id]}/usa_items", :expires_in => 10.minutes) do
+        client.folder_items(@usa, fields: [:id, :name, :description, :created_at])
+      end
+      # add show's metadata
+      @usaItems = traverse_shows(usaItems, client)
     end
-    # add show's metadata
-    @usaItems = traverse_shows(usaItems, client)
+
+    threads.each {|thr| thr.join}
   end
 
   # search for TV show
