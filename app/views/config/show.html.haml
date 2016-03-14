@@ -142,9 +142,13 @@
             %p
               %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
               %label.checkbox{:for => "media_content", :style => "color: black"} Media Content (M&E)
+            %p
+              %input#eventstream{:type => "checkbox", :name => "eventstream", :checked => session[:eventstream] == 'on'}
+              %label.checkbox{:for => "eventstream", :style => "color: black"} Event Activity
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit
+
 
       // Current Configuration
       .col.s12

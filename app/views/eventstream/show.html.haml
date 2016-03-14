@@ -1,0 +1,69 @@
+.index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} equalizer
+          Event Activity
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Track both admin and user Box events
+
+        .col.s12{:style => "margin-top: 30px"}
+          -# .col.s4
+          -#   %h6
+          -#     Box EventStream
+        .col.s6
+          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+            %li.tab.active{:style => "font-size: 12px !important;"}
+              %a{:href => "#admin"}
+                Admin
+            %li.tab{:style => "font-size: 12px !important;"}
+              %a{:href => "#user"}
+                User
+
+        -# TABS
+        .col.s12#admin{:style => "margin-top: 30px"}
+          .col.s12
+            %h6{:style => "margin-bottom: 30px"}
+              Recent Box enterprise events
+            %table.highlight#adminEvents
+              %thead
+                %tr
+                  %th{"data-field" => "id"} Folder
+                  %th{"data-field" => "name"} Name
+                  %th{"data-field" => "modified"} Last Modified
+                  %th{"data-field" => "modified"} Description
+
+        .col.s12#user{:style => "margin-top: 30px"}
+          .col.s12
+            %h6{:style => "margin-bottom: 30px"}
+              = 'Recent App User events - ' + session[:userinfo]['info']['name']
+            %table.highlight
+              %thead
+                %tr
+                  %th{"data-field" => "name"} Type
+                  %th{"data-field" => "modified"} Recorded At
+                  %th{"data-field" => "id"} ID
+              - @user_events.each do |event|
+                %tr
+                  %td
+                    = event.event_type
+                  %td
+                    = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
+                  %td
+                    = event.event_id
+
+:javascript
+  var itemCount = 1;
+
+  setTimeout(addEvent, 3000);
+  function addEvent() {
+      newEvent = $("<tr></tr><th>new</th><th>new</th><th>new</th>").hide();
+      $("#adminEvents").prepend(newEvent);
+      newEvent.fadeIn();
+      console.log('event');
+
+      // itemCount++;
+      // setTimeout(addEvent, 3000);
+  }

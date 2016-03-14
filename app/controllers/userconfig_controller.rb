@@ -19,7 +19,7 @@ class UserconfigController < ApplicationController
       # user = tracker.people.set(session[:box_id], {
       #   '$name' => session[:userinfo]['info']['name'],
       # });
-      ap tracker.track('1234', 'Sent Message')
+      ap tracker.track('Sent Message')
 
       # open CSV and update
       # CSV.open("user-data/user-data.csv", "w") do |csv|
