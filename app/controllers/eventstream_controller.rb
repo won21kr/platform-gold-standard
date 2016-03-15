@@ -4,15 +4,22 @@ class EventstreamController < SecuredController
     session[:current_page] = "eventstream"
 
     user = user_client
+    @user_access_token = user.access_token
     admin = Box.admin_client
 
     now = Time.now.utc
     start_date = now - (60*60*24) # one day ago
 
-    # user_stream_pos = user.user_events('now', stream_type: :all).next_stream_position - 100
-    @user_events = user.user_events(0, stream_type: :all, limit: 20)["events"]
-    # ap @user_events
+    # get user eventstream position and last 20 events
+    @user_stream_pos = user.user_events('now', stream_type: :all).next_stream_position
+    @user_events = user.user_events(0, stream_type: :all)["events"].reverse[0..20]
 
+
+    ap start_date
+    ap now
+    result = admin.enterprise_events(created_after: start_date, created_before: now)
+
+    # ap @user_stream_pos
 
     # box_client = HTTPClient.new
     # headers = {"Authorization" => "Bearer #{admin.access_token}"}
@@ -26,10 +33,6 @@ class EventstreamController < SecuredController
     # ap res
 
     # result = admin.enterprise_events(created_after: start_date, created_before: now, limit: 10)
-
-
-
-
   end
 
 end
