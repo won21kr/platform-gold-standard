@@ -14,10 +14,10 @@ class EventstreamController < SecuredController
     @user_stream_pos = user.user_events('now', stream_type: :all).next_stream_position
     @user_events = user.user_events(0, stream_type: :all)["events"].reverse[0..20]
 
-
-    ap start_date
-    ap now
-    result = admin.enterprise_events(created_after: start_date, created_before: now)
+    # 
+    # ap start_date
+    # ap now
+    # result = admin.enterprise_events(created_after: start_date, created_before: now)
 
     # ap @user_stream_pos
 
