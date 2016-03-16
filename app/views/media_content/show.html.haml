@@ -1,4 +1,4 @@
-#index-banner.section.no-pad-bot
+.index-banner.section.no-pad-bot
   .container
     = render 'layouts/sidenav'
     .row
@@ -11,7 +11,7 @@
           %h6.caption.thin{:style => "font-size: 16px;"}
             Exclusive access to new media content
           -# Search bar
-          .col.s4.push-s8{:style => "margin-top: -31px;"}
+          .col.s6.push-s6{:style => "margin-top: -31px;"}
             %form#search{:action => search_show_path, :method => "post", :style => "text-align: right"}
               %input{:name => "search", :placeholder => "Search shows...", :size => "40", style: "height: 1.05rem", :type => "text"}/
           .col.s12{:style => "margin-top: 30px"}

@@ -8,6 +8,7 @@ class LoanDocumentsController < SecuredController
     session[:current_page] = "loan_docs"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
     docStatus = Hash.new
+    tab_usage(session[:current_page])
     threads = []
 
     # intitialize doc hash maps to be referenced in the view

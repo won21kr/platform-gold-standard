@@ -17,6 +17,13 @@ class Auth0Controller < ApplicationController
       #store the box_id in Auth0
       Auth0API.client.patch_user_metadata(uid, { box_id: box_user.id})
       setup_box_account
+
+      # mixpanel create user
+      # tracker = Mixpanel::Tracker.new('6626ce667ecfc52ecd9b823c730fa8f5')
+      # ap tracker.people.set(session[:box_id], {
+      #     '$name'       => session[:userinfo]['info']['name'],
+      # });
+
       puts "created new box user and set box_id in auth0 metadata"
     end
 

@@ -15,10 +15,11 @@
     = stylesheet_link_tag    '//fonts.googleapis.com/css?family=Open+Sans:100,200,400,300,600'
     = stylesheet_link_tag    '//s3-us-west-1.amazonaws.com/box-dicom/v1.1.0/dist/css/amsterdam/overrides/typography.css'
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-    
+
     = javascript_include_tag '//s3-us-west-1.amazonaws.com/box-dicom/v1.1.0/dist/js/preview/dicom/dicom-en-US.min.js'
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'
     = javascript_include_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'
+    = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = yield :auth0_code
     = csrf_meta_tags

@@ -7,6 +7,7 @@ class DashboardController < SecuredController
     # get user client obj for Box API calls
     client = user_client
     session[:current_page] = "vault"
+    tab_usage(session[:current_page])
 
     # get "My Files" and "Shared Files" folder objects
     @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
