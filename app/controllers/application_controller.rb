@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
       puts "Something went wrong!!"
     end
 
-    ap TabUsage.all
+    # ap TabUsage.all
     # end
 
 

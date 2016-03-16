@@ -12,5 +12,10 @@ class CreateTabUsages < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    entry = TabUsage.new(vault: 0, resources: 0, onboarding_tasks: 0,
+                         medical_credentialing: 0, loan_origination: 0,
+                         upload_sign: 0, tax_return: 0, submit_claim: 0)
+    entry.save
   end
 end
