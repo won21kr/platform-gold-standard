@@ -12,7 +12,10 @@ class WorkflowController < SecuredController
     # also, update the current workflow status state
     @onboardDoc = get_onboarding_doc
     session[:current_page] = "workflow"
+    tab_usage(session[:current_page])
     session[:task_status] = 1
+
+    
     # perform actions based on current workflow status state
     if (@status == "toFill")
       session[:progress] = 0

@@ -172,7 +172,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
     session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
     session[:config_url] << "&media_content=#{session[:media_content]}"
-    session[:config_url] << "&eventstream=#{session[:eventstream]}"    
+    session[:config_url] << "&eventstream=#{session[:eventstream]}"
 
   end
 

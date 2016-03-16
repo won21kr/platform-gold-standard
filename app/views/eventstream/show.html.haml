@@ -26,26 +26,36 @@
         .col.s12#admin{:style => "margin-top: 30px"}
           .col.s12
             %h6{:style => "margin-bottom: 30px"}
-              Box enterprise events
+              Enterprise Events
             %table.highlight#adminEvents
               %thead
                 %tr
-                  %th{"data-field" => "id"} Folder
-                  %th{"data-field" => "name"} Name
-                  %th{"data-field" => "modified"} Last Modified
-                  %th{"data-field" => "modified"} Description
+                  %th{"data-field" => "name"} Type
+                  %th{"data-field" => "modified"} Recorded At
+                  %th{"data-field" => "id"} User Name
+                  %th{"data-field" => "id"} IP Address
+              - @enterprise_events.each do |event|
+                %tr
+                  %td
+                    = event.event_type
+                  %td
+                    = DateTime.strptime(event.created_at).strftime("%B %d, %Y %l:%M %p")
+                  %td
+                    = event.created_by.name
+                  %td
+                    = event.ip_address
 
         .col.s12#user{:style => "margin-top: 30px"}
           .col.s12
             %h6{:style => "margin-bottom: 30px"}
-              = 'App User events'
+              = "User Events - " + session[:userinfo]['info']['name']
             %table.highlight#userEvents
               %thead
                 %tr
                   %th{"data-field" => "name"} Type
                   %th{"data-field" => "modified"} Recorded At
                   %th{"data-field" => "id"} Item Name
-                  %th{"data-field" => "id"} User
+                  -# %th{"data-field" => "id"} User
               - @user_events.each do |event|
                 %tr
                   %td
@@ -54,16 +64,17 @@
                     = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
                   %td
                     = event.source.name
-                  %td
-                    = event.created_by.name
+                  -# %td
+                  -#   = event.created_by.name
 
 :javascript
   var initPosition = "#{@user_stream_pos}";
-  eventArray = [];
-  setTimeout(addEvent(initPosition, eventArray), 3000);
+  var entPosition = "#{@enterprise_stream_pos}";
 
+  setTimeout(userEvent(initPosition, []), 3000);
+  setTimeout(enterpriseEvent(entPosition, []), 3000);
 
-  function addEvent(streamPos, eventIds) {
+  function userEvent(streamPos, eventIds) {
 
     // The Box OAuth 2 Header. Add your access token.
     var headers = { Authorization: 'Bearer #{@user_access_token}'};
@@ -91,14 +102,60 @@
           // event not yet processed
           newEvent = $("<tr><td>" + events[i].event_type +
                        "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY hh:mm A") +
-                       "</td><td>" + events[i].source.name +
-                       "</td><td>" + events[i].created_by.name + "</td></tr>").hide();
+                       "</td><td>" + events[i].source.name + "</td></tr>").hide();
           $("#userEvents").prepend(newEvent);
           newEvent.fadeIn();
           eventIds.push(events[i].event_id);
         }
       }
 
-      setTimeout(function() {addEvent(obj.next_stream_position, eventIds);}, 3000);
+      setTimeout(function() {userEvent(obj.next_stream_position, eventIds);}, 3000);
+    });
+  }
+
+  function enterpriseEvent(streamPos, eventIds) {
+
+    // The Box OAuth 2 Header. Add your access token.
+    var headers = { Authorization: 'Bearer #{@ent_access_token}'};
+    var eventsUrl = 'https://api.box.com/2.0/events?stream_type=admin_logs&stream_position=' + streamPos;
+
+    $.ajax({
+      url: eventsUrl,
+      headers: headers,
+      crossDomain: true,
+      type: 'GET',
+      // This prevents JQuery from trying to append the form as a querystring
+      processData: false,
+      contentType: false,
+    }).complete(function ( data ) {
+
+      var obj = $.parseJSON(data.responseText);
+      events = obj.entries
+      // console.log(obj);
+
+      // loop through all events
+      for (i = 0; i < events.length; i++) {
+
+        if (eventIds.indexOf(events[i].event_id) > -1) {
+          // event already processed
+        } else {
+          // event not yet processed
+          // var name;
+          // if (events[i].source.name == null) {
+          //   name = events[i].source.item_name;
+          // } else {
+          //   name = events[i].source.name;
+          // }
+          newEvent = $("<tr><td>" + events[i].event_type +
+                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY hh:mm A") +
+                       "</td><td>" + events[i].created_by.name +
+                       "</td><td>" + events[i].ip_address + "</td></tr>").hide();
+          $("#adminEvents").prepend(newEvent);
+          newEvent.fadeIn();
+          eventIds.push(events[i].event_id);
+        }
+      }
+
+      setTimeout(function() {enterpriseEvent(obj.next_stream_position, eventIds);}, 3000);
     });
   }

@@ -7,6 +7,7 @@ class CreateClaimController < SecuredController
     client = user_client
     @user_access_token = client.access_token
     session[:current_page] = "create-claim"
+    tab_usage(session[:current_page])
     threads = []
 
     if (!session[:claimPage].nil? and session[:claimPage] == 'submitted')
