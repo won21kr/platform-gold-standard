@@ -122,7 +122,7 @@ Rails.application.routes.draw do
   get "/media-content" => "media_content#show", :as => "media_content"
   post "/media-content/search" => "media_content#search_show", :as => "search_show"
 
-  # event activity
+  # Box Events
   get "/event-activity" => "eventstream#show", :as => "eventstream"
 
 
