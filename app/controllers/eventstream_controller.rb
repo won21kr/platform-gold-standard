@@ -17,7 +17,7 @@ class EventstreamController < SecuredController
     # get user eventstream position and last 20 events
     threads << Thread.new do
       results = user.user_events(0, stream_type: :all)
-      @user_events = results["events"].reverse[0..50]
+      @user_events = results["events"].reverse[0..100]
       @user_stream_pos = results.next_stream_position
       ap @user_events
     end

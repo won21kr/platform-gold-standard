@@ -12,7 +12,7 @@ class SearchController < SecuredController
     client = user_client
     @results = nil
     session[:current_page] = "search"
-    tab_usage(session[:current_page])
+    # tab_usage(session[:current_page])
 
     # get root resource folder
     @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 15.minutes) do
