@@ -14,9 +14,6 @@
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
-  -# - if session[:catalog] == 'on'
-  -#   %li{:class => "#{'active' if session[:current_page] == "catalog"}"}
-  -#     %a{:href => "/catalog", :style => "text-decoration: none;"} Product Catalog
   - if session[:medical_credentialing] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
       %a{:href => "/medical-credentialing", :style => "text-decoration: none;"} Medical Credentialing
@@ -46,7 +43,7 @@
       %a{:href => "/media-content", :style => "text-decoration: none;"} Your NBCU
   - if session[:eventstream] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "eventstream"}"}
-      %a{:href => "/event-activity", :style => "text-decoration: none;"} Event Activity      
+      %a{:href => "/event-activity", :style => "text-decoration: none;"} Box Events
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
