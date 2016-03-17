@@ -13,8 +13,8 @@ class MedicalCredentialingController < SecuredController
 
       client = user_client
       session[:current_page] = "medical_credentialing"
-      tab_usage(session[:current_page])
-      
+      # tab_usage(session[:current_page])
+
       # get medical folder path
       path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
 

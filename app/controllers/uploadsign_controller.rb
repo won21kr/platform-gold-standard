@@ -9,7 +9,7 @@ class UploadsignController < SecuredController
     # get user client obj for Box API calls
     client = user_client
     session[:current_page] = "upload-sign"
-    tab_usage(session[:current_page])
+    # tab_usage(session[:current_page])
 
     # get signed and pending signature folders, create them if they dont exist
     begin
