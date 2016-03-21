@@ -6,6 +6,7 @@ class EventstreamController < SecuredController
 
     user = user_client
     admin = Box.admin_client
+    ap user
 
     # get user/admin tokens
     @user_access_token = user.access_token
@@ -16,10 +17,12 @@ class EventstreamController < SecuredController
 
     # get user eventstream position and last 20 events
     threads << Thread.new do
+      @user_events = []
       results = user.user_events(0, stream_type: :all)
-      @user_events = results["events"].reverse[0..100]
       @user_stream_pos = results.next_stream_position
-      ap @user_events
+
+      @user_events = results["events"].reverse[0..50]
+      # ap @user_events
     end
 
     # get enterprise events and enterprise eventstream position
@@ -27,7 +30,7 @@ class EventstreamController < SecuredController
       results = admin.enterprise_events(created_after: start_date,
                                         created_before: now,
                                         limit: 20)
-      @enterprise_events = results["events"].reverse[0..50]
+      @enterprise_events = results["events"].reverse[0..75]
       @enterprise_stream_pos = results.next_stream_position
       # ap @enterprise_events
       # ap @enterprise_stream_pos
