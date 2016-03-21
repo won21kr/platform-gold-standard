@@ -39,6 +39,37 @@ class ApplicationController < ActionController::Base
     Box.user_client(session[:box_id])
   end
 
+  # count the tab clicks
+  def tab_usage(tab)
+
+    # if (ENV['RACK_ENV'] == 'production')
+
+      # if (tab == "vault")
+      #   TabUsage.increment_counter(:vault, by = 1)
+      # elsif (tab == "search")
+      #   TabUsage.increment_counter(:resources, by = 1)
+      # elsif (tab == "workflow")
+      #   TabUsage.increment_counter(:onboarding_tasks, by = 1)
+      # elsif (tab == "medical_credentialing")
+      #   TabUsage.increment_counter(:medical_credentialing, by = 1)
+      # elsif (tab == "upload-sign")
+      #   TabUsage.increment_counter(:upload_sign, by = 1)
+      # elsif (tab == "loan_docs")
+      #   TabUsage.increment_counter(:loan_origination, by = 1)
+      # elsif (tab == "tax_return")
+      #   TabUsage.increment_counter(:tax_return, by = 1)
+      # elsif (tab == "create-claim")
+      #   TabUsage.increment_counter(:submit_claim, by = 1)
+      # else
+      #   puts "Something went wrong!!"
+      # end
+
+    # ap TabUsage.all
+    # end
+
+
+  end
+
 
   private
 
@@ -64,5 +95,6 @@ class ApplicationController < ActionController::Base
     session[:upload_sign] = query['upload_sign'] unless query['upload_sign'].blank?
     session[:create_claim] = query['create_claim'] unless query['create_claim'].blank?
     session[:tax_return] = query['tax_return'] unless query['tax_return'].blank?
+    session[:media_content] = query['media_content'] unless query['media_content'].blank?
   end
 end

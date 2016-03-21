@@ -10,6 +10,7 @@ class TaxReturnController < SecuredController
     session[:current_page] = "tax_return"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Tax Return"
     docStatus = Hash.new
+    # tab_usage(session[:current_page])    
     threads = []
 
     # intitialize doc hash maps to be referenced in the view
@@ -348,7 +349,6 @@ class TaxReturnController < SecuredController
 
     box_file = client.file_from_id(fileId)
     enterprise = "enterprise_#{ENV['BOX_ENTERPRISE_ID']}"
-
 
     #why is this a thing??
     @metaValueHash = client.metadata(box_file, scope: enterprise, template: :taxCategory)

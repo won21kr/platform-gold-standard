@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 ruby "2.2.3"
 
@@ -55,6 +55,8 @@ gem 'puma'
 gem 'gon'
 gem "chardinjs-rails"
 gem "skylight"
+gem "sendgrid-ruby"
+gem 'mixpanel-ruby'
 
 gem 'google-api-client', '~> 0.8.1'
 # gem 'googleauth'

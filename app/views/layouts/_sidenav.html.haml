@@ -1,3 +1,5 @@
+%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
+
 %ul#slide-out.side-nav.fixed
   .center{:style => session[:navbar_color].nil? ? "background-color: #fff; padding: 15px;" : "background-color: #{session[:navbar_color]}; padding: 15px;"}
     .defaultsize
@@ -27,12 +29,21 @@
   - if session[:create_claim] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
       %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
+  - if session[:request_for_proposal] == 'on'
+    %li{:class => "#{'active' if session[:request_for_proposal] == "request_for_proposal"}"}
+      %a{:href => "/request_for_proposal", :style => "text-decoration: none;"} Request For Proposal
   - if session[:dicom_viewer] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
       %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
   - if session[:account_sub] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
       %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
+  - if session[:media_content] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "media_content"}"}
+      %a{:href => "/media-content", :style => "text-decoration: none;"} Media Content
+  - if session[:eventstream] == 'on'
+    %li{:class => "#{'active' if session[:current_page] == "eventstream"}"}
+      %a{:href => "/event-activity", :style => "text-decoration: none;"} Box Events
   %li
     %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
@@ -52,8 +63,8 @@
                 %span{:class => 'title'}
                   %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
 
-%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#"}
-  %i.material-icons{:style => "font-size: 38px; margin-top: 10px; margin-left: 5px;"}
+%a.button-collapse#mobile-menu{"data-activates" => "slide-out", :href => "#",}
+  %i.material-icons{:style => "font-size: 28px; margin-top: 3px; color: #fff;"}
     reorder
 
 

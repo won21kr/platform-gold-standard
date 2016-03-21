@@ -1,0 +1,55 @@
+
+.index-banner.section.no-pad-bot
+  .container
+    .row
+
+      %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} settings_applications
+        User Configurations
+      %h6.caption.thin{:style => "margin-top: -25px; margin-bottom: 45px;"}
+        Generate user configurations CSV
+
+      -# .col.s12{:style => "margin-left: 30px"}
+      -#   %h6{:style => "margin-bottom: 10px"}
+      -#     Feature Tab Usage (# of clicks)
+      -#   .col.s10.push-s1
+      -#     %table.centered
+      -#       %thead
+      -#         %tr
+      -#           %th Vault
+      -#           %th Resources
+      -#           %th Onboarding Task
+      -#           %th Medical Credentialing
+      -#           %th Loan Origination
+      -#           %th Upload & Sign
+      -#           %th Tax Return
+      -#           %th Submit A Claim
+      -#       %tr
+      -#         %td
+      -#           = @tabUsage.vault
+      -#         %td
+      -#           = @tabUsage.resources
+      -#         %td
+      -#           = @tabUsage.onboarding_tasks
+      -#         %td
+      -#           = @tabUsage.medical_credentialing
+      -#         %td
+      -#           = @tabUsage.loan_origination
+      -#         %td
+      -#           = @tabUsage.upload_sign
+      -#         %td
+      -#           = @tabUsage.tax_return
+      -#         %td
+      -#           = @tabUsage.submit_claim
+
+        .col.s8.push-s2{:style => "margin-top: 10px;"}
+          .flash
+            = render partial: "shared/flash_messages", flash: flash
+        .col.s12
+          .col.s4.push-s4{:style => "margin-top: 20px"}
+            %form.form-horizontal{:role => "form", :method => "post", :action => generate_csv_path, :name => "myForm"}
+              .form-group{:style => "inline"}
+                %label.control-label.col-sm-2{:for => "password"} Password:
+                %input#password.form-control.validate{:placeholder => "demo1234", :type => "password", :name => "password", :required => ""}
+              .form-group{:style => "inline"}
+                %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Generate

@@ -1,0 +1,130 @@
+.index-banner.section.no-pad-bot
+  .container
+    = render 'layouts/sidenav'
+    .row
+      .col.m12.l10.push-l2
+        // Title
+        .col.s12
+          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+            %i.material-icons.prefix{:style => "font-size: 28px;"} theaters
+            Media Content
+          %h6.caption.thin{:style => "font-size: 16px;"}
+            Exclusive access to new media content
+          -# Search bar
+          .col.s6.push-s6{:style => "margin-top: -31px;"}
+            %form#search{:action => search_show_path, :method => "post", :style => "text-align: right"}
+              %input{:name => "search", :placeholder => "Search shows...", :size => "40", style: "height: 1.05rem", :type => "text"}/
+          .col.s12{:style => "margin-top: 30px"}
+            .col.s4
+              %h6
+                Networks
+          .col.s12
+            %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+              %li.tab.active{:style => "font-size: 12px !important;"}
+                %a{:href => "#nbc"}
+                  NBC
+              %li.tab{:style => "font-size: 12px !important;"}
+                %a{:href => "#usa"}
+                  USA Network
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
+                %a{:href => "#cnbc"}
+                  CNBC
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
+                %a{:href => "#cnbc"}
+                  NBCSN
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
+                %a{:href => "#e"}
+                  E!
+              %li.tab.disabled{:style => "font-size: 12px !important;"}
+                %a{:href => "#cnbc"}
+                  Telemundo
+
+          -# TABS
+          .col.s12#nbc{:style => "margin-top: 30px"}
+            .col.s12
+              - @nbcItems.each do |f|
+                .card
+                  .card-image.waves-effect.waves-block.waves-light
+                    %img.activator{:src => download_url(f.imageId)}
+                  .card-content
+                    %span.card-title.activator.grey-text.text-darken-4
+                      = f.network
+                      %i.material-icons.right more_vert
+                    %p
+                      %a{"data-lity" => "", :href => preview_url(f.videoId)}
+                        = f.videoName.split('.').first
+                  .card-reveal
+                    %span.card-title.grey-text.text-darken-4
+                      More Info
+                      %i.material-icons.right close
+                    %h6{:style => "margin-top: 30px"}
+                      %b Description:
+                    %p
+                      =  f.videoDescription
+                    %h6{:style => "margin-top: 30px"}
+                      %b Related Names:
+                    %p
+                      =  f.staring
+                    %h6{:style => "margin-top: 30px"}
+                      %b Content Rating:
+                    %p
+                      =  f.rating
+                    %h6{:style => "margin-top: 30px"}
+                      %b Date Added:
+                    %p
+                      = DateTime.strptime(f.created_at).strftime("%B %d, %Y")
+
+
+          .col.s12#usa{:style => "margin-top: 30px"}
+            .col.s12
+              - @usaItems.each do |f|
+                .card
+                  .card-image.waves-effect.waves-block.waves-light
+                    %img.activator{:src => download_url(f.imageId)}
+                  .card-content
+                    %span.card-title.activator.grey-text.text-darken-4
+                      = f.network
+                      %i.material-icons.right more_vert
+                    %p
+                      %a{"data-lity" => "", :href => preview_url(f.videoId)}
+                        = f.videoName.split('.').first
+                  .card-reveal
+                    %span.card-title.grey-text.text-darken-4
+                      More Info
+                      %i.material-icons.right close
+                    %h6{:style => "margin-top: 30px"}
+                      %b Description:
+                    %p
+                      =  f.videoDescription
+                    %h6{:style => "margin-top: 30px"}
+                      %b Related Names:
+                    %p
+                      =  f.staring
+                    %h6{:style => "margin-top: 30px"}
+                      %b Content Rating:
+                    %p
+                      =  f.rating
+                    %h6{:style => "margin-top: 30px"}
+                      %b Date Added:
+                    %p
+                      = DateTime.strptime(f.created_at).strftime("%B %d, %Y")
+
+          -# .col.s12#first{:style => "margin-top: 30px"}
+          -#   .col.s10.push-s1
+              .card
+                .card-image.waves-effect.waves-block.waves-light
+                  %img.activator{:src => "images/office.jpg"}
+                .card-content
+                  %span.card-title.activator.grey-text.text-darken-4
+                    Card Title
+                    %i.material-icons.right more_vert
+                  %p
+                    %a{:href => "#"} This is a link
+                .card-reveal
+                  %span.card-title.grey-text.text-darken-4
+                    Card Title
+                    %i.material-icons.right close
+                  %p Here is some more information about this product that is only revealed once clicked on.
+
+          -# .col.s12#first{:style => "margin-top: 30px"}
+          -#   .col.s10.push-s1
