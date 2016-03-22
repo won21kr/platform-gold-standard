@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   helper :all
   helper_method :get_med_task_status
   before_action :check_config
+  require 'mixpanel'
 
   # get med credential workflow status
   def get_med_task_status

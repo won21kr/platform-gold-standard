@@ -146,7 +146,12 @@
               %input#eventstream{:type => "checkbox", :name => "eventstream", :checked => session[:eventstream] == 'on'}
               %label.checkbox{:for => "eventstream", :style => "color: black"} Box Events
           .col.s12{:style => "margin-top: 20px"}
-            %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
+            %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;",
+                                                      :type => "submit",
+                                                      :style => "margin-top: 10px;",
+                                                      :onclick => "mixpanelTabs(vault, resources, onboarding,
+                                                                            credentialing, loan_docs, uploadsign,
+                                                                            taxreturn, createclaim, company);"}
               Submit
 
 
@@ -211,6 +216,31 @@
           %a.grey-text.text-lighten-4.right{:href => "#!"} More Links
 
 :javascript
+
+  function mixpanelTabs(vault, resources, onboarding, credentialing, loan_docs, uploadsign, taxreturn, createclaim, company) {
+    // console.log("vault: " + vault.checked);
+    // console.log("resources: " + resources.checked);
+    // console.log("onboarding: " + onboarding.checked);
+    // console.log("credentialing: " + credentialing.checked);
+    // console.log("loan: " + loan_docs.checked);
+    // console.log("uploadnsign: " + uploadsign.checked);
+    // console.log("tax: " + taxreturn.checked);
+    // console.log("createclaim: " + createclaim.checked);
+    // console.log("company: " + company.value);
+    mixpanel.track("Vault", {"On" : vault.checked});
+    mixpanel.track("Resources", {"On" : resources.checked});
+    mixpanel.track("Onboarding Tasks", {"On" : onboarding.checked});
+    mixpanel.track("Medical Credentialing", {"On" : credentialing.checked});
+    mixpanel.track("Loan Origination", {"On" : loan_docs.checked});
+    mixpanel.track("Upload & Sign", {"On" : uploadsign.checked});
+    mixpanel.track("Tax Return", {"On" : taxreturn.checked});
+    mixpanel.track("Submit A Claim", {"On" : createclaim.checked});
+
+    // console.log(test);
+    // mixpanel.track("Clicked submit button");
+  }
+
+
   $(document).ready(function() {
     $('select').material_select();
   });

@@ -118,9 +118,9 @@ class ConfigController < ApplicationController
     session[:eventstream] = !params[:eventstream].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
-    # if (ENV['RACK_ENV'] == 'production')
-    capture_user_data
-    # end
+    if (ENV['RACK_ENV'] == 'production')
+      capture_user_data
+    end
     redirect_to config_path
   end
 

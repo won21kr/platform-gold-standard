@@ -6,7 +6,7 @@ class UserconfigController < ApplicationController
 
   def show
 
-    @tabUsage = TabUsage.all.first
+    # @tabUsage = TabUsage.all.first
   end
 
   def generate_csv
