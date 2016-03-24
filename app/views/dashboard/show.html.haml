@@ -36,7 +36,8 @@
             = render 'dashboard/myfiles'
           #sharedfiles
             .col.s2.push-s10{:style => "margin-top: 30px;"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
+              .uploadbtn{:style => "position: relative !important"}
+                %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
             .col.s12
               .flash.col.s8.push-s2{:style => "margin-top: 20px"}
                 - if @sharedFolder.id == @currentFolder
