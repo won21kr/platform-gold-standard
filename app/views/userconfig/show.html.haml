@@ -10,6 +10,38 @@
         Generate user configurations CSV
 
       .col.s12{:style => "margin-left: 30px"}
+        -# %h6{:style => "margin-bottom: 10px"}
+        -#   Feature Tab Usage (# of clicks)
+        -# .col.s10.push-s1
+        -#   %table.centered
+        -#     %thead
+        -#       %tr
+        -#         %th Vault
+        -#         %th Resources
+        -#         %th Onboarding Task
+        -#         %th Medical Credentialing
+        -#         %th Loan Origination
+        -#         %th Upload & Sign
+        -#         %th Tax Return
+        -#         %th Submit A Claim
+        -#     %tr
+        -#       %td
+        -#         = @tabUsage.vault
+        -#       %td
+        -#         = @tabUsage.resources
+        -#       %td
+        -#         = @tabUsage.onboarding_tasks
+        -#       %td
+        -#         = @tabUsage.medical_credentialing
+        -#       %td
+        -#         = @tabUsage.loan_origination
+        -#       %td
+        -#         = @tabUsage.upload_sign
+        -#       %td
+        -#         = @tabUsage.tax_return
+        -#       %td
+        -#         = @tabUsage.submit_claim
+
         .col.s8.push-s2{:style => "margin-top: 10px;"}
           .flash
             = render partial: "shared/flash_messages", flash: flash

@@ -99,6 +99,7 @@ GEM
     mimemagic (0.3.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    mixpanel-ruby (2.2.0)
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -218,6 +219,7 @@ DEPENDENCIES
   jquery-rails
   lazyload-rails
   memcachier
+  mixpanel-ruby
   omniauth (~> 1.2)
   omniauth-auth0 (~> 1.1)
   pg (~> 0.18.3)
@@ -237,3 +239,6 @@ DEPENDENCIES
   wicked_pdf
   wkhtmltopdf
   wkhtmltopdf-heroku
+
+BUNDLED WITH
+   1.11.2

@@ -122,6 +122,10 @@ Rails.application.routes.draw do
   get "/media-content" => "media_content#show", :as => "media_content"
   post "/media-content/search" => "media_content#search_show", :as => "search_show"
 
+  # Box Events
+  get "/event-activity" => "eventstream#show", :as => "eventstream"
+
+
   #request for proposal
   get "/request_for_proposal" => "request_for_proposal#show", :as => "request_for_proposal"
   post "/req_create_folder" => "request_for_proposal#create_folder", :as => "rfp_create_folder"

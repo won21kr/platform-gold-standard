@@ -1,11 +1,13 @@
+
 class UserconfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   require 'csv'
-
+  # require 'mixpanel-ruby'
 
   def show
 
+    # @tabUsage = TabUsage.all.first
   end
 
   def generate_csv

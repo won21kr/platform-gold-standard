@@ -31,7 +31,7 @@ class ConfigController < ApplicationController
       session[:account_sub] = "off"
       session[:dicom_viewer] = "off"
       session[:media_content] = "off"
-
+      session[:eventstream] = "off"
 
     end
 
@@ -113,6 +113,7 @@ class ConfigController < ApplicationController
     session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
     session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
     session[:media_content] = !params[:media_content].nil? ? 'on' : 'off'
+    session[:eventstream] = !params[:eventstream].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
@@ -171,6 +172,7 @@ class ConfigController < ApplicationController
     session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
     session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
     session[:config_url] << "&media_content=#{session[:media_content]}"
+    session[:config_url] << "&eventstream=#{session[:eventstream]}"
 
   end
 

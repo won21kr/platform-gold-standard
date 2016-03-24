@@ -10,6 +10,7 @@ class TaxReturnController < SecuredController
     session[:current_page] = "tax_return"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Tax Return"
     docStatus = Hash.new
+    # tab_usage(session[:current_page])    
     threads = []
 
     # intitialize doc hash maps to be referenced in the view
