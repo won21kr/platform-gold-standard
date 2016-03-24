@@ -1,6 +1,7 @@
 class Auth0Controller < ApplicationController
   def callback
     session[:userinfo] = request.env['omniauth.auth']
+    ap request.env['omniauth.auth']
 
     auth0_meta = session[:userinfo]['extra']['raw_info']['app_metadata']
     if auth0_meta and auth0_meta.has_key?('box_id')
