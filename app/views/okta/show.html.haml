@@ -1,0 +1,39 @@
+-# okta
+= javascript_include_tag "//example.okta.com/js/sdk/okta-sign-in-1.0.2.min.js"
+= stylesheet_link_tag "//example.okta.com/js/sdk/okta-sign-in-1.0.2.min.css"
+= stylesheet_link_tag "//example.okta.com/js/sdk/okta-theme-1.0.2.css"
+-# - unless session[:box_id]
+
+%body{:style => session[:navbar_color].nil? ? "background-color: #fff " : "background-color: #{session[:navbar_color]}" }
+  #okta-login-container
+
+:javascript
+
+  var baseUrl = 'https://boxplatformstd-admin.okta.com';
+  var logo = '#{session[:logo]}' == "" ? "https://hostr.co/file/wjURGV9V1IRu/ScreenShot2015-12-30at6.35.54PM.png" : '#{session[:logo]}';
+  var signup = '#{ENV['ACTIVE_URL']}' + '/okta/sign-up';
+  var oktaSignIn = new OktaSignIn({ baseUrl : baseUrl,
+                                    logo : logo,
+                                    labels : {'primaryauth.title' : "Okta Login" },
+                                    helpLinks : {
+                                      custom : [{ text : "Sign Up", href : signup}]
+                                    }
+                                    });
+
+  oktaSignIn.renderEl(
+    { el: '#okta-login-container' },
+    function (res) {
+      if (res.status === 'SUCCESS') {
+        console.log("result: " + JSON.stringify(res));
+        res.session.setCookieAndRedirect('#{ENV['ACTIVE_URL']}' + '/okta/callback?id=' + res.user.id + '&login=' + res.user.profile.login);
+      }
+    }
+  );
+
+:css
+
+  [type="checkbox"]:not(:checked), [type="checkbox"]:checked {}
+  [type="checkbox"] {}
+    [type="checkbox"] + label:before {
+      display: none !important
+    }

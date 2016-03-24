@@ -58,7 +58,7 @@
                   = image_tag "new_user.png", :width => '28px', :class => 'circle', :style => "margin-left: -13px;"
               .col.s6
                 %div{:style => "color: black; font-size: 12px; text-overflow: ellipsis; width: 10em; overflow: hidden; white-space: nowrap; margin-left: -10px; margin-top: 3px;"}
-                  = "#{session[:userinfo][:info][:name]}"
+                  = "#{session[:userinfo]['info']['name']}"
               .col.s2
                 %span{:class => 'title'}
                   %i.glyphicon.glyphicon-log-out{:style => "margin-left: 20px; margin-top: 4px;"}
