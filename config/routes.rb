@@ -85,8 +85,15 @@ Rails.application.routes.draw do
   # dicom viewer
   get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
 
+  # auth0
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
+
+  # okta
+  get "/okta" => "okta#show", :as => "okta_login"
+  get "/okta/callback" => "okta#callback"
+  get "/okta/sign-up" => "okta#signup", :as => "okta_signup"
+  post "/okta/sign-up-submit" => "okta#signup_submit", :as => "signup_submit"
 
   get '/logout' => 'home#logout', :as => "logout"
   get '/reset-logins' => 'home#reset_logins', :as => "reset_logins"

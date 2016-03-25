@@ -18,23 +18,22 @@ class EventstreamController < SecuredController
     # get user eventstream position and last 20 events
     threads << Thread.new do
       @user_events = []
-      results = user.user_events(0, stream_type: :all)
+      results1 = user.user_events(0, stream_type: :all)
+      initPosition = results1.next_stream_position
+      results = user.user_events(initPosition, stream_type: :all)
       @user_stream_pos = results.next_stream_position
 
       @user_events = results["events"].reverse[0..50]
+      # ap @user_events
       # ap @user_events
     end
 
     # get enterprise events and enterprise eventstream position
     threads << Thread.new do
-      results = admin.enterprise_events(created_after: start_date,
-                                        created_before: now,
-                                        limit: 20)
+      results = admin.enterprise_events(created_after: start_date, created_before: now, limit: 50)
+      ap results["events"].size
       @enterprise_events = results["events"].reverse[0..75]
       @enterprise_stream_pos = results.next_stream_position
-      # ap @enterprise_events
-      # ap @enterprise_stream_pos
-
     end
 
     # ap @user_stream_pos

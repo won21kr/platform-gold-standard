@@ -1,0 +1,24 @@
+%body{:style => "background-color: #FFF"}
+  .row
+    .col.s8.push-s2{:style => "margin-top: 40px;"}
+      .flash
+        = render partial: "shared/flash_messages", flash: flash
+    .col.s12.m12.l12
+      .col.l4.push-l4.s8.push-s2.m6.push-m3
+        .h3.center{:style => "text-align: center; margin-top: 30px; margin-bottom: 40px"}
+          Sign Up
+        %form.form-horizontal{:role => "form", :method => "post", :action => signup_submit_path}
+          .form-group
+            %label.control-label{:for => "first"} First Name
+            %input#first.form-control{:placeholder => "John", :type => "text", :name => "first", :required => ""}
+          .form-group
+            %label.control-label{:for => "last"} Last Name
+            %input#last.form-control{:placeholder => "Doe", :type => "text", :name => "last", :required => ""}
+          .form-group
+            %label.control-label{:for => "email"} Email
+            %input#email.form-control{:placeholder => "jdoe@example.com", :type => "email", :name => "email", :required => ""}
+          .form-group
+            %label.control-label{:for => "password"} Password
+            %input#password.form-control{:type => "password", :name => "password", :required => ""}
+          .form-group
+            %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit

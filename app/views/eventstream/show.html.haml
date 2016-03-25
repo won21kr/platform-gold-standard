@@ -8,11 +8,13 @@
           Box Events
         %h6.caption.thin{:style => "font-size: 16px;"}
           Track both admin and user events
+        -# informational overlays
+        .help-icon.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+            info
 
         .col.s12{:style => "margin-top: 30px"}
-          -# .col.s4
-          -#   %h6
-          -#     Box EventStream
         .col.s6
           %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
             %li.tab.active{:style => "font-size: 12px !important;"}
@@ -28,14 +30,14 @@
             %h6{:style => "margin-bottom: 30px"}
               Enterprise Events
             %table.highlight#adminEvents
-              %thead
+              %thead{"data-intro" => "Realtime log of events occuring in the Box enterprise", "data-position" => "top"}
                 %tr
                   %th{"data-field" => "name"} Type
                   %th{"data-field" => "modified"} Recorded At
                   %th{"data-field" => "id"} User Name
                   %th{"data-field" => "id"} IP Address
-              - @enterprise_events.each do |event|
-                %tr
+              - @enterprise_events.each_with_index do |event, i|
+                %tr{"data-intro" => i == 0 ? "Unique Box admin event" : nil, "data-position" => i == 0 ? "left" : nil}
                   %td
                     = event.event_type
                   %td
@@ -50,14 +52,14 @@
             %h6{:style => "margin-bottom: 30px"}
               = "User Events - " + session[:userinfo]['info']['name']
             %table.highlight#userEvents
-              %thead
+              %thead{"data-intro" => "Realtime log of events for the signed in Box App User", "data-position" => "top"}
                 %tr
                   %th{"data-field" => "name"} Type
                   %th{"data-field" => "modified"} Recorded At
                   %th{"data-field" => "id"} Item Name
                   -# %th{"data-field" => "id"} User
-              - @user_events.each do |event|
-                %tr
+              - @user_events.each_with_index do |event, i|
+                %tr{"data-intro" => i == 0 ? "Unique Box user event for #{session[:userinfo]['info']['name']}" : nil, "data-position" => i == 0 ? "left" : nil}
                   %td
                     = event.event_type
                   %td
@@ -68,6 +70,12 @@
                   -#   = event.created_by.name
 
 :javascript
+
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }
+
+
   var initPosition = "#{@user_stream_pos}";
   var entPosition = "#{@enterprise_stream_pos}";
 

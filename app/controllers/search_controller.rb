@@ -2,7 +2,7 @@ class SearchController < SecuredController
 
   skip_before_filter :verify_authenticity_token
   BOX_CLIENT = HTTPClient.new
-  BOX_CLIENT.cookie_manager = nil
+  # BOX_CLIENT.cookie_manager = nil
   BOX_CLIENT.send_timeout = 3600 #one hour; needed for lengthy uploads
 
   # main search page controller

@@ -2,9 +2,6 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
-  require 'csv'
-
-
   def show
     puts "config page get..."
 
@@ -33,6 +30,8 @@ class ConfigController < ApplicationController
       session[:media_content] = "off"
       session[:eventstream] = "off"
 
+      # Okta
+      session[:okta] = "off"
     end
 
     config_url
@@ -100,6 +99,7 @@ class ConfigController < ApplicationController
         session[:navbar_color] = '#' + params[:navbar_color]
       end
     end
+    session[:okta] = !params[:okta].nil? ? 'on' : 'off'
 
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
@@ -125,9 +125,9 @@ class ConfigController < ApplicationController
   # capture user + current configurations, modify csv, & upload to Box
   def capture_user_data
 
-    # add user config database entry, ActiveRecord video tutorial!!!
+    # add a user config row entry
     user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
-                               date: DateTime.now, # .strftime("%m/%d/%y")
+                               date: DateTime.now,
                                company: session[:company],
                                logo_url: session[:logo],
                                home_url: session[:background],
@@ -140,8 +140,10 @@ class ConfigController < ApplicationController
                                tax_return: session[:tax_return] == "on" ? true : false,
                                submit_claim: session[:create_claim] == "on" ? true : false)
     user_data.save
+
     # ap user_data
     # ap Userconfig.all
+
   end
 
   # clear session

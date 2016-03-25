@@ -2,6 +2,11 @@ class Auth0Controller < ApplicationController
   def callback
     session[:userinfo] = request.env['omniauth.auth']
 
+    # to fix local gravatar timeout issue
+    session[:userinfo][:extra][:raw_info][:picture] = nil
+    session[:userinfo][:info][:image] = nil
+
+
     auth0_meta = session[:userinfo]['extra']['raw_info']['app_metadata']
     if auth0_meta and auth0_meta.has_key?('box_id')
       puts "found box_id in auth0 metadata"
