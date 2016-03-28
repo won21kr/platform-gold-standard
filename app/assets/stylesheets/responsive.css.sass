@@ -4,9 +4,6 @@
 
 /* Smartphones (portrait) ----------- */
 @media all and (min-width : 0px) and (max-width : 320px)
-
-
-
   .hide_mobile
     display: none !important
 
@@ -14,13 +11,15 @@
     display: none !important
 
   // MY VAULT
-
   .index-banner
     background-color: #00184d
     height: 60px
     width: 100%
     position: fixed
     left: 0
+    margin-top: 0px
+    z-index: 10
+
 
   .help.btn
     display: none !important
@@ -29,7 +28,8 @@
     margin-left: -90px
 
   .myvault_table
-    margin-left: -30px
+    margin-left: -35px
+    width: 105%
 
   #mobile-menu
     z-index: 999999 !important
@@ -51,16 +51,19 @@
 
 
   // RESOURCES
-
   .resources_table
-    margin-left: -30px !important
+    margin-left: -38px !important
 
   .reposition_floatleft_m
     display: inline-block
 
+  // UPLOAD AND SIGN
+  .uploadsign_table
+    margin-left: -30px
+
 
   #search
-    margin-left: -15px !important
+    margin-left: -20px !important
 
   .filters
     display: none
@@ -77,6 +80,14 @@
     width: 100%
     position: fixed
     left: 0
+    margin-top: 0px
+    z-index: 10
+
+  .name_elipses
+    width: 3em
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
 
   .hide_mobile
     display: none !important
@@ -116,10 +127,12 @@
     display: none
 
   // RESOURCES
+  .resources_table
+    margin-left: -40px
 
-.resources_table
-  margin-left: -30px
-
+  // UPLOAD AND SIGN
+  .uploadsign_table
+    margin-left: -30px
 
 
 
@@ -131,6 +144,15 @@
     width: 100%
     position: fixed
     left: 0
+    margin-top: 0px
+    z-index: 10
+
+
+  .name_elipses
+    width: 8em
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
 
   .help-icon.btn
     display: none !important
@@ -162,6 +184,9 @@
     overflow: hidden
     text-overflow: ellipsis
 
+  //UPLOAD AND SIGN
+  .uploadsign_table
+    margin-left: -30px
 
 /* Mobile to iPad (landscape and portrait) ----------- */
 @media all and (min-width: 768px) and (max-width: 992px)
@@ -171,6 +196,8 @@
     width: 100%
     position: fixed
     left: 0
+    margin-top: 0px
+    z-index: 10
 
   .help-icon.btn
     display: none !important
