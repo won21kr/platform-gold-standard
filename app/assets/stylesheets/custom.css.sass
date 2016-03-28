@@ -3,11 +3,11 @@ $box_blue: #3278cf
 
 
 html, body
-  overflow-x: scroll !important
-  overflow-y: scroll !important
+  overflow-x: auto !important
+  overflow-y: auto !important
   width: 100%
-  height: 100%
-  position: fixed
+  height: 100% !important
+  position: relative !important
 
 body
   font-family: 'Open Sans', sans-serif
@@ -119,7 +119,7 @@ h3
   padding: 0
   list-style: none
   max-height: 500px
-  overflow: auto
+  // overflow: auto
 
 .commentList li
   margin: 0
@@ -162,7 +162,7 @@ tbody.collapse.in
 .collapsing
   position: relative
   height: 0
-  overflow: hidden
+  // overflow: hidden
   -webkit-transition-property: height, visibility
   -o-transition-property: height, visibility
   transition-property: height, visibility
@@ -182,7 +182,7 @@ tbody.collapse.in
   padding: 0
   // list-style: none
   max-height: 78%
-  overflow: auto !important
+  // overflow: auto !important
 
 .tabList li
   margin: 0
@@ -200,7 +200,7 @@ tbody.collapse.in
   width: 25px
   height: 95px
   text-indent: -15px
-  overflow: hidden
+  // overflow: hidden
   background-color: #CED3D8
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
 
@@ -228,7 +228,7 @@ tbody.collapse.in
   height: 35px
   padding-right: 0px
   text-indent: -15px
-  overflow: hidden
+  // overflow: hidden
   background-color: #fff
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
 
@@ -249,7 +249,7 @@ tbody.collapse.in
 
 .btn-file
   position: relative
-  overflow: hidden
+  // overflow: hidden
 
 .btn-file input[type=file]
   position: absolute
