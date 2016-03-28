@@ -23,7 +23,7 @@ class EventstreamController < SecuredController
       results1 = user.user_events(initPosition, stream_type: :all)
       @user_stream_pos = results1.next_stream_position
 
-      @user_events = results["events"].reverse[0..50]
+      @user_events = results["events"].reverse[0..50].uniq
       # ap @user_events
       # ap @user_events
     end
