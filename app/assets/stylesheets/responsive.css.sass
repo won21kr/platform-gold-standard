@@ -5,7 +5,12 @@
 /* Smartphones (portrait) ----------- */
 @media all and (min-width : 0px) and (max-width : 320px)
 
+
+
   .hide_mobile
+    display: none !important
+
+  .hide_below_480
     display: none !important
 
   // MY VAULT
@@ -38,11 +43,17 @@
     overflow: hidden
     text-overflow: ellipsis
 
+  .longer_name_elipses
+    width: 14em
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
 
   // RESOURCES
 
   .resources_table
-    margin-left: -30px
+    margin-left: -30px !important
 
   .reposition_floatleft_m
     display: inline-block
@@ -56,6 +67,10 @@
 
 /* Smartphones (landscape) ----------- */
 @media all and (min-width : 321px) and (max-width : 480px)
+
+  .hide_below_480
+    display: none !important
+
   .index-banner
     background-color: #00184d
     height: 60px
@@ -67,7 +82,6 @@
     display: none !important
 
     // MY VAULT
-
   .help-icon.btn
     display: none !important
 
@@ -88,6 +102,12 @@
 
   .name_elipses
     width: 4em
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  .longer_name_elipses
+    width: 14em
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
@@ -133,6 +153,14 @@
     display: none
 
   // RESOURCES
+
+  // CONFIG
+
+  .longer_name_elipses
+    width: 14em
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
 
 
 /* Mobile to iPad (landscape and portrait) ----------- */
