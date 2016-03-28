@@ -109,7 +109,7 @@
         } else {
           // event not yet processed
           newEvent = $("<tr><td>" + events[i].event_type +
-                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY hh:mm A") +
+                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
                        "</td><td>" + events[i].source.name + "</td></tr>").hide();
           $("#userEvents").prepend(newEvent);
           newEvent.fadeIn();
@@ -155,7 +155,7 @@
           //   name = events[i].source.name;
           // }
           newEvent = $("<tr><td>" + events[i].event_type +
-                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY hh:mm A") +
+                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
                        "</td><td>" + events[i].created_by.name +
                        "</td><td>" + events[i].ip_address + "</td></tr>").hide();
           $("#adminEvents").prepend(newEvent);

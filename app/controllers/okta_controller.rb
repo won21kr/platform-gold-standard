@@ -8,8 +8,8 @@ class OktaController < ApplicationController
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
     session[:userinfo]['info']['name'] = params["login"]
-    ap cookies
-    ap cookies['ln']
+    # ap cookies
+    # ap cookies['ln']
 
     # Get User Box ID from Okta
     okta_client = HTTPClient.new
