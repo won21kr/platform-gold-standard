@@ -4,6 +4,7 @@ class DashboardController < SecuredController
   # main controller for customer vault
   def show
 
+
     # get user client obj for Box API calls
     client = user_client
     session[:current_page] = "vault"

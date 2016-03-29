@@ -1,96 +1,97 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        // Title
-        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-          %i.material-icons.prefix{:style => "font-size: 28px;"} spellcheck
-          Upload & Sign
-        %h6.caption.thin{:style => "font-size: 16px;"}
-          Upload and e-sign documents
-        .help-icon.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
-          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
-          %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
-            info
-        // Tabs
-        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px;"}
-          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 88% !important;", "data-intro" => "These tabs represent folders in Box. Signing a file below will make an api call to move to the 'Signed Documents' folder in Box", "data-position" => "left"}
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a.active{:href => "#pendingSignature"}
-                Pending Signature
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#signed"}
-                Signed
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} spellcheck
+        Upload & Sign
+      %h6.caption.thin{:style => "font-size: 16px;"}
+        Upload and e-sign documents
+      .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+        %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+        %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
+          info
+      // Tabs
+      .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px;"}
+        %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 88% !important;", "data-intro" => "These tabs represent folders in Box. Signing a file below will make an api call to move to the 'Signed Documents' folder in Box", "data-position" => "left"}
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a.active{:href => "#pendingSignature"}
+              Pending Signature
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#signed"}
+              Signed
 
-        // Pending Sig. or Signed Tab
-        .col.s12{:style => "margin-left: 30px"}
-          #pendingSignature
-            .col.s2.push-s10{:style => "margin-top: 30px;"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
+      // Pending Sig. or Signed Tab
+      .col.s12{:style => "margin-left: 30px"}
+        #pendingSignature
+          .col.s2.push-s10{:style => "margin-top: 30px;"}
+            %a.waves-effect.btn.white.black-text.modal-trigger.uploadbtn{:href => "#uploadModal", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
+          .col.s12
+            .flash.col.s8.push-s2{:style => "margin-top: 20px"}
+              = render partial: "shared/flash_messages", flash: flash
+          - if (@pendingFiles.size > 0)
+            %table.highlight.uploadsign_table
+              %thead
+                %tr
+                  %th{"data-field" => "id"} File
+                  %th{"data-field" => "name"} Name
+                  %th{"data-field" => "foop"} Actions
+                %tbody
+                  / list file contents
+                  - @pendingFiles.each do |f|
+                    %tr
+                      %td{"data-lity" => "", :href => preview_url(f.id)}
+                        = image_tag(thumbnail_url(f.id), width: '40px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                      %td
+                        %div.name_elipses{:style => "inline"}
+                          = f.name
+                      / file action options
+                      %td
+                        .btn-group
+                          %a.btn.white.tooltipped{"data-lity" => "", :href => preview_url(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                            %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                          %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                            %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+                          %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
+                            %span.glyphicon.glyphicon-check{:style => "top: 3px; color: #263238"}
+          - else
+            .col.s5.push-s3
+              .h5{:style => "margin-top: 35px;"}
+                You have no documents pending signature at this time
+
+        #signed
+          .col.s2.push-s10{:style => "margin-top: 86px;"}
+          - if (@signedFiles.size > 0)
+            %table.highlight
+              %thead
+                %tr
+                  %th{"data-field" => "id"} File
+                  %th{"data-field" => "name"} Name
+                  %th{"data-field" => "foop"} Actions
+                %tbody
+                  / list file contents
+                  - @signedFiles.each do |f|
+                    %tr
+                      %td{"data-lity" => "", :href => preview_url(f.id)}
+                        = image_tag(thumbnail_url(f.id), width: '40px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
+                      %td
+                        %span{:style => "inline"}
+                          = f.name
+                      / file action options
+                      %td
+                        .btn-group
+                          %a.btn.white.tooltipped{"data-lity" => "", :href => preview_url(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
+                            %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                          %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                            %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+          - else
             .col.s12
-              .flash.col.s8.push-s2{:style => "margin-top: 20px"}
-                = render partial: "shared/flash_messages", flash: flash
-            - if (@pendingFiles.size > 0)
-              %table.highlight
-                %thead
-                  %tr
-                    %th{"data-field" => "id"} File
-                    %th{"data-field" => "name"} Name
-                    %th{"data-field" => "foop"} Actions
-                  %tbody
-                    / list file contents
-                    - @pendingFiles.each do |f|
-                      %tr
-                        %td{"data-lity" => "", :href => preview_url(f.id)}
-                          = image_tag(thumbnail_url(f.id), width: '40px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
-                        %td
-                          %span{:style => "inline"}
-                            = f.name
-                        / file action options
-                        %td
-                          .btn-group
-                            %a.btn.white.tooltipped{"data-lity" => "", :href => preview_url(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                            %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
-                            %a.btn.white.tooltipped{href: start_docusign_id_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"DocuSign", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-check{:style => "top: 3px; color: #263238"}
-            - else
               .col.s5.push-s3
                 .h5{:style => "margin-top: 35px;"}
-                  You have no documents pending signature at this time
-
-          #signed
-            .col.s2.push-s10{:style => "margin-top: 86px;"}
-            - if (@signedFiles.size > 0)
-              %table.highlight
-                %thead
-                  %tr
-                    %th{"data-field" => "id"} File
-                    %th{"data-field" => "name"} Name
-                    %th{"data-field" => "foop"} Actions
-                  %tbody
-                    / list file contents
-                    - @signedFiles.each do |f|
-                      %tr
-                        %td{"data-lity" => "", :href => preview_url(f.id)}
-                          = image_tag(thumbnail_url(f.id), width: '40px', :class => "tooltipped", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View")
-                        %td
-                          %span{:style => "inline"}
-                            = f.name
-                        / file action options
-                        %td
-                          .btn-group
-                            %a.btn.white.tooltipped{"data-lity" => "", :href => preview_url(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                            %a.btn.white.tooltipped{href: delete_uploadnsign_file_path(f.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                              %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
-            - else
-              .col.s12
-                .col.s5.push-s3
-                  .h5{:style => "margin-top: 35px;"}
-                    You have no signed documents at this time
+                  You have no signed documents at this time
 
 #uploadModal.modal
   .modal-content
