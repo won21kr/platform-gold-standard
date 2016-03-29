@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
 
   # fetches config query from encoded URL and updates the config session variables
   def insert_query(query)
-    session[:okta] = query['okta'] unless query['okta'].blank?    
+    session[:okta] = query['okta'] unless query['okta'].blank?
     session[:logo] = query['logo'] unless query['logo'].blank?
     session[:navbar_color] = '#' + query['back_color'] unless query['back_color'].blank?
     session[:vault] = query['vault'] unless query['vault'].blank?
@@ -97,5 +97,6 @@ class ApplicationController < ActionController::Base
     session[:create_claim] = query['create_claim'] unless query['create_claim'].blank?
     session[:tax_return] = query['tax_return'] unless query['tax_return'].blank?
     session[:media_content] = query['media_content'] unless query['media_content'].blank?
+    session[:eventstream] = query['eventstream'] unless query['eventstream'].blank?    
   end
 end
