@@ -1,80 +1,81 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        // Title
-        .col.s12
-          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-            %i.material-icons.prefix{:style => "font-size: 28px;"} library_add
-            Submit A Claim
-          %h6.caption.thin{:style => "font-size: 16px;"}
-            Create & submit an insurance claim
-          -# informational overlays
-          .help-icon.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
-            %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
-            %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
-              info
-        // Tabs
-        .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px"}
-          %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#newclaim", :class => "#{'active' if @currentPage == 'newClaim'}"}
-                New Claim
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted'}"}
-                Submitted Claims
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} library_add
+          Submit A Claim
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Create & submit an insurance claim
+        -# informational overlays
+        .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
+            info
+      // Tabs
+      .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px"}
+        %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#newclaim", :class => "#{'active' if @currentPage == 'newClaim'}"}
+              New Claim
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted'}"}
+              Submitted Claims
 
 
-        .col.s12#newclaim{:style => "margin-top: 30px"}
-          .col.s10.push-s1
-            - if @currentPage == 'newClaim'
-              .flash
-                = render partial: "shared/flash_messages", flash: flash
-          .col.s12{:style => "margin-bottom: 30px; margin-top: 20px"}
-            .col.l6.push-l3.s8.push-s2
-              %h5{:style => "text-align: center; font-size: 130%"}
-                Take a photo of the incident or select a photo from your device
-          %form{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
-            .form-group
-              %button.waves-effect.btn.white.black-text.btn-file{"data-intro" => "Upload a file of the incident to a shared \"Claims\" folder in Box", "data-position" => "left"}
-                Upload Or Select a File
-                %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
+      .col.s12#newclaim{:style => "margin-top: 30px"}
+        .col.s10.push-s1
+          - if @currentPage == 'newClaim'
+            .flash
+              = render partial: "shared/flash_messages", flash: flash
+        .col.s12{:style => "margin-bottom: 30px; margin-top: 20px"}
+          .col.l6.push-l3.s8.push-s2
+            %h5{:style => "text-align: center; font-size: 130%"}
+              Take a photo of the incident or select a photo from your device
+        %form{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
+          .form-group
+            %button.waves-effect.btn.white.black-text.btn-file{"data-intro" => "Upload a file of the incident to a shared \"Claims\" folder in Box", "data-position" => "left"}
+              Upload Or Select a File
+              %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
 
-        .col.s12#submittedclaims{:style => "margin-top: 20px"}
-          .col.l10.push-l1.s12
-            - if @currentPage == 'submitted'
-              .flash
-                = render partial: "shared/flash_messages", flash: flash
-          %table.highlight{:style => "margin-top: 20px"}
-            %thead
-              %tr
-                %th{"data-field" => "id"} Claim ID
-                %th{"data-field" => "name"} Type
-                %th{"data-field" => "price"} Estimated Value
-                %th#claim-descr{"data-field" => "desc"} Description
-                %th{"data-field" => "status"} Status
+      .col.s12#submittedclaims{:style => "margin-top: 20px"}
+        .col.l10.push-l1.s12
+          - if @currentPage == 'submitted'
+            .flash
+              = render partial: "shared/flash_messages", flash: flash
+        %table.highlight.claim_table{:style => "margin-top: 20px"}
+          %thead
+            %tr
+              %th{"data-field" => "id"} Claim ID
+              %th{"data-field" => "name"} Type
+              %th{"data-field" => "price"} Estimated Value
+              %th#claim-descr{"data-field" => "desc"} Description
+              %th{"data-field" => "status"} Status
 
-            - @claims.each_with_index do |result, i|
-              - if !result.claimId.nil?
-                %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View", "data-intro" => i == 0 ? "Claim metadata surfaced from Box. Click on the row to view the claim image" : nil, "data-position" => i == 0 ? "left" : nil}
-                  %td
-                    = result.claimId
-                  %td
-                    = result.type
-                  %td
-                    = "$#{result.estimatedValue}"
-                  %td#claim-descr
-                    %div{:style => "text-overflow: ellipsis; width: 20em; overflow: hidden; white-space: wrap"}
-                      = result.description
-                  %td
-                    = result.status
-          - if @claims.size == 0
-            %h6{:style => "text-align: center"}
-              You have not yet submitted any claims
+          - @claims.each_with_index do |result, i|
+            - if !result.claimId.nil?
+              %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View", "data-intro" => i == 0 ? "Claim metadata surfaced from Box. Click on the row to view the claim image" : nil, "data-position" => i == 0 ? "left" : nil}
+                %td
+                  = result.claimId
+                %td
+                  = result.type
+                %td
+                  = "$#{result.estimatedValue}"
+                %td#claim-descr
+                  %div{:style => "text-overflow: ellipsis; width: 20em; overflow: hidden; white-space: wrap"}
+                    = result.description
+                %td
+                  = result.status
+        - if @claims.size == 0
+          %h6{:style => "text-align: center"}
+            You have not yet submitted any claims
 
-  %p{:style=>"text-align: right; font-size: 10px;"}
-    = link_to "reset", claim_reset_path
+%p{:style=>"text-align: right; font-size: 10px;"}
+  = link_to "reset", claim_reset_path
 
 :javascript
 

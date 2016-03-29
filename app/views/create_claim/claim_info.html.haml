@@ -1,46 +1,47 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        // Title
-        .col.s12
-          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-            %i.material-icons.prefix{:style => "font-size: 28px;"} library_add
-            Create A Claim
-          %h6.caption.thin{:style => "font-size: 16px;"}
-            Create & submit an insurance claim
-          .help-icon.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
-            %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
-            %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
-              info
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} library_add
+          Create A Claim
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Create & submit an insurance claim
+        .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+          %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
+            info
 
-        .col.s12{:style => "margin-top: 30px"}
-          .col.s5
-            %h6
-              Fill out claim information:
-        .col.s8.push-s2{:style => "margin-top: 20px"}
-          %form.form-horizontal{:role => "form", :method => "post", :action => submit_claim_path, "data-intro" => "Upon submit, form information is attached as metadata to the uploaded claim file", "data-position" => "left"}
-            .form-group
-              %label.control-label.col-sm-3{:for => "type"} Type:
-              .col-sm-6
-                %select#type.form-control{:placeholder => "Type", :type => "text", :name => "type"}
-                  %option{:disabled => "", :selected => "", :value => ""} Choose your option
-                  %option Auto
-                  %option Boiler
-                  %option Earthquake
-                  %option Flood
-                  %option Home
-            .form-group
-              %label.control-label.col-sm-2{:for => "value"} Estimated Value ($):
-              %input#value.form-control{:type => "number", :name => "value", :min => "1000", :max => "500000", :step => "1000", :value => "50000"}
-            .form-group
-              %label.control-label.col-sm-2{:for => "id"} Description:
-              %input#description.form-control{:type => "text", :placeholder => "claim description...", :name => "description"}
-            %input{:name => "formSubmit", :type => "hidden", :value => "true"}
-            .form-group
-              -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
-              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit Claim
+      .col.s12{:style => "margin-top: 30px"}
+        .col.s5
+          %h6
+            Fill out claim information:
+      .col.s8.push-s2{:style => "margin-top: 20px"}
+        %form.form-horizontal{:role => "form", :method => "post", :action => submit_claim_path, "data-intro" => "Upon submit, form information is attached as metadata to the uploaded claim file", "data-position" => "left"}
+          .form-group
+            %label.control-label.col-sm-3{:for => "type"} Type:
+            .col-sm-6
+              %select#type.form-control{:placeholder => "Type", :type => "text", :name => "type"}
+                %option{:disabled => "", :selected => "", :value => ""} Choose your option
+                %option Auto
+                %option Boiler
+                %option Earthquake
+                %option Flood
+                %option Home
+          .form-group
+            %label.control-label.col-sm-2{:for => "value"} Estimated Value ($):
+            %input#value.form-control{:type => "number", :name => "value", :min => "1000", :max => "500000", :step => "1000", :value => "50000"}
+          .form-group
+            %label.control-label.col-sm-2{:for => "id"} Description:
+            %input#description.form-control{:type => "text", :placeholder => "claim description...", :name => "description"}
+          %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+          .form-group
+            -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
+            %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit Claim
 
 :javascript
 

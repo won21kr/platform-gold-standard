@@ -14,7 +14,7 @@
         %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
         %span{:style => "color: #222222; position: relative; top: -4px; left: -3px; text-transform: lowercase; font-size: 12px;"}
           info
-          
+
       // Workflow
       - if (session[:progress] == 0)
         .col.s2.push-s10.hide_mobile{:style => "margin-top: -20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
@@ -41,7 +41,7 @@
             %input{:name => "formSubmit", :type => "hidden", :value => "true"}
             .form-group
               -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
-              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit For Approval
+              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit
       - elsif (session[:progress] == 1)
         .col.s2.push-s10.hide_mobile{:style => "margin-top:-20px;"}
           %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
