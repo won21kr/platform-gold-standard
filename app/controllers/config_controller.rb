@@ -99,6 +99,8 @@ class ConfigController < ApplicationController
         session[:navbar_color] = '#' + params[:navbar_color]
       end
     end
+
+    # Okta configuration
     session[:okta] = !params[:okta].nil? ? 'on' : 'off'
 
     # check feature tab configuration
@@ -129,6 +131,7 @@ class ConfigController < ApplicationController
     user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
                                date: DateTime.now,
                                company: session[:company],
+                               okta: session[:okta] == "on" ? true : false,
                                logo_url: session[:logo],
                                home_url: session[:background],
                                vault: true,
@@ -138,9 +141,10 @@ class ConfigController < ApplicationController
                                loan_origination: session[:loan_docs] == "on" ? true : false,
                                upload_sign: session[:upload_sign] == "on" ? true : false,
                                tax_return: session[:tax_return] == "on" ? true : false,
-                               submit_claim: session[:create_claim] == "on" ? true : false)
+                               submit_claim: session[:create_claim] == "on" ? true : false,
+                               eventstream: session[:eventstream] == "on" ? true : false,
+                               media_content: session[:media_content] == "on" ? true : false)
     user_data.save
-
     # ap user_data
     # ap Userconfig.all
 
@@ -162,6 +166,7 @@ class ConfigController < ApplicationController
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
+    session[:config_url] << "&okta=#{session[:okta]}"
     session[:config_url] << "&vault=#{session[:vault]}"
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"

@@ -21,9 +21,10 @@ class UserconfigController < ApplicationController
       CSV.open("user-data/user-data.csv", "w") do |csv|
 
         # first csv line
-        csv << ["User", "Date Accessed", "Company", "Logo URL", "Home Page URL",
+        csv << ["User", "Date Accessed", "Company", "Okta", "Logo URL", "Home Page URL",
                 "Vault", "Resources", "Onboarding Tasks", "Medical Credentialing",
-                "Loan Origination", "Upload & Sign", "Tax Return", "Submit A Claim"]
+                "Loan Origination", "Upload & Sign", "Tax Return", "Submit A Claim",
+                "Box Events", "Media Content"]
 
         # iterate through each db entry
         configurations.each do |c|
@@ -32,6 +33,7 @@ class UserconfigController < ApplicationController
           csv << [c.username,
                   c.date.strftime("%m/%d/%y"),
                   c.company,
+                  c.okta ? "X" : "",
                   c.logo_url,
                   c.home_url,
                   c.vault ? "X" : "",
@@ -41,7 +43,9 @@ class UserconfigController < ApplicationController
                   c.loan_origination ? "X" : "",
                   c.upload_sign ? "X" : "",
                   c.tax_return ? "X" : "",
-                  c.submit_claim ? "X" : ""]
+                  c.submit_claim ? "X" : "",
+                  c.eventstream ? "X" : "",
+                  c.media_content ? "X" : ""]
         end
 
       end
