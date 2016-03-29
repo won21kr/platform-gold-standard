@@ -1,79 +1,80 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-          %i.material-icons.prefix{:style => "font-size: 28px;"} done
-          Loan Origination
-        %h6.caption.thin{:style => "font-size: 16px;"}
-          Guided upload for financial documents
-        .help-icon.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
-          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
-          %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
-            info
-        .col.s12{:style => "margin-top: 35px; margin-left: 30px"}
-          .col.s8.push-s2.flash
-            = render partial: "shared/flash_messages", flash: flash
-          %table.highlight
-            %thead
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} done
+        Loan Origination
+      %h6.caption.thin{:style => "font-size: 16px;"}
+        Guided upload for financial documents
+      .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+        %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+        %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
+          info
+      .col.s12{:style => "margin-top: 35px; margin-left: 30px"}
+        .col.s8.push-s2.flash
+          = render partial: "shared/flash_messages", flash: flash
+        %table.highlight.loan_table
+          %thead
+            %tr
+              %th File
+              %th Name
+              %th.hidden-xs.hidden-sm Status
+              %th Actions
+            %tbody
+              -# Loan Agreement
               %tr
-                %th File
-                %th Name
-                %th.hidden-xs.hidden-sm Status
-                %th Actions
-              %tbody
-                -# Loan Agreement
-                %tr
-                  %td.td
-                    = image_tag @docStatus["Loan Image"], width: '40px'
-                  %td.td
-                    Loan Agreement
-                  %td.td
-                    = @docStatus["Loan Agreement"]
-                  %td.td
-                    - if @docStatus["Loan Agreement"] == "Missing"
-                      %a.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px; ", "data-intro" => "Upload the missing Loan Document for approval", "data-position" => "left"} Upload
-                    - elsif @docStatus["Loan Agreement"] == "Signature Needed"
-                      %form{:method => "get", :action => loan_docusign_path(@fileId["Loan Agreement"])}
-                        %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                          Sign
-                    - else
-                      %form{:method => "get", :action => view_doc_path(@fileId["Loan Agreement"])}
-                        %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                          View
-                -# W2 Form
-                %tr
-                  %td.td
-                    = image_tag @docStatus["W2 Image"], width: '40px'
-                  %td.td
-                    W2 Form
-                  %td.td
-                    = @docStatus["W2 Form"]
-                  %td.td
-                    - if @docStatus["W2 Form"] == "Missing"
-                      %button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#w2Modal", :style => "font-size: 10px;"} Upload
-                    - else
-                      %form{:method => "get", :action => view_doc_path(@fileId["W2 Form"])}
-                        %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                          View
-                          %i.fa.fa-comment.unread-count{:class => "new badge", :style => "font-size: 14px; margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['W2']}"}
-                -# Tax Return
-                %trmedi
-                  %td.td
-                    = image_tag @docStatus["Tax Image"], width: '40px'
-                  %td.td
-                    Tax Return
-                  %td.td
-                    = @docStatus["Tax Return"]
-                  %td.td
-                    - if @docStatus["Tax Return"] == "Missing"
-                      %button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Tax"].size > 0 ? "#taxVaultDocs" : "#taxModal", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
-                    - else
-                      %form{:method => "get", :action => view_doc_path(@fileId["Tax Return"])}
-                        %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                          View
-                          %i.fa.fa-comment.unread-count{:style => "font-size: 14px; margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Tax']}"}
+                %td.td
+                  = image_tag @docStatus["Loan Image"], width: '40px'
+                %td.td
+                  Loan Agreement
+                %td.td
+                  = @docStatus["Loan Agreement"]
+                %td.td
+                  - if @docStatus["Loan Agreement"] == "Missing"
+                    %a.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px; ", "data-intro" => "Upload the missing Loan Document for approval", "data-position" => "left"} Upload
+                  - elsif @docStatus["Loan Agreement"] == "Signature Needed"
+                    %form{:method => "get", :action => loan_docusign_path(@fileId["Loan Agreement"])}
+                      %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                        Sign
+                  - else
+                    %form{:method => "get", :action => view_doc_path(@fileId["Loan Agreement"])}
+                      %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                        View
+              -# W2 Form
+              %tr
+                %td.td
+                  = image_tag @docStatus["W2 Image"], width: '40px'
+                %td.td
+                  W2 Form
+                %td.td
+                  = @docStatus["W2 Form"]
+                %td.td
+                  - if @docStatus["W2 Form"] == "Missing"
+                    %button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#w2Modal", :style => "font-size: 10px;"} Upload
+                  - else
+                    %form{:method => "get", :action => view_doc_path(@fileId["W2 Form"])}
+                      %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                        View
+                        %i.fa.fa-comment.unread-count{:class => "new badge", :style => "font-size: 14px; margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['W2']}"}
+              -# Tax Return
+              %trmedi
+                %td.td
+                  = image_tag @docStatus["Tax Image"], width: '40px'
+                %td.td
+                  Tax Return
+                %td.td
+                  = @docStatus["Tax Return"]
+                %td.td
+                  - if @docStatus["Tax Return"] == "Missing"
+                    %button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Tax"].size > 0 ? "#taxVaultDocs" : "#taxModal", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
+                  - else
+                    %form{:method => "get", :action => view_doc_path(@fileId["Tax Return"])}
+                      %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                        View
+                        %i.fa.fa-comment.unread-count{:style => "font-size: 14px; margin-left: 4px; margin-right: -7px", "data-count" => "#{@fileComments['Tax']}"}
 
   %p{:style=>"text-align: right; font-size: 10px;"}
     = link_to "reset", reset_loan_docs_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Loan Documents workflow", "data-position" => "top"}

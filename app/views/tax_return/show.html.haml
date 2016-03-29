@@ -1,129 +1,130 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        // Title
-        .col.s12
-          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-            %i.material-icons.prefix{:style => "font-size: 28px;"} business
-            Taxes
-          %h6.caption.thin{:style => "font-size: 16px;"}
-            Upload your relevant tax documents here.
-        // Tabs
-        .col.s5.push-s7{:style => "margin-top: -45px; margin-left: 40px"}
-          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#newclaim"}
-                My Tax Organizer
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted' || params[:tab] == "signed"}"}
-                My Tax Preparation
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} business
+          Taxes
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Upload your relevant tax documents here.
 
-        .col.s12#newclaim{:style => "margin-top: 10px"}
-          .col.s10.push-s1
-            .col.s12{:style => "margin-top: 45px; margin-left: 30px"}
-              %table.highlight
-                %thead
+      .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px", "data-intro" => "These tabs represent folders in Box. Sharing a file below will make an api call to move to the 'Shared Files' folder where Company Employee, a Box managed user, is a collaborator (Editor)", "data-position" => "left"}
+        %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#newclaim"}
+              Tax Organizer
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted' || params[:tab] == "signed"}"}
+              Tax Preparation
+
+      .col.s12#newclaim{:style => "margin-top: 10px"}
+        .col.s10.push-s1
+          .col.s12{:style => "margin-top: 45px; margin-left: 30px"}
+            %table.highlight.mytax_table
+              %thead
+                %tr
+                  %th File
+                  %th Name
+                  %th.hidden-xs.hidden-sm Status
+                  %th Actions
+                %tbody
+                  -# Loan Agreement
                   %tr
-                    %th File
-                    %th Name
-                    %th.hidden-xs.hidden-sm Status
-                    %th Actions
-                  %tbody
-                    -# Loan Agreement
-                    %tr
-                      %td.td{:id => "formStatus"}
-                        = image_tag @docStatus["Forms Image"], width: '40px'
-                      %td.td{:id => "formStatus"}
-                        Forms
-                      %td.td{:id => "formStatus"}
-                        = @docStatus["Forms"]
-                      %td.td
-                        - if @docStatus["Forms"] == "Missing"
-                          %a.waves-effect.btn.white.black-text.modal-trigger#uploadButton{:href => @searchFiles["Forms"].size > 0 ? "#formsDocs" : "/forms_file", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px;"} Upload
-                        - elsif @docStatus["Forms (Not Signed)"] == "Signature Needed"
-                          %form{:method => "get", :action => tax_loan_docusign_path(@fileId["Forms"])}
-                            %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                              Sign
-                        - else
-                          %form{:method => "get", :action => view_doc_path(@fileId["Forms"])}
-                            %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                              View
-                    -# W2 Form
-                    %tr
-                      %td.td{:id => "incomeStatus"}
-                        = image_tag @docStatus["Income Image"], width: '40px'
-                      %td.td{:id => "incomeStatus"}
-                        Income/Investments
-                      %td.td{:id => "incomeStatus"}
-                        = @docStatus["Income"]
-                      %td.td
-                        - if @docStatus["Income"] == "Missing"
-                          %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Income"].size > 0 ? "#incomeDocs" : "/income_file", :style => "text-decoration: none; font-size: 10px;"} Upload
-                        - else
-                          %form{:method => "get", :action => view_doc_path(@fileId["Income"])}
-                            %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                              View
-                    -# Tax Return
-                    %tr
-                      %td.td{:id => "deductionsStatus"}
-                        = image_tag @docStatus["Deductions Image"], width: '40px'
-                      %td.td{:id => "deductionsStatus"}
-                        Deductions/Expenses
-                      %td.td{:id => "deductionsStatus"}
-                        = @docStatus["Deductions"]
-                      %td.td
-                        - if @docStatus["Deductions"] == "Missing"
-                          %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Deductions"].size > 0 ? "#deductionsDocs" : "/deductions_file", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
-                        - else
-                          %form{:method => "get", :action => view_doc_path(@fileId["Deductions"])}
-                            %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
-                              View
+                    %td.td{:id => "formStatus"}
+                      = image_tag @docStatus["Forms Image"], width: '40px'
+                    %td.td{:id => "formStatus"}
+                      Forms
+                    %td.td{:id => "formStatus"}
+                      = @docStatus["Forms"]
+                    %td.td
+                      - if @docStatus["Forms"] == "Missing"
+                        %a.waves-effect.btn.white.black-text.modal-trigger#uploadButton{:href => @searchFiles["Forms"].size > 0 ? "#formsDocs" : "/forms_file", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px;"} Upload
+                      - elsif @docStatus["Forms (Not Signed)"] == "Signature Needed"
+                        %form{:method => "get", :action => tax_loan_docusign_path(@fileId["Forms"])}
+                          %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                            Sign
+                      - else
+                        %form{:method => "get", :action => view_doc_path(@fileId["Forms"])}
+                          %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                            View
+                  -# W2 Form
+                  %tr
+                    %td.td{:id => "incomeStatus"}
+                      = image_tag @docStatus["Income Image"], width: '40px'
+                    %td.td{:id => "incomeStatus"}
+                      Income/Investments
+                    %td.td{:id => "incomeStatus"}
+                      = @docStatus["Income"]
+                    %td.td
+                      - if @docStatus["Income"] == "Missing"
+                        %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Income"].size > 0 ? "#incomeDocs" : "/income_file", :style => "text-decoration: none; font-size: 10px;"} Upload
+                      - else
+                        %form{:method => "get", :action => view_doc_path(@fileId["Income"])}
+                          %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                            View
+                  -# Tax Return
+                  %tr
+                    %td.td{:id => "deductionsStatus"}
+                      = image_tag @docStatus["Deductions Image"], width: '40px'
+                    %td.td{:id => "deductionsStatus"}
+                      Deductions/Expenses
+                    %td.td{:id => "deductionsStatus"}
+                      = @docStatus["Deductions"]
+                    %td.td
+                      - if @docStatus["Deductions"] == "Missing"
+                        %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Deductions"].size > 0 ? "#deductionsDocs" : "/deductions_file", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
+                      - else
+                        %form{:method => "get", :action => view_doc_path(@fileId["Deductions"])}
+                          %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
+                            View
 
-        .col.s12#submittedclaims{:style => "margin-top: 20px"}
-          .col.s10.push-s1
-            = render partial: "shared/flash_messages", flash: flash
+      .col.s12#submittedclaims{:style => "margin-top: 20px"}
+        .col.s10.push-s1
+          = render partial: "shared/flash_messages", flash: flash
 
-          %table{:style => "margin-top: 45px; margin-left: 30px"}
-            %thead
-              %tr
-                %th File Name
-                %th Date Submitted
-                %th Category
-                %th Subcategory
-                %th Actions
-            %tbody
-            -@taxItems.each do |result|
-              %tr
-                %td
-                  = result.name
-                %td
-                  = result.content_created_at[0,10]
-                %td
-                  = result.category
-                %td
-                  = result.subcategory
-                %td
-                  .btn-group{:style => "z-index: 99999;"}
-                    %a.btn.white.tooltipped{href: view_doc_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}
-                      %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                    %a.btn.white.tooltipped{href: download_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
-                      %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
-                    %a.btn.white.tooltipped{href: delete_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                      %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
-                    %a.btn.white.tooltipped{href: "#taskModal", 'data-id' => "#{result.id}",'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                      %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
-                    - if(result.name.split(" ").last.split(".").first != "(Signed)")
-                      %a.btn.white.tooltipped{href: tax_loan_docusign_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"E-Sign", :style => "padding-right: 9px; padding-left: 9px;"}
-                        %span.glyphicon.glyphicon-exclamation-sign{:style => "top: 3px; color: #263238"}
+        %table{:style => "margin-top: 45px; margin-left: 30px"}
+          %thead
+            %tr
+              %th File Name
+              %th Date Submitted
+              %th Category
+              %th Subcategory
+              %th Actions
+          %tbody
+          -@taxItems.each do |result|
+            %tr
+              %td
+                = result.name
+              %td
+                = result.content_created_at[0,10]
+              %td
+                = result.category
+              %td
+                = result.subcategory
+              %td
+                .btn-group{:style => "z-index: 99999;"}
+                  %a.btn.white.tooltipped{href: view_doc_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}
+                    %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                  %a.btn.white.tooltipped{href: download_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
+                  %a.btn.white.tooltipped{href: delete_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+                  %a.btn.white.tooltipped{href: "#taskModal", 'data-id' => "#{result.id}",'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
+                    %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+                  - if(result.name.split(" ").last.split(".").first != "(Signed)")
+                    %a.btn.white.tooltipped{href: tax_loan_docusign_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"E-Sign", :style => "padding-right: 9px; padding-left: 9px;"}
+                      %span.glyphicon.glyphicon-exclamation-sign{:style => "top: 3px; color: #263238"}
 
-          - if @taxItems.size == 0
-            %h6{:style => "text-align: center; margin-top:35px;"}
-              You have not yet submitted any tax documents
+        - if @taxItems.size == 0
+          %h6{:style => "text-align: center; margin-top:35px;"}
+            You have not yet submitted any tax documents
 
-  %p{:style=>"text-align: right; font-size: 10px;"}
-    = link_to "reset", tax_reset_path
+%p{:style=>"text-align: right; font-size: 10px;"}
+  = link_to "reset", tax_reset_path
 
 #viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%;	width: 960px;	background-color: white"}
   .modal-content

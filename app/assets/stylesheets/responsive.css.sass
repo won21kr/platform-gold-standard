@@ -20,6 +20,8 @@
     margin-top: 0px
     z-index: 10
 
+  .hide_below768
+    display: none
 
   .help.btn
     display: none !important
@@ -29,7 +31,6 @@
 
   .myvault_table
     margin-left: -35px
-    width: 105%
 
   #mobile-menu
     z-index: 999999 !important
@@ -49,11 +50,9 @@
     overflow: hidden
     text-overflow: ellipsis
 
-
   // RESOURCES
   .resources_table
     margin-left: -50px !important
-    width: 150%
 
   .reposition_floatleft_m
     display: inline-block
@@ -62,12 +61,30 @@
   .uploadsign_table
     margin-left: -30px
 
-
   #search
     margin-left: -10px !important
 
   .filters
     display: none
+
+  // LOAN ORIGINATION
+  .loan_table
+    margin-left: -50px !important
+
+  // SUBMIT A CLAIM TABLE
+  .claim_table
+    margin-left: -25px !important
+
+  // SETTINGS TABLE
+  .settings_table
+    margin-left: -45px !important
+
+  // TAX RETURN
+  .tax_table
+    margin-left: -30px
+
+  .mytax_table
+    margin-left: -80px
 
 /* Smartphones (landscape) ----------- */
 @media all and (min-width : 321px) and (max-width : 480px)
@@ -127,6 +144,9 @@
   .filters
     display: none
 
+  .hide_below768
+    display: none
+
   // RESOURCES
   .resources_table
     margin-left: -40px
@@ -135,10 +155,18 @@
   .uploadsign_table
     margin-left: -30px
 
+  // LOAN ORIGINATION
+  .loan_table
+    margin-left: -50px !important
+
+  // TAX RETURN
+  .tax_table
+    margin-left: -30px
 
 
 /* Weird Small Tablets (landscape and portrait) ----------- */
-@media all and (min-width: 480px) and (max-width: 768px)
+@media all and (min-width : 481px) and (max-width : 768px)
+
   .index-banner
     background-color: #00184d
     height: 60px
@@ -148,6 +176,8 @@
     margin-top: 0px
     z-index: 10
 
+  .hide_below768
+    display: none
 
   .name_elipses
     width: 8em
@@ -162,7 +192,6 @@
     display: none !important
 
   // MY VAULT
-
   .uploadbtn
     margin-left: -55px
 
@@ -190,7 +219,8 @@
     margin-left: -30px
 
 /* Mobile to iPad (landscape and portrait) ----------- */
-@media all and (min-width: 768px) and (max-width: 992px)
+@media all and (min-width : 769px) and (max-width : 992px)
+
   .index-banner
     background-color: #00184d
     height: 60px
@@ -200,23 +230,43 @@
     margin-top: 0px
     z-index: 10
 
+  .hide_above768
+    display: none !important
+
   .help-icon.btn
     display: none !important
 
   .lean-overlay
     z-index: -1 !important
 
-
-
 /* Desktops and laptops ----------- */
-@media all  and (min-width : 993) and (max-width : 1224px)
+@media all and (min-width : 993px) and (max-width : 1224px)
+  .hide_above768
+    display: none !important
+
+  .name_elipses
+    width: 15em
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
   #mobile-menu
     display: none
 
   #search
     margin-left: 35px !important
 
+@media all and (min-width : 1225px) and (max-width : 100000px)
+  .hide_above768
+    display: none !important
+
+
+
+
 /* Large s ----------- */
-@media all  and (min-width : 1824px)
-  #mobile-menu
-    display: none
+// @media all and (min-width: 1824px)
+//   #mobile-menu
+//     display: none
+//
+//   .hide_above768
+//     display: none
