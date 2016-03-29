@@ -188,6 +188,10 @@
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
+                - if (session[:media_content] == 'on')
+                  = ", Media Content"
+                - if (session[:eventstream] == 'on')
+                  = ", Box Events"                                    
             %tr
               %td Home Page Background URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
