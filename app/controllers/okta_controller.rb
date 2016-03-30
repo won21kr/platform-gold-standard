@@ -8,8 +8,7 @@ class OktaController < ApplicationController
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
     session[:userinfo]['info']['name'] = params["login"]
-    # ap cookies
-    # ap cookies['ln']
+
 
     # Get User Box ID from Okta
     okta_client = HTTPClient.new
@@ -21,15 +20,11 @@ class OktaController < ApplicationController
     json = Oj.load(res.body)
     session[:box_id] = json['profile']['boxId']
 
-
     redirect_to dashboard_path
   end
 
   def failure
     @error_msg = request.params['message']
-  end
-
-  def signup
   end
 
   def signup_submit
@@ -38,6 +33,7 @@ class OktaController < ApplicationController
     session[:userinfo]['info'] = {}
     session[:userinfo]['info']['name'] = params[:email]
 
+    # set http client + header
     okta_client = HTTPClient.new
     headers = {"Authorization" => "SSWS #{ENV['OKTA_TOKEN']}",
                "Content-Type" => "application/json",
@@ -78,6 +74,7 @@ class OktaController < ApplicationController
 
 
   private
+
   # create folders for user and add to group
   def setup_box_account
 
