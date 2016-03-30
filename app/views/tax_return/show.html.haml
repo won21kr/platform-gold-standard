@@ -39,7 +39,8 @@
                     %td.td{:id => "formStatus"}
                       Forms
                     %td.td{:id => "formStatus"}
-                      = @docStatus["Forms"]
+                      .name_elipses
+                        = @docStatus["Forms"]
                     %td.td
                       - if @docStatus["Forms"] == "Missing"
                         %a.waves-effect.btn.white.black-text.modal-trigger#uploadButton{:href => @searchFiles["Forms"].size > 0 ? "#formsDocs" : "/forms_file", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px;"} Upload
@@ -56,9 +57,11 @@
                     %td.td{:id => "incomeStatus"}
                       = image_tag @docStatus["Income Image"], width: '40px'
                     %td.td{:id => "incomeStatus"}
-                      Income/Investments
+                      .name_elipses
+                        Income/Investments
                     %td.td{:id => "incomeStatus"}
-                      = @docStatus["Income"]
+                      .name_elipses
+                        = @docStatus["Income"]
                     %td.td
                       - if @docStatus["Income"] == "Missing"
                         %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Income"].size > 0 ? "#incomeDocs" : "/income_file", :style => "text-decoration: none; font-size: 10px;"} Upload
@@ -71,9 +74,11 @@
                     %td.td{:id => "deductionsStatus"}
                       = image_tag @docStatus["Deductions Image"], width: '40px'
                     %td.td{:id => "deductionsStatus"}
-                      Deductions/Expenses
-                    %td.td{:id => "deductionsStatus"}
-                      = @docStatus["Deductions"]
+                      .name_elipses
+                        Deductions/Expenses
+                    %td.td.name_elipses{:id => "deductionsStatus"}
+                      .name_elipses
+                        = @docStatus["Deductions"]
                     %td.td
                       - if @docStatus["Deductions"] == "Missing"
                         %a.button.waves-effect.btn.white.black-text.modal-trigger{:href => @searchFiles["Deductions"].size > 0 ? "#deductionsDocs" : "/deductions_file", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
@@ -98,13 +103,17 @@
           -@taxItems.each do |result|
             %tr
               %td
-                = result.name
+                .name_elipses
+                  = result.name
               %td
-                = result.content_created_at[0,10]
+                .name_elipses
+                  = result.content_created_at[0,10]
               %td
-                = result.category
+                .name_elipses
+                  = result.category
               %td
-                = result.subcategory
+                .name_elipses
+                  = result.subcategory
               %td
                 .btn-group{:style => "z-index: 99999;"}
                   %a.btn.white.tooltipped{href: view_doc_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}

@@ -1,3 +1,6 @@
+:css
+= stylesheet_link_tag 'https://s3-us-west-1.amazonaws.com/box-dicom/v1.1.0/dist/css/preview/dicom/dicom.min.css'
+
 .container
   = render 'layouts/sidenav'
   .row
@@ -12,13 +15,12 @@
         %h6.caption.thin{:style => "font-size: 16px;"}
           Diagnostic quality viewing on web or mobile
 
-  .row
-    .col.s10.push-s2
-      #dicomviewer{:style => "height: 600px;"}
+    .row
+      .col.s10.push-s2
+        #dicomviewer{:style => "height: 600px;"}
 
 
 :javascript
-
   $(document).ready(function(){
     var viewer = document.getElementById('dicomviewer');
     box.dicom.createViewer(viewer, {'accessToken': '#{@user_access_token}', 'studies': [{'fileId': '50634725361'}]});
