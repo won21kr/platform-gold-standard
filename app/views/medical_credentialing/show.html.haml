@@ -1,29 +1,30 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-          %span.glyphicon.glyphicon-plus{:style => "font-size: 22px;"}
-          Medical Credentialing
-        %h6.caption.thin{:style => "font-size: 16px;"}
-          Please complete the medical credentialing process
-        .help-icon.btn{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
-          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
-          %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
-            info
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+        %span.glyphicon.glyphicon-plus{:style => "font-size: 22px;"}
+        Medical Credentialing
+      %h6.caption.thin{:style => "font-size: 16px;"}
+        Please complete the medical credentialing process
+      .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+        %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+        %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
+          info
 
-        - if (@status == "toFill")
-          = render 'medical_form'
-        - elsif (@status == "toUpload")
-          = render 'upload_medical'
-        - elsif (@status == "pendingApproval")
-          = render 'medical_pending'
-        - elsif (session[:progress] == 3)
-          = render 'medical_approved'
+      - if (@status == "toFill")
+        = render 'medical_form'
+      - elsif (@status == "toUpload")
+        = render 'upload_medical'
+      - elsif (@status == "pendingApproval")
+        = render 'medical_pending'
+      - elsif (session[:progress] == 3)
+        = render 'medical_approved'
 
 .footer{:style=>"text-align: right; font-size: 10px;"}
-  = link_to "reset", reset_medical_flow_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Medical Credentialing workflow", "data-position" => "top"}
+= link_to "reset", reset_medical_flow_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Medical Credentialing workflow", "data-position" => "top"}
 
 
 :javascript
