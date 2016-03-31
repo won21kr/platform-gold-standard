@@ -1,9 +1,12 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
           %i.material-icons.prefix{:style => "font-size: 28px;"} equalizer
           Box Events
         %h6.caption.thin{:style => "font-size: 16px;"}
@@ -14,60 +17,61 @@
           %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
             info
 
-        .col.s12{:style => "margin-top: 30px"}
-        .col.s6
-          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
-            %li.tab.active{:style => "font-size: 12px !important;"}
-              %a{:href => "#admin"}
-                Admin
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#user"}
-                User
+      .col.s12{:style => "margin-top: 30px"}
+      .col.s6
+        %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+          %li.tab.active{:style => "font-size: 12px !important;"}
+            %a{:href => "#admin"}
+              Admin
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#user"}
+              User
 
-        -# TABS
-        .col.s12#admin{:style => "margin-top: 30px"}
-          .col.s12
-            %h6{:style => "margin-bottom: 30px"}
-              Enterprise Events
-            %table.highlight#adminEvents
-              %thead{"data-intro" => "Realtime log of events occuring in the Box enterprise", "data-position" => "top"}
-                %tr
-                  %th{"data-field" => "name"} Type
-                  %th{"data-field" => "modified"} Recorded At
-                  %th{"data-field" => "id"} User Name
-                  %th{"data-field" => "id"} IP Address
-              - @enterprise_events.each_with_index do |event, i|
-                %tr{"data-intro" => i == 0 ? "Unique Box admin event" : nil, "data-position" => i == 0 ? "left" : nil}
-                  %td
-                    = event.event_type
-                  %td
-                    = DateTime.strptime(event.created_at).strftime("%B %d, %Y %l:%M %p")
-                  %td
-                    = event.created_by.name
-                  %td
-                    = event.ip_address
+      -# TABS
+      .col.s12#admin{:style => "margin-top: 30px"}
+        .col.s12
+          %h6{:style => "margin-bottom: 30px"}
+            Enterprise Events
+          %table.highlight#adminEvents
+            %thead{"data-intro" => "Realtime log of events occuring in the Box enterprise", "data-position" => "top"}
+              %tr
+                %th{"data-field" => "name"} Type
+                %th{"data-field" => "modified"} Recorded At
+                %th{"data-field" => "id"} User Name
+                %th{"data-field" => "id"} IP Address
+            - @enterprise_events.each_with_index do |event, i|
+              %tr{"data-intro" => i == 0 ? "Unique Box admin event" : nil, "data-position" => i == 0 ? "left" : nil}
+                %td
+                  = event.event_type
+                %td
+                  = DateTime.strptime(event.created_at).strftime("%B %d, %Y %l:%M %p")
+                %td
+                  = event.created_by.name
+                %td
+                  = event.ip_address
 
-        .col.s12#user{:style => "margin-top: 30px"}
-          .col.s12
-            %h6{:style => "margin-bottom: 30px"}
-              = "User Events - " + session[:userinfo]['info']['name']
-            %table.highlight#userEvents
-              %thead{"data-intro" => "Realtime log of events for the signed in Box App User", "data-position" => "top"}
-                %tr
-                  %th{"data-field" => "name"} Type
-                  %th{"data-field" => "modified"} Recorded At
-                  %th{"data-field" => "id"} Item Name
-                  -# %th{"data-field" => "id"} User
-              - @user_events.each_with_index do |event, i|
-                %tr{"data-intro" => i == 0 ? "Unique Box user event for #{session[:userinfo]['info']['name']}" : nil, "data-position" => i == 0 ? "left" : nil}
-                  %td
-                    = event.event_type
-                  %td
-                    = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
-                  %td
+      .col.s12#user{:style => "margin-top: 30px"}
+        .col.s12
+          %h6{:style => "margin-bottom: 30px"}
+            = "User Events - " + session[:userinfo]['info']['name']
+          %table.highlight#userEvents
+            %thead{"data-intro" => "Realtime log of events for the signed in Box App User", "data-position" => "top"}
+              %tr
+                %th{"data-field" => "name"} Type
+                %th{"data-field" => "modified"} Recorded At
+                %th{"data-field" => "id"} Item Name
+                -# %th{"data-field" => "id"} User
+            - @user_events.each_with_index do |event, i|
+              %tr{"data-intro" => i == 0 ? "Unique Box user event for #{session[:userinfo]['info']['name']}" : nil, "data-position" => i == 0 ? "left" : nil}
+                %td
+                  = event.event_type
+                %td
+                  = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
+                %td
+                  %div.name_elipses
                     = event.source.name
-                  -# %td
-                  -#   = event.created_by.name
+                -# %td
+                -#   = event.created_by.name
 
 :javascript
 
