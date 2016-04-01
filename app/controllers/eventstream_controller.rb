@@ -18,25 +18,61 @@ class EventstreamController < SecuredController
     # get user eventstream position and last 20 events
     threads << Thread.new do
       @user_events = []
-      results = user.user_events(0, stream_type: :all)
-      initPosition = results.next_stream_position
-      results1 = user.user_events(initPosition, stream_type: :all)
-      @user_stream_pos = results1.next_stream_position
 
-      @user_events = results["events"].reverse[0..50].uniq
-      # ap @user_events
-      # ap @user_events
+      # get most recent chunk of events
+      temp = user.user_events(0, stream_type: :all)
+      while (temp.chunk_size != 0)
+        if (temp.chunk_size != 0)
+          results = temp
+        end
+        temp = user.user_events(temp.next_stream_position, stream_type: :all)
+
+        # if chunck size == max, store prev events
+        if (temp.chunk_size == 800)
+          puts "max!"
+          prevEvents = temp
+        end
+      end
+      # reorder all user events
+      results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
+
+      # remove all of those damn previews events!
+      results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
+
+      # get next stream position and extract 50 unique events
+      @user_stream_pos = results.next_stream_position
+      @user_events = results["events"][0..50].uniq
     end
 
     # get enterprise events and enterprise eventstream position
     threads << Thread.new do
-      results = admin.enterprise_events(created_after: start_date, created_before: now, limit: 50)
-      # ap results["events"].size
-      @enterprise_events = results["events"].reverse[0..75]
+      results = admin.enterprise_events(created_after: start_date, created_before: now, limit: 400)
+      # remove all of those damn previews events!
+      results["events"] = remove_preview_events(results["events"], "PREVIEW")
+      @enterprise_events = results["events"].reverse[0..75].uniq
       @enterprise_stream_pos = results.next_stream_position
     end
 
     threads.each { |thr| thr.join }
+  end
+
+  # remove all of the extra preview events
+  def remove_preview_events(events, eventType)
+    results = []
+    prev = nil
+
+    events.each do |r|
+
+      if (!prev.nil? and r.event_type == eventType and
+          DateTime.strptime(r.created_at).strftime("%M").to_i - DateTime.strptime(prev.created_at).strftime("%M").to_i <= 0)
+        # repeat, do nothing
+      else
+        prev = r
+        results << r
+      end
+    end
+    # return results
+    results
   end
 
 end

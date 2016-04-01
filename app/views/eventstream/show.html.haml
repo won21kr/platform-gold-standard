@@ -66,11 +66,9 @@
             - @user_events.each_with_index do |event, i|
               %tr{"data-intro" => i == 0 ? "Unique Box user event for #{session[:userinfo]['info']['name']}" : nil, "data-position" => i == 0 ? "left" : nil}
                 %td
-                  .name_elipses
-                    = event.event_type
+                  = event.event_type
                 %td
-                  .name_elipses
-                    = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
+                  = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
                 %td
                   .name_elipses
                     = event.source.name
