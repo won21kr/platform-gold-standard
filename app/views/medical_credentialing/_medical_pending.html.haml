@@ -12,7 +12,7 @@
     .panel-heading
       %h6{:style => "height: 130%"}
         Shared Medical Credential Documents
-    %table.highlight
+    %table.highlight.medcred_table
       %thead
         %tr
           %th File
@@ -27,10 +27,11 @@
                 = link_to view_doc_path(f.id) do
                   = image_tag(thumbnail_url(f.id), width: '40px')
               %td
-                %span{:style => "inline"}
+                %div.name_elipses{:style => "inline"}
                   = f.name
               %td.hidden-xs.hidden-sm
-                = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
+                %div.name_elipses{:style => "inline"}
+                  = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
               %td{"data-intro" => i==0 ? "View and download files files from Box" : nil,  "data-position" => i==0 ? "left" : nil}
                 / file action options
                 .btn-group
