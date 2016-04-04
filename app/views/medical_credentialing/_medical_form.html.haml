@@ -1,12 +1,12 @@
 .col.s2.push-s10{:style => "margin-top:-20px;"}
-  %h7{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
+  %h7.hide_below768{:style => "z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
     Step 1 of 3
 .col.s12{:style => "margin-top: 30px"}
   .col.s4
     %h6
       Enter your personal information here:
 .col.s8.push-s2{:style => "margin-top: 20px", "data-intro" => "A pdf is generated from this form information and uploaded to the newly created 'Medical Credentialing' folder. The Credentialing Specialist is invited into this folder and a task to review uploaded documents is assigned.", "data-position" => "left"}
-  %form.form-horizontal{:role => "form", :method => "post", :action => medical_submit_path}
+  %form.form-horizontal{:role => "form", :method => "post", :action => medical_submit_path, :style => "height: 700px;"}
     .form-group
       %label.control-label.col-sm-2{:for => "name"} Full Name:
       %input#name.form-control{:placeholder => "Marcus Doe", :type => "text", :name => "name"}
