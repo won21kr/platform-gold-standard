@@ -116,7 +116,7 @@
           // event not yet processed
           newEvent = $("<tr><td>" + events[i].event_type +
                        "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
-                       "</td><td>" + events[i].source.name + "</td></tr>").hide();
+                       "</td><td><div class =\"name_elipses\">" + events[i].source.name + "</div></td></tr>").hide();
           $("#userEvents").prepend(newEvent);
           newEvent.fadeIn();
           eventIds.push(events[i].event_id);
@@ -160,10 +160,10 @@
           // } else {
           //   name = events[i].source.name;
           // }
-          newEvent = $("<tr><td>" + events[i].event_type +
-                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
-                       "</td><td>" + events[i].created_by.name +
-                       "</td><td>" + events[i].ip_address + "</td></tr>").hide();
+          newEvent = $("<tr><td><div class =\"name_elipses\">" + events[i].event_type +
+                       "</div></td><td><div class =\"name_elipses\">" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
+                       "</div></td><td><div class =\"name_elipses\">" + events[i].created_by.name +
+                       "</div></td><td><div class =\"name_elipses\">" + events[i].ip_address + "</div></td></tr>").hide();
           $("#adminEvents").prepend(newEvent);
           newEvent.fadeIn();
           eventIds.push(events[i].event_id);

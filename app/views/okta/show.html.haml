@@ -24,8 +24,8 @@
     { el: '#okta-login-container' },
     function (res) {
       if (res.status === 'SUCCESS') {
-        console.log("result: " + JSON.stringify(res));
-        res.session.setCookieAndRedirect('#{ENV['ACTIVE_URL']}' + '/okta/callback?id=' + res.user.id + '&login=' + res.user.profile.login);
+        // console.log("result: " + JSON.stringify(res));
+        res.session.setCookieAndRedirect('#{ENV['ACTIVE_URL']}' + '/okta/callback?id=' + res.user.id);
       }
     }
   );
