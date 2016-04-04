@@ -7,9 +7,6 @@
   .hide_mobile
     display: none !important
 
-  .hide_below_480
-    display: none !important
-
   // MY VAULT
   .index-banner
     background-color: #00184d
@@ -20,8 +17,14 @@
     margin-top: 0px
     z-index: 10
 
+  .hide_below480
+    display: none
+
   .hide_below768
     display: none
+
+  .hide_below1224
+    display: none !important
 
   .help.btn
     display: none !important
@@ -81,15 +84,19 @@
 
   // TAX RETURN
   .tax_table
-    margin-left: -30px
+    margin-left: -40px !important
 
   .mytax_table
-    margin-left: -80px
+    margin-left: -10px !important
+
+  // MEDICAL CREDENTIALING
+  .medcred_table
+    margin-left: -30px !important
 
 /* Smartphones (landscape) ----------- */
 @media all and (min-width : 321px) and (max-width : 480px)
 
-  .hide_below_480
+  .hide_below480
     display: none !important
 
   .index-banner
@@ -147,6 +154,9 @@
   .hide_below768
     display: none
 
+  .hide_below1224
+    display: none !important
+
   // RESOURCES
   .resources_table
     margin-left: -40px
@@ -161,7 +171,14 @@
 
   // TAX RETURN
   .tax_table
-    margin-left: -30px
+    margin-left: -60px !important
+
+  .mytax_table
+    margin-left: -40px !important
+
+  // MEDICAL CREDENTIALING
+  .medcred_table
+    margin-left: -40px !important
 
 
 /* Weird Small Tablets (landscape and portrait) ----------- */
@@ -178,6 +195,9 @@
 
   .hide_below768
     display: none
+
+  .hide_below1224
+    display: none !important
 
   .name_elipses
     width: 8em
@@ -218,6 +238,14 @@
   .uploadsign_table
     margin-left: -30px
 
+  //TAX RETURN
+  .tax_table
+    margin-left: -50px
+
+  // MEDICAL CREDENTIALING
+  .medcred_table
+    margin-left: -40px !important
+
 /* Mobile to iPad (landscape and portrait) ----------- */
 @media all and (min-width : 769px) and (max-width : 992px)
 
@@ -233,19 +261,29 @@
   .hide_above768
     display: none !important
 
+  .hide_below1224
+    display: none !important
+
   .help-icon.btn
     display: none !important
 
   .lean-overlay
     z-index: -1 !important
 
+  //TAX RETURN
+  .tax_table
+    margin-left: -30px
+
 /* Desktops and laptops ----------- */
 @media all and (min-width : 993px) and (max-width : 1224px)
   .hide_above768
     display: none !important
 
+  .hide_below1224
+    display: none !important
+
   .name_elipses
-    width: 15em
+    width: 10em
     white-space: nowrap
     overflow: hidden
     text-overflow: ellipsis
