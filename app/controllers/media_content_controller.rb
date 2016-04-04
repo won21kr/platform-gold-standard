@@ -6,37 +6,47 @@ class MediaContentController < SecuredController
 
     session[:current_page] = "media_content"
     client = user_client
-    path = "/Media\ Content"
+    path = "/New\ Media\ Content"
     threads = []
 
     # get parent media folder
-    mediaFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/media_folder", :expires_in => 10.minutes) do
+    mediaFolder = Rails.cache.fetch("/folder/media_content/media_folder", :expires_in => 10.minutes) do
       client.folder_from_path(path)
     end
 
     # get network folders
-    @networks = Rails.cache.fetch("/folder/#{session[:box_id]}/media_networks", :expires_in => 10.minutes) do
+    @mediaItems = Rails.cache.fetch("/folder/media_content/media_items", :expires_in => 10.minutes) do
       client.folder_items(mediaFolder, fields: [:id, :name])
     end
 
-    # NBC Network items
+    # Movie items
     threads << Thread.new do
-      @nbc = @networks.find {|s| s.name == 'NBC' }
-      nbcItems = Rails.cache.fetch("/folder/#{session[:box_id]}/nbc_items", :expires_in => 10.minutes) do
-        client.folder_items(@nbc, fields: [:id, :name, :description, :created_at])
+      @movies = @mediaItems.find {|s| s.name == 'Movies' }
+      movieItems = Rails.cache.fetch("/folder/media_content/movies", :expires_in => 10.minutes) do
+        client.folder_items(@movies, fields: [:id, :name, :description, :created_at])
       end
       # add show's metadata
-      @nbcItems = traverse_shows(nbcItems, client)
+      @movieItems = traverse_videos(movieItems, client)
     end
 
+    # Television items
     threads << Thread.new do
-      # USA Network items
-      @usa = @networks.find {|s| s.name == 'USA Network' }
-      usaItems = Rails.cache.fetch("/folder/#{session[:box_id]}/usa_items", :expires_in => 10.minutes) do
-        client.folder_items(@usa, fields: [:id, :name, :description, :created_at])
+      @television = @mediaItems.find {|s| s.name == 'Television' }
+      tvItems = Rails.cache.fetch("/folder/media_content/television", :expires_in => 10.minutes) do
+        client.folder_items(@television, fields: [:id, :name, :description, :created_at])
       end
       # add show's metadata
-      @usaItems = traverse_shows(usaItems, client)
+      @tvItems = traverse_videos(tvItems, client)
+    end
+
+    # Sports Items
+    threads << Thread.new do
+      @sports = @mediaItems.find {|s| s.name == 'Sports' }
+      sportsItems = Rails.cache.fetch("/folder/media_content/sports", :expires_in => 10.minutes) do
+        client.folder_items(@sports, fields: [:id, :name, :description, :created_at])
+      end
+      # add show's metadata
+      @sportsItems = traverse_sports(sportsItems, client)
     end
 
     threads.each {|thr| thr.join}
@@ -60,12 +70,12 @@ class MediaContentController < SecuredController
     end
 
     # add show's metadata
-    @results = traverse_shows(results, client)
+    # @results = traverse_shows(results, client)
 
   end
 
   # iterate through each show and add metadata to file object
-  def traverse_shows(showItems, client)
+  def traverse_videos(showItems, client)
 
     threads = []
 
@@ -76,25 +86,27 @@ class MediaContentController < SecuredController
                         :rating, :staring, :network
         end
         # get network folder items
-        showFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}", :expires_in => 10.minutes) do
+        showFolder = Rails.cache.fetch("/folder/media_content/media_items/#{n.id}", :expires_in => 10.minutes) do
           client.folder_items(n, fields: [:id, :name, :description])
         end
+
         imageFile = showFolder.find {|s| s.name.split('.').last == 'jpg' }
         trailerFile = showFolder.find {|s| s.name.split('.').last == 'mp4' }
 
         # get video file metadata
-        meta = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}_meta", :expires_in => 10.minutes) do
-          client.all_metadata(trailerFile)["entries"].first
-        end
+        # meta = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}_meta", :expires_in => 10.minutes) do
+        #   client.all_metadata(trailerFile)["entries"].first
+        # end
 
         # add file attributes
         n.imageId = imageFile.id
         n.videoId = trailerFile.id
         n.videoDescription = trailerFile.description
         n.videoName = trailerFile.name
-        n.staring = meta["Related Names"]
-        n.rating = meta["Content Rating"]
-        n.network = meta["Network"]
+        # metadata here
+        # n.staring = meta["Related Names"]
+        # n.rating = meta["Content Rating"]
+        # n.network = meta["Network"]
       end
     end
 
@@ -103,6 +115,45 @@ class MediaContentController < SecuredController
     return showItems
   end
 
+  # iterate through each show and add metadata to file object
+  def traverse_sports(showItems, client)
+
+    threads = []
+
+    showItems.each do |n|
+      threads << Thread.new do
+        class << n
+          attr_accessor :imageId, :mediaFiles, :videoDescription, :videoName,
+                        :rating, :staring, :network
+        end
+        # get network folder items
+        showFolder = Rails.cache.fetch("/folder/media_content/media_items/#{n.id}", :expires_in => 10.minutes) do
+          client.folder_items(n, fields: [:id, :name, :description])
+        end
+
+        imageFile = showFolder.find {|s| s.name.split('.').last == 'jpg' }
+        mediaFiles = showFolder.select {|s| s.name.split('.').last != 'jpg' }
+
+        # get video file metadata
+        # meta = Rails.cache.fetch("/folder/#{session[:box_id]}/media_items/#{n.id}_meta", :expires_in => 10.minutes) do
+        #   client.all_metadata(trailerFile)["entries"].first
+        # end
+
+        # add file attributes
+        n.imageId = imageFile.id
+        n.mediaFiles = mediaFiles
+        ap n.mediaFiles
+        ap mediaFiles
+        # n.videoDescription = trailerFile.description
+        # n.videoName = trailerFile.name
+        # metadata here vvvv
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+    return showItems
+  end
 
 
 end
