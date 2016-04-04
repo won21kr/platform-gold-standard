@@ -57,8 +57,13 @@
           %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "W2 Form", old_name: f.name), :style => "text-decoration: none;"}
             = f.name
   .modal-footer
-    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#w2Modal", :style => "text-decoration: none;"}
+    %a.modal-action.modal-close.btn-flat.modal-trigger.hide_below768{:href => "#w2Modal", :style => "text-decoration: none;"}
       Upload New W2 Form
+    %form.uploadbtn.hide_above768{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("W2 Form"), class: 'form-horizontal', :style => "text-align: center"}
+      .form-group
+        %a.btn-flat.btn-file{:style => "text-decoration: none;"}
+          Upload New W2 Form
+          %input{type: 'file', name: 'file', :onChange => "form.submit()"}
 
 #taxVaultDocs.modal{:style => "z-index: 9999999 !important;"}
   .modal-content

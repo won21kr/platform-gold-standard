@@ -1,6 +1,7 @@
 class LoanDocumentsController < SecuredController
 
   DOCUSIGN_CLIENT = DocusignRest::Client.new
+  skip_before_filter :verify_authenticity_token
 
   def show
 
@@ -108,6 +109,7 @@ class LoanDocumentsController < SecuredController
     puts "uploading file..."
 
     #http://www.dropzonejs.com/
+    ap params
     client = user_client
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
 
@@ -143,8 +145,53 @@ class LoanDocumentsController < SecuredController
 
     flash[:notice] = "#{name} Successfully Uploaded!"
     respond_to do |format|
+      # ap format
       format.json{ render :json => {} }
     end
+  end
+
+  # upload files to parameter specified folder ID
+  def loan_post
+
+    puts "uploading file..."
+
+    #http://www.dropzonejs.com/
+    ap params
+    client = user_client
+    path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
+
+    uploaded_file = params[:file]
+    name = params[:file_name]
+    fileName = params[:file_name]
+
+    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/loan_folder", :expires_in => 10.minutes) do
+      client.folder_from_path(path)
+    end
+
+    temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
+    begin
+      temp_file.write(uploaded_file.read)
+      temp_file.close
+
+      box_user = Box.user_client(session[:box_id])
+      box_file = client.upload_file(temp_file.path, folder)
+
+      ext = box_file.name.split(".").last
+      fileName = fileName + "." + ext
+
+      uploadedFile = client.update_file(box_file, name: fileName)
+      msg = "Please review and complete the task"
+      task = client.create_task(uploadedFile, action: :review, message: msg)
+      client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
+
+    rescue => ex
+      puts ex.message
+    ensure
+      File.delete(temp_file)
+    end
+
+    flash[:notice] = "#{name} Successfully Uploaded!"
+    redirect_to loan_docs_path
   end
 
   # copy over a document from the user's vault to Loan Docs folder

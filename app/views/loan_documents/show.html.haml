@@ -54,11 +54,12 @@
                 %td.td
                   - if @docStatus["W2 Form"] == "Missing"
                     %button.waves-effect.btn.white.black-text.modal-trigger.hide_below768{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#w2Modal", :style => "font-size: 10px;"} Upload
-                    %form.uploadbtn.hide_above768{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center; font-size: 10px;"}
+                    %button.waves-effect.btn.white.black-text.modal-trigger.hide_above768{:href => "#w2VaultDocs", :style => @searchFiles["W2"].size > 0 ? "font-size: 10px" : "font-size: 10px; display: none"} Upload
+                    %form.uploadbtn.hide_above768{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("W2 Form"), class: 'form-horizontal', :style => @searchFiles["W2"].size == 0 ? "text-align: center; font-size: 10px" : "text-align: center; font-size: 10px; display: none"}
                       .form-group
-                        %button.waves-effect.btn.white.black-text.btn-file
+                        %button.waves-effect.btn.white.black-text.btn-file{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#"}
                           Upload2
-                          %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
+                          %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - else
                     %form{:method => "get", :action => view_doc_path(@fileId["W2 Form"])}
                       %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
@@ -107,35 +108,35 @@
 
 
   // CLIENT SIDE UPLOAD
-  $(document).on('change', '.btn-file-shared :file', function() {
-
-    var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      files = input.get(0).files,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    var theInput = input.parent().get(0);
-    theInput.innerText = "Uploading...";
-
-    // The Box OAuth 2 Header. Add your access token.
-    var headers = { Authorization: 'Bearer #{@user_access_token}'};
-    var uploadUrl = 'https://upload.box.com/api/2.0/files/content';
-    var formData = new FormData();
-
-    // Add the destination folder for the upload to the form
-    formData.append('files', files[0], files[0].name);
-    formData.append('parent_id', '#{@loanFolder.id}');
-
-
-    $.ajax({
-      url: uploadUrl,
-      headers: headers,
-      type: 'POST',
-      // This prevents JQuery from trying to append the form as a querystring
-      processData: false,
-      contentType: false,
-      data: formData
-    }).complete(function ( data ) {
-      console.log('finished uploading to Box');
-      location.href = "/dashboard/#{@loanFolder.id}";
-    });
-  });
+  // $(document).on('change', '.btn-file-shared :file', function() {
+  //
+  //   var input = $(this),
+  //     numFiles = input.get(0).files ? input.get(0).files.length : 1,
+  //     files = input.get(0).files,
+  //     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  //   var theInput = input.parent().get(0);
+  //   theInput.innerText = "Uploading...";
+  //
+  //   // The Box OAuth 2 Header. Add your access token.
+  //   var headers = { Authorization: 'Bearer #{@user_access_token}'};
+  //   var uploadUrl = 'https://upload.box.com/api/2.0/files/content';
+  //   var formData = new FormData();
+  //
+  //   // Add the destination folder for the upload to the form
+  //   formData.append('files', files[0], files[0].name);
+  //   formData.append('parent_id', '#{@loanFolder.id}');
+  //
+  //
+  //   $.ajax({
+  //     url: uploadUrl,
+  //     headers: headers,
+  //     type: 'POST',
+  //     // This prevents JQuery from trying to append the form as a querystring
+  //     processData: false,
+  //     contentType: false,
+  //     data: formData
+  //   }).complete(function ( data ) {
+  //     console.log('finished uploading to Box');
+  //     location.href = "/dashboard/#{@loanFolder.id}";
+  //   });
+  // });
