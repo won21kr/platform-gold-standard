@@ -8,7 +8,6 @@ class OktaController < ApplicationController
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
 
-
     # Get User Box ID from Okta
     okta_client = HTTPClient.new
     headers = {"Authorization" => "SSWS #{ENV['OKTA_TOKEN']}",
@@ -17,9 +16,10 @@ class OktaController < ApplicationController
     uri = "https://boxplatformstd-admin.okta.com/api/v1/users/#{params[:id]}"
     res = okta_client.get(uri, header: headers) # body: Oj.dump(query),
     json = Oj.load(res.body)
+
+    # store boxId and user email in session
     session[:box_id] = json['profile']['boxId']
     session[:userinfo]['info']['name'] = json['profile']['email']
-
 
     redirect_to dashboard_path
   end
@@ -104,7 +104,6 @@ class OktaController < ApplicationController
       # create my Files folder
       box_user.create_folder("My Files", Boxr::ROOT)
     end
-
 
     threads.each { |thr| thr.join }
   end
