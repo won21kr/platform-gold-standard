@@ -35,7 +35,9 @@ class EventstreamController < SecuredController
       end
       # reorder all user events, + check if there are prev events
       if (prevEvents.nil?)
-        results["events"] = results["events"].reverse
+        if(results["events"].size > 0)
+          results["events"] = results["events"].reverse
+        end
       else
         results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
       end
