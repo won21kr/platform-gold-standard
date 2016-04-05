@@ -33,23 +33,24 @@ class EventstreamController < SecuredController
           prevEvents = temp
         end
       end
-      # reorder all user events, + check if there are prev events
-      if (prevEvents.nil?)
-        if(!results["events"].nil?)
-          results["events"] = results["events"].reverse
+      if(!results.nil?)
+        # reorder all user events, + check if there are prev events
+        if (prevEvents.nil?)
+            results["events"] = results["events"].reverse
         else
-          results["events"] = []
+          results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
         end
+
+        # remove all of those damn previews events!
+        results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
+
+        # get next stream position and extract 50 unique events
+        @user_stream_pos = results.next_stream_position
+        @user_events = results["events"][0..50].uniq
       else
-        results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
+        @user_events = []
+        @user_stream_pos = 0
       end
-
-      # remove all of those damn previews events!
-      results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
-
-      # get next stream position and extract 50 unique events
-      @user_stream_pos = results.next_stream_position
-      @user_events = results["events"][0..50].uniq
     end
 
     # get enterprise events and enterprise eventstream position
