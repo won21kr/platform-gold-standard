@@ -49,8 +49,8 @@ class EventstreamController < SecuredController
       results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
 
       # get next stream position and extract 50 unique events
-      @user_stream_pos = results.next_stream_position
-      @user_events = results["events"][0..50].uniq
+      @user_stream_pos = results.nil? ? 0 : results.next_stream_position
+      @user_events = results.nil? ? [] : results["events"][0..50].uniq
     end
 
     # get enterprise events and enterprise eventstream position
