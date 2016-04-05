@@ -7,7 +7,6 @@ class OktaController < ApplicationController
     puts "okta callback..."
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
-    session[:userinfo]['info']['name'] = params["login"]
 
 
     # Get User Box ID from Okta
@@ -19,12 +18,18 @@ class OktaController < ApplicationController
     res = okta_client.get(uri, header: headers) # body: Oj.dump(query),
     json = Oj.load(res.body)
     session[:box_id] = json['profile']['boxId']
+    session[:userinfo]['info']['name'] = json['profile']['email']
+
 
     redirect_to dashboard_path
   end
 
   def failure
     @error_msg = request.params['message']
+  end
+
+
+  def signup
   end
 
   def signup_submit

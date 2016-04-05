@@ -25,16 +25,23 @@ class EventstreamController < SecuredController
         if (temp.chunk_size != 0)
           results = temp
         end
-
         temp = user.user_events(temp.next_stream_position, stream_type: :all)
+
+        # if chunck size == max, store prev events
+        if (temp.chunk_size == 800)
+          puts "max!"
+          prevEvents = temp
+        end
       end
+      # reorder all user events
+      results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
 
       # remove all of those damn previews events!
       results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
 
       # get next stream position and extract 50 unique events
       @user_stream_pos = results.next_stream_position
-      @user_events = results["events"].reverse[0..50].uniq
+      @user_events = results["events"][0..50].uniq
     end
 
     # get enterprise events and enterprise eventstream position

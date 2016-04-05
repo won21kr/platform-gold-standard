@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   #loan documents
   get "/loan-origination" => "loan_documents#show", :as => "loan_docs"
+  post "/loan-origination/:file_name" => "loan_documents#loan_post", :as => "loan_post"
   post "/loan-origination/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
   get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
   get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"

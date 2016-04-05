@@ -23,8 +23,8 @@
 
       .col.s12#newclaim{:style => "margin-top: 10px"}
         .col.s10.push-s1
-          .col.s12{:style => "margin-top: 45px; margin-left: 30px"}
-            %table.highlight.mytax_table
+          .col.s12{:style => "margin-top: 45px;"}
+            %table.highlight.tax_table
               %thead
                 %tr
                   %th File
@@ -39,7 +39,7 @@
                     %td.td{:id => "formStatus"}
                       Forms
                     %td.td{:id => "formStatus"}
-                      .name_elipses
+                      %div.name_elipses{:style => "inline"}
                         = @docStatus["Forms"]
                     %td.td
                       - if @docStatus["Forms"] == "Missing"
@@ -57,10 +57,10 @@
                     %td.td{:id => "incomeStatus"}
                       = image_tag @docStatus["Income Image"], width: '40px'
                     %td.td{:id => "incomeStatus"}
-                      .name_elipses
+                      %div.name_elipses{:style => "inline"}
                         Income/Investments
                     %td.td{:id => "incomeStatus"}
-                      .name_elipses
+                      %div.name_elipses{:style => "inline"}
                         = @docStatus["Income"]
                     %td.td
                       - if @docStatus["Income"] == "Missing"
@@ -74,10 +74,10 @@
                     %td.td{:id => "deductionsStatus"}
                       = image_tag @docStatus["Deductions Image"], width: '40px'
                     %td.td{:id => "deductionsStatus"}
-                      .name_elipses
+                      %div.name_elipses{:style => "inline"}
                         Deductions/Expenses
                     %td.td.name_elipses{:id => "deductionsStatus"}
-                      .name_elipses
+                      %div.name_elipses{:style => "inline"}
                         = @docStatus["Deductions"]
                     %td.td
                       - if @docStatus["Deductions"] == "Missing"
@@ -91,37 +91,35 @@
         .col.s10.push-s1
           = render partial: "shared/flash_messages", flash: flash
 
-        %table{:style => "margin-top: 45px; margin-left: 30px"}
+        %table.mytax_table{:style => "margin-top: 45px;"}
           %thead
             %tr
               %th File Name
-              %th Date Submitted
-              %th Category
-              %th Subcategory
+              %th.hide_below480 Date Submitted
+              %th.hide_below1224 Category
+              %th.hide_below1224 Subcategory
               %th Actions
           %tbody
           -@taxItems.each do |result|
             %tr
               %td
-                .name_elipses
+                %div.name_elipses{:style => "inline"}
                   = result.name
-              %td
-                .name_elipses
+              %td.hide_below480
+                %div.name_elipses{:style => "inline"}
                   = result.content_created_at[0,10]
-              %td
-                .name_elipses
+              %td.hide_below1224
+                %div.name_elipses{:style => "inline"}
                   = result.category
-              %td
-                .name_elipses
+              %td.hide_below1224
+                %div.name_elipses{:style => "inline"}
                   = result.subcategory
               %td
                 .btn-group{:style => "z-index: 99999;"}
                   %a.btn.white.tooltipped{href: view_doc_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 9px; padding-left: 9px"}
                     %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                  %a.btn.white.tooltipped{href: download_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
+                  %a.btn.white.tooltipped.hide_below768{href: download_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 9px; padding-left: 9px;"}
                     %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
-                  %a.btn.white.tooltipped{href: delete_tax_file_path(result.id, folder: @taxReturnFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
-                    %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
                   %a.btn.white.tooltipped{href: "#taskModal", 'data-id' => "#{result.id}",'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 9px; padding-left: 9px;"}
                     %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
                   - if(result.name.split(" ").last.split(".").first != "(Signed)")
