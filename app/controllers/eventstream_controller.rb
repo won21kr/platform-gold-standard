@@ -33,9 +33,17 @@ class EventstreamController < SecuredController
           prevEvents = temp
         end
       end
-      # reorder all user events
-      results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
-
+      # reorder all user events, + check if there are prev events
+      if (prevEvents.nil?)
+        if(!results["events"].nil?)
+          results["events"] = results["events"].reverse
+        else
+          results["events"] = []
+        end
+      else
+        results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
+      end
+      
       # remove all of those damn previews events!
       results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
 
