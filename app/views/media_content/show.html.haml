@@ -46,44 +46,6 @@
             %li.tab.disabled{:style => "font-size: 12px !important;"}
               %a{:href => "#e"}
                 Music
-            -# %li.tab.disabled{:style => "font-size: 12px !important;"}
-            -#   %a{:href => "#cnbc"}
-            -#     Telemundo
-
-        -# TABS
-        -# .col.s12#movies{:style => "margin-top: 30px"}
-        -#   .col.s12
-        -#     - @movies.each_with_index do |f, i|
-        -#       .card
-        -#         .card-image.waves-effect.waves-block.waves-light{"data-intro" => i == 0 ? "Static TV show images are stored in and surfaced from Box. Click the image to view metadata associated with each show" : nil, "data-position" => i==0 ? "left" : nil}
-        -#           %img.activator{:src => download_url(f.imageId)}
-        -#         .card-content
-        -#           %span.card-title.activator.grey-text.text-darken-4
-        -#             = f.network
-        -#             %i.material-icons.right more_vert
-        -#           %p
-        -#             %a{"data-lity" => "", :href => preview_url(f.videoId), "data-intro" => i == 0 ? "Link to show trailers/promos utilizing Box's preview endpoint" : nil, "data-position" => i==0 ? "left" : nil}
-        -#               = f.videoName.split('.').first
-        -#         .card-reveal
-        -#           %span.card-title.grey-text.text-darken-4
-        -#             More Info
-        -#             %i.material-icons.right close
-        -#           %h6{:style => "margin-top: 30px"}
-        -#             %b Description:
-        -#           %p
-        -#             =  f.videoDescription
-        -#           %h6{:style => "margin-top: 30px"}
-        -#             %b Related Names:
-        -#           %p
-        -#             =  f.staring
-        -#           %h6{:style => "margin-top: 30px"}
-        -#             %b Content Rating:
-        -#           %p
-        -#             =  f.rating
-        -#           %h6{:style => "margin-top: 30px"}
-        -#             %b Date Added:
-        -#           %p
-        -#             = DateTime.strptime(f.created_at).strftime("%B %d, %Y")
 
         -# Movies tab content
         .col.s12#movies{:style => "margin-top: 30px"}
@@ -166,6 +128,8 @@
                   %span.card-title.activator.grey-text.text-darken-4
                     = f.network
                     %i.material-icons.right more_vert
+                  %tr
+                    %th
                   - f.mediaFiles.each do |media|
                     %p
                       %a{"data-lity" => "", :href => preview_url(media.id)}
