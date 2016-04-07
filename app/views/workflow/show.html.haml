@@ -52,7 +52,7 @@
         .col.s12
           %h6{:style => "margin-bottom: 20px; z-index: 999999;", "data-intro" => "A task has been created for the Company Employee managed user. Make sure to complete the task in Box to proceed to the next step", "data-position" => "left"}
             Pending Employee Review:
-          %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+          %iframe{:height => "850px", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
       - elsif (session[:progress] == 2)
         .col.s2.push-s10.hide_mobile{:style => "margin-top:-20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
           %h7
@@ -67,7 +67,7 @@
           .flash
             = render partial: "shared/flash_messages", flash: flash
         .col.s12{:style =>  "margin-bottom: 20px"}
-          %iframe{:height => "600", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
+          %iframe{:height => "850px", :width => "100%", :src => @previewURL, :allowfullscreen => 'allowfullscreen'}
 
 .footer{:style=>"text-align: right; font-size: 10px; text-decoration: none;"}
   = link_to "reset", reset_workflow_path, {:style => "text-decoration: none;", "data-intro" => "Reset the Onboarding Tasks workflow", "data-position" => "top"}
