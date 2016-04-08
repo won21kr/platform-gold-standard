@@ -55,7 +55,7 @@ class ConfigController < ApplicationController
       client.account.messages.create(
       :from => from,
       :to => key,
-      :body => "Here's your app. Have a kickass demo :-) -  " + session[:config_url]
+      :body => "Here's your custom app URL. Have a kickass demo! " + session[:config_url]
       )
     end
     redirect_to config_path
@@ -72,8 +72,8 @@ class ConfigController < ApplicationController
     mail = SendGrid::Mail.new do |m|
       m.to = params[:emailAddress]
       m.from = params[:emailAddress]
-      m.subject = 'Here is your customized Box Platform Standard'
-      m.text = "Here's your app. Have a kickass demo :-) -  " + session[:config_url]
+      m.subject = 'Your custom Platform Standard app"
+      m.text = "Here\'s the custom-configured Platform Standard app URL you created. Have a kickass demo! " + session[:config_url]
     end
 
     puts client.send(mail)
