@@ -163,6 +163,10 @@
               %th Attribute Value
           %tbody
             %tr
+              %td Company:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:company]
+            %tr
               %td Logo:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 %img{:src => session[:logo], :style => "max-height:100px"}
