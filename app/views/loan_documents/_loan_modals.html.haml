@@ -84,7 +84,7 @@
           %a.collection-item{:href => copy_from_vault_path(f.id, new_name: "Tax Return", old_name: f.name), :style => "text-decoration: none;"}
             = f.name
   .modal-footer
-    %a.modal-action.modal-close.btn-flat.modal-trigger{:href => "#taxModal", :style => "text-decoration: none;"}
+    %a.modal-action.modal-close.btn-flat.modal-trigger.hide_below768{:href => "#taxModal", :style => "text-decoration: none;"}
       Upload New Tax Return
     %form.uploadbtn.hide_above768{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("Tax Return"), class: 'form-horizontal', :style => "text-align: center"}
       .form-group

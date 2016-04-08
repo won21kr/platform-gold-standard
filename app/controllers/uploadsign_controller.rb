@@ -8,6 +8,7 @@ class UploadsignController < SecuredController
 
     # get user client obj for Box API calls
     client = user_client
+    @user_access_token = client.access_token
     session[:current_page] = "upload-sign"
     # tab_usage(session[:current_page])
 
