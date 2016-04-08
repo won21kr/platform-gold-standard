@@ -1,30 +1,31 @@
-#twilioModal.modal
-  .modal-content{:style => "height: 500px;"}
+#twilioModal.modal.hide_below1224
+  .modal-content{:style => "height: 350px;"}
     %h3.thin{:style => "font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"} Enter your mobile number
     %form{:action => send_twilio_message_path, :method => "post", :role => "form"}
       %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
-        Get this customized instance on your phone instantly
+        Text a link to this customized app to your phone
       .row
         .input-field.col.s4
-          %select{:name => "region"}
+          %select{:name => "region", :required => ""}
             %option{:disabled => "", :selected => "", :value => ""} Choose an option
             %option{:value => "+14087695509"} United States
             %option{:value => "+447481339419"} Great Britain
             %option{:value => "+61427903469"} Australia
           %label Region
         .input-field.col.s7
-          %label.h4{:for => "phoneNumber"} Mobile Number:
-          %input.validate.form-control{:type => "text", :name => "phoneNumber"}
-        %button.btn.waves-effect.waves-light.right{:type => "submit", :style => "margin-left: 3%; margin-right: 7%"} Via Text
-        %button.btn.waves-effect.waves-light.right{:type => "button", :href => "#sendGrid", "data-toggle" => "collapse"} Via Email
+          %label.h4{:for => "phoneNumber"}
+          %input.form-control{:type => "text", :name => "phoneNumber", :required => true, :placeholder => "Mobile Number"}
+
+        %button.btn.waves-effect.white.black-text.right{:type => "submit", :style => "margin-left: 5px; margin-right: 10px; text-decoration: none;"} Via Text
+        %button.btn.waves-effect.white.black-text.right{:type => "button", :href => "#sendGrid", "data-toggle" => "collapse", :style => "text-decoration: none;"} Via Email
     #sendGrid.collapse
       %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
-        Alternatively, get this customized instance sent straight to your mail for later use
+        Alternatively, send a link to your inbox
       %form{:action => send_grid_method_path, :method => "post", :role => "form"}
         .input-field.col.s3
-          %label{:for => "emailAddress"} Email (No Corporate Email)
-          %input.validate.form-control{:type => "text", :name => "emailAddress", :style => "width: 92%;"}
-        %button.btn.waves-effect.waves-light{:type => "submit", :style => "margin-bottom: 5%;"} Email Me
+          %label{:for => "emailAddress"}
+          %input.form-control{:type => "text", :name => "emailAddress", :style => "width: 92%;", :placeholder => "Email (No Corporate Email)"}
+        %button.btn.waves-effect.white.black-text.right{:type => "submit", :style => "margin-bottom: 5%;"} Email Me
 
 
 #index-banner.section.no-pad-bot
@@ -208,7 +209,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
-          -# %button.btn.waves-effect.white.black-text.modal-trigger{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Mobile
+          %button.btn.waves-effect.white.black-text.modal-trigger.hide_below1224{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Share URL
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
 

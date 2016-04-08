@@ -55,7 +55,7 @@ class ConfigController < ApplicationController
       client.account.messages.create(
       :from => from,
       :to => key,
-      :body => "#{session[:config_url]}"
+      :body => "Here's your app. Have a kickass demo :-) -  " + session[:config_url]
       )
     end
     redirect_to config_path
@@ -73,7 +73,7 @@ class ConfigController < ApplicationController
       m.to = params[:emailAddress]
       m.from = params[:emailAddress]
       m.subject = 'Here is your customized Box Platform Standard'
-      m.text = "Files have been updated. Please take a look here: "
+      m.text = "Here's your app. Have a kickass demo :-) -  " + session[:config_url]
     end
 
     puts client.send(mail)
@@ -164,7 +164,7 @@ class ConfigController < ApplicationController
   # construct configuration URL
   def config_url
     url = "#{ENV['ACTIVE_URL']}?"
-    
+
     # url << "message=#{session[:home_message]}"
     url << "okta=#{session[:okta]}"
     url << "&company=#{session[:company]}" unless session[:company].blank?
@@ -179,7 +179,7 @@ class ConfigController < ApplicationController
     url << "&onboarding=#{session[:onboarding]}"
     url << "&med_credentialing=#{session[:medical_credentialing]}"
     url << "&loan_docs=#{session[:loan_docs]}"
-    
+
     url << "&tax_return=#{session[:tax_return]}"
     url << "&upload_sign=#{session[:upload_sign]}"
     url << "&dicom_viewer=#{session[:dicom_viewer]}"
@@ -187,6 +187,8 @@ class ConfigController < ApplicationController
     url << "&eventstream=#{session[:eventstream]}"
 
     session[:config_url] = URI.escape(url)
+    puts "Config_url Method: "
+    ap session[:config_url]
   end
 
 end
