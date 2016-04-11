@@ -1,0 +1,9 @@
+= stylesheet_link_tag 'https://s3-us-west-1.amazonaws.com/box-dicom/v1.1.0/dist/css/preview/dicom/dicom.min.css'
+
+#dicomviewer
+
+:javascript
+  $(document).ready(function(){
+    var viewer = document.getElementById('dicomviewer');
+    box.dicom.createViewer(viewer, {'accessToken': '#{@user_access_token}', 'studies': [{'fileId': '#{@file_id}'}]});
+  });

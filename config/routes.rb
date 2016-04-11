@@ -85,6 +85,7 @@ Rails.application.routes.draw do
 
   # dicom viewer
   get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
+  get "/dicom_view/:file_id" => "dicom_viewer#view", :as => "dicom_view"
 
   # auth0
   get "/auth0/failure" => "auth0#failure"

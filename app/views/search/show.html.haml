@@ -132,7 +132,7 @@
 
               - @results.each_with_index do |result, i|
                 %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                  %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
+                  %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser via the Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
                     = image_tag(thumbnail_url(result.id), :width => "40px")
                   %td
                     .name_elipses
