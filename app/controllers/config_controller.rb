@@ -72,7 +72,7 @@ class ConfigController < ApplicationController
     mail = SendGrid::Mail.new do |m|
       m.to = params[:emailAddress]
       m.from = params[:emailAddress]
-      m.subject = 'Your custom Platform Standard app"
+      m.subject = "Your custom Platform Standard app"
       m.text = "Here\'s the custom-configured Platform Standard app URL you created. Have a kickass demo! " + session[:config_url]
     end
 
