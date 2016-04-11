@@ -1,64 +1,65 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        // Title
-        .col.s12
-          %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-            %i.material-icons.prefix{:style => "font-size: 28px;"} theaters
-            Your NBCU
-          %h6.caption.thin{:style => "font-size: 16px;"}
-            Exclusive access to new media content
-          -# Search bar
-          .col.s6.push-s6{:style => "margin-top: -31px;"}
-            %form#search{:action => search_show_path, :method => "post", :style => "text-align: right"}
-              %input{:name => "search", :placeholder => "Search shows...", :size => "40", style: "height: 1.05rem", :type => "text"}/
-        // Messaging
-        .col.s12{:style => "margin-top: 20px"}
-          .col.s6{:style => "text-align: left"}
-            %p
-              %a{:href => "/media-content", :style => "text-decoration: none"} << Back
-          .col.s6{:style => "text-align: right"}
-            %p
-              = @message
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} theaters
+          Media Content
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Exclusive access to new media content
+        -# Search bar
+        .col.s6.push-s6{:style => "margin-top: -31px;"}
+          %form#search{:action => search_show_path, :method => "post", :style => "text-align: right"}
+            %input{:name => "search", :placeholder => "Search shows...", :size => "40", style: "height: 1.05rem", :type => "text"}/
+      // Messaging
+      .col.s12{:style => "margin-top: 20px"}
+        .col.s6{:style => "text-align: left"}
+          %p
+            %a{:href => "/media-content", :style => "text-decoration: none"} << Back
+        .col.s6{:style => "text-align: right"}
+          %p
+            = @message
 
-          - if @results.size == 0
-            .col.s12
-              %hr
-            %p.center{:style => "margin-top: 120px;"}
-              There were no results matching your search criteria.
-        -# Search results
-        .col.s12{:style => "margin-top: 30px"}
+        - if @results.size == 0
           .col.s12
-            - @results.each do |f|
-              .card
-                .card-image.waves-effect.waves-block.waves-light
-                  %img.activator{:src => download_url(f.imageId)}
-                .card-content
-                  %span.card-title.activator.grey-text.text-darken-4
-                    = f.network
-                    %i.material-icons.right more_vert
-                  %p
-                    %a{"data-lity" => "", :href => preview_url(f.videoId)}
-                      = f.videoName.split('.').first
-                .card-reveal
-                  %span.card-title.grey-text.text-darken-4
-                    More Info
-                    %i.material-icons.right close
-                  %h6{:style => "margin-top: 30px"}
-                    %b Description:
-                  %p
-                    =  f.videoDescription
-                  %h6{:style => "margin-top: 30px"}
-                    %b Related Names:
-                  %p
-                    =  f.staring
-                  %h6{:style => "margin-top: 30px"}
-                    %b Content Rating:
-                  %p
-                    =  f.rating
-                  %h6{:style => "margin-top: 30px"}
-                    %b Date Added:
-                  %p
-                    = DateTime.strptime(f.created_at).strftime("%B %d, %Y")
+            %hr
+          %p.center{:style => "margin-top: 120px;"}
+            There were no results matching your search criteria.
+      -# Search results
+      .col.s12{:style => "margin-top: 30px"}
+        .col.s12
+          - @results.each do |f|
+            .card
+              .card-image.waves-effect.waves-block.waves-light
+                %img.activator{:src => download_url(f.imageId)}
+              .card-content
+                %span.card-title.activator.grey-text.text-darken-4
+                  = f.network
+                  %i.material-icons.right more_vert
+                %p
+                  %a{"data-lity" => "", :href => preview_url(f.videoId)}
+                    = f.videoName.split('.').first
+              .card-reveal
+                %span.card-title.grey-text.text-darken-4
+                  More Info
+                  %i.material-icons.right close
+                %h6{:style => "margin-top: 30px"}
+                  %b Description:
+                %p
+                  =  f.videoDescription
+                %h6{:style => "margin-top: 30px"}
+                  %b Related Names:
+                %p
+                  =  f.staring
+                %h6{:style => "margin-top: 30px"}
+                  %b Content Rating:
+                %p
+                  =  f.rating
+                %h6{:style => "margin-top: 30px"}
+                  %b Date Added:
+                %p
+                  = DateTime.strptime(f.created_at).strftime("%B %d, %Y")

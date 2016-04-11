@@ -6,6 +6,7 @@ class EventstreamController < SecuredController
 
     user = user_client
     admin = Box.admin_client
+    ap user
 
     # get user/admin tokens
     @user_access_token = user.access_token
@@ -16,40 +17,73 @@ class EventstreamController < SecuredController
 
     # get user eventstream position and last 20 events
     threads << Thread.new do
-      results = user.user_events(0, stream_type: :all)
-      @user_events = results["events"].reverse[0..50]
-      @user_stream_pos = results.next_stream_position
-      ap @user_events
+
+      @user_events = []
+
+      # get most recent chunk of events
+      temp = user.user_events(0, stream_type: :all)
+      while (temp.chunk_size != 0)
+        if (temp.chunk_size != 0)
+          results = temp
+        end
+        temp = user.user_events(temp.next_stream_position, stream_type: :all)
+
+        # if chunck size == max, store prev events
+        if (temp.chunk_size == 800)
+          puts "max!"
+          prevEvents = temp
+        end
+      end
+
+      if(!results.nil?)
+        # reorder all user events, + check if there are prev events
+        if (prevEvents.nil?)
+            results["events"] = results["events"].reverse
+        else
+          results["events"] = results["events"].reverse.concat(prevEvents["events"].reverse)
+        end
+
+        # remove all of those damn previews events!
+        results["events"] = remove_preview_events(results["events"], "ITEM_PREVIEW")
+
+        # get next stream position and extract 50 unique events
+        @user_stream_pos = results.next_stream_position
+        @user_events = results["events"][0..50].uniq
+      else
+        @user_events = []
+        @user_stream_pos = 0
+      end
     end
 
     # get enterprise events and enterprise eventstream position
     threads << Thread.new do
-      results = admin.enterprise_events(created_after: start_date,
-                                        created_before: now,
-                                        limit: 20)
-      @enterprise_events = results["events"].reverse[0..50]
+      results = admin.enterprise_events(created_after: start_date, created_before: now, limit: 400)
+      # remove all of those damn previews events!
+      results["events"] = remove_preview_events(results["events"], "PREVIEW")
+      @enterprise_events = results["events"].reverse[0..75].uniq
       @enterprise_stream_pos = results.next_stream_position
-      # ap @enterprise_events
-      # ap @enterprise_stream_pos
-
     end
 
-    # ap @user_stream_pos
-
-    # box_client = HTTPClient.new
-    # headers = {"Authorization" => "Bearer #{admin.access_token}"}
-    # uri = 'https://api.box.com/2.0/events'
-    # query = {}
-    # query['stream_type'] = 'admin_logs'
-    # query["limit"] = 5
-    # query['stream_position'] = 0
-    #
-    # res = box_client.get(uri, query: query, header: headers)
-    # ap res
-
-    # result = admin.enterprise_events(created_after: start_date, created_before: now, limit: 10)
-
     threads.each { |thr| thr.join }
+  end
+
+  # remove all of the extra preview events
+  def remove_preview_events(events, eventType)
+    results = []
+    prev = nil
+
+    events.each do |r|
+
+      if (!prev.nil? and r.event_type == eventType and
+          DateTime.strptime(r.created_at).strftime("%M").to_i - DateTime.strptime(prev.created_at).strftime("%M").to_i <= 0)
+        # repeat, do nothing
+      else
+        prev = r
+        results << r
+      end
+    end
+    # return results
+    results
   end
 
 end

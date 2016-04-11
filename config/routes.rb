@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   #loan documents
   get "/loan-origination" => "loan_documents#show", :as => "loan_docs"
+  post "/loan-origination/:file_name" => "loan_documents#loan_post", :as => "loan_post"
   post "/loan-origination/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
   get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
   get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"
@@ -85,8 +86,15 @@ Rails.application.routes.draw do
   # dicom viewer
   get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
 
+  # auth0
   get "/auth0/failure" => "auth0#failure"
   get "/auth0/callback" => "auth0#callback"
+
+  # okta
+  get "/okta" => "okta#show", :as => "okta_login"
+  get "/okta/callback" => "okta#callback"
+  get "/okta/sign-up" => "okta#signup", :as => "okta_signup"
+  post "/okta/sign-up-submit" => "okta#signup_submit", :as => "signup_submit"
 
   get '/logout' => 'home#logout', :as => "logout"
   get '/reset-logins' => 'home#reset_logins', :as => "reset_logins"

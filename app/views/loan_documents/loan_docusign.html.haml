@@ -1,5 +1,6 @@
-.row
+.container
   %h5(style="font-size: 120%;")
     = link_to '<< Back to Loan Documents', '/loan-origination'
-  .container(style="text-align:center;")
-    %iframe{:src => @url, :width => '960px', :height => '850px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}
+  .row(style="text-align:center;")
+    .col.s12
+      %iframe{:src => @url, :width => '100%', :height => '850px', :frameBorder => '0', :allowfullscreen => 'allowfullscreen'}

@@ -30,18 +30,16 @@
 #index-banner.section.no-pad-bot
   .container
     .row
-
       %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
         %i.material-icons.prefix{:style => "font-size: 28px;"} settings
         Settings
-
       %h6.caption.thin{:style => "margin-top: -25px; margin-bottom: 45px;"}
         Build a truly custom app to demo Box Platform, in seconds
 
       // How it works...
       %h6{:style => "margin-top: 20px; margin-bottom: 5;"}
         Here's How it Works
-      .col.s10.push-s1{:style => "margin-bottom: 40px"}
+      .col.s10.push-s1.hide_mobile{:style => "margin-bottom: 40px"}
         .col.s4
           .center
             %i.material-icons.prefix{:style => "font-size: 35px; color: #2996CC;"} invert_colors
@@ -68,10 +66,10 @@
               Your app looks great, you look great, go give one hell of a demo of the Box Platform. Come back to this page to make changes to your app and click "Reset" below or clear your browser data to revert changes. If you'd like to get technical about things <a href="https://cloud.box.com/s/zyrq7voff68h14q7h05zdnlcfh2z6y9d">read more</a>.
 
       // Build your own app
-      .col.s12
+      .col.s12.hide_below_480
         %h6{:style => "margin-top: 20px; margin-bottom: 25px;"}
           Build Your App Below
-      .col.s10.push-s1{:style => "margin-bottom: 40px"}
+      .col.s10.push-s1.hide_below_480{:style => "margin-bottom: 40px"}
         %form{:action => save_config_path, :method => "post", :role => "form"}
           .col.s6
             %b Custom Branding
@@ -98,6 +96,9 @@
                   %span
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
+                %p
+                  %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
+                  %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
 
@@ -108,43 +109,43 @@
             %b{:for => "tab_select"} Active Feature Tabs
             %p
               %input#vault{:type => "checkbox", :name => "vault", :checked => true, :disabled => "on"}
-              %label.checkbox{:for => "vault", :style => "color: black"} My Vault
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "vault", :style => "color: black"} My Vault
             %p
               %input#resources{:type => "checkbox", :name => "resources", :checked => session[:resources] == 'on'}
-              %label.checkbox{:for => "resources", :style => "color: black"} Resources
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "resources", :style => "color: black"} Resources
             %p
               %input#onboarding{:type => "checkbox", :name => "onboarding", :checked => session[:onboarding] == 'on'}
-              %label.checkbox{:for => "onboarding", :style => "color: black"} Onboarding Tasks
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "onboarding", :style => "color: black"} Onboarding Tasks
             %p
               %input#credentialing{:type => "checkbox", :name => "medical_credentialing", :checked => session[:medical_credentialing] == 'on'}
-              %label.checkbox{:for => "credentialing", :style => "color: black"} Medical Credentialing (Healthcare)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "credentialing", :style => "color: black"} Medical Credentialing (Healthcare)
             %p
               %input#loan_docs{:type => "checkbox", :name => "loan_docs", :checked => session[:loan_docs] == 'on'}
-              %label.checkbox{:for => "loan_docs", :style => "color: black"} Loan Origination (Financial Services)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "loan_docs", :style => "color: black"} Loan Origination (Financial Services)
             %p
               %input#uploadsign{:type => "checkbox", :name => "uploadsign", :checked => session[:upload_sign] == 'on'}
-              %label.checkbox{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "uploadsign", :style => "color: black"} Upload & Sign (DocuSign)
             %p
               %input#taxreturn{:type => "checkbox", :name => "taxreturn", :checked => session[:tax_return] == 'on'}
-              %label.checkbox{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "taxreturn", :style => "color: black"} Tax Return (Financial Services)
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
-              %label.checkbox{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
             %p
               %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
-              %label.checkbox{:for => "requestforproposal", :style => "color: black"} Request For Proposals
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "requestforproposal", :style => "color: black"} Request For Proposals
             %p
               %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
-              %label.checkbox{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
             %p
               %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-              %label.checkbox{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
             %p
               %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
-              %label.checkbox{:for => "media_content", :style => "color: black"} Media Content (M&E)
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "media_content", :style => "color: black"} Media Content (M&E)
             %p
               %input#eventstream{:type => "checkbox", :name => "eventstream", :checked => session[:eventstream] == 'on'}
-              %label.checkbox{:for => "eventstream", :style => "color: black"} Box Events
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "eventstream", :style => "color: black"} Box Events
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit
@@ -155,7 +156,7 @@
         %h6{:style => "margin-top: 40px; margin-bottom: 20px;"}
           Current Configuration
       .col.s10.push-s1
-        %table.striped.fixed
+        %table.striped.fixed.settings_table
           %thead
             %tr
               %th Attribute Name
@@ -187,6 +188,10 @@
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
+                - if (session[:media_content] == 'on')
+                  = ", Media Content"
+                - if (session[:eventstream] == 'on')
+                  = ", Box Events"
             %tr
               %td Home Page Background URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
@@ -208,7 +213,6 @@
         .center{:style => "margin-top: 60px; margin-bottom: 25px; color: #505050; letter-spacing: .7px;"}
           %h6
           We take <a href="https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/edit">feedback</a> seriously.     &nbsp;&nbsp;-DemoEng
-          %a.grey-text.text-lighten-4.right{:href => "#!"} More Links
 
 :javascript
   $(document).ready(function() {

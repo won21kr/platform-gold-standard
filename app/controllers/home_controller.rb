@@ -10,6 +10,10 @@ class HomeController < ApplicationController
                       '260539217', ENV['USER_DATA_ID']]
 
   def show
+    # check if okta activated
+    if !session[:okta].nil? and session[:okta] == 'on'
+      redirect_to okta_login_path
+    end
   end
 
   def login

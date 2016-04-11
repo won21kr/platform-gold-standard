@@ -2,9 +2,6 @@ class ConfigController < ApplicationController
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
-  require 'csv'
-
-
   def show
     puts "config page get..."
 
@@ -33,6 +30,8 @@ class ConfigController < ApplicationController
       session[:media_content] = "off"
       session[:eventstream] = "off"
 
+      # Okta
+      session[:okta] = "off"
     end
 
     config_url
@@ -101,6 +100,9 @@ class ConfigController < ApplicationController
       end
     end
 
+    # Okta configuration
+    session[:okta] = !params[:okta].nil? ? 'on' : 'off'
+
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
     session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
@@ -125,10 +127,11 @@ class ConfigController < ApplicationController
   # capture user + current configurations, modify csv, & upload to Box
   def capture_user_data
 
-    # add user config database entry, ActiveRecord video tutorial!!!
+    # add a user config row entry
     user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
-                               date: DateTime.now, # .strftime("%m/%d/%y")
+                               date: DateTime.now,
                                company: session[:company],
+                               okta: session[:okta] == "on" ? true : false,
                                logo_url: session[:logo],
                                home_url: session[:background],
                                vault: true,
@@ -138,10 +141,13 @@ class ConfigController < ApplicationController
                                loan_origination: session[:loan_docs] == "on" ? true : false,
                                upload_sign: session[:upload_sign] == "on" ? true : false,
                                tax_return: session[:tax_return] == "on" ? true : false,
-                               submit_claim: session[:create_claim] == "on" ? true : false)
+                               submit_claim: session[:create_claim] == "on" ? true : false,
+                               eventstream: session[:eventstream] == "on" ? true : false,
+                               media_content: session[:media_content] == "on" ? true : false)
     user_data.save
     # ap user_data
     # ap Userconfig.all
+
   end
 
   # clear session
@@ -160,6 +166,7 @@ class ConfigController < ApplicationController
     if(!session[:navbar_color].nil? && session[:navbar_color] != "")
       session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
     end
+    session[:config_url] << "&okta=#{session[:okta]}"
     session[:config_url] << "&vault=#{session[:vault]}"
     session[:config_url] << "&resources=#{session[:resources]}"
     session[:config_url] << "&onboarding=#{session[:onboarding]}"

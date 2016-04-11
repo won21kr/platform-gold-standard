@@ -1,73 +1,87 @@
-.index-banner.section.no-pad-bot
-  .container
-    = render 'layouts/sidenav'
-    .row
-      .col.m12.l10.push-l2
-        %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-          %i.material-icons.prefix{:style => "font-size: 28px;"} equalizer
-          Box Events
-        %h6.caption.thin{:style => "font-size: 16px;"}
-          Track both admin and user events
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      %h3.thin{:style => "margin-top: 35px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} equalizer
+        Box Events
+      %h6.caption.thin{:style => "font-size: 16px;"}
+        Track both admin and user events
+      -# informational overlays
+      .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+        %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+        %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
+          info
 
-        .col.s12{:style => "margin-top: 30px"}
-          -# .col.s4
-          -#   %h6
-          -#     Box EventStream
-        .col.s6
-          %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
-            %li.tab.active{:style => "font-size: 12px !important;"}
-              %a{:href => "#admin"}
-                Admin
-            %li.tab{:style => "font-size: 12px !important;"}
-              %a{:href => "#user"}
-                User
+      .col.s12{:style => "margin-top: 30px"}
+      .col.s6
+        %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+          %li.tab.active{:style => "font-size: 12px !important;"}
+            %a{:href => "#admin"}
+              Admin
+          %li.tab{:style => "font-size: 12px !important;"}
+            %a{:href => "#user"}
+              User
 
-        -# TABS
-        .col.s12#admin{:style => "margin-top: 30px"}
-          .col.s12
-            %h6{:style => "margin-bottom: 30px"}
-              Enterprise Events
-            %table.highlight#adminEvents
-              %thead
-                %tr
-                  %th{"data-field" => "name"} Type
-                  %th{"data-field" => "modified"} Recorded At
-                  %th{"data-field" => "id"} User Name
-                  %th{"data-field" => "id"} IP Address
-              - @enterprise_events.each do |event|
-                %tr
-                  %td
+      -# TABS
+      .col.s12#admin{:style => "margin-top: 30px"}
+        .col.s12
+          %h6{:style => "margin-bottom: 30px"}
+            Enterprise Events
+          %table.highlight#adminEvents
+            %thead{"data-intro" => "Realtime log of events occuring in the Box enterprise", "data-position" => "top"}
+              %tr
+                %th{"data-field" => "name"} Type
+                %th{"data-field" => "modified"} Recorded At
+                %th{"data-field" => "id"} User Name
+                %th{"data-field" => "id"} IP Address
+            - @enterprise_events.each_with_index do |event, i|
+              %tr{"data-intro" => i == 0 ? "Unique Box admin event" : nil, "data-position" => i == 0 ? "left" : nil}
+                %td
+                  .name_elipses
                     = event.event_type
-                  %td
+                %td
+                  .name_elipses
                     = DateTime.strptime(event.created_at).strftime("%B %d, %Y %l:%M %p")
-                  %td
+                %td
+                  .name_elipses
                     = event.created_by.name
-                  %td
+                %td
+                  .name_elipses
                     = event.ip_address
 
-        .col.s12#user{:style => "margin-top: 30px"}
-          .col.s12
-            %h6{:style => "margin-bottom: 30px"}
-              = "User Events - " + session[:userinfo]['info']['name']
-            %table.highlight#userEvents
-              %thead
-                %tr
-                  %th{"data-field" => "name"} Type
-                  %th{"data-field" => "modified"} Recorded At
-                  %th{"data-field" => "id"} Item Name
-                  -# %th{"data-field" => "id"} User
-              - @user_events.each do |event|
-                %tr
-                  %td
-                    = event.event_type
-                  %td
-                    = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
-                  %td
+      .col.s12#user{:style => "margin-top: 30px"}
+        .col.s12
+          %h6{:style => "margin-bottom: 30px"}
+            = "User Events - " + session[:userinfo]['info']['name']
+          %table.highlight#userEvents
+            %thead{"data-intro" => "Realtime log of events for the signed in Box App User", "data-position" => "top"}
+              %tr
+                %th{"data-field" => "name"} Type
+                %th{"data-field" => "modified"} Recorded At
+                %th{"data-field" => "id"} Item Name
+                -# %th{"data-field" => "id"} User
+            - @user_events.each_with_index do |event, i|
+              %tr{"data-intro" => i == 0 ? "Unique Box user event for #{session[:userinfo]['info']['name']}" : nil, "data-position" => i == 0 ? "left" : nil}
+                %td
+                  = event.event_type
+                %td
+                  = DateTime.strptime(event.recorded_at).strftime("%B %d, %Y %l:%M %p")
+                %td
+                  .name_elipses
                     = event.source.name
-                  -# %td
-                  -#   = event.created_by.name
+                -# %td
+                -#   = event.created_by.name
 
 :javascript
+
+  function chardinToggle() {
+    $('body').chardinJs('toggle');
+  }
+
+
   var initPosition = "#{@user_stream_pos}";
   var entPosition = "#{@enterprise_stream_pos}";
 
@@ -101,8 +115,8 @@
         } else {
           // event not yet processed
           newEvent = $("<tr><td>" + events[i].event_type +
-                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY hh:mm A") +
-                       "</td><td>" + events[i].source.name + "</td></tr>").hide();
+                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
+                       "</td><td><div class =\"name_elipses\">" + events[i].source.name + "</div></td></tr>").hide();
           $("#userEvents").prepend(newEvent);
           newEvent.fadeIn();
           eventIds.push(events[i].event_id);
@@ -146,10 +160,10 @@
           // } else {
           //   name = events[i].source.name;
           // }
-          newEvent = $("<tr><td>" + events[i].event_type +
-                       "</td><td>" + moment(events[i].recorded_at).format("MMMM D, YYYY hh:mm A") +
-                       "</td><td>" + events[i].created_by.name +
-                       "</td><td>" + events[i].ip_address + "</td></tr>").hide();
+          newEvent = $("<tr><td><div class =\"name_elipses\">" + events[i].event_type +
+                       "</div></td><td><div class =\"name_elipses\">" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
+                       "</div></td><td><div class =\"name_elipses\">" + events[i].created_by.name +
+                       "</div></td><td><div class =\"name_elipses\">" + events[i].ip_address + "</div></td></tr>").hide();
           $("#adminEvents").prepend(newEvent);
           newEvent.fadeIn();
           eventIds.push(events[i].event_id);

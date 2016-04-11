@@ -4,8 +4,10 @@ class DashboardController < SecuredController
   # main controller for customer vault
   def show
 
+
     # get user client obj for Box API calls
     client = user_client
+    @user_access_token = client.access_token
     session[:current_page] = "vault"
     # tab_usage(session[:current_page])
 
