@@ -12,4 +12,9 @@ class DicomViewerController < SecuredController
     @user_access_token = user_client.access_token
   end
 
+  def upload
+    @user_access_token = user_client.access_token
+    session[:current_page] = "dicom_upload"
+  end
+
 end

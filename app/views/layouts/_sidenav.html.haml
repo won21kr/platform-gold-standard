@@ -35,6 +35,8 @@
   - if session[:dicom_viewer] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
       %a{:href => "/dicom_viewer", :style => "text-decoration: none;"} DICOM Viewer
+    %li{:class => "#{'active' if session[:current_page] == "dicom_upload"}"}
+      %a{:href => "/dicom_upload", :style => "text-decoration: none;"} Upload DICOM
   - if session[:account_sub] == 'on'
     %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
       %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
