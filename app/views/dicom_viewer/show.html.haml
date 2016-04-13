@@ -28,7 +28,7 @@
         - @studies.each do |name, study|
           %tr{"data-lity" => "", :href => dicom_view_url(study.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
             %td
-              = image_tag(thumbnail_url(study.id), :width => "30px")
+              = image_tag("mri.png", :width => "30px")
             %td
               .name_elipses
                 = name
