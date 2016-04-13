@@ -57,6 +57,7 @@ gem "chardinjs-rails"
 gem "skylight"
 gem "sendgrid-ruby"
 gem 'mixpanel-ruby'
+gem 'twilio-ruby'
 
 # Gems only used on heroku
 group :production, :staging do

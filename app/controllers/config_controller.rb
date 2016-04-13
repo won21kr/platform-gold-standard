@@ -1,4 +1,7 @@
 class ConfigController < ApplicationController
+
+  require 'uri'
+
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
@@ -52,7 +55,7 @@ class ConfigController < ApplicationController
       client.account.messages.create(
       :from => from,
       :to => key,
-      :body => "#{session[:config_url]}"
+      :body => "Here's your custom app URL. Have a kickass demo! " + session[:config_url]
       )
     end
     redirect_to config_path
@@ -69,8 +72,8 @@ class ConfigController < ApplicationController
     mail = SendGrid::Mail.new do |m|
       m.to = params[:emailAddress]
       m.from = params[:emailAddress]
-      m.subject = 'Here is your customized Box Platform Standard'
-      m.text = "Files have been updated. Please take a look here: "
+      m.subject = "Your custom Platform Standard app"
+      m.text = "Here\'s the custom-configured Platform Standard app URL you created. Have a kickass demo! " + session[:config_url]
     end
 
     puts client.send(mail)
