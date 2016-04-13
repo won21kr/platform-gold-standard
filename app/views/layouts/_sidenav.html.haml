@@ -10,7 +10,8 @@
     %a{:href => "/dashboard", :style => "text-decoration: none;"} My Vault
   - if session[:resources] == 'on' or session[:resources].nil?
     %li{:class => "#{'active' if session[:current_page] == "search"}"}
-      %a{:href => "/resources", :style => "text-decoration: none;"} Resources
+      %a{:href => "/resources", :style => "text-decoration: none;"}
+        = alt_text("Resources")
   - if session[:onboarding] == 'on' or session[:onboarding].nil?
     %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
       %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"} Onboarding Tasks
