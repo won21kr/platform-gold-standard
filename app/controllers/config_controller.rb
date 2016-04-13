@@ -160,27 +160,32 @@ class ConfigController < ApplicationController
 
   # construct configuration URL
   def config_url
-    session[:config_url] = "#{ENV['ACTIVE_URL']}/"
-    session[:config_url] << "?message=#{session[:home_message]}"
-    session[:config_url] << "&logo=#{session[:logo]}"
-    if(!session[:navbar_color].nil? && session[:navbar_color] != "")
-      session[:config_url] << "&back_color=#{session[:navbar_color][1..-1]}"
-    end
-    session[:config_url] << "&okta=#{session[:okta]}"
-    session[:config_url] << "&vault=#{session[:vault]}"
-    session[:config_url] << "&resources=#{session[:resources]}"
-    session[:config_url] << "&onboarding=#{session[:onboarding]}"
-    session[:config_url] << "&med_credentialing=#{session[:medical_credentialing]}"
-    session[:config_url] << "&loan_docs=#{session[:loan_docs]}"
-    session[:config_url] << "&background=#{session[:background]}"
-    session[:config_url] << "&tax_return=#{session[:tax_return]}"
-    session[:config_url] << "&upload_sign=#{session[:upload_sign]}"
-    session[:config_url] << "&create_claim=#{session[:create_claim]}"
-    session[:config_url] << "&create_claim=#{session[:request_for_proposal]}"
-    session[:config_url] << "&dicom_viewer=#{session[:dicom_viewer]}"
-    session[:config_url] << "&media_content=#{session[:media_content]}"
-    session[:config_url] << "&eventstream=#{session[:eventstream]}"
+    url = "#{ENV['ACTIVE_URL']}?"
 
+    # url << "message=#{session[:home_message]}"
+    url << "okta=#{session[:okta]}"
+    url << "&company=#{session[:company]}" unless session[:company].blank?
+    url << "&logo=#{session[:logo]}" unless session[:logo].blank?
+    # url << "&alt_text=#{session[:alt_text]}" unless session[:alt_text].blank?
+    url << "&background=#{session[:background]}" unless session[:background].blank?
+    url << "&create_claim=#{session[:create_claim]}" unless session[:create_claim].blank?
+    url << "&request_for_proposal=#{session[:request_for_proposal]}" unless session[:request_for_proposal].blank?
+    url << "&back_color=#{session[:navbar_color][1..-1]}" unless session[:navbar_color].blank?
+
+    url << "&vault=#{session[:vault]}"
+    url << "&resources=#{session[:resources]}"
+    url << "&onboarding=#{session[:onboarding]}"
+    url << "&med_credentialing=#{session[:medical_credentialing]}"
+    url << "&loan_docs=#{session[:loan_docs]}"
+
+    url << "&tax_return=#{session[:tax_return]}"
+    url << "&upload_sign=#{session[:upload_sign]}"
+    url << "&dicom_viewer=#{session[:dicom_viewer]}"
+    url << "&media_content=#{session[:media_content]}"
+    url << "&eventstream=#{session[:eventstream]}"
+
+    session[:config_url] = URI.escape(url)
+    puts "Config_url Method: " + session[:config_url]
   end
 
 end
