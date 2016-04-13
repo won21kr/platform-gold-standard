@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
   def check_config
     # check if query string exists
     if(params != "")
-      puts "params not nil, insert query if it exists"
+      #puts "params not nil, insert query if it exists"
       insert_query(params)
     end
 

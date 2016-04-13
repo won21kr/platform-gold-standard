@@ -8,5 +8,5 @@
 
 :javascript
   $(document).ready(function(){
-    box.dicom.createImportWidget('my-container', {'accessToken': '#{@user_access_token}', 'folderId':'6227625005'});
+    box.dicom.createImportWidget('my-container', {'accessToken': '#{@user_access_token}', 'folderId':'#{@dicom_folder}'});
   });
