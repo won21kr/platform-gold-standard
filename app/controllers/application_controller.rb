@@ -74,12 +74,9 @@ class ApplicationController < ActionController::Base
   private
 
   def check_config
-    # check if query string exists
-    if(params != "")
-      puts "params not nil, insert query if it exists"
+    unless params.blank?
       insert_query(params)
     end
-
   end
 
   # fetches config query from encoded URL and updates the config session variables
@@ -95,7 +92,7 @@ class ApplicationController < ActionController::Base
         session[:alt_text_hash] = nil
       else
         session[:alt_text_hash] = JSON.parse(session[:alt_text])
-        puts "Successfully parsed alt_text: #{session[:alt_text]}"
+        #puts "Successfully parsed alt_text: #{session[:alt_text]}"
       end
     rescue
       session[:alt_text_hash] = nil
