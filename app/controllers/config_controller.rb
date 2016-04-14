@@ -1,7 +1,5 @@
 class ConfigController < ApplicationController
 
-  require 'uri'
-
   skip_before_filter :verify_authenticity_token
   # before_action :check_config
 
@@ -11,7 +9,7 @@ class ConfigController < ApplicationController
     # check if the tabs have been configured yet
     started = true
 
-    if session[:vault].nil?
+    if session[:vault].blank?
       session[:vault] = 'on'
       started = false
     end
@@ -94,7 +92,7 @@ class ConfigController < ApplicationController
       session[:logo] = params[:logo]
     #end
     
-    if !params[:navbar_color].nil? and params[:navbar_color] != ""
+    if !params[:navbar_color].blank? and params[:navbar_color] != ""
       if (params[:navbar_color][0] == '#')
         session[:navbar_color] = params[:navbar_color]
       else
@@ -114,21 +112,21 @@ class ConfigController < ApplicationController
 
 
     # Okta configuration
-    session[:okta] = !params[:okta].nil? ? 'on' : 'off'
+    session[:okta] = !params[:okta].blank? ? 'on' : 'off'
 
     # check feature tab configuration
-    session[:resources] = !params[:resources].nil? ? 'on' : 'off'
-    session[:onboarding] = !params[:onboarding].nil? ? 'on' : 'off'
-    session[:medical_credentialing] = !params[:medical_credentialing].nil? ? 'on' : 'off'
-    session[:loan_docs] = !params[:loan_docs].nil? ? 'on' : 'off'
-    session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
-    session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
-    session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-    session[:request_for_proposal] = !params[:requestforproposal].nil? ? 'on' : 'off'
-    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
-    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
-    session[:media_content] = !params[:media_content].nil? ? 'on' : 'off'
-    session[:eventstream] = !params[:eventstream].nil? ? 'on' : 'off'
+    session[:resources] = !params[:resources].blank? ? 'on' : 'off'
+    session[:onboarding] = !params[:onboarding].blank? ? 'on' : 'off'
+    session[:medical_credentialing] = !params[:medical_credentialing].blank? ? 'on' : 'off'
+    session[:loan_docs] = !params[:loan_docs].blank? ? 'on' : 'off'
+    session[:upload_sign] = !params[:uploadsign].blank? ? 'on' : 'off'
+    session[:tax_return] = !params[:taxreturn].blank? ? 'on' : 'off'
+    session[:create_claim] = !params[:createclaim].blank? ? 'on' : 'off'
+    session[:request_for_proposal] = !params[:requestforproposal].blank? ? 'on' : 'off'
+    session[:account_sub] = !params[:acctsub].blank? ? 'on' : 'off'
+    session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
+    session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
+    session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
@@ -141,7 +139,7 @@ class ConfigController < ApplicationController
   def capture_user_data
 
     # add a user config row entry
-    user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
+    user_data = Userconfig.new(username: session[:userinfo].blank? ? "" : session[:userinfo]['info']['name'],
                                date: DateTime.now,
                                company: session[:company],
                                okta: session[:okta] == "on" ? true : false,
@@ -173,32 +171,32 @@ class ConfigController < ApplicationController
 
   # construct configuration URL
   def config_url
-    url = "#{ENV['ACTIVE_URL']}?"
+    template = Addressable::Template.new("#{ENV['ACTIVE_URL']}{?query*}")
+    
+    query = {}
+    query[""] = 
+    query["company"] = session[:company] unless session[:company].blank?
+    query["logo"] = session[:logo] unless session[:logo].blank?
+    query["alt_text"] = session[:alt_text] unless session[:alt_text].blank?
+    query["background"] = session[:background] unless session[:background].blank?
+    query["create_claim"] = session[:create_claim] unless session[:create_claim].blank?
+    query["request_for_proposal"] = session[:request_for_proposal] unless session[:request_for_proposal].blank?
+    query["back_color"] = session[:navbar_color][1..-1] unless session[:navbar_color].blank?
 
-    # url << "message=#{session[:home_message]}"
-    url << "okta=#{session[:okta]}"
-    url << "&company=#{session[:company]}" unless session[:company].blank?
-    url << "&logo=#{session[:logo]}" unless session[:logo].blank?
-    url << "&alt_text=#{session[:alt_text]}" unless session[:alt_text].blank?
-    url << "&background=#{session[:background]}" unless session[:background].blank?
-    url << "&create_claim=#{session[:create_claim]}" unless session[:create_claim].blank?
-    url << "&request_for_proposal=#{session[:request_for_proposal]}" unless session[:request_for_proposal].blank?
-    url << "&back_color=#{session[:navbar_color][1..-1]}" unless session[:navbar_color].blank?
+    query["okta"] = session[:okta]
+    query["vault"] = session[:vault]
+    query["resources"] = session[:resources]
+    query["onboarding"] = session[:onboarding]
+    query["med_credentialing"] = session[:medical_credentialing]
+    query["loan_docs"] = session[:loan_docs]
+    query["tax_return"] = session[:tax_return]
+    query["upload_sign"] = session[:upload_sign]
+    query["dicom_viewer"] = session[:dicom_viewer]
+    query["media_content"] = session[:media_content]
+    query["eventstream"] = session[:eventstream]
 
-    url << "&vault=#{session[:vault]}"
-    url << "&resources=#{session[:resources]}"
-    url << "&onboarding=#{session[:onboarding]}"
-    url << "&med_credentialing=#{session[:medical_credentialing]}"
-    url << "&loan_docs=#{session[:loan_docs]}"
-
-    url << "&tax_return=#{session[:tax_return]}"
-    url << "&upload_sign=#{session[:upload_sign]}"
-    url << "&dicom_viewer=#{session[:dicom_viewer]}"
-    url << "&media_content=#{session[:media_content]}"
-    url << "&eventstream=#{session[:eventstream]}"
-
-    session[:config_url] = URI.escape(url)
-    puts "Config_url Method: " + session[:config_url]
+    session[:config_url] = template.expand({"query" => query})
+    puts "config_url: " + session[:config_url]
   end
 
 end
