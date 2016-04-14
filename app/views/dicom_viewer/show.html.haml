@@ -26,13 +26,23 @@
             %th{"data-field" => "modified"} Last Modified
 
         - @studies.each do |name, study|
-          %tr{"data-lity" => "", :href => dicom_view_url(study.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-            %td
+          %tr
+            %td{"data-lity" => "", :href => dicom_view_url(study.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
               = image_tag("mri.png", :width => "30px")
-            %td
+            %td{"data-lity" => "", :href => dicom_view_url(study.id)}
               .name_elipses
                 = name
-            %td
+            %td{"data-lity" => "", :href => dicom_view_url(study.id)}
               .name_elipses
                 = DateTime.strptime(study.modified_at).strftime("%B %d, %Y %l:%M %p")
+            %td
+              .btn-group
+                %a.btn.white.tooltipped{"data-lity" => "", href: dicom_view_url(study.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 7px; padding-left: 7px"}
+                  %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                %a.btn.white.tooltipped{href: '#', 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Physician", :style => "padding-right: 7px; padding-left: 7px;"}
+                  %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
+                / %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
+                /   %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
+                / %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
+                /   %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
   
