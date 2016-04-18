@@ -26,17 +26,17 @@
               = @sharedFolder.name
       // Table + upload button
       .col.s12{:style => "margin-left: 30px"}
-        #myfiles
-          .col.s6{:style => "margin-top: 50px;"}
+        #myfiles.myvault_table
+          .col.s6{:style => "margin-top: 50px; padding-left: 0"}
             .breadcrumb.pull-left
-              - @breadcrumb.each do |name,data|
+              - @breadcrumb.each do |name, data|
                 - if data[1]
+                  %li
+                    = link_to name, dashboard_id_path(data[0])
+                - else
                   %li.active
                     = name
-                - else
-                  %li
-                    = link_to name
-                    -# , dashboard_id_path(data[0])
+
           .col.s6{:style => "margin-top: 30px;", "data-intro;" => "Upload files to the Box folder selected above", "data-position" => "left"}
             %div.pull-right{:style => "display: inline-block; position: relative"}
               -# .uploadbtn{:style => "position: relative !important"}
@@ -54,7 +54,7 @@
               - if @myFolder.id == @currentFolder
                 = render partial: "shared/flash_messages", flash: flash
           = render 'dashboard/myfiles'
-        #sharedfiles
+        #sharedfiles.myvault_table
           .col.s2.push-s10{:style => "margin-top: 30px;"}
             .uploadbtn.hide_below768.pull-right{:style => "position: relative !important"}
               %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
