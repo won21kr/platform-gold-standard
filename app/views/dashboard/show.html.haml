@@ -27,7 +27,7 @@
       // Table + upload button
       .col.s12{:style => "margin-left: 30px"}
         #myfiles.myvault_table
-          .col.s6{:style => "margin-top: 50px; padding-left: 0"}
+          .col.m6.s12{:style => "margin-top: 50px; padding-left: 0"}
             .breadcrumb.pull-left
               - @breadcrumb.each do |name, data|
                 - if data[1]
@@ -37,7 +37,7 @@
                   %li.active
                     = name
 
-          .col.s6{:style => "margin-top: 30px;", "data-intro;" => "Upload files to the Box folder selected above", "data-position" => "left"}
+          .col.m6.s12{:style => "margin-top: 30px;", "data-intro;" => "Upload files to the Box folder selected above", "data-position" => "left"}
             %div.pull-right{:style => "display: inline-block; position: relative"}
               -# .uploadbtn{:style => "position: relative !important"}
               %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
@@ -45,6 +45,7 @@
               %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768.uploadbtn{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
               %form.uploadbtn.hide_above768{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
                 .form-group
+                  -# %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
                   %button.waves-effect.btn.white.black-text.btn-file
                     Upload
                     %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
