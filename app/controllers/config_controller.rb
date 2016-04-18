@@ -169,6 +169,7 @@ class ConfigController < ApplicationController
     url << "okta=#{session[:okta]}"
     url << "&company=#{session[:company]}" unless session[:company].blank?
     url << "&logo=#{session[:logo]}" unless session[:logo].blank?
+    # url << "&alt_text=#{session[:alt_text]}" unless session[:alt_text].blank?
     url << "&background=#{session[:background]}" unless session[:background].blank?
     url << "&create_claim=#{session[:create_claim]}" unless session[:create_claim].blank?
     url << "&request_for_proposal=#{session[:request_for_proposal]}" unless session[:request_for_proposal].blank?
@@ -187,8 +188,7 @@ class ConfigController < ApplicationController
     url << "&eventstream=#{session[:eventstream]}"
 
     session[:config_url] = URI.escape(url)
-    puts "Config_url Method: "
-    ap session[:config_url]
+    puts "Config_url Method: " + session[:config_url]
   end
 
 end

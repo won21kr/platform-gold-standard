@@ -9,6 +9,8 @@ class DashboardController < SecuredController
     client = user_client
     @user_access_token = client.access_token
     session[:current_page] = "vault"
+    threads = []
+    @breadcrumb = {}
     # tab_usage(session[:current_page])
 
     # get "My Files" and "Shared Files" folder objects
@@ -20,6 +22,25 @@ class DashboardController < SecuredController
     end
     @sharedFolder.name = "Shared Files"
 
+    # check if we're in a subfolder
+    if (!params[:id].nil? and params[:id] != @sharedFolder.id and params[:id] != @myFolder.id)
+      @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder/#{params[:id]}", :expires_in => 10.minutes) do
+        client.folder_from_id(params[:id])
+      end
+      session[:current_folder] = @myFolder.id
+
+      # get breadcrumbs
+      if @myFolder.path_collection?
+
+        path = @myFolder.path_collection["entries"].drop(1)
+        path.each do |item|
+          @breadcrumb[item.name] = [item.id,true]
+        end
+
+        @breadcrumb[@myFolder.name] = [@myFolder.id, false]
+      end
+    end
+
     # set active folder ID, either "My Files" or "Shared Files" folder
     if(session[:current_folder].nil?)
       @currentFolder = @myFolder.id
@@ -28,13 +49,17 @@ class DashboardController < SecuredController
     end
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
-    @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at]).files
-    @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
+    threads << Thread.new do
+      @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at])
+    end
+    threads << Thread.new do
+      @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
+    end
 
+    threads.each { |thr| thr.join }
   end
 
   def search_vault(name)
-
 
     client = user_client
 
@@ -67,7 +92,7 @@ class DashboardController < SecuredController
       flash[:error] = "Error: Could not change file name"
     end
 
-    redirect_to dashboard_path
+    redirect_to dashboard_id_path(session[:current_folder])
   end
 
   # upload files to parameter specified folder ID
@@ -161,5 +186,41 @@ class DashboardController < SecuredController
 
     redirect_to dashboard_id_path(myFolder.id)
   end
+
+  # Create a new empty sub-folder
+  def new_folder
+
+    puts "create new folder"
+    client = user_client
+
+    # get "My Files" and "Shared Files" folder objects
+    @currentFolder = params[:parent_id]
+
+    # create new subfolder
+    begin
+      newFolder = client.create_folder(params[:folderName], @currentFolder)
+    rescue
+      puts "could not create new folder"
+      flash[:error] = "Error: could not create folder"
+    end
+
+    redirect_to dashboard_id_path(@currentFolder)
+  end
+
+  # delete subfolder
+  def delete_folder
+    session[:current_folder] = params[:folder]
+    client = user_client
+
+    # delete folder
+    client.delete_folder(params[:id], recursive: true)
+    flash[:notice] = "Folder successfully deleted!"
+
+    redirect_to dashboard_id_path(session[:current_folder])
+  end
+
+  def download_folder
+  end
+
 
 end

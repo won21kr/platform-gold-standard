@@ -20,30 +20,43 @@
         %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
           %li.tab{:style => "font-size: 12px !important;"}
             %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
-              = @myFolder.name
+              = "My Files"
           %li.tab{:style => "font-size: 12px !important;"}
             %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
               = @sharedFolder.name
       // Table + upload button
       .col.s12{:style => "margin-left: 30px"}
-        #myfiles
-          .col.s2.push-s10{:style => "margin-top: 30px;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"}
-            .uploadbtn.hide_below992{:style => "position: relative !important"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
-            %form.uploadbtn.hide_above992{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
-              .form-group
-                %button.waves-effect.btn.white.black-text.btn-file
-                  Upload
-                  %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
+        #myfiles.myvault_table
+          .col.m6.s12{:style => "margin-top: 50px; padding-left: 0"}
+            .breadcrumb.pull-left
+              - @breadcrumb.each do |name, data|
+                - if data[1]
+                  %li
+                    = link_to name, dashboard_id_path(data[0])
+                - else
+                  %li.active
+                    = name
 
+          .col.m6.s12{:style => "margin-top: 30px;", "data-intro;" => "Upload files to the Box folder selected above", "data-position" => "left"}
+            %div.pull-right{:style => "display: inline-block; position: relative"}
+              -# .uploadbtn{:style => "position: relative !important"}
+              %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
+
+              %a.waves-effect.btn.white.black-text.modal-trigger.hide_below992.uploadbtn{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
+              %form.uploadbtn.hide_above992{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
+                .form-group
+                  -# %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
+                  %button.waves-effect.btn.white.black-text.btn-file
+                    Upload
+                    %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
           .col.s12
             .flash.col.s8.push-s2{:style => "margin-top: 20px"}
               - if @myFolder.id == @currentFolder
                 = render partial: "shared/flash_messages", flash: flash
           = render 'dashboard/myfiles'
-        #sharedfiles
+        #sharedfiles.myvault_table
           .col.s2.push-s10{:style => "margin-top: 30px;"}
-            .uploadbtn.hide_below768{:style => "position: relative !important"}
+            .uploadbtn.hide_below768.pull-right{:style => "position: relative !important"}
               %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
             %form.uploadbtn.hide_above768{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
               .form-group
@@ -63,6 +76,18 @@
     %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
     %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
     %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
+
+#newfolder.modal{:style => "width: 35% !important"}
+  .modal-content
+    %h5{:style => "margin-bottom: 35px;"} Create new folder
+    .row
+      .col.s12
+        %form.form-inline{:role => "form", :method => "post", :action => new_folder_path(@myFolder.id)}
+          %input#name{:type => "text", :name => "folderName", :placeholder => "My New Folder", :style => ""}
+          %button.modal-action.modal-close.waves-effect.btn.white.black-text.btn-flat.pull-right{:type => "button",  :style => "padding: 0 1rem; font-size: 65%"} Cancel
+          %button.waves-effect.btn.pull-right{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Create
+        -# .modal-footer
+        -#   %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
 
 
 :javascript
