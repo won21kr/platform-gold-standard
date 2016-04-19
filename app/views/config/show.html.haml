@@ -97,9 +97,9 @@
                   %span
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
-                %p
-                  %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
-                  %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
+                -# %p
+                -#   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
+                -#   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
 
@@ -132,18 +132,18 @@
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox.less_lineheight.longer_name_elipses{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            %p
-              %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
-              %label.checkbox.less_lineheight.longer_name_elipses{:for => "requestforproposal", :style => "color: black"} Request For Proposals
-            %p
-              %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
-              %label.checkbox.less_lineheight.longer_name_elipses{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
-            %p
-              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-              %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
-            %p
-              %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
-              %label.checkbox.less_lineheight.longer_name_elipses{:for => "media_content", :style => "color: black"} Media Content (M&E)
+            -# %p
+            -#   %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
+            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "requestforproposal", :style => "color: black"} Request For Proposals
+            -# %p
+            -#   %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
+            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
+            -# %p
+            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            -# %p
+            -#   %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
+            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "media_content", :style => "color: black"} Media Content (M&E)
             %p
               %input#eventstream{:type => "checkbox", :name => "eventstream", :checked => session[:eventstream] == 'on'}
               %label.checkbox.less_lineheight.longer_name_elipses{:for => "eventstream", :style => "color: black"} Box Events
@@ -193,8 +193,8 @@
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
-                - if (session[:media_content] == 'on')
-                  = ", Media Content"
+                -# - if (session[:media_content] == 'on')
+                -#   = ", Media Content"
                 - if (session[:eventstream] == 'on')
                   = ", Box Events"
             %tr
