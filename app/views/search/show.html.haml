@@ -105,7 +105,7 @@
                   %th{"data-field" => "modified"} Last Modified
                   %th{"data-field" => "modified"} Description
               - @results.each_with_index do |folder, i|
-                %tr{:onclick => "location.href = '/dashboard/#{folder.id}'"}
+                %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
                   %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
                     = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
                   %td
