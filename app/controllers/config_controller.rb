@@ -28,13 +28,13 @@ class ConfigController < ApplicationController
       session[:upload_sign] = "off"
       session[:tax_return] = "off"
       session[:create_claim] = "off"
-      session[:account_sub] = "off"
-      session[:dicom_viewer] = "off"
-      session[:media_content] = "off"
+      # session[:account_sub] = "off"
+      # session[:dicom_viewer] = "off"
+      # session[:media_content] = "off"
       session[:eventstream] = "off"
 
       # Okta
-      session[:okta] = "off"
+      # session[:okta] = "off"
     end
 
     config_url
@@ -104,7 +104,7 @@ class ConfigController < ApplicationController
     end
 
     # Okta configuration
-    session[:okta] = !params[:okta].nil? ? 'on' : 'off'
+    # session[:okta] = !params[:okta].nil? ? 'on' : 'off'
 
     # check feature tab configuration
     session[:resources] = !params[:resources].nil? ? 'on' : 'off'
@@ -114,10 +114,10 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].nil? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].nil? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].nil? ? 'on' : 'off'
-    session[:request_for_proposal] = !params[:requestforproposal].nil? ? 'on' : 'off'
-    session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
-    session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
-    session[:media_content] = !params[:media_content].nil? ? 'on' : 'off'
+    # session[:request_for_proposal] = !params[:requestforproposal].nil? ? 'on' : 'off'
+    # session[:account_sub] = !params[:acctsub].nil? ? 'on' : 'off'
+    # session[:dicom_viewer] = !params[:dicom_viewer].nil? ? 'on' : 'off'
+    # session[:media_content] = !params[:media_content].nil? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].nil? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
@@ -134,7 +134,7 @@ class ConfigController < ApplicationController
     user_data = Userconfig.new(username: session[:userinfo].nil? ? "" : session[:userinfo]['info']['name'],
                                date: DateTime.now,
                                company: session[:company],
-                               okta: session[:okta] == "on" ? true : false,
+                              #  okta: session[:okta] == "on" ? true : false,
                                logo_url: session[:logo],
                                home_url: session[:background],
                                vault: true,
@@ -145,8 +145,8 @@ class ConfigController < ApplicationController
                                upload_sign: session[:upload_sign] == "on" ? true : false,
                                tax_return: session[:tax_return] == "on" ? true : false,
                                submit_claim: session[:create_claim] == "on" ? true : false,
-                               eventstream: session[:eventstream] == "on" ? true : false,
-                               media_content: session[:media_content] == "on" ? true : false)
+                               eventstream: session[:eventstream] == "on" ? true : false)
+                              #  media_content: session[:media_content] == "on" ? true : false)
     user_data.save
     # ap user_data
     # ap Userconfig.all
@@ -163,6 +163,7 @@ class ConfigController < ApplicationController
 
   # construct configuration URL
   def config_url
+
     url = "#{ENV['ACTIVE_URL']}?"
 
     # url << "message=#{session[:home_message]}"
@@ -189,6 +190,7 @@ class ConfigController < ApplicationController
 
     session[:config_url] = URI.escape(url)
     puts "Config_url Method: " + session[:config_url]
+
   end
 
 end
