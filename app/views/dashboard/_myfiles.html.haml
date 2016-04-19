@@ -10,7 +10,7 @@
       - @myFiles.each_with_index do |f, i|
         -# check if folder or file
         - if f.type == "folder"
-          %tr{:onclick => "location.href = '/dashboard/#{f.id}'", :id => "#{f.id}", :style => "cursor:pointer", :ondrop => "drop(event, this.id)", :ondragover => "allowDrop(event)"}
+          %tr{:onclick => "location.href = '/dashboard/#{f.id}'", :id => "#{f.id}", :style => "cursor:pointer", :ondrop => "drop(event, this.id)", :ondragover => "allowDrop(event, this.id)", :ondragleave => "dragLeave(event, this.id)"}
             %td
               = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
             %td

@@ -221,6 +221,17 @@
       ev.dataTransfer.setData("text", ev.target.id);
   }
 
+  function allowDrop(ev, id) {
+      event.preventDefault();
+      document.getElementById(id).style.border = "2px dashed #2996CC";
+      // event.target.style.border = "4px dotted green";
+  }
+
+  function dragLeave(ev, id) {
+    document.getElementById(id).style.border = "";
+  }
+
+
   function drop(ev, id) {
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");
