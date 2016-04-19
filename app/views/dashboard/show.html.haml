@@ -235,8 +235,8 @@
   function drop(ev, id) {
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");
-      console.log("file: " + data);
-      console.log("dest folder: " + id)
+      // console.log("file: " + data);
+      // console.log("dest folder: " + id)
       location.href = '/move_file/?dest=' + id + '&file_id=' + data
       // ev.target.appendChild(document.getElementById(data));
   }
