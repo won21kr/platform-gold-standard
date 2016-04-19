@@ -79,8 +79,8 @@
     %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
 
 #popover-folder-content.hide{:style => "padding: 5px 10px"}
-  %form.form-inline{:role => "form", :method => "post", :action => edit_folder_name_path(@currentFolder)}
-    %input#folderName{:type => "text", :placeholder => "My New Folder", name: 'folderName', :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
+  %form.form-inline{:role => "form", :method => "post", :onclick => "event.stopPropagation();", :action => edit_folder_name_path(@currentFolder)}
+    %input#folderName{:type => "text", name: 'folderName', :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
     %input#folderId.form-control{:type => "hidden", :name => "folderId"}
     %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
     %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=folder-popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close

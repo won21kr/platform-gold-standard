@@ -11,20 +11,18 @@
         %tr
           -# check if folder or file
           - if f.type == "folder"
-            %tr
-              %td{:onclick => "location.href = '/dashboard/#{f.id}'"}
+            %tr{:onclick => "location.href = '/dashboard/#{f.id}'"}
+              %td
                 = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
               %td
                 %div.name_elipses{:style => "inline"}
                   = f.name
-                  = link_to '#', :onclick => "$('#folderId').attr('value','#{f.id}');", "data-toggle" => "folder-popover", "rel" => "popover", :style => "color: grey; display: inline-block !important;" do
+                  = link_to '#', :onclick => "event.stopPropagation(); $('#folderId').attr('value','#{f.id}'); $('#folderName').attr('value','#{f.name}');", "data-toggle" => "folder-popover", "rel" => "popover", :style => "color: grey; display: inline-block !important;" do
                     %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%; display: inline-block !important;", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit"}
               %td.hidden-xs.hidden-sm#claim-descr
                 = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
               %td
                 .btn-group
-                  -# %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
-                  -#   %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
                   %a.btn.white.tooltipped{href: delete_folder_path(f.id, folder: @currentFolder), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
                     %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
           - else
