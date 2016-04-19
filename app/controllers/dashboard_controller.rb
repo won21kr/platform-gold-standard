@@ -47,6 +47,7 @@ class DashboardController < SecuredController
     else
       @currentFolder = session[:current_folder]
     end
+    session[:current_folder] = @currentFolder
 
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
@@ -236,6 +237,25 @@ class DashboardController < SecuredController
     # delete folder
     client.delete_folder(params[:id], recursive: true)
     flash[:notice] = "Folder successfully deleted!"
+
+    redirect_to dashboard_id_path(session[:current_folder])
+  end
+
+  # move dragged file into subfolder
+  def move_file
+
+    destFolder = params[:dest]
+    targetFile = params[:file_id]
+    client = user_client
+
+    # get folder
+    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder/#{params[:dest]}", :expires_in => 10.minutes) do
+      client.folder_from_id(params[:dest])
+    end
+
+    # get shared folder, then move file into shared folder
+    client.move_file(targetFile, destFolder)
+    flash[:notice] = "File moved into \"#{folder.name}\""
 
     redirect_to dashboard_id_path(session[:current_folder])
   end
