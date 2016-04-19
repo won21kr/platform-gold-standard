@@ -78,13 +78,21 @@
     %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
     %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
 
+#popover-folder-content.hide{:style => "padding: 5px 10px"}
+  %form.form-inline{:role => "form", :method => "post", :action => edit_folder_name_path(@currentFolder)}
+    %input#folderName{:type => "text", :placeholder => "My New Folder", name: 'folderName', :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
+    %input#folderId.form-control{:type => "hidden", :name => "folderId"}
+    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
+    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=folder-popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
+
+
 #newfolder.modal{:style => "width: 35% !important"}
   .modal-content
     %h5{:style => "margin-bottom: 35px;"} Create new folder
     .row
       .col.s12
         %form.form-inline{:role => "form", :method => "post", :action => new_folder_path(@myFolder.id)}
-          %input#name{:type => "text", :name => "folderName", :placeholder => "My New Folder", :style => ""}
+          %input#folder_name{:type => "text", :name => "folderName", :placeholder => "My New Folder", :style => ""}
           %button.modal-action.modal-close.waves-effect.btn.white.black-text.btn-flat.pull-right{:type => "button",  :style => "padding: 0 1rem; font-size: 65%"} Cancel
           %button.waves-effect.btn.pull-right{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Create
         -# .modal-footer
@@ -105,6 +113,19 @@
   $(document).ready(function(){
     $('.modal-trigger').leanModal();
   });
+
+  // edit folder name popover
+  $(document).ready(function(){
+    $('[data-toggle=folder-popover]').popover({
+      html: 'true',
+      placement: 'right',
+      content : function() {
+        return $('#popover-folder-content').html();
+      }
+    })
+    $(".button-collapse").sideNav();
+  });
+
 
   // edit filename popover
   $(document).ready(function(){

@@ -18,9 +18,9 @@ Rails.application.routes.draw do
   get "/unshare/:id" => "dashboard#unshare_file", :as => "unshare_file"
   post "/upload/:folder_id" => "dashboard#upload", :as => "upload"
   post "/edit_name/:folder_id" => "dashboard#edit_filename", :as => "edit_name"
+  post "/edit_folder_name/:folder_id" => "dashboard#edit_folder_name", :as => "edit_folder_name"
   post "/new_folder/:parent_id" => "dashboard#new_folder", :as => "new_folder"
   get "delete_folder/:id" => "dashboard#delete_folder", :as => "delete_folder"
-  get "/download_folder/:id" => 'dashboard#download_folder', :as => "download_folder"
 
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"

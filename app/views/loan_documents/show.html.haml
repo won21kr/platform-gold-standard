@@ -35,11 +35,7 @@
                 %td.td
                   - if @docStatus["Loan Agreement"] == "Missing"
                     %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px; ", "data-intro" => "Upload the missing Loan Document for approval", "data-position" => "left"} Upload
-<<<<<<< HEAD
-                    %form.uploadbtn.hide_above768{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("Loan Agreement - Signature Needed"), class: 'form-horizontal', :style => @searchFiles["Loan"].size == 0 ? "text-align: center; font-size: 10px" : "text-align: center; font-size: 10px;"}
-=======
                     %form.uploadbtn.hide_above768{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("Loan Agreement - Signature Needed"), class: 'form-horizontal', :style => "text-align: center; font-size: 10px"}
->>>>>>> 7dca033ddcb30a4d5526a89f5ee9317f95725e66
                       .form-group
                         %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#"}
                           Upload

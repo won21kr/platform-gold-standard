@@ -11,12 +11,14 @@
         %tr
           -# check if folder or file
           - if f.type == "folder"
-            %tr{:onclick => "location.href = '/dashboard/#{f.id}'"}
-              %td
+            %tr
+              %td{:onclick => "location.href = '/dashboard/#{f.id}'"}
                 = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
               %td
                 %div.name_elipses{:style => "inline"}
                   = f.name
+                  = link_to '#', :onclick => "$('#folderId').attr('value','#{f.id}');", "data-toggle" => "folder-popover", "rel" => "popover", :style => "color: grey; display: inline-block !important;" do
+                    %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%; display: inline-block !important;", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit"}
               %td.hidden-xs.hidden-sm#claim-descr
                 = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
               %td
