@@ -9,7 +9,7 @@
 
 :javascript
 
-  var baseUrl = 'https://boxplatformstd-admin.okta.com';
+  var baseUrl = '#{ENV['OKTA_DOMAIN']}';
   var logo = '#{session[:logo]}' == "" ? "https://hostr.co/file/wjURGV9V1IRu/ScreenShot2015-12-30at6.35.54PM.png" : '#{session[:logo]}';
   var signup = '#{ENV['ACTIVE_URL']}' + '/okta/sign-up';
   var oktaSignIn = new OktaSignIn({ baseUrl : baseUrl,

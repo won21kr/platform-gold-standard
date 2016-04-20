@@ -97,9 +97,26 @@
                   %span
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
+                -# For custom content selection
+                %label.label-div{:for => "customContent", :style => "color: black; margin-top: 20px"} Custom Content Selection
+                %br
+                %button.dropdown-button.btn.white.black-text{:id => "contentSelection", "data-activates" => "selection", :href => "#", :style => "margin-top: 10px; margin-bottom: 20px; text-decoration: none"} Select
+                / Dropdown Structure
+                %ul#selection.dropdown-content
+                  -# %li
+                  %p
+                    %input#test1{:name => "contentSelection", :type => "radio", :onclick => "selectContent('Red')"}
+                    %label{:for => "test1"} Red
+                  %p
+                    %input#test2{:name => "contentSelection", :type => "radio", :onclick => "selectContent('Yellow')"}
+                    %label{:for => "test2"} Yellow
+                  %p
+                    %input#test3{:name => "contentSelection", :type => "radio", :onclick => "selectContent('Green')"}
+                    %label{:for => "test3"} Green
                 %p
                   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
                   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
+
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
 
@@ -220,6 +237,11 @@
           We take <a href="https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/edit">feedback</a> seriously.     &nbsp;&nbsp;-DemoEng
 
 :javascript
+
+  function selectContent(text) {
+    document.getElementById('contentSelection').textContent = text;
+  }
+
   $(document).ready(function() {
     $('select').material_select();
   });

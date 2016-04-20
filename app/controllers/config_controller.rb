@@ -37,6 +37,18 @@ class ConfigController < ApplicationController
       session[:okta] = "off"
     end
 
+    # Get custom folders
+    client = user_client
+    @customContent = Hash.new
+    # folder = Rails.cache.fetch("/customContent/root", :expires_in => 10.minutes) do
+    #   client.folder_from_path('Custom Folder Stuctures')
+    # end
+
+    verticals = Rails.cache.fetch("/customContent/root_items", :expires_in => 10.minutes) do
+      client.folder_items('7561208249')
+    end
+
+
     config_url
   end
 

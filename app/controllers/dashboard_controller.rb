@@ -223,7 +223,7 @@ class DashboardController < SecuredController
       newFolder = client.create_folder(params[:folderName], @currentFolder)
     rescue
       puts "could not create new folder"
-      flash[:error] = "Error: could not create folder"
+      flash[:error] = "Error: Could not create folder"
     end
 
     redirect_to dashboard_id_path(@currentFolder)
@@ -253,9 +253,13 @@ class DashboardController < SecuredController
       client.folder_from_id(params[:dest])
     end
 
-    # get shared folder, then move file into shared folder
-    client.move_file(targetFile, destFolder)
-    flash[:notice] = "File moved into \"#{folder.name}\""
+    begin
+      # get shared folder, then move file into shared folder
+      client.move_file(targetFile, destFolder)
+      flash[:notice] = "File moved into \"#{folder.name}\""
+    rescue
+      flash[:error] = "Error: Could not move file"
+    end
 
     redirect_to dashboard_id_path(session[:current_folder])
   end
