@@ -1,217 +1,64 @@
+/ back to previous page
+%h5(style="font-size: 120%;")
+  - if (session[:current_page] == "medical_credentialing")
+    = link_to '<< Back to Medical Credentialing', '/medical-credentialing'
+  - elsif (session[:current_page] == "loan_docs")
+    = link_to '<< Back to Loan Documents', '/loan-origination'
+  - elsif (session[:current_page] == 'tax_return')
+    = link_to '<< Back to my taxes', '/tax_return'
+  - elsif (session[:current_page] == 'account_sub')
+    = link_to '<< Back to Account', '/account-submission/list-acct/' + session[:current_folder]
+    -# = link_to '<< Back to Account Submissions', '/account-submission'
+  - elsif (session[:current_page] == 'request_for_proposal')
+    = link_to '<< Back to Proposal Builder', '/request_for_proposal'
+  - elsif (!session[:current_folder].nil?)
+    = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
+  - else
+    = link_to '<< Back to My Vault', dashboard_path
+
 .container
-  = render 'layouts/sidenav'
   .row
-    .index-banner.section.no-pad-bot
-  .row
-    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
-      // Title
-      .col.s12
-        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-          %i.material-icons.prefix{:style => "font-size: 28px;"} lock_outline
-          My Vault
-        %h6.caption.thin{:style => "font-size: 16px;"}
-          Your personal and shared files
-        .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
-          %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
-          %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
-            info
-      // Tabs
-      .col.l5.push-l7.s12#claim-tabs{:style => "margin-top: -45px; margin-left: 40px", "data-intro" => "These tabs represent folders in Box. Sharing a file below will make an api call to move to the 'Shared Files' folder where Company Employee, a Box managed user, is a collaborator (Editor)", "data-position" => "left"}
-        %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
-          %li.tab{:style => "font-size: 12px !important;"}
-            %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
-              = "My Files"
-          %li.tab{:style => "font-size: 12px !important;"}
-            %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
-              = @sharedFolder.name
-      // Table + upload button
-      .col.s12{:style => "margin-left: 30px"}
-        #myfiles.myvault_table
-          .col.m6.s12{:style => "margin-top: 50px; padding-left: 0"}
-            .breadcrumb.pull-left
-              - @breadcrumb.each do |name, data|
-                - if data[1]
-                  %li
-                    = link_to name, dashboard_id_path(data[0])
-                - else
-                  %li.active
-                    = name
-
-          .col.m6.s12{:style => "margin-top: 30px;", "data-intro;" => "Upload files to the Box folder selected above", "data-position" => "left"}
-            %div.pull-right{:style => "display: inline-block; position: relative"}
-              -# .uploadbtn{:style => "position: relative !important"}
-              %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
-
-              %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768.uploadbtn{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
-              %form.uploadbtn.hide_above768{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
-                .form-group
-                  -# %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
-                  %button.waves-effect.btn.white.black-text.btn-file
-                    Upload
-                    %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
-
-          .col.s12
-            .flash.col.s8.push-s2{:style => "margin-top: 20px"}
-              - if @myFolder.id == @currentFolder
-                = render partial: "shared/flash_messages", flash: flash
-          = render 'dashboard/myfiles'
-        #sharedfiles.myvault_table
-          .col.s2.push-s10{:style => "margin-top: 30px;"}
-            .uploadbtn.hide_below768.pull-right{:style => "position: relative !important"}
-              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
-            %form.uploadbtn.hide_above768{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
-              .form-group
-                %button.waves-effect.btn.white.black-text.btn-file-shared
-                  Upload
-                  %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
-          .col.s12
-            .flash.col.s8.push-s2{:style => "margin-top: 20px"}
-              - if @sharedFolder.id == @currentFolder
-                = render partial: "shared/flash_messages", flash: flash
-          = render 'dashboard/sharedfiles'
-
-#popover-content.hide{:style => "padding: 5px 10px"}
-  %form.form-inline{:role => "form", :method => "post", :action => edit_name_path(@currentFolder)}
-    %input#name{:type => "text", :name => "fileName", :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
-    %input#fileid.form-control{:type => "hidden", :name => "fileId"}
-    %input#fileExt.form-control{:type => "hidden", :name => "fileExt"}
-    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
-    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
-
-#popover-folder-content.hide{:style => "padding: 5px 10px"}
-  %form.form-inline{:role => "form", :method => "post", :onclick => "event.stopPropagation();", :action => edit_folder_name_path(@currentFolder)}
-    %input#folderName{:type => "text", name: 'folderName', :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
-    %input#folderId.form-control{:type => "hidden", :name => "folderId"}
-    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
-    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=folder-popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
-
-
-#newfolder.modal{:style => "width: 35% !important"}
-  .modal-content
-    %h5{:style => "margin-bottom: 35px;"} Create new folder
-    .row
-      .col.s12
-        %form.form-inline{:role => "form", :method => "post", :action => new_folder_path(@myFolder.id)}
-          %input#folder_name{:type => "text", :name => "folderName", :placeholder => "My New Folder", :style => ""}
-          %button.modal-action.modal-close.waves-effect.btn.white.black-text.btn-flat.pull-right{:type => "button",  :style => "padding: 0 1rem; font-size: 65%"} Cancel
-          %button.waves-effect.btn.pull-right{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Create
-        -# .modal-footer
-        -#   %a.modal-action.modal-close.waves-effect.waves-green.btn-flat{:href => "#!", :style => "text-decoration: none;"} Close
+    .col.l9.s12
+      %h6{:style => "margin-top: 20px"}
+        = @file.name.split(".").first
+      / create iframe for viewing document
+      -# - if @file.name.downcase.end_with?('.dpng') or @file.name.downcase.end_with?('.jdg') or @file.name.downcase.end_with?('.jpedg')
+      -#   %img{:id => 'image_preview', :width => '100%', :src => download_file_url(@fileId), :allowfullscreen => 'allowfullscreen'}
+      -# - elsif @file.name.downcase.end_with?('.mdp4') or @file.name.downcase.end_with?('.mov')
+      -#   %video{id: 'embedded_video', class: 'video-js vjs-default-skin vjs-big-play-centered', 'controls' => true, preload: 'auto', width: '100%', height: '600', poster: "#{thumbnail_url(@file.id)}", 'data-setup' => true}
+      -#     %source{src: "#{download_url(@fileId)}", type: 'video/mp4'}
+      -# - else
+      %iframe{:height => "600", :width => "100%", :src => preview_url(@fileId), :allowfullscreen => 'allowfullscreen'}
+    .col.l3.s12
+      %h6{:style => "margin-top: 20px"}
+        Comment Stream:
+      %ul.commentList
+        / list comments in chronological order associated with each file
+        - @comments.each do |c|
+          %li
+            .commenterImage
+              - if (c.created_by.id == ENV['EMPL_ID'])
+                = image_tag "empl.png"
+              - elsif (c.created_by.id == ENV['CRED_SPECIALIST'])
+                = image_tag "credentialist.png"
+              - else
+                = image_tag "new_user.png"
+            .commentText
+              %p
+                = c.message
+              %span.date.sub-text
+                = DateTime.strptime(c.created_at).strftime("%m/%d/%y at %l:%M %p")
+      / allow user to enter new comment attached to file
+      %form.form-inline{:role => "form", :action => comment_path(@fileId), :method => "post"}
+        = token_tag
+        .commentbox
+          %label{:for => "comment", :style => "left: 0"} Add a comment
+          %textarea.input{:style => "width: 100%; height: 100%; background-color: #fff;", :rows => "4", :cols => "50", :name => "comment", :required => true}
+        .form-group{:style => "margin-bottom: 30px"}
+          %button.waves-effect.btn.white.black-text{:style => "margin-top: 5px"} Post
 
 
 :javascript
-  // dropzone uploading
-  Dropzone.options.myDropzone = {
-    init: function() {
-      this.on("queuecomplete", function(file) {
-        setTimeout(function() {location.reload();}, 1000);
-      });
-    }
-  };
-  // trigger modals
-  $(document).ready(function(){
-    $('.modal-trigger').leanModal();
+  $(document).ready(function() {
+    $('#image_preview').attr('src','#{download_url(@file.id)}');
   });
-  // edit folder name popover
-  $(document).ready(function(){
-    $('[data-toggle=folder-popover]').popover({
-      html: 'true',
-      placement: 'right',
-      content : function() {
-        return $('#popover-folder-content').html();
-      }
-    })
-    $(".button-collapse").sideNav();
-  });
-  // edit filename popover
-  $(document).ready(function(){
-    $('[data-toggle=popover]').popover({
-      html: 'true',
-      placement: 'right',
-      content : function() {
-        return $('#popover-content').html();
-      }
-    })
-    $(".button-collapse").sideNav();
-  });
-  function chardinToggle() {
-    $('body').chardinJs('toggle');
-  }
-  // CLIENT SIDE UPLOAD
-  $(document).on('change', '.btn-file :file', function() {
-    var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      files = input.get(0).files,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    var theInput = input.parent().get(0);
-    theInput.innerText = "Uploading...";
-    // The Box OAuth 2 Header. Add your access token.
-    var headers = { Authorization: 'Bearer #{@user_access_token}'};
-    var uploadUrl = 'https://upload.box.com/api/2.0/files/content';
-    var formData = new FormData();
-    // Add the destination folder for the upload to the form
-    formData.append('files', files[0], files[0].name);
-    formData.append('parent_id', '#{@myFolder.id}');
-    $.ajax({
-      url: uploadUrl,
-      headers: headers,
-      type: 'POST',
-      // This prevents JQuery from trying to append the form as a querystring
-      processData: false,
-      contentType: false,
-      data: formData
-    }).complete(function ( data ) {
-      console.log('finished uploading to Box');
-      location.reload(true);
-    });
-  });
-  $(document).on('change', '.btn-file-shared :file', function() {
-    var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      files = input.get(0).files,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    var theInput = input.parent().get(0);
-    theInput.innerText = "Uploading...";
-    // The Box OAuth 2 Header. Add your access token.
-    var headers = { Authorization: 'Bearer #{@user_access_token}'};
-    var uploadUrl = 'https://upload.box.com/api/2.0/files/content';
-    var formData = new FormData();
-    // Add the destination folder for the upload to the form
-    formData.append('files', files[0], files[0].name);
-    formData.append('parent_id', '#{@sharedFolder.id}');
-    $.ajax({
-      url: uploadUrl,
-      headers: headers,
-      type: 'POST',
-      // This prevents JQuery from trying to append the form as a querystring
-      processData: false,
-      contentType: false,
-      data: formData
-    }).complete(function ( data ) {
-      console.log('finished uploading to Box');
-      location.href = "/dashboard/#{@sharedFolder.id}";
-    });
-  });
-  // Drag and drop functions
-  function allowDrop(ev) {
-    ev.preventDefault();
-  }
-  function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-  }
-  function allowDrop(ev, id) {
-      event.preventDefault();
-      document.getElementById(id).style.border = "2px dashed #2996CC";
-      // event.target.style.border = "4px dotted green";
-  }
-  function dragLeave(ev, id) {
-    document.getElementById(id).style.border = "";
-  }
-  function drop(ev, id) {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      console.log("file: " + data);
-      console.log("dest folder: " + id)
-      location.href = '/move_file/?dest=' + id + '&file_id=' + data
-      // ev.target.appendChild(document.getElementById(data));
-  }
