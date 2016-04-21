@@ -40,15 +40,17 @@ class ConfigController < ApplicationController
     # Get custom folders, store in a hash map
     user_data_client = Box.user_client(ENV['USER_DATA_ID'])
     @customContent = Hash.new
+    @links = Hash.new
 
     verticals = Rails.cache.fetch("/customContent/verticals", :expires_in => 10.minutes) do
-      user_data_client.folder_items(ENV['CUSTOM_CONTENT_ID'], fields: [:id, :name])
+      user_data_client.folder_items(ENV['CUSTOM_CONTENT_ID'], fields: [:id, :name, :shared_link])
     end
 
     verticals.each do |v|
       items = Rails.cache.fetch("/customContent/verticals/#{v.id}", :expires_in => 10.minutes) do
         user_data_client.folder_items(v.id, fields: [:id, :name])
       end
+      @links.store(v.name, v.shared_link.url)
       @customContent.store(v.name, items)
     end
 
