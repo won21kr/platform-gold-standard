@@ -1,3 +1,8 @@
+:css
+  .dropdown-content {
+    width: 300px !important
+  }
+
 #twilioModal.modal.hide_below1224
   .modal-content{:style => "height: 350px;"}
     %h3.thin{:style => "font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"} Enter your mobile number
@@ -98,21 +103,21 @@
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
                 -# For custom content selection
-                %label.label-div{:for => "customContent", :style => "color: black; margin-top: 20px"} Custom Content Selection
-                %br
-                %button.dropdown-button.btn.white.black-text{:id => "contentSelection", "data-activates" => "selection", :href => "#", :style => "margin-top: 10px; margin-bottom: 20px; text-decoration: none"} Select
-                / Dropdown Structure
-                %ul#selection.dropdown-content
-                  -# %li
-                  %p
-                    %input#test1{:name => "contentSelection", :type => "radio", :onclick => "selectContent('Red')"}
-                    %label{:for => "test1"} Red
-                  %p
-                    %input#test2{:name => "contentSelection", :type => "radio", :onclick => "selectContent('Yellow')"}
-                    %label{:for => "test2"} Yellow
-                  %p
-                    %input#test3{:name => "contentSelection", :type => "radio", :onclick => "selectContent('Green')"}
-                    %label{:for => "test3"} Green
+                - unless !session[:userinfo].present?
+                  %label.label-div{:for => "customContent", :style => "color: black; margin-top: 20px"} Custom Content Selection
+                  %br
+                  %button.dropdown-button.btn.white.black-text{:id => "contentSelection", "data-activates" => "selection", :href => "#", :style => "margin-top: 10px; margin-bottom: 20px; text-decoration: none"} Select
+                  / Dropdown Structure
+                  %ul#selection.dropdown-content
+                    -# %li
+                    - @customContent.each do |name, items|
+                      %h7
+                        = name
+                      - items.each do |item|
+                        %p
+                          %input{:id => "#{item.name}", :name => "contentSelection", :type => "radio", :value => "#{item.id}", :onclick => "selectContent('#{item.name}')"}
+                          %label{:for => "#{item.name}"}
+                            = item.name
                 %p
                   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
                   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
@@ -239,8 +244,14 @@
 :javascript
 
   function selectContent(text) {
+    console.log('input: ' + text);
     document.getElementById('contentSelection').textContent = text;
   }
+
+  $('.dropdown-button').dropdown({
+      constrain_width: false // Does not change width of dropdown to that of the activator
+    }
+  );
 
   $(document).ready(function() {
     $('select').material_select();

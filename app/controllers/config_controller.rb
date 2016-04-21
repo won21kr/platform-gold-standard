@@ -37,17 +37,20 @@ class ConfigController < ApplicationController
       session[:okta] = "off"
     end
 
-    # Get custom folders
-    client = user_client
+    # Get custom folders, store in a hash map
+    user_data_client = Box.user_client(ENV['USER_DATA_ID'])
     @customContent = Hash.new
-    # folder = Rails.cache.fetch("/customContent/root", :expires_in => 10.minutes) do
-    #   client.folder_from_path('Custom Folder Stuctures')
-    # end
 
-    verticals = Rails.cache.fetch("/customContent/root_items", :expires_in => 10.minutes) do
-      client.folder_items('7561208249')
+    verticals = Rails.cache.fetch("/customContent/verticals", :expires_in => 10.minutes) do
+      user_data_client.folder_items(ENV['CUSTOM_CONTENT_ID'], fields: [:id, :name])
     end
 
+    verticals.each do |v|
+      items = Rails.cache.fetch("/customContent/verticals/#{v.id}", :expires_in => 10.minutes) do
+        user_data_client.folder_items(v.id, fields: [:id, :name])
+      end
+      @customContent.store(v.name, items)
+    end
 
     config_url
   end
@@ -136,7 +139,49 @@ class ConfigController < ApplicationController
     if (ENV['RACK_ENV'] == 'production')
       capture_user_data
     end
+
+    if(!params[:contentSelection].nil?)
+      copy_content(params[:contentSelection])
+    end
+
     redirect_to config_path
+  end
+
+  # copy content of parent folder over to "My Files" folder
+  def copy_content(folderId)
+    client = user_client
+    user_data_client = Box.user_client(ENV['USER_DATA_ID'])
+
+    threads = []
+
+    # get folder items and "My Files" folder
+    items = user_data_client.folder_items(folderId, fields: [:id, :name, :type])
+    destFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      client.folder_from_path('My Files')
+    end
+
+    # add resource user as collaborator
+    collab = client.add_collaboration(destFolder, {id: ENV['USER_DATA_ID'], type: :user}, :editor)
+
+    # iterate through items and copy over to private vault folder
+    items.each do |f|
+      threads << Thread.new do
+        begin
+          if (f.type == 'file')
+            user_data_client.copy_file(f.id, destFolder)
+          elsif(f.type == 'folder')
+            user_data_client.copy_folder(f.id, destFolder)
+          end
+        rescue
+          puts "Item probably already exists"
+        end
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+    # remove resource user as collaborator
+    client.remove_collaboration(collab)
   end
 
   # capture user + current configurations, modify csv, & upload to Box
