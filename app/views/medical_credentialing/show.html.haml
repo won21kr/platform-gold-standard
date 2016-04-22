@@ -8,7 +8,7 @@
         %span.glyphicon.glyphicon-plus{:style => "font-size: 22px;"}
         = alt_text("Medical Credentialing")
       %h6.caption.thin{:style => "font-size: 16px;"}
-        Please complete the medical credentialing process
+        = "Please complete the #{alt_text("Medical Credentialing").downcase} process"
       .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
         %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
         %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
