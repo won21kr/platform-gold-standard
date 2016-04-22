@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     rescue
       puts "file doesn't exist yet..."
     end
-    ap task
+    # ap task
 
     if(task.nil?)
       session[:med_task_status] = 1
@@ -85,7 +85,7 @@ class ApplicationController < ActionController::Base
     session[:company] = query['company'] unless query['company'].blank?
     session[:logo] = query['logo'] unless query['logo'].blank?
     session[:navbar_color] = '#' + query['back_color'] unless query['back_color'].blank?
-    
+
     session[:alt_text] = query['alt_text'] unless query['alt_text'].blank?
     begin
       if session[:alt_text].blank?
@@ -97,7 +97,7 @@ class ApplicationController < ActionController::Base
     rescue
       session[:alt_text_hash] = nil
       puts "Failed to parse alt_text: #{session[:alt_text]}"
-    end 
+    end
 
     session[:vault] = query['vault'] unless query['vault'].blank?
     session[:resources] = query['resources'] unless query['resources'].blank?
