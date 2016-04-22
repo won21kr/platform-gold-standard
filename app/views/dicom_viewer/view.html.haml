@@ -1,0 +1,7 @@
+#dicomviewer
+
+:javascript
+  $(document).ready(function(){
+    var viewer = document.getElementById('dicomviewer');
+    box.dicom.createViewer(viewer, {'accessToken': '#{@user_access_token}', 'studies': [{'fileId': '#{@file_id}'}]});
+  });

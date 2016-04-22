@@ -207,6 +207,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   auth0
   awesome_print
   boxr (~> 1.0.0)

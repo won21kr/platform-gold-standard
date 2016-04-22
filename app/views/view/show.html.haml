@@ -14,7 +14,7 @@
   - elsif (!session[:current_folder].nil?)
     = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
   - else
-    = link_to '<< Back to My Vault', dashboard_path
+    = link_to "<< Back to #{alt_text("My Vault")}", dashboard_path
 
 .container
   .row

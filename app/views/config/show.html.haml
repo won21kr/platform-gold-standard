@@ -77,14 +77,14 @@
             .br{:style => "margin-bottom: 12px"}
 
             %label.label-div{:for => "company", :style => "color: black"} Company Name
-            %input.form-control#company{:type => "text", :name => "company", :placeholder => session[:company].nil? ? "Box" : session[:company], :style => "color: black"}
+            %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
 
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
-            %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
+            %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "http://www.example.com/logo.png", :style => "color: black", :value => session[:logo]}
 
             %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
-            %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
+            %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "FFFFFF", :style => "color: black", :value => session[:navbar_color]}
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
@@ -96,7 +96,11 @@
                   ?
                   %span
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
-                %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
+                %input.form-control#background{:type => "text", :name => "background", :placeholder => "http://www.example.com/background.jpg", :style => "color: black", :value => session[:background]}
+                
+                %label.label-div{:for => "company", :style => "color: black"} Alternative Label Text
+                %input.form-control#company{:type => "text", :name => "alt_text", :placeholder => "e.g. {'My Vault':'My Documents'}", :style => "color: black", :value => session[:alt_text]}
+                
                 %p
                   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
                   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
@@ -176,6 +180,14 @@
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = session[:navbar_color]
             %tr
+              %td Home Page Background URL:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:background]
+            %tr
+              %td Alternative Label Text:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:alt_text]
+            %tr
               %td Active Feature Tabs
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = "My Vault"
@@ -197,10 +209,6 @@
                   = ", Media Content"
                 - if (session[:eventstream] == 'on')
                   = ", Box Events"
-            %tr
-              %td Home Page Background URL:
-              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
-                = session[:background]
             %tr
               %td Encoded Configuration URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
