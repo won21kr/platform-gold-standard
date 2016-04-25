@@ -12,7 +12,7 @@ class SearchController < SecuredController
     client = user_client
     @results = nil
     session[:current_page] = "search"
-    # tab_usage(session[:current_page])
+    mixpanel_tab_event("Resources", "Main Page")
 
     # get root resource folder
     @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 15.minutes) do
@@ -63,10 +63,13 @@ class SearchController < SecuredController
       if (!params[:search].nil?)
         @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
         @search_type = "file name"
+        mixpanel_tab_event("Resources", "Search File Name")
       elsif (params[:filter] == "file_type")
         @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
         @search_type = "file type"
+        mixpanel_tab_event("Resources", "Search File Type")
       else
+        mixpanel_tab_event("Resources", "Search Metadata")
         mdfilters = {"templateKey" => "#{ENV['METADATA_KEY']}", "scope" => "enterprise",
                      "filters" => {"#{params["key"]}" => "#{params["filter_query"]}"}}
         @results = client.search(mdfilters: mdfilters, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])

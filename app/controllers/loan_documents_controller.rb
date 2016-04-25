@@ -9,8 +9,8 @@ class LoanDocumentsController < SecuredController
     session[:current_page] = "loan_docs"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
     docStatus = Hash.new
-    # tab_usage(session[:current_page])
     threads = []
+    mixpanel_tab_event("Loan Origination", "Main Page")
 
     # intitialize doc hash maps to be referenced in the view
     @docStatus = {"Loan Agreement" => "Missing", "W2 Form" => "Missing",
@@ -109,7 +109,7 @@ class LoanDocumentsController < SecuredController
     puts "uploading file..."
 
     #http://www.dropzonejs.com/
-    ap params
+    mixpanel_tab_event("Loan Origination", "Upload Document")
     client = user_client
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
 
@@ -159,6 +159,7 @@ class LoanDocumentsController < SecuredController
     ap params
     client = user_client
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
+    mixpanel_tab_event("Loan Origination", "Upload Document")
 
     uploaded_file = params[:file]
     name = params[:file_name]
@@ -198,6 +199,7 @@ class LoanDocumentsController < SecuredController
   def copy_from_vault
 
     puts "copy from vault"
+    mixpanel_tab_event("Loan Origination", "Copy Doc From Vault")
     fileId = params[:file_id]
     oldName = params[:old_name].split(".")
     newName = params[:new_name] + "." + oldName.last
@@ -227,6 +229,7 @@ class LoanDocumentsController < SecuredController
 
     # get loan docs folder, copy vault file into it
     client = user_client
+    mixpanel_tab_event("Loan Origination", "Reset Workflow")
     folder = client.folder_from_path(path)
     items = client.folder_items(folder, fields: [:id])
     # client.delete_folder(folder, recursive: true)
@@ -243,6 +246,7 @@ class LoanDocumentsController < SecuredController
 
     fileId = params[:file_id]
     envelope_response = create_docusign_envelope(fileId)
+    mixpanel_tab_event("Loan Origination", "Start Docusign")
 
     # set up docusign view, fetch url
     recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
@@ -311,6 +315,7 @@ class LoanDocumentsController < SecuredController
     utility = DocusignRest::Utility.new
 
     if params[:event] == "signing_complete"
+      mixpanel_tab_event("Loan Origination", "Docusign Sign")
       temp_file = Tempfile.open(["docusign_response_",".pdf"], Rails.root.join('tmp'), :encoding => 'ascii-8bit')
 
       begin

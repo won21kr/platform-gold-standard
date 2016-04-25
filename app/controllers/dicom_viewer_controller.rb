@@ -4,7 +4,8 @@ class DicomViewerController < SecuredController
 
   def show
     study_folders = user_client.folder_items(ENV['DICOM_FOLDER']).folders
-    
+    mixpanel_tab_event("DICOM Viewer", "Main Page")
+
     @studies = {}
     threads = []
     study_folders.each do |folder|
@@ -32,6 +33,7 @@ class DicomViewerController < SecuredController
   end
 
   def upload
+    mixpanel_tab_event("DICOM Viewer", "Uplaod DICOM")
     @dicom_folder = ENV['DICOM_FOLDER']
     @user_access_token = user_client.access_token
     session[:current_page] = "dicom_upload"

@@ -87,11 +87,11 @@ class ConfigController < ApplicationController
     #if !params[:company].nil? and params[:company] != ""
       session[:company] = params[:company]
     #end
-    
+
     #if !params[:logo].nil? and params[:logo] != ""
       session[:logo] = params[:logo]
     #end
-    
+
     if !params[:navbar_color].blank? and params[:navbar_color] != ""
       if (params[:navbar_color][0] == '#')
         session[:navbar_color] = params[:navbar_color]
@@ -101,7 +101,7 @@ class ConfigController < ApplicationController
     else
       session[:navbar_color] = nil
     end
-    
+
     #if !params[:backgroud].nil? and params[:background] != ""
       session[:background] = params[:background]
     #end
@@ -127,6 +127,9 @@ class ConfigController < ApplicationController
     session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
     session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
+
+    # Mixpanel capture event
+    mixpanel_capture
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
@@ -169,12 +172,30 @@ class ConfigController < ApplicationController
 
   private
 
+  def mixpanel_capture
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration', {:username => session[:userinfo].blank? ? 'null' : session[:userinfo]['info']['name'],
+      :company => session[:company].blank? ? 'null' : session[:company],
+      :okta => session[:okta] == "on" ? true : false,
+      :logo_url => session[:logo].blank? ? 'null' : session[:logo],
+      :home_url => session[:background].blank? ? 'null' : session[:background],
+      :vault => true,
+      :resources => session[:resources] == "on" ? true : false,
+      :onboarding_tasks => session[:onboarding] == "on" ? true : false,
+      :medical_credentialing => session[:medical_credentialing] == "on" ? true : false,
+      :loan_origination => session[:loan_docs] == "on" ? true : false,
+      :upload_sign => session[:upload_sign] == "on" ? true : false,
+      :tax_return => session[:tax_return] == "on" ? true : false,
+      :submit_claim => session[:create_claim] == "on" ? true : false,
+      :eventstream => session[:eventstream] == "on" ? true : false})
+  end
+
   # construct configuration URL
   def config_url
     template = Addressable::Template.new("#{ENV['ACTIVE_URL']}{?query*}")
-    
+
     query = {}
-    query[""] = 
+    query[""] =
     query["company"] = session[:company] unless session[:company].blank?
     query["logo"] = session[:logo] unless session[:logo].blank?
     query["alt_text"] = session[:alt_text] unless session[:alt_text].blank?
