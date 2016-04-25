@@ -36,10 +36,13 @@
                   - if @docStatus["Loan Agreement"] == "Missing"
                     %a.waves-effect.btn.white.black-text.modal-trigger.hide_below992{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#loanModal", :style => "font-color: #263238 !important; text-decoration: none; font-size: 10px; ", "data-intro" => "Upload the missing Loan Document for approval", "data-position" => "left"} Upload
                     %form.uploadbtn.hide_above992{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("Loan Agreement - Signature Needed"), class: 'form-horizontal', :style => "text-align: center; font-size: 10px"}
-                      .form-group
-                        %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => @searchFiles["Loan"].size > 0 ? "#loanVaultDocs" : "#"}
-                          Upload
-                          %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
+                      - if @searchFiles["Loan"].size > 0
+                        %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => "#loanVaultDocs"} Upload
+                      - else
+                        .form-group
+                          %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn
+                            Upload
+                            %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - elsif @docStatus["Loan Agreement"] == "Signature Needed"
                     %form{:method => "get", :action => loan_docusign_path(@fileId["Loan Agreement"])}
                       %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
@@ -58,12 +61,15 @@
                   = @docStatus["W2 Form"]
                 %td.td
                   - if @docStatus["W2 Form"] == "Missing"
-                    %button.waves-effect.btn.white.black-text.modal-trigger.hide_below992{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#w2Modal", :style => "font-size: 10px;"} Upload
+                    %button.waves-effect.btn.white.black-text.modal-trigger.hide_below992{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#w2Modal", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
                     %form.uploadbtn.hide_above992{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("W2 Form"), class: 'form-horizontal', :style => "text-align: center; font-size: 10px;"}
-                      .form-group
-                        %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => @searchFiles["W2"].size > 0 ? "#w2VaultDocs" : "#"}
-                          Upload
-                          %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
+                      - if @searchFiles["W2"].size > 0
+                        %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => "#w2VaultDocs"} Upload
+                      - else
+                        .form-group
+                          %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn
+                            Upload
+                            %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - else
                     %form{:method => "get", :action => view_doc_path(@fileId["W2 Form"])}
                       %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
@@ -81,10 +87,13 @@
                   - if @docStatus["Tax Return"] == "Missing"
                     %button.waves-effect.btn.white.black-text.modal-trigger.hide_below992{:href => @searchFiles["Tax"].size > 0 ? "#taxVaultDocs" : "#taxModal", "data-toggle" => "modal", :type => "button", :style => "font-size: 10px;"} Upload
                     %form.uploadbtn.hide_above992{:enctype => "multipart/form-data", method: 'POST', action: loan_post_path("Tax Return"), class: 'form-horizontal', :style => "text-align: center; font-size: 10px;"}
-                      .form-group
-                        %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => @searchFiles["Tax"].size > 0 ? "#taxVaultDocs" : "#"}
-                          Upload
-                          %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
+                      - if @searchFiles["Tax"].size > 0
+                        %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => "#taxVaultDocs"} Upload
+                      - else
+                        .form-group
+                          %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn
+                            Upload
+                            %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - else
                     %form{:method => "get", :action => view_doc_path(@fileId["Tax Return"])}
                       %button.waves-effect.btn.white.black-text{:type => "submit", :style => "font-size: 10px;"}
