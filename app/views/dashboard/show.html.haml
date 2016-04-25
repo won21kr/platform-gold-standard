@@ -8,7 +8,7 @@
       .col.s12
         %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
           %i.material-icons.prefix{:style => "font-size: 28px;"} lock_outline
-          My Vault
+          = alt_text("My Vault")
         %h6.caption.thin{:style => "font-size: 16px;"}
           Your personal and shared files
         .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
@@ -48,6 +48,7 @@
                   %button.waves-effect.btn.white.black-text.btn-file
                     Upload
                     %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
+
           .col.s12
             .flash.col.s8.push-s2{:style => "margin-top: 20px"}
               - if @myFolder.id == @currentFolder
@@ -76,13 +77,21 @@
     %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
     %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
 
+#popover-folder-content.hide{:style => "padding: 5px 10px"}
+  %form.form-inline{:role => "form", :method => "post", :onclick => "event.stopPropagation();", :action => edit_folder_name_path(@currentFolder)}
+    %input#folderName{:type => "text", name: 'folderName', :style => "width: 53%; margin: 0 0 3px 0; height: 2rem"}
+    %input#folderId.form-control{:type => "hidden", :name => "folderId"}
+    %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
+    %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=folder-popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
+
+
 #newfolder.modal{:style => "width: 35% !important"}
   .modal-content
     %h5{:style => "margin-bottom: 35px;"} Create new folder
     .row
       .col.s12
         %form.form-inline{:role => "form", :method => "post", :action => new_folder_path(@myFolder.id)}
-          %input#name{:type => "text", :name => "folderName", :placeholder => "My New Folder", :style => ""}
+          %input#folder_name{:type => "text", :name => "folderName", :placeholder => "My New Folder", :style => ""}
           %button.modal-action.modal-close.waves-effect.btn.white.black-text.btn-flat.pull-right{:type => "button",  :style => "padding: 0 1rem; font-size: 65%"} Cancel
           %button.waves-effect.btn.pull-right{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Create
         -# .modal-footer
@@ -103,6 +112,19 @@
   $(document).ready(function(){
     $('.modal-trigger').leanModal();
   });
+
+  // edit folder name popover
+  $(document).ready(function(){
+    $('[data-toggle=folder-popover]').popover({
+      html: 'true',
+      placement: 'right',
+      content : function() {
+        return $('#popover-folder-content').html();
+      }
+    })
+    $(".button-collapse").sideNav();
+  });
+
 
   // edit filename popover
   $(document).ready(function(){
@@ -187,3 +209,33 @@
       location.href = "/dashboard/#{@sharedFolder.id}";
     });
   });
+
+
+  // Drag and drop functions
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  function allowDrop(ev, id) {
+      event.preventDefault();
+      document.getElementById(id).style.border = "2px dashed #2996CC";
+      // event.target.style.border = "4px dotted green";
+  }
+
+  function dragLeave(ev, id) {
+    document.getElementById(id).style.border = "";
+  }
+
+
+  function drop(ev, id) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      // console.log("file: " + data);
+      // console.log("dest folder: " + id)
+      location.href = '/move_file/?dest=' + id + '&file_id=' + data
+      // ev.target.appendChild(document.getElementById(data));
+  }

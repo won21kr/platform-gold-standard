@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     rescue
       puts "file doesn't exist yet..."
     end
-    ap task
+    # ap task
 
     if(task.nil?)
       session[:med_task_status] = 1
@@ -74,12 +74,9 @@ class ApplicationController < ActionController::Base
   private
 
   def check_config
-    # check if query string exists
-    if(params != "")
-      puts "params not nil, insert query if it exists"
+    unless params.blank?
       insert_query(params)
     end
-
   end
 
   # fetches config query from encoded URL and updates the config session variables
@@ -88,6 +85,20 @@ class ApplicationController < ActionController::Base
     session[:company] = query['company'] unless query['company'].blank?
     session[:logo] = query['logo'] unless query['logo'].blank?
     session[:navbar_color] = '#' + query['back_color'] unless query['back_color'].blank?
+
+    session[:alt_text] = query['alt_text'] unless query['alt_text'].blank?
+    begin
+      if session[:alt_text].blank?
+        session[:alt_text_hash] = nil
+      else
+        session[:alt_text_hash] = JSON.parse(session[:alt_text])
+        #puts "Successfully parsed alt_text: #{session[:alt_text]}"
+      end
+    rescue
+      session[:alt_text_hash] = nil
+      puts "Failed to parse alt_text: #{session[:alt_text]}"
+    end
+
     session[:vault] = query['vault'] unless query['vault'].blank?
     session[:resources] = query['resources'] unless query['resources'].blank?
     session[:onboarding] = query['onboarding'] unless query['onboarding'].blank?
@@ -98,7 +109,8 @@ class ApplicationController < ActionController::Base
     session[:create_claim] = query['create_claim'] unless query['create_claim'].blank?
     session[:request_for_proposal] = query['request_for_proposal'] unless query['request_for_proposal'].blank?
     session[:tax_return] = query['tax_return'] unless query['tax_return'].blank?
+    session[:dicom_viewer] = query['dicom_viewer'] unless query['dicom_viewer'].blank?
     session[:media_content] = query['media_content'] unless query['media_content'].blank?
-    session[:eventstream] = query['eventstream'] unless query['eventstream'].blank?    
+    session[:eventstream] = query['eventstream'] unless query['eventstream'].blank?
   end
 end

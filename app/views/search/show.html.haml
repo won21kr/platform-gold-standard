@@ -8,7 +8,7 @@
       .col.s12
         %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
           %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
-          Resources
+          = alt_text("Resources")
         %h6.caption.thin{:style => "font-size: 16px;"}
           Find relevant content, fast
         .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
@@ -105,7 +105,7 @@
                   %th{"data-field" => "modified"} Last Modified
                   %th{"data-field" => "modified"} Description
               - @results.each_with_index do |folder, i|
-                %tr{:onclick => "location.href = '/dashboard/#{folder.id}'"}
+                %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
                   %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
                     = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
                   %td
@@ -132,7 +132,7 @@
 
               - @results.each_with_index do |result, i|
                 %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                  %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser the via Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
+                  %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser via the Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
                     = image_tag(thumbnail_url(result.id), :width => "40px")
                   %td
                     .name_elipses

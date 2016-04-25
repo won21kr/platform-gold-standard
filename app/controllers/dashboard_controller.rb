@@ -11,7 +11,7 @@ class DashboardController < SecuredController
     session[:current_page] = "vault"
     threads = []
     @breadcrumb = {}
-    # tab_usage(session[:current_page])
+    session[:current_folder] = params[:id]
 
     # get "My Files" and "Shared Files" folder objects
     @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
@@ -27,7 +27,7 @@ class DashboardController < SecuredController
       @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder/#{params[:id]}", :expires_in => 10.minutes) do
         client.folder_from_id(params[:id])
       end
-      session[:current_folder] = @myFolder.id
+      # session[:current_folder] = @myFolder.id
 
       # get breadcrumbs
       if @myFolder.path_collection?
@@ -47,6 +47,8 @@ class DashboardController < SecuredController
     else
       @currentFolder = session[:current_folder]
     end
+    session[:current_folder] = @currentFolder
+
 
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
     threads << Thread.new do
@@ -77,7 +79,6 @@ class DashboardController < SecuredController
   def edit_filename
 
     client = user_client
-
     file = client.file_from_id(params[:fileId], fields: [:parent])
 
     # set current folder id & new file name
@@ -94,6 +95,27 @@ class DashboardController < SecuredController
 
     redirect_to dashboard_id_path(session[:current_folder])
   end
+
+  # post to edit folder name
+  def edit_folder_name
+
+    client = user_client
+    ap params
+    # folder = client.folder_from_id(params[:folder_id])
+    session[:current_folder] = params[:folder_id]
+
+    # make Box API call to update folder name
+    begin
+      client.update_folder(params[:folderId], name: params[:folderName])
+      Rails.cache.delete("/folder/#{session[:box_id]}/my_folder/#{params[:folderId]}")
+      flash[:notice] = "Folder name changed to \"#{params[:folderName]}\""
+    rescue
+      flash[:error] = "Error: Could not change folder name"
+    end
+
+    redirect_to dashboard_id_path(session[:current_folder])
+  end
+
 
   # upload files to parameter specified folder ID
   def upload
@@ -219,7 +241,23 @@ class DashboardController < SecuredController
     redirect_to dashboard_id_path(session[:current_folder])
   end
 
-  def download_folder
+  # move dragged file into subfolder
+  def move_file
+
+    destFolder = params[:dest]
+    targetFile = params[:file_id]
+    client = user_client
+
+    # get folder
+    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder/#{params[:dest]}", :expires_in => 10.minutes) do
+      client.folder_from_id(params[:dest])
+    end
+
+    # get shared folder, then move file into shared folder
+    client.move_file(targetFile, destFolder)
+    flash[:notice] = "File moved into \"#{folder.name}\""
+
+    redirect_to dashboard_id_path(session[:current_folder])
   end
 
 

@@ -38,6 +38,7 @@ gem 'connection_pool'
 gem 'awesome_print'
 gem 'protected_attributes'
 gem 'fatalistic'
+gem 'addressable'
 gem 'boxr', '~> 1.0.0'#, :path => '/Users/cburnette/code/box/gems/boxr/'
 
 gem 'omniauth', '~> 1.2'

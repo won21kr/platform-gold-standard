@@ -6,7 +6,7 @@ class EventstreamController < SecuredController
 
     user = user_client
     admin = Box.admin_client
-    ap user
+    # ap user
 
     # get user/admin tokens
     @user_access_token = user.access_token
