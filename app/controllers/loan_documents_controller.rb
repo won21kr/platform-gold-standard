@@ -106,7 +106,7 @@ class LoanDocumentsController < SecuredController
   # upload files to parameter specified folder ID
   def loan_upload
 
-    puts "uploading file..."
+    puts "uploading file dropzone..."
 
     #http://www.dropzonejs.com/
     mixpanel_tab_event("Loan Origination", "Upload Document")
@@ -138,6 +138,7 @@ class LoanDocumentsController < SecuredController
       client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
 
     rescue => ex
+      puts 'error uploading'
       puts ex.message
     ensure
       File.delete(temp_file)
@@ -153,10 +154,9 @@ class LoanDocumentsController < SecuredController
   # upload files to parameter specified folder ID
   def loan_post
 
-    puts "uploading file..."
+    puts "uploading - file picker..."
 
     #http://www.dropzonejs.com/
-    ap params
     client = user_client
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Loan Documents"
     mixpanel_tab_event("Loan Origination", "Upload Document")
@@ -186,6 +186,7 @@ class LoanDocumentsController < SecuredController
       client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
 
     rescue => ex
+      puts 'error'
       puts ex.message
     ensure
       File.delete(temp_file)
