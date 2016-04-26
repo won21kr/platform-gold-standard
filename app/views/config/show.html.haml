@@ -1,30 +1,31 @@
-#twilioModal.modal
-  .modal-content{:style => "height: 500px;"}
+#twilioModal.modal.hide_below1224
+  .modal-content{:style => "height: 350px;"}
     %h3.thin{:style => "font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"} Enter your mobile number
     %form{:action => send_twilio_message_path, :method => "post", :role => "form"}
       %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
-        Get this customized instance on your phone instantly
+        Text a link to this customized app to your phone
       .row
         .input-field.col.s4
-          %select{:name => "region"}
+          %select{:name => "region", :required => ""}
             %option{:disabled => "", :selected => "", :value => ""} Choose an option
             %option{:value => "+14087695509"} United States
             %option{:value => "+447481339419"} Great Britain
             %option{:value => "+61427903469"} Australia
           %label Region
         .input-field.col.s7
-          %label.h4{:for => "phoneNumber"} Mobile Number:
-          %input.validate.form-control{:type => "text", :name => "phoneNumber"}
-        %button.btn.waves-effect.waves-light.right{:type => "submit", :style => "margin-left: 3%; margin-right: 7%"} Via Text
-        %button.btn.waves-effect.waves-light.right{:type => "button", :href => "#sendGrid", "data-toggle" => "collapse"} Via Email
+          %label.h4{:for => "phoneNumber"}
+          %input.form-control{:type => "text", :name => "phoneNumber", :required => true, :placeholder => "Mobile Number"}
+
+        %button.btn.waves-effect.white.black-text.right{:type => "submit", :style => "margin-left: 5px; margin-right: 10px; text-decoration: none;"} Via Text
+        %button.btn.waves-effect.white.black-text.right{:type => "button", :href => "#sendGrid", "data-toggle" => "collapse", :style => "text-decoration: none;"} Via Email
     #sendGrid.collapse
       %h6.caption.thin{:style => "margin-bottom: 3%; margin-top: 3%;"}
-        Alternatively, get this customized instance sent straight to your mail for later use
+        Alternatively, send a link to your inbox
       %form{:action => send_grid_method_path, :method => "post", :role => "form"}
         .input-field.col.s3
-          %label{:for => "emailAddress"} Email (No Corporate Email)
-          %input.validate.form-control{:type => "text", :name => "emailAddress", :style => "width: 92%;"}
-        %button.btn.waves-effect.waves-light{:type => "submit", :style => "margin-bottom: 5%;"} Email Me
+          %label{:for => "emailAddress"}
+          %input.form-control{:type => "text", :name => "emailAddress", :style => "width: 92%;", :placeholder => "Email (No Corporate Email)"}
+        %button.btn.waves-effect.white.black-text.right{:type => "submit", :style => "margin-bottom: 5%;"} Email Me
 
 
 #index-banner.section.no-pad-bot
@@ -76,14 +77,14 @@
             .br{:style => "margin-bottom: 12px"}
 
             %label.label-div{:for => "company", :style => "color: black"} Company Name
-            %input.form-control#company{:type => "text", :name => "company", :placeholder => session[:company].nil? ? "Box" : session[:company], :style => "color: black"}
+            %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
 
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
-            %input.form-control#logo{:type => "text", :name => "logo", :placeholder => session[:logo].nil? ? "logo.png" : session[:logo], :style => "color: black"}
+            %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "http://www.example.com/logo.png", :style => "color: black", :value => session[:logo]}
 
             %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
-            %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => session[:navbar_color].nil? ? "FFFFFF" : session[:navbar_color][1..-1], :style => "color: black"}
+            %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "FFFFFF", :style => "color: black", :value => session[:navbar_color]}
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
@@ -95,10 +96,14 @@
                   ?
                   %span
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
-                %input.form-control#background{:type => "text", :name => "background", :placeholder => session[:background].nil? ? "background.jpg" : session[:background], :style => "color: black"}
-                -# %p
-                -#   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
-                -#   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
+                %input.form-control#background{:type => "text", :name => "background", :placeholder => "http://www.example.com/background.jpg", :style => "color: black", :value => session[:background]}
+
+                %label.label-div{:for => "company", :style => "color: black"} Alternative Label Text
+                %input.form-control#company{:type => "text", :name => "alt_text", :placeholder => "e.g. {\"My Vault\":\"My Documents\"}", :style => "color: black", :value => session[:alt_text]}
+
+                %p
+                  %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
+                  %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
 
@@ -131,18 +136,18 @@
             %p
               %input#createclaim{:type => "checkbox", :name => "createclaim", :checked => session[:create_claim] == 'on'}
               %label.checkbox.less_lineheight.longer_name_elipses{:for => "createclaim", :style => "color: black"} Submit A Claim (Insurance)
-            -# %p
-            -#   %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
-            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "requestforproposal", :style => "color: black"} Request For Proposals
-            -# %p
-            -#   %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
-            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
-            -# %p
-            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
-            -# %p
-            -#   %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
-            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "media_content", :style => "color: black"} Media Content (M&E)
+            %p
+              %input#requestforproposal{:type => "checkbox", :name => "requestforproposal", :checked => session[:request_for_proposal] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "requestforproposal", :style => "color: black"} Request For Proposals
+            %p
+              %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
+            %p
+              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            %p
+              %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "media_content", :style => "color: black"} Media Content (M&E)
             %p
               %input#eventstream{:type => "checkbox", :name => "eventstream", :checked => session[:eventstream] == 'on'}
               %label.checkbox.less_lineheight.longer_name_elipses{:for => "eventstream", :style => "color: black"} Box Events
@@ -163,6 +168,10 @@
               %th Attribute Value
           %tbody
             %tr
+              %td Company:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:company]
+            %tr
               %td Logo:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 %img{:src => session[:logo], :style => "max-height:100px"}
@@ -170,6 +179,14 @@
               %td Logo Background Color:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
                 = session[:navbar_color]
+            %tr
+              %td Home Page Background URL:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:background]
+            %tr
+              %td Alternative Label Text:
+              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
+                = session[:alt_text]
             %tr
               %td Active Feature Tabs
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
@@ -188,14 +205,10 @@
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
-                -# - if (session[:media_content] == 'on')
-                -#   = ", Media Content"
+                - if (session[:media_content] == 'on')
+                  = ", Media Content"
                 - if (session[:eventstream] == 'on')
                   = ", Box Events"
-            %tr
-              %td Home Page Background URL:
-              %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
-                = session[:background]
             %tr
               %td Encoded Configuration URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
@@ -204,7 +217,7 @@
         .br{:style => "margin-bottom: 40px"}
         %form.item{:action => "/dashboard", :method => "get", :role => "form"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit"} Main Page
-          -# %button.btn.waves-effect.white.black-text.modal-trigger{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Mobile
+          %button.btn.waves-effect.white.black-text.modal-trigger.hide_below1224{:type => "button", :href => "#twilioModal", :style => "font-color: #263238 !important; text-decoration: none;"} Share URL
         %form.item{:action => reset_config_path, :method => "get"}
           %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :type => "form"} Reset
 

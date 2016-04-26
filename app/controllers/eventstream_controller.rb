@@ -6,7 +6,7 @@ class EventstreamController < SecuredController
 
     user = user_client
     admin = Box.admin_client
-    # ap user
+    mixpanel_tab_event("Box Events", "Main Page")
 
     # get user/admin tokens
     @user_access_token = user.access_token
@@ -20,19 +20,26 @@ class EventstreamController < SecuredController
       @user_events = []
 
       # get most recent chunk of events
-      temp = user.user_events(0, stream_type: :all)
-      while (temp.chunk_size != 0)
-        if (temp.chunk_size != 0)
-          results = temp
-        end
-        temp = user.user_events(temp.next_stream_position, stream_type: :all)
+      results = user.user_events('now', stream_type: :all)
 
-        # if chunck size == max, store prev events
-        if (temp.chunk_size == 800)
-          puts "max!"
-          prevEvents = temp
-        end
-      end
+      # get previous events by counting back by a MAGIC NUMBER
+      stream_pos = results.next_stream_position - 100000000
+      prevEvents = user.user_events(stream_pos, stream_type: :all)
+      
+      # ap prevEvents.chunk_size
+      # ap prevEvents.next_stream_position
+      # while (temp.chunk_size != 0)
+      #   if (temp.chunk_size != 0)
+      #     results = temp
+      #   end
+      #   temp = user.user_events(temp.next_stream_position, stream_type: :all)
+      #
+      #   # if chunck size == max, store prev events
+      #   if (temp.chunk_size == 800)
+      #     puts "max!"
+      #     prevEvents = temp
+      #   end
+      # end
 
       if(!results.nil?)
         # reorder all user events, + check if there are prev events

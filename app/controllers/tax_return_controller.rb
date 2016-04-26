@@ -10,8 +10,8 @@ class TaxReturnController < SecuredController
     session[:current_page] = "tax_return"
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Tax Return"
     docStatus = Hash.new
-    # tab_usage(session[:current_page])    
     threads = []
+    mixpanel_tab_event("Tax Return", "Main Page")
 
     # intitialize doc hash maps to be referenced in the view
     @docStatus = {"Forms" => "Missing", "Income" => "Missing",
@@ -141,6 +141,7 @@ class TaxReturnController < SecuredController
   def tax_loan_upload
 
     puts "uploading file..."
+    mixpanel_tab_event("Tax Return", "Upload Files")
 
     #http://www.dropzonejs.com/
     client = user_client
@@ -189,6 +190,7 @@ class TaxReturnController < SecuredController
     oldName = params[:old_name].split(".")
     newName = params[:new_name] + "." + oldName.last
     path = "#{session[:userinfo]['info']['name']} - Shared Files/Tax Return"
+    mixpanel_tab_event("Tax Return", "Copy Doc From Vault")
 
     # get loan docs folder, copy vault file into it
     client = user_client
@@ -213,6 +215,7 @@ class TaxReturnController < SecuredController
   def submit_claim
 
     client = user_client
+    mixpanel_tab_event("Tax Return", "Submit Tax Return Doc")
 
     @metadataHash = {
       "category" => params[:category],
@@ -245,6 +248,7 @@ class TaxReturnController < SecuredController
   def tax_reset
 
     client = user_client
+    mixpanel_tab_event("Tax Return", "Reset Workflow")
     begin
       @taxReturnFolder = client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Tax Return")
       @taxes = client.folder_items(@taxReturnFolder, fields: [:id, :name])
@@ -278,6 +282,7 @@ class TaxReturnController < SecuredController
   def tax_upload
 
     puts "uploading file..."
+    mixpanel_tab_event("Tax Return", "Upload File")
 
     #http://www.dropzonejs.com/
     client = user_client
@@ -320,6 +325,7 @@ class TaxReturnController < SecuredController
   def download
 
     session[:current_folder] = params[:folder]
+    mixpanel_tab_event("Tax Return", "Download File")
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
     end
@@ -330,6 +336,7 @@ class TaxReturnController < SecuredController
   # delete file
   def delete_file
     puts "INSIDE DELETE METHOD"
+    mixpanel_tab_event("Tax Return", "Delete File")
     session[:current_folder] = params[:folder]
     client = user_client
 
@@ -346,6 +353,7 @@ class TaxReturnController < SecuredController
     # get loan documents folder, if it doesn't exist create one
     client = user_client
     fileId = params[:file_id]
+    mixpanel_tab_event("Tax Return", "Start Docusign")
 
     box_file = client.file_from_id(fileId)
     enterprise = "enterprise_#{ENV['BOX_ENTERPRISE_ID']}"
@@ -422,6 +430,7 @@ class TaxReturnController < SecuredController
   def tax_docusign_response_loan
 
     utility = DocusignRest::Utility.new
+    mixpanel_tab_event("Tax Return", "Docusign Signed")
 
     if params[:event] == "signing_complete"
       temp_file = Tempfile.open(["docusign_response_",".pdf"], Rails.root.join('tmp'), :encoding => 'ascii-8bit')

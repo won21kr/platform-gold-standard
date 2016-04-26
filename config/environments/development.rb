@@ -10,7 +10,7 @@ Rails.application.configure do
   config.cache_store = :dalli_store, ENV["MEMCACHIER_SERVERS"],
     { :username => ENV["MEMCACHIER_USERNAME"],
       :password => ENV["MEMCACHIER_PASSWORD"],
-      :namespace => 'platform-gold-standard-production',
+      :namespace => 'platform-gold-standard-development',
       :expires_in => 7.days,
       :compress => true,
       :pool_size => 8 }

@@ -190,6 +190,10 @@ GEM
     tilt (1.4.1)
     turbolinks (2.5.3)
       coffee-rails
+    twilio-ruby (4.11.1)
+      builder (>= 2.1.2)
+      jwt (~> 1.0)
+      multi_json (>= 1.3.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -203,6 +207,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   auth0
   awesome_print
   boxr (~> 1.0.0)
@@ -235,6 +240,7 @@ DEPENDENCIES
   skylight
   spring
   turbolinks
+  twilio-ruby
   uglifier (>= 1.3.0)
   wicked_pdf
   wkhtmltopdf

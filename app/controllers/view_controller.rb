@@ -11,6 +11,7 @@ class ViewController < SecuredController
       session[:current_folder] = params[:folder]
     end
     client = user_client
+    mixpanel_tab_event("View Item", "Main Page - #{session[:current_page]}")
     @fileId = params[:id]
     session[:fileId] = @fileId
 
@@ -30,6 +31,7 @@ class ViewController < SecuredController
 
     client = user_client
     comment = params[:comment]
+    mixpanel_tab_event("View Item", "Post Comment")
 
     if (comment != "")
       # get file and add comment
@@ -66,6 +68,7 @@ class ViewController < SecuredController
 
   # get preview url from file ID
   def preview
+    mixpanel_tab_event("View Item", "Get Preview URL")
     begin
       embed_url = user_client.embed_url(params[:id])
       redirect_to embed_url

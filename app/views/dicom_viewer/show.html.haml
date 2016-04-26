@@ -1,5 +1,8 @@
 :css
-= stylesheet_link_tag 'https://s3-us-west-1.amazonaws.com/box-dicom/v1.1.0/dist/css/preview/dicom/dicom.min.css'
+  .lity-iframe .lity-container {
+    width: 100%;
+    max-width: 1200px;
+  }
 
 .container
   = render 'layouts/sidenav'
@@ -7,21 +10,39 @@
     .index-banner.section.no-pad-bot
   .row
     .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
-      // Title
-      .col.s12
-        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
-          %i.material-icons.prefix{:style => "font-size: 28px;"} aspect_ratio
-          DICOM Viewer
-        %h6.caption.thin{:style => "font-size: 16px;"}
-          Diagnostic quality viewing on web or mobile
+      %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} aspect_ratio
+        = alt_text("DICOM Viewer")
+      %h6.caption.thin{:style => "font-size: 16px;"}
+        Diagnostic quality viewing on web or mobile
 
-    .row
-      .col.s10.push-s2
-        #dicomviewer{:style => "height: 600px;"}
+  .row
+    .col.s10.push-s2
+      %table.highlight.resources_table
+        %thead
+          %tr
+            %th{"data-field" => "thumb"}
+            %th{"data-field" => "study"} Study Name
+            %th{"data-field" => "modified"} Last Modified
 
-
-:javascript
-  $(document).ready(function(){
-    var viewer = document.getElementById('dicomviewer');
-    box.dicom.createViewer(viewer, {'accessToken': '#{@user_access_token}', 'studies': [{'fileId': '50634725361'}]});
-  });
+        - @studies.each do |name, study|
+          %tr
+            %td{"data-lity" => "", :href => dicom_view_url(study.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+              = image_tag("mri.png", :width => "30px")
+            %td{"data-lity" => "", :href => dicom_view_url(study.id)}
+              .name_elipses
+                = name
+            %td{"data-lity" => "", :href => dicom_view_url(study.id)}
+              .name_elipses
+                = DateTime.strptime(study.modified_at).strftime("%B %d, %Y %l:%M %p")
+            %td
+              .btn-group
+                %a.btn.white.tooltipped{"data-lity" => "", href: dicom_view_url(study.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 7px; padding-left: 7px"}
+                  %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+                %a.btn.white.tooltipped{href: '#', 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Physician", :style => "padding-right: 7px; padding-left: 7px;"}
+                  %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
+                / %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
+                /   %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
+                / %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
+                /   %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+  

@@ -7,13 +7,13 @@ class MedicalCredentialingController < SecuredController
 
     # determine if the credentialist is logged in, if so, redirect to their own page
     if session[:box_id] == ENV['CRED_SPECIALIST']
+      mixpanel_tab_event("Medical Credentialing", "Cred Specialist Page")
       puts "credentialist logged in..."
       redirect_to credentialist_path
     else
 
       client = user_client
       session[:current_page] = "medical_credentialing"
-      # tab_usage(session[:current_page])
 
       # get medical folder path
       path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
@@ -37,18 +37,21 @@ class MedicalCredentialingController < SecuredController
 
         # wait for form submission
         when "toFill"
+          mixpanel_tab_event("Medical Credentialing", "Fill Out Form Pending")
           session[:progress] = 0
           session[:med_task_status] = 1
           @message = "Step 1. Fill out your personal information"
 
         # Upload medical documents
         when "toUpload"
+          mixpanel_tab_event("Medical Credentialing", "Upload Docs Pending")
           session[:progress] = 1
           session[:med_task_status] = 1
           @message = "Step 2. Upload Documents"
 
         # wait for cred specialist approval
         when "pendingApproval"
+          mixpanel_tab_event("Medical Credentialing", "Pending Cred Specialist Approval")
           @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
           session[:progress] = 2
           session[:med_task_status] = 1
@@ -56,6 +59,7 @@ class MedicalCredentialingController < SecuredController
 
         # submission approved
         when "approved"
+          mixpanel_tab_event("Medical Credentialing", "Application Approved")
           session[:progress] = 3
           session[:med_task_status] = 0
           @medFiles = client.folder_items(@medFolder, fields: [:name, :id, :created_at, :modified_at]).files
@@ -71,6 +75,7 @@ class MedicalCredentialingController < SecuredController
 
     puts "submitting form"
     client = user_client
+    mixpanel_tab_event("Medical Credentialing", "Form Submit")
 
     if(params[:formSubmit] == "true")
       # use form variables to fill out html template file,
@@ -96,6 +101,7 @@ class MedicalCredentialingController < SecuredController
 
     client = user_client
     session[:current_page] = "medical_credentialing"
+    mixpanel_tab_event("Medical Credentialing", "Document Upload Submit")
 
     # get medical folder path
     path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"
@@ -117,6 +123,7 @@ class MedicalCredentialingController < SecuredController
 
     puts "reset workflow..."
     client = user_client
+    mixpanel_tab_event("Medical Credentialing", "Reset Workflow")
 
     # get workflow folder paths, delete folder
     path = "#{session[:userinfo]['info']['name']}\ -\ Medical\ Credentialing"

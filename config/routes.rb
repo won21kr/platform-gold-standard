@@ -18,6 +18,10 @@ Rails.application.routes.draw do
   get "/unshare/:id" => "dashboard#unshare_file", :as => "unshare_file"
   post "/upload/:folder_id" => "dashboard#upload", :as => "upload"
   post "/edit_name/:folder_id" => "dashboard#edit_filename", :as => "edit_name"
+  post "/edit_folder_name/:folder_id" => "dashboard#edit_folder_name", :as => "edit_folder_name"
+  post "/new_folder/:parent_id" => "dashboard#new_folder", :as => "new_folder"
+  get "/delete_folder/:id" => "dashboard#delete_folder", :as => "delete_folder"
+  get "/move_file" => "dashboard#move_file", :as => "move_file"
 
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"
@@ -61,7 +65,7 @@ Rails.application.routes.draw do
   #loan documents
   get "/loan-origination" => "loan_documents#show", :as => "loan_docs"
   post "/loan-origination/:file_name" => "loan_documents#loan_post", :as => "loan_post"
-  post "/loan-origination/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
+  post "/loan-origination-dropzone/:file_name" => "loan_documents#loan_upload", :as => "loan_upload"
   get "/copy-from-vault/:file_id" => "loan_documents#copy_from_vault", :as => "copy_from_vault"
   get "/reset-loan-docs" => "loan_documents#reset_loan", :as => "reset_loan_docs"
   get "/loan-agreement-sign/:file_id" => "loan_documents#loan_docusign", :as => "loan_docusign"
@@ -85,6 +89,8 @@ Rails.application.routes.draw do
 
   # dicom viewer
   get "/dicom_viewer" => "dicom_viewer#show", :as => "dicom_viewer"
+  get "/dicom_view/:file_id" => "dicom_viewer#view", :as => "dicom_view"
+  get "/dicom_upload" => 'dicom_viewer#upload', :as => 'dicom_upload'
 
   # auth0
   get "/auth0/failure" => "auth0#failure"

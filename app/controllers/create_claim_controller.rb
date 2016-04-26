@@ -7,7 +7,7 @@ class CreateClaimController < SecuredController
     client = user_client
     @user_access_token = client.access_token
     session[:current_page] = "create-claim"
-    # tab_usage(session[:current_page])
+    mixpanel_tab_event("Submit A Claim", "Main Page")
     threads = []
 
     if (!session[:claimPage].nil? and session[:claimPage] == 'submitted')
@@ -16,7 +16,6 @@ class CreateClaimController < SecuredController
     else
       @currentPage = 'newClaim'
     end
-
 
     begin
       @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
@@ -42,10 +41,6 @@ class CreateClaimController < SecuredController
         end
 
         begin
-          # meta = Rails.cache.fetch("/claim-metadata/#{c.id}", :expires_in => 10.minutes) do
-          #   puts "miss"
-          #   client.all_metadata(c)["entries"]
-          # end
           meta = client.all_metadata(c)["entries"]
 
           meta.each do |m|
@@ -75,6 +70,7 @@ class CreateClaimController < SecuredController
   def claim_info
     session[:current_page] = "create-claim"
     session[:file_id] = params[:file_id]
+    mixpanel_tab_event("Submit A Claim", "Fill Out Form")
 
     #
     # session[:claim] = params[:file]
@@ -85,32 +81,33 @@ class CreateClaimController < SecuredController
   def submit_claim
 
   client = user_client
+  mixpanel_tab_event("Submit A Claim", "Submit Claim")
 
-  begin
-    @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
-      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
-    end
-    @claimFile = client.file_from_id(session[:file_id], fields: [:name])
-    claimId = @claimFile.name.split('-').last.split('.').first
+    begin
+      @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")
+      end
+      @claimFile = client.file_from_id(session[:file_id], fields: [:name])
+      claimId = @claimFile.name.split('-').last.split('.').first
 
-    meta = {'id' => claimId.to_i,
-            'type' => params[:type],
-            'estimatedValue' => params[:value].to_i,
-            'description' => params[:description],
-            'status' => "Submitted"}
-    # error handle if type == nil
-    if (meta['type'].nil?)
-      meta['type'] = 'Auto'
+      meta = {'id' => claimId.to_i,
+              'type' => params[:type],
+              'estimatedValue' => params[:value].to_i,
+              'description' => params[:description],
+              'status' => "Submitted"}
+      # error handle if type == nil
+      if (meta['type'].nil?)
+        meta['type'] = 'Auto'
+      end
+      client.create_metadata(@claimFile, meta, scope: :enterprise, template: 'insuranceClaim')
+      flash[:notice] = "Claim ##{claimId} successfully submitted. Await company approval."
+      session[:claimPage] = 'submitted'
+    rescue Exception => e
+      ap e
+      puts "error. Folder not found"
+      flash[:error] = "Error. Something went wrong."
+      session[:claimPage] = 'newClaim'
     end
-    client.create_metadata(@claimFile, meta, scope: :enterprise, template: 'insuranceClaim')
-    flash[:notice] = "Claim ##{claimId} successfully submitted. Await company approval."
-    session[:claimPage] = 'submitted'
-  rescue Exception => e
-    ap e
-    puts "error. Folder not found"
-    flash[:error] = "Error. Something went wrong."
-    session[:claimPage] = 'newClaim'
-  end
 
 
     redirect_to create_claim_path
@@ -120,6 +117,7 @@ class CreateClaimController < SecuredController
   def claim_reset
 
     client = user_client
+    mixpanel_tab_event("Submit A Claim", "Reset Workflow")
     begin
       @submittedClaimsFolder = Rails.cache.fetch("/claims-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Claims")

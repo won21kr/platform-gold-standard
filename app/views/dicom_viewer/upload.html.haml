@@ -1,0 +1,12 @@
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.s10.push-s2
+      #my-container{:style => "width: 600px; border: 1px solid #bbb"}
+
+:javascript
+  $(document).ready(function(){
+    box.dicom.createImportWidget('my-container', {'accessToken': '#{@user_access_token}', 'folderId':'#{@dicom_folder}'});
+  });

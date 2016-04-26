@@ -1,11 +1,7 @@
 class Auth0Controller < ApplicationController
   def callback
     session[:userinfo] = request.env['omniauth.auth']
-
-    # to fix local gravatar timeout issue
-    session[:userinfo][:extra][:raw_info][:picture] = nil
-    session[:userinfo][:info][:image] = nil
-
+    mixpanel_capture
 
     auth0_meta = session[:userinfo]['extra']['raw_info']['app_metadata']
     if auth0_meta and auth0_meta.has_key?('box_id')
@@ -40,6 +36,12 @@ class Auth0Controller < ApplicationController
   end
 
   private
+
+  # capture mixpanel login event
+  def mixpanel_capture
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Login', {:username => session[:userinfo]['info']['name'], :auth => 'Auth0'})
+  end
 
   # create folders for user and add to group
   def setup_box_account
