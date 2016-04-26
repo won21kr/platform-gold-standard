@@ -26,13 +26,13 @@ class ConfigController < ApplicationController
       session[:upload_sign] = "off"
       session[:tax_return] = "off"
       session[:create_claim] = "off"
-      session[:account_sub] = "off"
-      session[:dicom_viewer] = "off"
-      session[:media_content] = "off"
+      # session[:account_sub] = "off"
+      # session[:dicom_viewer] = "off"
+      # session[:media_content] = "off"
       session[:eventstream] = "off"
 
       # Okta
-      session[:okta] = "off"
+      # session[:okta] = "off"
     end
 
     config_url
@@ -100,7 +100,7 @@ class ConfigController < ApplicationController
     session[:alt_text] = params[:alt_text]
 
     # Okta configuration
-    session[:okta] = !params[:okta].blank? ? 'on' : 'off'
+    # session[:okta] = !params[:okta].blank? ? 'on' : 'off'
 
     # check feature tab configuration
     session[:resources] = !params[:resources].blank? ? 'on' : 'off'
@@ -110,17 +110,17 @@ class ConfigController < ApplicationController
     session[:upload_sign] = !params[:uploadsign].blank? ? 'on' : 'off'
     session[:tax_return] = !params[:taxreturn].blank? ? 'on' : 'off'
     session[:create_claim] = !params[:createclaim].blank? ? 'on' : 'off'
-    session[:request_for_proposal] = !params[:requestforproposal].blank? ? 'on' : 'off'
-    session[:account_sub] = !params[:acctsub].blank? ? 'on' : 'off'
-    session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
-    session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
+    # session[:request_for_proposal] = !params[:requestforproposal].blank? ? 'on' : 'off'
+    # session[:account_sub] = !params[:acctsub].blank? ? 'on' : 'off'
+    # session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
+    # session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
       capture_user_data
       # Mixpanel capture event
-      mixpanel_capture      
+      mixpanel_capture
     end
     redirect_to config_path
   end
@@ -143,12 +143,8 @@ class ConfigController < ApplicationController
                                upload_sign: session[:upload_sign] == "on" ? true : false,
                                tax_return: session[:tax_return] == "on" ? true : false,
                                submit_claim: session[:create_claim] == "on" ? true : false,
-                               eventstream: session[:eventstream] == "on" ? true : false,
-                               media_content: session[:media_content] == "on" ? true : false)
+                               eventstream: session[:eventstream] == "on" ? true : false)
     user_data.save
-    # ap user_data
-    # ap Userconfig.all
-
   end
 
   # clear session
@@ -165,7 +161,7 @@ class ConfigController < ApplicationController
 
     configuration[:username] = session[:userinfo]['info']['name'] unless session[:user].blank?
     configuration[:company] = session[:company] unless session[:company].blank?
-    configuration[:okta] = session[:okta] unless session[:okta] != "on"
+    # configuration[:okta] = session[:okta] unless session[:okta] != "on"
     configuration[:logo_url] = session[:logo] unless session[:logo].blank?
     configuration[:home_url] = session[:background] unless session[:background].blank?
     configuration[:alt_text] = session[:alt_text] unless session[:alt_text].blank?
@@ -183,7 +179,7 @@ class ConfigController < ApplicationController
     tracker.track('1234', 'Configuration', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
     tracker.track('1234', 'Configuration', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
     tracker.track('1234', 'Configuration', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
+    # tracker.track('1234', 'Configuration', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
   end
 
   # construct configuration URL
@@ -197,10 +193,10 @@ class ConfigController < ApplicationController
     query["alt_text"] = session[:alt_text] unless session[:alt_text].blank?
     query["background"] = session[:background] unless session[:background].blank?
     query["create_claim"] = session[:create_claim] unless session[:create_claim].blank?
-    query["request_for_proposal"] = session[:request_for_proposal] unless session[:request_for_proposal].blank?
+    # query["request_for_proposal"] = session[:request_for_proposal] unless session[:request_for_proposal].blank?
     query["back_color"] = session[:navbar_color][1..-1] unless session[:navbar_color].blank?
 
-    query["okta"] = session[:okta]
+    # query["okta"] = session[:okta]
     query["vault"] = session[:vault]
     query["resources"] = session[:resources]
     query["onboarding"] = session[:onboarding]
@@ -208,8 +204,8 @@ class ConfigController < ApplicationController
     query["loan_docs"] = session[:loan_docs]
     query["tax_return"] = session[:tax_return]
     query["upload_sign"] = session[:upload_sign]
-    query["dicom_viewer"] = session[:dicom_viewer]
-    query["media_content"] = session[:media_content]
+    # query["dicom_viewer"] = session[:dicom_viewer]
+    # query["media_content"] = session[:media_content]
     query["eventstream"] = session[:eventstream]
 
     session[:config_url] = template.expand({"query" => query})
