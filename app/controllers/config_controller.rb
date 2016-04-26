@@ -83,14 +83,8 @@ class ConfigController < ApplicationController
 
     puts 'posting configuration page....'
 
-    # check if new branding parameters were saved
-    #if !params[:company].nil? and params[:company] != ""
-      session[:company] = params[:company]
-    #end
-
-    #if !params[:logo].nil? and params[:logo] != ""
-      session[:logo] = params[:logo]
-    #end
+    session[:company] = params[:company]
+    session[:logo] = params[:logo]
 
     if !params[:navbar_color].blank? and params[:navbar_color] != ""
       if (params[:navbar_color][0] == '#')
@@ -102,14 +96,8 @@ class ConfigController < ApplicationController
       session[:navbar_color] = nil
     end
 
-    #if !params[:backgroud].nil? and params[:background] != ""
-      session[:background] = params[:background]
-    #end
-
-    #unless params[:alt_text].blank?
-      session[:alt_text] = params[:alt_text]
-    #end
-
+    session[:background] = params[:background]
+    session[:alt_text] = params[:alt_text]
 
     # Okta configuration
     session[:okta] = !params[:okta].blank? ? 'on' : 'off'
@@ -128,12 +116,11 @@ class ConfigController < ApplicationController
     session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
 
-    # Mixpanel capture event
-    mixpanel_capture
-
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
       capture_user_data
+      # Mixpanel capture event
+      mixpanel_capture      
     end
     redirect_to config_path
   end
