@@ -173,21 +173,30 @@ class ConfigController < ApplicationController
   private
 
   def mixpanel_capture
+
+    configuration = {}
+
+    configuration[:username] = session[:userinfo]['info']['name'] unless session[:user].blank?
+    configuration[:company] = session[:company] unless session[:company].blank?
+    configuration[:okta] = session[:okta] unless session[:okta] != "on"
+    configuration[:logo_url] = session[:logo] unless session[:logo].blank?
+    configuration[:home_url] = session[:background] unless session[:background].blank?
+    configuration[:alt_text] = session[:alt_text] unless session[:alt_text].blank?
+    # configuration[:tab_configuration] = tab_config
+
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Configuration', {:username => session[:userinfo].blank? ? 'null' : session[:userinfo]['info']['name'],
-      :company => session[:company].blank? ? 'null' : session[:company],
-      :okta => session[:okta] == "on" ? true : false,
-      :logo_url => session[:logo].blank? ? 'null' : session[:logo],
-      :home_url => session[:background].blank? ? 'null' : session[:background],
-      :vault => true,
-      :resources => session[:resources] == "on" ? true : false,
-      :onboarding_tasks => session[:onboarding] == "on" ? true : false,
-      :medical_credentialing => session[:medical_credentialing] == "on" ? true : false,
-      :loan_origination => session[:loan_docs] == "on" ? true : false,
-      :upload_sign => session[:upload_sign] == "on" ? true : false,
-      :tax_return => session[:tax_return] == "on" ? true : false,
-      :submit_claim => session[:create_claim] == "on" ? true : false,
-      :eventstream => session[:eventstream] == "on" ? true : false})
+    event = tracker.track('1234', 'Configuration', configuration)
+
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'My Vault')
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Resources') unless session[:resources] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Onboarding Tasks') unless session[:onboarding] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Medical Credentialing') unless session[:medical_credentialing] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Loan Origination') unless session[:loan_docs] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Upload & Sign') unless session[:upload_sign] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
+    tracker.track('1234', 'Configuration', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
   end
 
   # construct configuration URL
