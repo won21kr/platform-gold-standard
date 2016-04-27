@@ -43,7 +43,9 @@ class ApplicationController < ActionController::Base
   # Capture tab event
   def mixpanel_tab_event(tab, event)
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Tab Usage', {:tab => tab, :event => event})
+    event = tracker.track('1234', 'Tab Usage', {:tab => tab,
+                                                :event => event,
+                                                :user => session[:userinfo]['info']['name']})
   end
 
   private

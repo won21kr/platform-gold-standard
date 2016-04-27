@@ -7,7 +7,7 @@ class DashboardController < SecuredController
 
     # get user client obj for Box API calls
     client = user_client
-    mixpanel_tab_event("My Vault", "Main Page")    
+    mixpanel_tab_event("My Vault", "Main Page")
     @user_access_token = client.access_token
     session[:current_page] = "vault"
     threads = []
@@ -264,9 +264,13 @@ class DashboardController < SecuredController
       client.folder_from_id(params[:dest])
     end
 
-    # get shared folder, then move file into shared folder
-    client.move_file(targetFile, destFolder)
-    flash[:notice] = "File moved into \"#{folder.name}\""
+    begin
+      # get shared folder, then move file into shared folder
+      client.move_file(targetFile, destFolder)
+      flash[:notice] = "File moved into \"#{folder.name}\""
+    rescue
+      flash[:error] = "Error: File could not be moved"
+    end
 
     redirect_to dashboard_id_path(session[:current_folder])
   end
