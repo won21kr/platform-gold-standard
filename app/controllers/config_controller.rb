@@ -42,6 +42,8 @@ class ConfigController < ApplicationController
     account_sid = "AC4c44fc31f1d7446784b3e065f92eb4e6"
     auth_token = "5ad821b20cff339979cd0a9d42e1a05d"
     client = Twilio::REST::Client.new account_sid, auth_token
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - Twilio')
 
     from = params[:region] # Your Twilio number
     puts "Values from the twilio modal:\nInput Phone Number: #{params[:phoneNumber]}\nInput Region: #{params[:region]}"
@@ -61,7 +63,8 @@ class ConfigController < ApplicationController
 
   def send_grid_method
 
-    puts "MADE IT TO THE METHOD: #{params[:emailAddress]}"
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - SendGrid')
     client = SendGrid::Client.new do |c|
       c.api_user = 'carycheng77'
       c.api_key =  'CaryCheng77' #'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'
@@ -149,6 +152,8 @@ class ConfigController < ApplicationController
 
   # clear session
   def reset_config
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - Reset')
     session.clear
     redirect_to config_path
   end
@@ -168,17 +173,17 @@ class ConfigController < ApplicationController
     # configuration[:tab_configuration] = tab_config
 
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Configuration', configuration)
+    event = tracker.track('1234', 'Configuration - General', configuration)
 
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'My Vault')
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Resources') unless session[:resources] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Onboarding Tasks') unless session[:onboarding] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Medical Credentialing') unless session[:medical_credentialing] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Loan Origination') unless session[:loan_docs] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Upload & Sign') unless session[:upload_sign] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
-    tracker.track('1234', 'Configuration', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'My Vault')
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Resources') unless session[:resources] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Onboarding Tasks') unless session[:onboarding] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Medical Credentialing') unless session[:medical_credentialing] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Loan Origination') unless session[:loan_docs] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Upload & Sign') unless session[:upload_sign] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
     # tracker.track('1234', 'Configuration', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
   end
 
