@@ -31,7 +31,7 @@
             .breadcrumb.pull-left
               - @breadcrumb.each do |name, data|
                 - if data[1]
-                  %li
+                  %li{:id => "#{data[0]}", :style => "", :ondrop => "drop_item(event, '#{data[0]}')", :ondragover => "allowBreadcrumbDrop(event, '#{data[0]}')", :ondragleave => "breadcrumbdragLeave(event, '#{data[0]}')"}
                     = link_to name, dashboard_id_path(data[0])
                 - else
                   %li.active
@@ -233,10 +233,23 @@
     }
   }
 
+  function allowBreadcrumbDrop(ev, id) {
+
+    event.preventDefault();
+    document.getElementById(id).style.fontWeight = "bold";
+
+  }
+
+  // Leave the drag destination
+  function breadcrumbdragLeave(ev, id) {
+    document.getElementById(id).style.fontWeight = "";
+  }
+
   // Leave the drag destination
   function dragLeave(ev, id) {
     document.getElementById(id).style.border = "";
   }
+
 
   // Drop dragged item into destination
   function drop_item(ev, id) {
