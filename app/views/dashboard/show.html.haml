@@ -213,30 +213,41 @@
 
 
   // Drag and drop functions
-  function allowDrop(ev) {
-    ev.preventDefault();
+  var draggedElement = null;
+
+  // Start to drag element
+  function drag(ev, type) {
+
+      ev.dataTransfer.setData("id", ev.target.id);
+      ev.dataTransfer.setData("type", type);
+      draggedElement = ev.target.id;
   }
 
-  function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-  }
-
+  // Can we drop item into current element?
   function allowDrop(ev, id) {
+
+    // Cannot dropped dragged item into itself
+    if (draggedElement != id) {
       event.preventDefault();
       document.getElementById(id).style.border = "2px dashed #2996CC";
-      // event.target.style.border = "4px dotted green";
+    }
   }
 
+  // Leave the drag destination
   function dragLeave(ev, id) {
     document.getElementById(id).style.border = "";
   }
 
+  // Drop dragged item into destination
+  function drop_item(ev, id) {
 
-  function drop(ev, id) {
       ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      // console.log("file: " + data);
-      // console.log("dest folder: " + id)
-      location.href = '/move_file/?dest=' + id + '&file_id=' + data
-      // ev.target.appendChild(document.getElementById(data));
+      var itemId = ev.dataTransfer.getData("id");
+      var itemType = ev.dataTransfer.getData("type");
+
+      // determine if item if folder or file
+      if (itemType == 'file')
+        location.href = '/move_file/?dest=' + id + '&file_id=' + itemId;
+      else if (itemType == 'folder' && draggedElement != id)
+        location.href = '/move_folder/?dest=' + id + '&folder_id=' + itemId;
   }
