@@ -12,7 +12,7 @@
   - elsif (session[:current_page] == 'request_for_proposal')
     = link_to '<< Back to Proposal Builder', '/request_for_proposal'
   - elsif (!session[:current_folder].nil?)
-    = link_to '<< Back to My Vault', dashboard_id_path(session[:current_folder])
+    = link_to "<< Back to #{alt_text("My Vault")}", dashboard_id_path(session[:current_folder])
   - else
     = link_to "<< Back to #{alt_text("My Vault")}", dashboard_path
 

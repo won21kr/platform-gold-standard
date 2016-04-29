@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   helper :all
   helper_method :get_med_task_status
   before_action :check_config
+  require 'mixpanel'
 
   # get med credential workflow status
   def get_med_task_status
@@ -39,37 +40,13 @@ class ApplicationController < ActionController::Base
     Box.user_client(session[:box_id])
   end
 
-  # count the tab clicks
-  def tab_usage(tab)
-
-    # if (ENV['RACK_ENV'] == 'production')
-
-      # if (tab == "vault")
-      #   TabUsage.increment_counter(:vault, by = 1)
-      # elsif (tab == "search")
-      #   TabUsage.increment_counter(:resources, by = 1)
-      # elsif (tab == "workflow")
-      #   TabUsage.increment_counter(:onboarding_tasks, by = 1)
-      # elsif (tab == "medical_credentialing")
-      #   TabUsage.increment_counter(:medical_credentialing, by = 1)
-      # elsif (tab == "upload-sign")
-      #   TabUsage.increment_counter(:upload_sign, by = 1)
-      # elsif (tab == "loan_docs")
-      #   TabUsage.increment_counter(:loan_origination, by = 1)
-      # elsif (tab == "tax_return")
-      #   TabUsage.increment_counter(:tax_return, by = 1)
-      # elsif (tab == "create-claim")
-      #   TabUsage.increment_counter(:submit_claim, by = 1)
-      # else
-      #   puts "Something went wrong!!"
-      # end
-
-    # ap TabUsage.all
-    # end
-
-
+  # Capture tab event
+  def mixpanel_tab_event(tab, event)
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Tab Usage', {:tab => tab,
+                                                :event => event,
+                                                :user => session[:userinfo]['info']['name']})
   end
-
 
   private
 

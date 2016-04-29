@@ -97,10 +97,10 @@
                   %span
                     %img.callout{:src => "https://hostr.co/file/iyBmFEqKjtau/download.gif", :style => "height: 350px;"}
                 %input.form-control#background{:type => "text", :name => "background", :placeholder => "http://www.example.com/background.jpg", :style => "color: black", :value => session[:background]}
-                
+
                 %label.label-div{:for => "company", :style => "color: black"} Alternative Label Text
-                %input.form-control#company{:type => "text", :name => "alt_text", :placeholder => "e.g. {'My Vault':'My Documents'}", :style => "color: black", :value => session[:alt_text]}
-                
+                %input.form-control#company{:type => "text", :name => "alt_text", :placeholder => "e.g. {\"My Vault\":\"My Documents\"}", :style => "color: black", :value => session[:alt_text]}
+
                 %p
                   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
                   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth

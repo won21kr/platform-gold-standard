@@ -18,15 +18,18 @@ class WorkflowController < SecuredController
 
     # perform actions based on current workflow status state
     if (@status == "toFill")
+      mixpanel_tab_event("Onboarding Tasks", "Fill Out Form Pending")
       session[:progress] = 0
       session[:task_status] = 1
       @message = "Step 1. Fill out your personal information"
     elsif(@status == "pendingApproval")
+      mixpanel_tab_event("Onboarding Tasks", "Pending Approval")
       set_preview_url(@onboardDoc.id)
       session[:progress] = 1
       session[:task_status] = 1
       @message = "Step 2. Wait for contract to be reviewed by the company"
     elsif(@status == "approved" or @status == "pendingSig")
+      mixpanel_tab_event("Onboarding Tasks", "Pending Signature")
       # create docusign doc
       envelope_response = create_docusign_envelope(@onboardDoc.id)
 
@@ -43,6 +46,7 @@ class WorkflowController < SecuredController
       session[:task_status] = 1
       @message = "Step 3. Sign the onboarding contract"
     elsif(@status == "signed")
+      mixpanel_tab_event("Onboarding Tasks", "Workflow Complete")
       set_preview_url(@onboardDoc.id)
       session[:progress] = 3
       session[:task_status] = 0
@@ -55,6 +59,8 @@ class WorkflowController < SecuredController
 
     puts "submitting form"
     client = user_client
+    mixpanel_tab_event("Onboarding Tasks", "Form Submit")
+
 
     if(params[:formSubmit] == "true")
       # use form variables to fill out html template file,
@@ -118,6 +124,7 @@ class WorkflowController < SecuredController
 
     puts "reset workflow..."
     client = user_client
+    mixpanel_tab_event("Onboarding Tasks", "Reset Workflow")
 
     # get workflow folder paths
     path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"

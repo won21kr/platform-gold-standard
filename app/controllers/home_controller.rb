@@ -18,6 +18,7 @@ class HomeController < ApplicationController
 
   def login
     puts "login background page"
+    mixpanel_tab_event("Home Page", "Home Background Screen")
   end
 
   def reset_logins
@@ -48,6 +49,7 @@ class HomeController < ApplicationController
   end
 
   def logout
+    mixpanel_tab_event("DICOM Viewer", "Logout")
     session[:userinfo] = nil
     session[:task_status] = nil
     session[:med_task_status] = nil

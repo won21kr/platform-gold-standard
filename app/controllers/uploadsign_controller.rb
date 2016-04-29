@@ -10,7 +10,7 @@ class UploadsignController < SecuredController
     client = user_client
     @user_access_token = client.access_token
     session[:current_page] = "upload-sign"
-    # tab_usage(session[:current_page])
+    mixpanel_tab_event("Upload & Sign", "Main Page")
 
     # get signed and pending signature folders, create them if they dont exist
     begin
@@ -42,6 +42,7 @@ class UploadsignController < SecuredController
 
     #http://www.dropzonejs.com/
     uploaded_file = params[:file]
+    mixpanel_tab_event("Upload & Sign", "Upload File")
     folder = params[:folder_id]
     ext = uploaded_file.original_filename.split('.').last
 
@@ -87,6 +88,7 @@ class UploadsignController < SecuredController
   def reset_uploadnsign
 
     client = user_client
+    mixpanel_tab_event("Upload & Sign", "Reset Workflow")
     begin
       pendingFolder = Rails.cache.fetch("/uploadnisgn/#{session[:box_id]}/pending", :expires_in => 10.minutes) do
         puts "miss"
@@ -118,6 +120,7 @@ class UploadsignController < SecuredController
   def delete_file
 
     client = user_client
+    mixpanel_tab_event("Upload & Sign", "Delete File")
 
     # delete file
     client.delete_file(params[:id])
@@ -130,6 +133,7 @@ class UploadsignController < SecuredController
     # fetch the onboarding doc file from whichever folder it current lives in
     # also, update the current workflow status state
     id = params[:id]
+    mixpanel_tab_event("Upload & Sign", "Start Docusign")
 
   # perform actions based on current workflow status state
     envelope_response = create_docusign_envelope(id)
@@ -150,6 +154,7 @@ class UploadsignController < SecuredController
     utility = DocusignRest::Utility.new
     temp_file = Tempfile.open(["uploadsign_docusign_response_",".pdf"], Rails.root.join('tmp'), :encoding => 'ascii-8bit')
     box_user = user_client
+    mixpanel_tab_event("Upload & Sign", "Docusign Signed")
 
       begin
         DOCUSIGN_CLIENT.get_document_from_envelope(
@@ -229,6 +234,7 @@ class UploadsignController < SecuredController
 
 
   def set_preview_url(id)
+    mixpanel_tab_event("Upload & Sign", "Preview File")
     @previewURL = user_client.embed_url(id)
   end
 

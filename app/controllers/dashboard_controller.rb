@@ -7,6 +7,7 @@ class DashboardController < SecuredController
 
     # get user client obj for Box API calls
     client = user_client
+    mixpanel_tab_event("My Vault", "Main Page")
     @user_access_token = client.access_token
     session[:current_page] = "vault"
     threads = []
@@ -80,6 +81,7 @@ class DashboardController < SecuredController
 
     client = user_client
     file = client.file_from_id(params[:fileId], fields: [:parent])
+    mixpanel_tab_event("My Vault", "Rename Item")
 
     # set current folder id & new file name
     session[:current_folder] = file.parent.id
@@ -100,7 +102,7 @@ class DashboardController < SecuredController
   def edit_folder_name
 
     client = user_client
-    ap params
+    mixpanel_tab_event("My Vault", "Rename Item")
     # folder = client.folder_from_id(params[:folder_id])
     session[:current_folder] = params[:folder_id]
 
@@ -124,6 +126,7 @@ class DashboardController < SecuredController
     session[:current_folder] = params[:folder_id]
     uploaded_file = params[:file]
     folder = params[:folder_id]
+    mixpanel_tab_event("My Vault", "Upload File")
 
     # upload file to box from tmp folder
     temp_file = File.open(Rails.root.join('tmp', uploaded_file.original_filename), 'wb')
@@ -160,6 +163,7 @@ class DashboardController < SecuredController
   def download
 
     session[:current_folder] = params[:folder]
+    mixpanel_tab_event("My Vault", "Download File")
     download_url = Rails.cache.fetch("/download_url/#{params[:id]}", :expires_in => 10.minutes) do
       user_client.download_url(params[:id])
     end
@@ -171,6 +175,7 @@ class DashboardController < SecuredController
 
     session[:current_folder] = params[:folder]
     client = user_client
+    mixpanel_tab_event("My Vault", "Delete File")
 
     # delete file
     client.delete_file(params[:id])
@@ -183,6 +188,7 @@ class DashboardController < SecuredController
   def share_file
 
     id = params[:id]
+    mixpanel_tab_event("My Vault", "Share File")
     session[:current_folder] = params[:folder]
     client = user_client
 
@@ -198,6 +204,7 @@ class DashboardController < SecuredController
   def unshare_file
 
     id = params[:id]
+    mixpanel_tab_event("My Vault", "Share File")
     session[:current_folder] = params[:folder]
     client = user_client
 
@@ -214,6 +221,7 @@ class DashboardController < SecuredController
 
     puts "create new folder"
     client = user_client
+    mixpanel_tab_event("My Vault", "New Folder")
 
     # get "My Files" and "Shared Files" folder objects
     @currentFolder = params[:parent_id]
@@ -233,6 +241,8 @@ class DashboardController < SecuredController
   def delete_folder
     session[:current_folder] = params[:folder]
     client = user_client
+    mixpanel_tab_event("My Vault", "Delete Folder")
+
 
     # delete folder
     client.delete_folder(params[:id], recursive: true)
@@ -247,15 +257,21 @@ class DashboardController < SecuredController
     destFolder = params[:dest]
     targetFile = params[:file_id]
     client = user_client
+    mixpanel_tab_event("My Vault", "Move File - Drag & Drop")
 
     # get folder
     folder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder/#{params[:dest]}", :expires_in => 10.minutes) do
       client.folder_from_id(params[:dest])
     end
 
-    # get shared folder, then move file into shared folder
-    client.move_file(targetFile, destFolder)
-    flash[:notice] = "File moved into \"#{folder.name}\""
+    begin
+      # get shared folder, then move file into shared folder
+      client.move_file(targetFile, destFolder)
+      flash[:notice] = "File moved into \"#{folder.name}\""
+    rescue
+      flash[:error] = "Error: File could not be moved"
+    end
+
 
     redirect_to dashboard_id_path(session[:current_folder])
   end

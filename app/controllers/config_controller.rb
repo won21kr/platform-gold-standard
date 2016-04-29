@@ -42,6 +42,9 @@ class ConfigController < ApplicationController
     account_sid = "AC4c44fc31f1d7446784b3e065f92eb4e6"
     auth_token = "5ad821b20cff339979cd0a9d42e1a05d"
     client = Twilio::REST::Client.new account_sid, auth_token
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - Twilio')
+
 
     from = params[:region] # Your Twilio number
     puts "Values from the twilio modal:\nInput Phone Number: #{params[:phoneNumber]}\nInput Region: #{params[:region]}"
@@ -61,7 +64,8 @@ class ConfigController < ApplicationController
 
   def send_grid_method
 
-    puts "MADE IT TO THE METHOD: #{params[:emailAddress]}"
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - SendGrid')
     client = SendGrid::Client.new do |c|
       c.api_user = 'carycheng77'
       c.api_key =  'CaryCheng77' #'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'
@@ -83,15 +87,9 @@ class ConfigController < ApplicationController
 
     puts 'posting configuration page....'
 
-    # check if new branding parameters were saved
-    #if !params[:company].nil? and params[:company] != ""
-      session[:company] = params[:company]
-    #end
-    
-    #if !params[:logo].nil? and params[:logo] != ""
-      session[:logo] = params[:logo]
-    #end
-    
+    session[:company] = params[:company]
+    session[:logo] = params[:logo]
+
     if !params[:navbar_color].blank? and params[:navbar_color] != ""
       if (params[:navbar_color][0] == '#')
         session[:navbar_color] = params[:navbar_color]
@@ -101,15 +99,9 @@ class ConfigController < ApplicationController
     else
       session[:navbar_color] = nil
     end
-    
-    #if !params[:backgroud].nil? and params[:background] != ""
-      session[:background] = params[:background]
-    #end
 
-    #unless params[:alt_text].blank?
-      session[:alt_text] = params[:alt_text]
-    #end
-
+    session[:background] = params[:background]
+    session[:alt_text] = params[:alt_text]
 
     # Okta configuration
     session[:okta] = !params[:okta].blank? ? 'on' : 'off'
@@ -131,6 +123,8 @@ class ConfigController < ApplicationController
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
       capture_user_data
+      # Mixpanel capture event
+      mixpanel_capture
     end
     redirect_to config_path
   end
@@ -163,18 +157,47 @@ class ConfigController < ApplicationController
 
   # clear session
   def reset_config
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - Reset')
     session.clear
     redirect_to config_path
   end
 
   private
 
+  def mixpanel_capture
+
+    configuration = {}
+
+    configuration[:username] = session[:userinfo]['info']['name'] unless session[:user].blank?
+    configuration[:company] = session[:company] unless session[:company].blank?
+    configuration[:okta] = session[:okta] unless session[:okta] != "on"
+    configuration[:logo_url] = session[:logo] unless session[:logo].blank?
+    configuration[:home_url] = session[:background] unless session[:background].blank?
+    configuration[:alt_text] = session[:alt_text] unless session[:alt_text].blank?
+    # configuration[:tab_configuration] = tab_config
+
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - General', configuration)
+
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'My Vault')
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Resources') unless session[:resources] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Onboarding Tasks') unless session[:onboarding] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Medical Credentialing') unless session[:medical_credentialing] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Loan Origination') unless session[:loan_docs] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Upload & Sign') unless session[:upload_sign] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
+  end
+
   # construct configuration URL
   def config_url
     template = Addressable::Template.new("#{ENV['ACTIVE_URL']}{?query*}")
-    
+
     query = {}
-    query[""] = 
+    query[""] =
     query["company"] = session[:company] unless session[:company].blank?
     query["logo"] = session[:logo] unless session[:logo].blank?
     query["alt_text"] = session[:alt_text] unless session[:alt_text].blank?
