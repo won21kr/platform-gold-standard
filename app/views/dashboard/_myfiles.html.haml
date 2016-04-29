@@ -1,4 +1,4 @@
-%table.highlight
+%table.highlight{:style => "margin-bottom: 150px"}
   %thead
     %tr
       %th{"data-field" => "id"}
@@ -21,9 +21,16 @@
             %td.hidden-xs.hidden-sm#claim-descr{:style => "position: relative"}
               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
             %td
-              .btn-group
-                %a.btn.white.tooltipped{href: delete_folder_path(f.id, folder: @currentFolder), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+              %a.dropdown-button.white.btn{"data-activates" => "folderOptions", :href => "#", :style => "padding-left: 7px; padding-right: 7px", :onclick => "event.stopPropagation();"}
+                %span.fa.fa-ellipsis-h{:style => "text-decoration: none; color: #263238; font-size: 150%; margin-top: 9px"}
+              %ul#folderOptions.dropdown-content.dropdown-options
+                %li
+                  %a.vault-dropdown-item{href: delete_folder_path(f.id, folder: @currentFolder)}
+                    %span.glyphicon.glyphicon-trash{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Delete
+              -# .btn-group
+              -#   %a.btn.white.tooltipped{href: delete_folder_path(f.id, folder: @currentFolder), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
         - else
           %tr{:style => "cursor:pointer", :id => "#{f.id}", :draggable => "true", :ondragstart => "drag(event, '#{f.type}')"}
             %td{:style => "z-index: 1; position: relative;", "data-intro" => i==0 ? "Edit file names. Box File ID's remain unchanged so paths to the file will never break." : nil,  "data-position" => i==0 ? "left" : nil}
@@ -38,15 +45,37 @@
               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
             / file action options
             %td{"data-intro" => i==0 ? "View, Share, Download, and Delete files from Box" : nil,  "data-position" => i==0 ? "left" : nil}
-              .btn-group
-                %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 7px; padding-left: 7px"}
-                  %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                %a.btn.white.tooltipped{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Employee", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
-                %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
-                %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+              %a.dropdown-button.white.btn{"data-activates" => "fileOptions", :href => "#", :style => "padding-left: 7px; padding-right: 7px"}
+                %span.fa.fa-ellipsis-h{:style => "text-decoration: none; color: #263238; font-size: 150%; margin-top: 9px"}
+
+              %ul#fileOptions.dropdown-content.dropdown-options
+                %li
+                  %a.vault-dropdown-item{href: view_doc_path(f.id, folder: @myFolder.id)}
+                    %span.glyphicon.glyphicon-eye-open{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} View
+                %li
+                  %a.vault-dropdown-item{href: share_file_path(f.id, folder: @sharedFolder.id)}
+                    %span.glyphicon.glyphicon-share{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Share
+                %li
+                  %a.vault-dropdown-item{href:  download_path(f.id, folder: @myFolder.id)}
+                    %span.glyphicon.glyphicon-download{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Download
+                %li
+                  %a.vault-dropdown-item{href: delete_file_path(f.id, folder: @myFolder.id)}
+                    %span.glyphicon.glyphicon-trash{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Delete
+
+
+              -# .btn-group
+              -#   %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 7px; padding-left: 7px"}
+              -#     %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+              -#   %a.btn.white.tooltipped{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Employee", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
+              -#   %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
+              -#   %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
 - if @myFiles.size == 0
   .col.s5.push-s3
     .h5{:style => "margin-top: 35px;"}

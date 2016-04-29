@@ -236,20 +236,20 @@
   function allowBreadcrumbDrop(ev, id) {
 
     event.preventDefault();
-    document.getElementById(id).style.fontWeight = "bold";
-
+    document.getElementById(id).style.fontWeight = "bolder";
+    document.getElementById(id).style.color = "#2A649C";
   }
 
   // Leave the drag destination
   function breadcrumbdragLeave(ev, id) {
     document.getElementById(id).style.fontWeight = "";
+    document.getElementById(id).style.color = "#039be5";
   }
 
   // Leave the drag destination
   function dragLeave(ev, id) {
     document.getElementById(id).style.border = "";
   }
-
 
   // Drop dragged item into destination
   function drop_item(ev, id) {
