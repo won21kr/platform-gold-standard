@@ -40,7 +40,9 @@
           .col.m6.s12{:style => "margin-top: 30px;", "data-intro;" => "Upload files to the Box folder selected above", "data-position" => "left"}
             %div.pull-right{:style => "display: inline-block; position: relative"}
               -# .uploadbtn{:style => "position: relative !important"}
-              %a.waves-effect.btn.white.black-text.modal-trigger.hide_below768{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
+              %a.waves-effect.btn.white.black-text.hide_below768{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none; padding-left: 10px; padding-right: 10px;"}
+                -# = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '23px')
+                New Folder
               %a.waves-effect.btn.white.black-text.modal-trigger.hide_below992.uploadbtn{:href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Upload
               %form.uploadbtn.hide_above992{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
                 .form-group
