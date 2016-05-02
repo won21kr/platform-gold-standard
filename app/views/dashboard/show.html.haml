@@ -54,7 +54,7 @@
             .flash.col.s8.push-s2{:style => "margin-top: 20px"}
               - if @myFolder.id == @currentFolder
                 = render partial: "shared/flash_messages", flash: flash
-          = render 'dashboard/myfiles'
+            = render 'dashboard/myfiles'
         #sharedfiles.myvault_table
           .col.s2.push-s10{:style => "margin-top: 30px;"}
             .uploadbtn.hide_below992.pull-right{:style => "position: relative !important"}
@@ -68,7 +68,7 @@
             .flash.col.s8.push-s2{:style => "margin-top: 20px"}
               - if @sharedFolder.id == @currentFolder
                 = render partial: "shared/flash_messages", flash: flash
-          = render 'dashboard/sharedfiles'
+            = render 'dashboard/sharedfiles'
 
 #popover-content.hide{:style => "padding: 5px 10px"}
   %form.form-inline{:role => "form", :method => "post", :action => edit_name_path(@currentFolder)}
@@ -265,7 +265,7 @@
         location.href = '/move_folder/?dest=' + id + '&folder_id=' + itemId;
   }
 
-  // $('.dropdown-button').dropdown({
-  //     hover: true, // Activate on hover
-  //   }
-  // );
+  $('.dropdown-button').dropdown({
+      hover: true, // Activate on hover
+    }
+  );
