@@ -272,6 +272,29 @@ class DashboardController < SecuredController
       flash[:error] = "Error: File could not be moved"
     end
 
+    redirect_to dashboard_id_path(session[:current_folder])
+  end
+
+  # move dragged file into subfolder
+  def move_folder
+
+    destFolder = params[:dest]
+    targetFolder = params[:folder_id]
+    client = user_client
+    mixpanel_tab_event("My Vault", "Move Folder - Drag & Drop")
+
+    # get folder
+    folder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder/#{params[:dest]}", :expires_in => 10.minutes) do
+      client.folder_from_id(params[:dest])
+    end
+
+    begin
+      # get shared folder, then move file into shared folder
+      client.move_folder(targetFolder, destFolder)
+      flash[:notice] = "Folder moved into \"#{folder.name}\""
+    rescue
+      flash[:error] = "Error: Folder could not be moved"
+    end
 
     redirect_to dashboard_id_path(session[:current_folder])
   end
