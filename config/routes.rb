@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   post "/new_folder/:parent_id" => "dashboard#new_folder", :as => "new_folder"
   get "/delete_folder/:id" => "dashboard#delete_folder", :as => "delete_folder"
   get "/move_file" => "dashboard#move_file", :as => "move_file"
+  get "/move_folder" => "dashboard#move_folder", :as => "move_folder"  
 
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"

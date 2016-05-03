@@ -184,7 +184,7 @@ class ConfigController < ApplicationController
     tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
     tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
     tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
-    # tracker.track('1234', 'Configuration', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
+    # tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
   end
 
   # construct configuration URL

@@ -1,4 +1,4 @@
-%table.highlight
+%table.highlight{:style => "margin-bottom: 130px; margin-left: -10px"}
   %thead
     %tr
       %th{"data-field" => "id"}
@@ -10,46 +10,72 @@
       - @myFiles.each_with_index do |f, i|
         -# check if folder or file
         - if f.type == "folder"
-          %tr{:onclick => "location.href = '/dashboard/#{f.id}'", :id => "#{f.id}", :style => "cursor:pointer", :ondrop => "drop(event, this.id)", :ondragover => "allowDrop(event, this.id)", :ondragleave => "dragLeave(event, this.id)"}
+          %tr{:onclick => "location.href = '/dashboard/#{f.id}'", :id => "#{f.id}", :draggable => "true", :ondragstart => "drag(event, '#{f.type}')", :style => "cursor:pointer", :ondrop => "drop_item(event, this.id)", :ondragover => "allowDrop(event, this.id)", :ondragleave => "dragLeave(event, this.id)"}
             %td
               = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
             %td
-              %div.name_elipses{:style => "inline"}
+              %div.name_elipses{:style => "inline;"}
                 = f.name
                 = link_to '#', :onclick => "event.stopPropagation(); $('#folderId').attr('value','#{f.id}'); $('#folderName').attr('value','#{f.name}');", "data-toggle" => "folder-popover", "rel" => "popover", :style => "color: grey; display: inline-block !important;" do
                   %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%; display: inline-block !important;", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit"}
             %td.hidden-xs.hidden-sm#claim-descr
               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
             %td
-              .btn-group
-                %a.btn.white.tooltipped{href: delete_folder_path(f.id, folder: @currentFolder), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+              %a.dropdown-button.white.btn{"data-activates" => "options#{f.id}", :href => "#", :style => "padding-left: 7px; padding-right: 7px", :onclick => "event.stopPropagation();"}
+                %span.fa.fa-ellipsis-h{:style => "text-decoration: none; color: #263238; font-size: 150%; margin-top: 9px"}
+              %ul.dropdown-content.dropdown-options{:id => "options#{f.id}"}
+                %li
+                  %a.vault-dropdown-item{href: delete_folder_path(f.id, folder: @currentFolder)}
+                    %span.glyphicon.glyphicon-trash{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Delete
         - else
-          %tr{:style => "cursor:pointer", :id => "#{f.id}", :draggable => "true", :ondragstart => "drag(event)"}
-            %td{:style => "z-index: 1; position: relative;", "data-intro" => i==0 ? "Edit file names. Box File ID's remain unchanged so paths to the file will never break." : nil,  "data-position" => i==0 ? "left" : nil}
+          %tr{:style => "cursor:pointer", :id => "#{f.id}", :draggable => "true", :ondragstart => "drag(event, '#{f.type}')"}
+            %td{:style => "z-index: 1;", "data-intro" => i==0 ? "Edit file names. Box File ID's remain unchanged so paths to the file will never break." : nil,  "data-position" => i==0 ? "left" : nil}
               = link_to view_doc_path(f.id, folder: @myFolder.id) do
                 = image_tag(thumbnail_url(f.id), width: '40px')
             %td
-              %div.name_elipses{:style => "inline; position: relative;"}
+              %div.name_elipses{:style => "inline;"}
                 = f.name
                 = link_to '#', :onclick => "$('#name').attr('value','#{f.name.split('.').first}'); $('#fileExt').attr('value','#{f.name.split('.').last}'); $('#fileid').attr('value','#{f.id}');", "data-toggle" => "popover", "rel" => "popover", :style => "color: grey; display: inline-block !important;" do
                   %span.glyphicon.glyphicon-pencil.tooltipped{"filename" => "#{f.name}", :style => "font-size: 80%; display: inline-block !important;", 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Edit"}
-            %td.hidden-xs.hidden-sm#claim-descr{:style => "position: relative"}
+            %td.hidden-xs.hidden-sm#claim-descr
               = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
             / file action options
             %td{"data-intro" => i==0 ? "View, Share, Download, and Delete files from Box" : nil,  "data-position" => i==0 ? "left" : nil}
-              .btn-group
-                %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 7px; padding-left: 7px"}
-                  %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
-                %a.btn.white.tooltipped{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Employee", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
-                %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
-                %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
-                  %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
+              %a.dropdown-button.white.btn{"data-activates" => "options#{f.id}", :href => "#", :style => "padding-left: 7px; padding-right: 7px"}
+                %span.fa.fa-ellipsis-h{:style => "text-decoration: none; color: #263238; font-size: 150%; margin-top: 9px"}
+
+              %ul.dropdown-content.dropdown-options{:id => "options#{f.id}"}
+                %li
+                  %a.vault-dropdown-item{href: view_doc_path(f.id, folder: @myFolder.id)}
+                    %span.glyphicon.glyphicon-eye-open{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} View
+                %li
+                  %a.vault-dropdown-item{href: share_file_path(f.id, folder: @sharedFolder.id)}
+                    %span.glyphicon.glyphicon-share{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Share
+                %li
+                  %a.vault-dropdown-item{href:  download_path(f.id, folder: @myFolder.id)}
+                    %span.glyphicon.glyphicon-download{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Download
+                %li
+                  %a.vault-dropdown-item{href: delete_file_path(f.id, folder: @myFolder.id)}
+                    %span.glyphicon.glyphicon-trash{:style => "top: 3px;"}
+                    %span{:style => "margin-left: 8px"} Delete
+
+
+              -# .btn-group
+              -#   %a.btn.white.tooltipped{href: view_doc_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"View", :style => "padding-right: 7px; padding-left: 7px"}
+              -#     %span.glyphicon.glyphicon-eye-open{:style => "top: 3px; color: #263238"}
+              -#   %a.btn.white.tooltipped{href: share_file_path(f.id, folder: @sharedFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Share With Employee", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-share{:style => "top: 3px; color: #263238"}
+              -#   %a.btn.white.tooltipped{href: download_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Download", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-download{:style => "top: 3px; color: #263238"}
+              -#   %a.btn.white.tooltipped{href: delete_file_path(f.id, folder: @myFolder.id), 'data-position'=>"top", 'data-delay'=>"50", 'data-tooltip'=>"Delete", :style => "padding-right: 7px; padding-left: 7px;"}
+              -#     %span.glyphicon.glyphicon-trash{:style => "top: 3px; color: #263238"}
 - if @myFiles.size == 0
   .col.s5.push-s3
-    .h5{:style => "margin-top: 35px;"}
+    .h5{:style => "margin-top: -95px;"}
       Add files by clicking the "Upload" button above.
 
 #modal1.modal
