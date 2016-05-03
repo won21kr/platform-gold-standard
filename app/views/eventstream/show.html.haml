@@ -83,10 +83,10 @@
 
 
   var initPosition = "#{@user_stream_pos}";
-  var entPosition = "#{@enterprise_stream_pos}";
+  // var entPosition = "#{@enterprise_stream_pos}";
 
   setTimeout(userEvent(initPosition, []), 3000);
-  setTimeout(enterpriseEvent(entPosition, []), 3000);
+  // setTimeout(enterpriseEvent(entPosition, []), 3000);
 
   function userEvent(streamPos, eventIds) {
 
@@ -127,49 +127,49 @@
     });
   }
 
-  function enterpriseEvent(streamPos, eventIds) {
-
-    // The Box OAuth 2 Header. Add your access token.
-    var headers = { Authorization: 'Bearer #{@ent_access_token}'};
-    var eventsUrl = 'https://api.box.com/2.0/events?stream_type=admin_logs&stream_position=' + streamPos;
-
-    $.ajax({
-      url: eventsUrl,
-      headers: headers,
-      crossDomain: true,
-      type: 'GET',
-      // This prevents JQuery from trying to append the form as a querystring
-      processData: false,
-      contentType: false,
-    }).complete(function ( data ) {
-
-      var obj = $.parseJSON(data.responseText);
-      events = obj.entries
-      // console.log(obj);
-
-      // loop through all events
-      for (i = 0; i < events.length; i++) {
-
-        if (eventIds.indexOf(events[i].event_id) > -1) {
-          // event already processed
-        } else {
-          // event not yet processed
-          // var name;
-          // if (events[i].source.name == null) {
-          //   name = events[i].source.item_name;
-          // } else {
-          //   name = events[i].source.name;
-          // }
-          newEvent = $("<tr><td><div class =\"name_elipses\">" + events[i].event_type +
-                       "</div></td><td><div class =\"name_elipses\">" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
-                       "</div></td><td><div class =\"name_elipses\">" + events[i].created_by.name +
-                       "</div></td><td><div class =\"name_elipses\">" + events[i].ip_address + "</div></td></tr>").hide();
-          $("#adminEvents").prepend(newEvent);
-          newEvent.fadeIn();
-          eventIds.push(events[i].event_id);
-        }
-      }
-
-      setTimeout(function() {enterpriseEvent(obj.next_stream_position, eventIds);}, 3000);
-    });
-  }
+  // function enterpriseEvent(streamPos, eventIds) {
+  //
+  //   // The Box OAuth 2 Header. Add your access token.
+  //   var headers = { Authorization: 'Bearer #{@ent_access_token}'};
+  //   var eventsUrl = 'https://api.box.com/2.0/events?stream_type=admin_logs&stream_position=' + streamPos;
+  //
+  //   $.ajax({
+  //     url: eventsUrl,
+  //     headers: headers,
+  //     crossDomain: true,
+  //     type: 'GET',
+  //     // This prevents JQuery from trying to append the form as a querystring
+  //     processData: false,
+  //     contentType: false,
+  //   }).complete(function ( data ) {
+  //
+  //     var obj = $.parseJSON(data.responseText);
+  //     events = obj.entries
+  //     // console.log(obj);
+  //
+  //     // loop through all events
+  //     for (i = 0; i < events.length; i++) {
+  //
+  //       if (eventIds.indexOf(events[i].event_id) > -1) {
+  //         // event already processed
+  //       } else {
+  //         // event not yet processed
+  //         // var name;
+  //         // if (events[i].source.name == null) {
+  //         //   name = events[i].source.item_name;
+  //         // } else {
+  //         //   name = events[i].source.name;
+  //         // }
+  //         newEvent = $("<tr><td><div class =\"name_elipses\">" + events[i].event_type +
+  //                      "</div></td><td><div class =\"name_elipses\">" + moment(events[i].recorded_at).format("MMMM D, YYYY h:mm A") +
+  //                      "</div></td><td><div class =\"name_elipses\">" + events[i].created_by.name +
+  //                      "</div></td><td><div class =\"name_elipses\">" + events[i].ip_address + "</div></td></tr>").hide();
+  //         $("#adminEvents").prepend(newEvent);
+  //         newEvent.fadeIn();
+  //         eventIds.push(events[i].event_id);
+  //       }
+  //     }
+  //
+  //     setTimeout(function() {enterpriseEvent(obj.next_stream_position, eventIds);}, 3000);
+  //   });
+  // }
