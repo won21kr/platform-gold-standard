@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
     session[:create_claim] = query['create_claim'] unless query['create_claim'].blank?
     # session[:request_for_proposal] = query['request_for_proposal'] unless query['request_for_proposal'].blank?
     session[:tax_return] = query['tax_return'] unless query['tax_return'].blank?
-    # session[:dicom_viewer] = query['dicom_viewer'] unless query['dicom_viewer'].blank?
+    session[:dicom_viewer] = query['dicom_viewer'] unless query['dicom_viewer'].blank?
     # session[:media_content] = query['media_content'] unless query['media_content'].blank?
     session[:eventstream] = query['eventstream'] unless query['eventstream'].blank?
   end

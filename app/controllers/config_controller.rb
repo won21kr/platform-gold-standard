@@ -27,7 +27,7 @@ class ConfigController < ApplicationController
       session[:tax_return] = "off"
       session[:create_claim] = "off"
       # session[:account_sub] = "off"
-      # session[:dicom_viewer] = "off"
+      session[:dicom_viewer] = "off"
       # session[:media_content] = "off"
       session[:eventstream] = "off"
 
@@ -115,7 +115,7 @@ class ConfigController < ApplicationController
     session[:create_claim] = !params[:createclaim].blank? ? 'on' : 'off'
     # session[:request_for_proposal] = !params[:requestforproposal].blank? ? 'on' : 'off'
     # session[:account_sub] = !params[:acctsub].blank? ? 'on' : 'off'
-    # session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
+    session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
     # session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
 
@@ -184,7 +184,7 @@ class ConfigController < ApplicationController
     tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
     tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
     tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
-    # tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
+    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
   end
 
   # construct configuration URL
@@ -209,7 +209,7 @@ class ConfigController < ApplicationController
     query["loan_docs"] = session[:loan_docs]
     query["tax_return"] = session[:tax_return]
     query["upload_sign"] = session[:upload_sign]
-    # query["dicom_viewer"] = session[:dicom_viewer]
+    query["dicom_viewer"] = session[:dicom_viewer]
     # query["media_content"] = session[:media_content]
     query["eventstream"] = session[:eventstream]
 

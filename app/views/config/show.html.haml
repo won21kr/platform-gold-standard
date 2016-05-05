@@ -142,9 +142,9 @@
             -# %p
             -#   %input#acctsub{:type => "checkbox", :name => "acctsub", :checked => session[:account_sub] == 'on'}
             -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "acctsub", :style => "color: black"} Account Submission (Temp, Financial Services)
-            -# %p
-            -#   %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
-            -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
+            %p
+              %input#dicom_viewer{:type => "checkbox", :name => "dicom_viewer", :checked => session[:dicom_viewer] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "dicom_viewer", :style => "color: black"} DICOM Viewer (Healthcare)
             -# %p
             -#   %input#media_content{:type => "checkbox", :name => "media_content", :checked => session[:media_content] == 'on'}
             -#   %label.checkbox.less_lineheight.longer_name_elipses{:for => "media_content", :style => "color: black"} Media Content (M&E)
@@ -205,6 +205,8 @@
                   = ", Tax Return"
                 - if (session[:create_claim] == 'on')
                   = ", Submit A Claim"
+                - if (session[:media_content] == 'on')
+                  = ", DICOM Viewer"
                 -# - if (session[:media_content] == 'on')
                 -#   = ", Media Content"
                 - if (session[:eventstream] == 'on')
