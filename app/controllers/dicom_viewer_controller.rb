@@ -33,7 +33,7 @@ class DicomViewerController < SecuredController
   end
 
   def upload
-    mixpanel_tab_event("DICOM Viewer", "Uplaod DICOM")
+    mixpanel_tab_event("DICOM Viewer", "Upload DICOM")
     @dicom_folder = ENV['DICOM_FOLDER']
     @user_access_token = user_client.access_token
     session[:current_page] = "dicom_upload"
