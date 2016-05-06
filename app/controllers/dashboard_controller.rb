@@ -229,6 +229,7 @@ class DashboardController < SecuredController
     # create new subfolder
     begin
       newFolder = client.create_folder(params[:folderName], @currentFolder)
+      flash[:notice] = "\"#{newFolder.name}\" folder created"
     rescue
       puts "could not create new folder"
       flash[:error] = "Error: could not create folder"
