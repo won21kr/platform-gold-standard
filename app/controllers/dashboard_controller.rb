@@ -300,4 +300,12 @@ class DashboardController < SecuredController
   end
 
 
+  def folder_info
+    client = user_client
+    items = client.root_folder_items
+
+    if request.xhr?
+      render :json => items
+    end
+  end
 end
