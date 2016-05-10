@@ -24,7 +24,7 @@ class UserconfigController < ApplicationController
         csv << ["User", "Date Accessed", "Company", "Okta", "Logo URL", "Home Page URL",
                 "Vault", "Resources", "Onboarding Tasks", "Medical Credentialing",
                 "Loan Origination", "Upload & Sign", "Tax Return", "Submit A Claim",
-                "Box Events", "Media Content"]
+                "Box Events"]
 
         # iterate through each db entry
         configurations.each do |c|
@@ -44,8 +44,7 @@ class UserconfigController < ApplicationController
                   c.upload_sign ? "X" : "",
                   c.tax_return ? "X" : "",
                   c.submit_claim ? "X" : "",
-                  c.eventstream ? "X" : "",
-                  c.media_content ? "X" : ""]
+                  c.eventstream ? "X" : ""]
         end
 
       end
