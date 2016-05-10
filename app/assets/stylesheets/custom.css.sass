@@ -379,3 +379,35 @@ a.tooltip span
 .auth-org-logo
   max-width: 150px !important
   margin-top: -30px !important
+
+
+// Slide Out Comments
+
+#slideout
+  position: fixed
+  top: 40px
+  right: 0
+  -webkit-transition-duration: 0.3s
+  -moz-transition-duration: 0.3s
+  -o-transition-duration: 0.3s
+  transition-duration: 0.3s
+
+#slideout_inner
+  position: fixed
+  top: 40px
+  right: -180px
+  margin-right: -330px
+  -webkit-transition-duration: 0.3s
+  -moz-transition-duration: 0.3s
+  -o-transition-duration: 0.3s
+  transition-duration: 0.3s
+
+#slideout:hover
+  right: 180px
+
+#slideout:hover #slideout_inner
+  right: 0
+
+.scrollable-sidenav
+  height: 560px
+  overflow-y: auto

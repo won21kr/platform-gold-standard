@@ -54,9 +54,11 @@ class DashboardController < SecuredController
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
     threads << Thread.new do
       @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at])
+      # get comments
     end
     threads << Thread.new do
       @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
+      # get comments
     end
 
     threads.each { |thr| thr.join }
@@ -75,6 +77,7 @@ class DashboardController < SecuredController
 
     results
   end
+
 
   # post to edit filename
   def edit_filename
