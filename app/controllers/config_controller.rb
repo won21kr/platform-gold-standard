@@ -169,7 +169,7 @@ class ConfigController < ApplicationController
 
     configuration = {}
 
-    configuration[:username] = session[:userinfo]['info']['name'] unless session[:user].blank?
+    configuration[:username] = session[:userinfo]['info']['name'] unless session[:userinfo].blank?
     configuration[:company] = session[:company] unless session[:company].blank?
     configuration[:okta] = session[:okta] unless session[:okta] != "on"
     configuration[:logo_url] = session[:logo] unless session[:logo].blank?

@@ -25,7 +25,7 @@ class EventstreamController < SecuredController
       # get previous events by counting back by a MAGIC NUMBER
       stream_pos = results.next_stream_position - 100000000
       prevEvents = user.user_events(stream_pos, stream_type: :all)
-      
+
       # ap prevEvents.chunk_size
       # ap prevEvents.next_stream_position
       # while (temp.chunk_size != 0)
@@ -88,7 +88,6 @@ class EventstreamController < SecuredController
         results << r
       end
     end
-    # return results
     results
   end
 
