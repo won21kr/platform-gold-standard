@@ -8459,9 +8459,10 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
        ========================================================================== */
 
 .footer-user {
-  position: absolute;
+  position: relative;
   left: 0;
   bottom: 0;
-  height: 100px;
+  height: 50px;
   width: 100%;
+  overflow: hidden
        }

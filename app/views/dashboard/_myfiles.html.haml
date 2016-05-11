@@ -29,6 +29,7 @@
                     %span.glyphicon.glyphicon-trash{:style => "top: 3px;"}
                     %span{:style => "margin-left: 8px"} Delete
         - else
+
           %tr{:style => "cursor:pointer", :id => "#{f.id}", :draggable => "true", :ondragstart => "drag(event, '#{f.type}')"}
             %td{:style => "z-index: 1;", "data-intro" => i==0 ? "Edit file names. Box File ID's remain unchanged so paths to the file will never break." : nil,  "data-position" => i==0 ? "left" : nil}
               = link_to view_doc_path(f.id, folder: @myFolder.id) do
