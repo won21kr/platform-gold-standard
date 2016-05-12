@@ -4,58 +4,59 @@
   .center{:style => session[:navbar_color].blank? ? "background-color: #fff; padding: 15px;" : "background-color: #{session[:navbar_color]}; padding: 15px;"}
     .defaultsize
       %img.brand-logo{:src => session[:logo].blank? ? "https://hostr.co/file/J74UJ6Tj8q2w/ScreenShot2016-01-28at4.43.34PM.png" : "#{session[:logo]}", :style =>  session[:logo].blank? ? "max-width: 220px; min-width: 220px" : "max-width: 160px; min-width: 160px;"}
-  %ul.tabList.nav-wrapper
+  .scrollable-sidenav
+    %ul.tabList.nav-wrapper
 
-  %li{:class => "#{'active' if session[:current_page] == "vault"}"}
-    %a{:href => "/dashboard", :style => "text-decoration: none;"}
-      = alt_text("My Vault")
-  - if session[:resources] == 'on' or session[:resources].blank?
-    %li{:class => "#{'active' if session[:current_page] == "search"}"}
-      %a{:href => "/resources", :style => "text-decoration: none;"}
-        = alt_text("Resources")
-  - if session[:onboarding] == 'on' or session[:onboarding].blank?
-    %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
-      %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"}
-        = alt_text("Onboarding Tasks")
-  - if session[:medical_credentialing] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
-      %a{:href => "/medical-credentialing", :style => "text-decoration: none;"}
-        = alt_text("Medical Credentialing")
-  - if session[:loan_docs] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "loan_docs"}"}
-      %a{:href => "/loan-origination", :style => "text-decoration: none;"} Loan Origination
-  - if session[:upload_sign] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
-      %a{:href => "/upload-sign", :style => "text-decoration: none;"}
-        = alt_text("Upload & Sign")
-  - if session[:tax_return] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
-      %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
-  - if session[:create_claim] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
-      %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
-  - if session[:request_for_proposal] == 'on'
-    %li{:class => "#{'active' if session[:request_for_proposal] == "request_for_proposal"}"}
-      %a{:href => "/request_for_proposal", :style => "text-decoration: none;"} Request For Proposal
-  - if session[:dicom_viewer] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
-      %a{:href => "/dicom_viewer", :style => "text-decoration: none;"}
-        = alt_text("DICOM Viewer")
-    %li{:class => "#{'active' if session[:current_page] == "dicom_upload"}"}
-      %a{:href => "/dicom_upload", :style => "text-decoration: none;"} Upload Studies
-  - if session[:account_sub] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
-      %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
-  - if session[:media_content] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "media_content"}"}
-      %a{:href => "/media-content", :style => "text-decoration: none;"} Media Content
-  - if session[:eventstream] == 'on'
-    %li{:class => "#{'active' if session[:current_page] == "eventstream"}"}
-      %a{:href => "/event-activity", :style => "text-decoration: none;"} Box Events
-  %li
-    %a{:href => "/config", :style => "text-decoration: none;"} Settings
+    %li{:class => "#{'active' if session[:current_page] == "vault"}"}
+      %a{:href => "/dashboard", :style => "text-decoration: none;"}
+        = alt_text("My Vault")
+    - if session[:resources] == 'on' or session[:resources].blank?
+      %li{:class => "#{'active' if session[:current_page] == "search"}"}
+        %a{:href => "/resources", :style => "text-decoration: none;"}
+          = alt_text("Resources")
+    - if session[:onboarding] == 'on' or session[:onboarding].blank?
+      %li{:class => "#{'active' if session[:current_page] == "workflow"}"}
+        %a{:href => "/onboarding-tasks", :style => "text-decoration: none;"}
+          = alt_text("Onboarding Tasks")
+    - if session[:medical_credentialing] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "medical_credentialing"}"}
+        %a{:href => "/medical-credentialing", :style => "text-decoration: none;"}
+          = alt_text("Medical Credentialing")
+    - if session[:loan_docs] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "loan_docs"}"}
+        %a{:href => "/loan-origination", :style => "text-decoration: none;"} Loan Origination
+    - if session[:upload_sign] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "upload-sign"}"}
+        %a{:href => "/upload-sign", :style => "text-decoration: none;"}
+          = alt_text("Upload & Sign")
+    - if session[:tax_return] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "tax_return"}"}
+        %a{:href => "/tax_return", :style => "text-decoration: none;"} Tax Return
+    - if session[:create_claim] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "create-claim"}"}
+        %a{:href => "/submit-claim", :style => "text-decoration: none;"} Submit A Claim
+    - if session[:request_for_proposal] == 'on'
+      %li{:class => "#{'active' if session[:request_for_proposal] == "request_for_proposal"}"}
+        %a{:href => "/request_for_proposal", :style => "text-decoration: none;"} Request For Proposal
+    - if session[:dicom_viewer] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "dicom_viewer"}"}
+        %a{:href => "/dicom_viewer", :style => "text-decoration: none;"}
+          = alt_text("DICOM Viewer")
+      %li{:class => "#{'active' if session[:current_page] == "dicom_upload"}"}
+        %a{:href => "/dicom_upload", :style => "text-decoration: none;"} Upload Studies
+    - if session[:account_sub] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "account_sub"}"}
+        %a{:href => "/account-submission", :style => "text-decoration: none;"} Account Submissions
+    - if session[:media_content] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "media_content"}"}
+        %a{:href => "/media-content", :style => "text-decoration: none;"} Media Content
+    - if session[:eventstream] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "eventstream"}"}
+        %a{:href => "/event-activity", :style => "text-decoration: none;"} Box Events
+    %li
+      %a{:href => "/config", :style => "text-decoration: none;"} Settings
 
-  .footer-user
+  .footer-user{:style => "margin-top: 25px; padding-top: 20px;"}
     .footer-copyright{:style => "margin-left: 15%; margin-top: -10%"}
       - if session[:userinfo]
         .name.hidden-xs{:style => "margin-left: -20px;" }
