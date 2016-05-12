@@ -54,11 +54,9 @@ class DashboardController < SecuredController
     # get all files for dashboard vault display, either "My Files" or "Shared Files"
     threads << Thread.new do
       @myFiles = client.folder_items(@myFolder, fields: [:name, :id, :modified_at])
-      # get comments
     end
     threads << Thread.new do
       @sharedFiles = client.folder_items(@sharedFolder, fields: [:name, :id, :modified_at]).files
-      # get comments
     end
 
     threads.each { |thr| thr.join }
@@ -77,7 +75,6 @@ class DashboardController < SecuredController
 
     results
   end
-
 
   # post to edit filename
   def edit_filename
@@ -232,7 +229,6 @@ class DashboardController < SecuredController
     # create new subfolder
     begin
       newFolder = client.create_folder(params[:folderName], @currentFolder)
-      flash[:notice] = "\"#{newFolder.name}\" folder created"
     rescue
       puts "could not create new folder"
       flash[:error] = "Error: could not create folder"
@@ -304,4 +300,10 @@ class DashboardController < SecuredController
   end
 
 
+  def folder_info
+    client = user_client
+    items = client.root_folder_items
+
+    render :json => items
+  end
 end
