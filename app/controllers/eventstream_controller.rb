@@ -1,5 +1,7 @@
 class EventstreamController < SecuredController
 
+  DEFAULT_STREAM_LENGTH = 100000000
+
   def show
     session[:current_page] = "eventstream"
     threads = []
@@ -23,23 +25,8 @@ class EventstreamController < SecuredController
       results = user.user_events('now', stream_type: :all)
 
       # get previous events by counting back by a MAGIC NUMBER
-      stream_pos = results.next_stream_position - 100000000
+      stream_pos = results.next_stream_position - DEFAULT_STREAM_LENGTH
       prevEvents = user.user_events(stream_pos, stream_type: :all)
-
-      # ap prevEvents.chunk_size
-      # ap prevEvents.next_stream_position
-      # while (temp.chunk_size != 0)
-      #   if (temp.chunk_size != 0)
-      #     results = temp
-      #   end
-      #   temp = user.user_events(temp.next_stream_position, stream_type: :all)
-      #
-      #   # if chunck size == max, store prev events
-      #   if (temp.chunk_size == 800)
-      #     puts "max!"
-      #     prevEvents = temp
-      #   end
-      # end
 
       if(!results.nil?)
         # reorder all user events, + check if there are prev events
