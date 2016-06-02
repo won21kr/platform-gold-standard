@@ -22,7 +22,7 @@
     position: fixed
     left: 0
     margin-top: 0px
-    
+
 
   .hide_below480
     display: none
@@ -323,13 +323,17 @@
     // overflow: hidden
     // text-overflow: ellipsis
 
+  .scrollable-sidenav
+    min-height: 77% !important
+    overflow-y: auto
+
   #mobile-menu
     display: none
 
   #search
     margin-left: 35px !important
 
-@media all and (min-width : 1225px) and (max-width : 100000px)
+@media all and (min-width : 1225px) and (max-width : 1439px)
 
   .hide_above992
     display: none !important
@@ -337,6 +341,21 @@
   .hide_above768
     display: none !important
 
+  .scrollable-sidenav
+    min-height: 77%
+    overflow-y: auto
+
+@media all and (min-width : 1440px) and (max-width : 100000px)
+
+  .hide_above992
+    display: none !important
+
+  .hide_above768
+    display: none !important
+
+  .scrollable-sidenav
+    min-height: 86%
+    overflow-y: auto
 
 
 
