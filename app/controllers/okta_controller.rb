@@ -15,14 +15,23 @@ class OktaController < ApplicationController
     headers = {"Authorization" => "SSWS #{ENV['OKTA_TOKEN']}",
                "Content-Type" => "application/json",
                "Accept" => "application/json"}
-    uri = "#{ENV['OKTA_ORG_URL']}/api/v1/users/#{params[:id]}"
+    uri = "#{ENV['OKTA_DOMAIN']}/api/v1/users/#{params[:id]}"
     res = okta_client.get(uri, header: headers) # body: Oj.dump(query),
     json = Oj.load(res.body)
     session[:box_id] = json['profile']['boxId']
     session[:userinfo]['info']['name'] = json['profile']['email']
 
+    # error check
+    begin
+      user = user_client
+      redirect_to dashboard_path
+    rescue
+      session[:userinfo] = nil
+      session[:task_status] = nil
+      session[:med_task_status] = nil
+      redirect_to home_path
+    end
 
-    redirect_to dashboard_path
   end
 
   def failure
@@ -46,7 +55,7 @@ class OktaController < ApplicationController
                "Accept" => "application/json"}
 
     # create user in Okta
-    uri = "#{ENV['OKTA_ORG_URL']}/api/v1/users?activate=true"
+    uri = "#{ENV['OKTA_DOMAIN']}/api/v1/users?activate=true"
     userQuery = {}
     userQuery[:profile] = {'firstName' => params[:first],
                            'lastName' => params[:last],
@@ -67,7 +76,7 @@ class OktaController < ApplicationController
       session[:box_id] = box_user.id
 
       # store the box id in Okta as customer profile metadata
-      uri = "#{ENV['OKTA_ORG_URL']}/api/v1/users/#{json['id']}"
+      uri = "#{ENV['OKTA_DOMAIN']}/api/v1/users/#{json['id']}"
       query = {}
       query[:profile] = {}
       query[:profile][:boxId] = session[:box_id]

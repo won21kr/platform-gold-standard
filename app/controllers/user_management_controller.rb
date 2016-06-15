@@ -78,7 +78,7 @@ class UserManagementController < ApplicationController
                "Accept" => "application/json"}
 
     # create user in Okta
-    uri = "#{ENV['OKTA_ORG_URL']}/api/v1/users?activate=true"
+    uri = "#{ENV['OKTA_DOMAIN']}/api/v1/users?activate=true"
     userQuery = {}
     userQuery[:profile] = {'firstName' => first,
                            'lastName' => last,
@@ -97,7 +97,7 @@ class UserManagementController < ApplicationController
       box_user = Box.admin_client.create_user(email, is_platform_access_only: true)
 
       # store the box id in Okta as metadata
-      uri = "#{ENV['OKTA_ORG_URL']}/api/v1/users/#{json['id']}"
+      uri = "#{ENV['OKTA_DOMAIN']}/api/v1/users/#{json['id']}"
       query = {}
       query[:profile] = {}
       query[:profile][:boxId] = box_user.id

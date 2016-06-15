@@ -49,7 +49,7 @@ class HomeController < ApplicationController
   end
 
   def logout
-    mixpanel_tab_event("DICOM Viewer", "Logout")
+    mixpanel_tab_event("Home Page", "Logout")
     session[:userinfo] = nil
     session[:task_status] = nil
     session[:med_task_status] = nil

@@ -32,7 +32,7 @@ class ConfigController < ApplicationController
       session[:eventstream] = "off"
 
       # Okta
-      # session[:okta] = "off"
+      session[:okta] = "off"
     end
 
     config_url
@@ -103,7 +103,7 @@ class ConfigController < ApplicationController
     session[:alt_text] = params[:alt_text]
 
     # Okta configuration
-    # session[:okta] = !params[:okta].blank? ? 'on' : 'off'
+    session[:okta] = !params[:okta].blank? ? 'on' : 'off'
 
     # check feature tab configuration
     session[:resources] = !params[:resources].blank? ? 'on' : 'off'
@@ -166,7 +166,7 @@ class ConfigController < ApplicationController
 
     configuration[:username] = session[:userinfo]['info']['name'] unless session[:userinfo].blank?
     configuration[:company] = session[:company] unless session[:company].blank?
-    # configuration[:okta] = session[:okta] unless session[:okta] != "on"
+    configuration[:okta] = session[:okta] unless session[:okta] != "on"
     configuration[:logo_url] = session[:logo] unless session[:logo].blank?
     configuration[:home_url] = session[:background] unless session[:background].blank?
     configuration[:alt_text] = session[:alt_text] unless session[:alt_text].blank?
@@ -201,7 +201,7 @@ class ConfigController < ApplicationController
     # query["request_for_proposal"] = session[:request_for_proposal] unless session[:request_for_proposal].blank?
     query["back_color"] = session[:navbar_color][1..-1] unless session[:navbar_color].blank?
 
-    # query["okta"] = session[:okta]
+    query["okta"] = session[:okta]
     query["vault"] = session[:vault]
     query["resources"] = session[:resources]
     query["onboarding"] = session[:onboarding]

@@ -101,9 +101,9 @@
                 %label.label-div{:for => "company", :style => "color: black"} Alternative Label Text
                 %input.form-control#company{:type => "text", :name => "alt_text", :placeholder => "e.g. {\"My Vault\":\"My Documents\"}", :style => "color: black", :value => session[:alt_text]}
 
-                -# %p
-                -#   %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
-                -#   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
+                %p
+                  %input#okta{:type => "checkbox", :name => "okta", :checked => session[:okta] == 'on'}
+                  %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
 
