@@ -84,7 +84,6 @@
     %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 5px;"} Save
     %button.waves-effect.btn.white.black-text{:type => "button", :onclick => "$('[data-toggle=folder-popover]').popover('hide');",  :style => "padding: 0 1rem; font-size: 65%"} Close
 
-
 #newfolder.modal{:style => "width: 35% !important"}
   .modal-content
     %h5{:style => "margin-bottom: 35px;"} Create new folder
@@ -173,7 +172,7 @@
       data: formData
     }).complete(function ( data ) {
       console.log('finished uploading to Box');
-      location.reload(true);
+      location.href = "/dashboard/#{@myFolder.id}";
     });
   });
 

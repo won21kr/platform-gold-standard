@@ -1,0 +1,141 @@
+
+= stylesheet_link_tag "//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
+= javascript_include_tag "//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
+
+.index-banner.section.no-pad-bot
+  .container
+    .row
+
+      %h3.thin{:style => "margin: 40px 0; font-size: 32px; letter-spacing: 1.5px; text-color: #002557;"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} settings_applications
+        User Management
+      %h6.caption.thin{:style => "margin-top: -25px; margin-bottom: 45px;"}
+        Manage and provision application users
+
+      .col.s8.push-s2{:style => "margin-top: 10px;"}
+        .flash
+          = render partial: "shared/flash_messages", flash: flash
+      .col.s10.push-s1
+        %ul.collapsible{"data-collapsible" => "accordion"}
+          %li
+            %div.collapsible-header.active{:style => "font-size: 130%"}
+              Active App Users
+            %div.collapsible-body
+              .container
+                %table.display#userTable
+                  %thead
+                    %tr
+                      %th
+                      %th Username
+                      %th Last Used
+                      %th Content Owned
+                      %th{"data-field" => "foop"} IDP
+                      %th
+                    %tbody
+                      / list file contents
+                      - @appUsers.each_with_index do |u, i|
+                        %tr
+                          %td
+                            = i + 1
+                          %td
+                            = u.name
+                          %td
+                            = DateTime.strptime(u.modified_at).strftime("%m/%d/%y")
+                          %td
+                            = u.space_used == 0 ? 0 : (u.space_used / 1000000.0).round(1)
+                            = u.space_used == 0 ? '' : 'MB'
+                          %td
+                            = u.idp
+                          %td
+                            - unless u.idp == "Okta"
+                              %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#deleteUser", :style => "font-color: #263238 !important; text-decoration: none;", :onclick => "$('#name').attr('value','#{u.name}'); $('#auth0Id').attr('value','#{u.idp_id}'); $('#boxId').attr('value','#{u.id}');"} Delete
+
+          %li
+            %div.collapsible-header{:style => "font-size: 130%"}
+              Provision Okta Accounts
+            %div.collapsible-body
+              .container
+                .row
+                  %h6{:style => "font-size: 120%; margin-top: 15px", :role => "form"}
+                    Create New User
+                  %form.col.s12{:action => provision_okta_path, :method => "post"}
+                    .row
+                      .input-field.col.s2
+                        %input#firstname.validate{:name => "firstname", :placeholder => "John", :type => "text", :required => ""}
+                          %label{:for => "firstname"} First Name
+                      .input-field.col.s2
+                        %input#lastname.validate{:name => "lastname", :placeholder => "Doe", :type => "text", :required => ""}
+                          %label{:for => "lastname"} Last Name
+                      .input-field.col.s3
+                        %input#username.validate{:name => "username", :placeholder => "jdoe@box.com", :type => "email", :required => ""}
+                          %label{:for => "username"} Email (username)
+                      .input-field.col.s3
+                        %input#password.validate{:name => "password", :placeholder => "••••••••",:type => "password", :required => ""}
+                          %label{:for => "password"} Password
+                      .col.s2
+                        %button.waves-effect.btn{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; margin-left: 10px; text-decoration: none; margin-top: 25px"} Create
+                  %h6{:style => "font-size: 120%; margin-bottom: 20px"}
+                    Bulk Add Users
+                  %h6
+                    Example CSV format:
+                  %p{:style => "padding: 0"} first name1,last name1,email1,password1
+                  %p{:style => "padding: 0"} first name2,last name2,email2,password2
+                  %p{:style => "padding: 0; margin-bottom: 15px"} etc..
+
+                  %button.waves-effect.btn.white.black-text{:type => "submit"} Upload CSV
+
+
+#deleteUser.modal{:style => "width: 30% !important"}
+  .modal-content
+    %h6{:style => "margin-bottom: 35px; text-align: center"} Are you sure you want to delete this user?
+    .col.s12
+      %form.form-inline{:role => "form", :method => "post", :action => delete_user_path}
+        %input#name.form-control{:type => "hidden", :name => "name"}
+        %input#auth0Id.form-control{:type => "hidden", :name => "auth0Id"}
+        %input#boxId.form-control{:type => "hidden", :name => "boxId"}
+        %a.modal-action.modal-close.waves-effect.btn.white.black-text.btn-flat.pull-right{:type => "button",  :style => "padding: 0 1rem; font-size: 65%; text-decoration: none;"} Cancel
+        %button.waves-effect.btn.pull-right{:type => "submit", :style => "padding: 0 1rem; font-size: 65%; text-decoration: none; margin-bottom: 15px;"} Delete
+
+:javascript
+
+
+  $(document).ready(function() {
+      $('#userTable').DataTable( {
+        "lengthMenu": [[-1, 10, 25, 50], ["All", 10, 25, 50]],
+        "columnDefs": [
+          {"orderable": false, "targets": [3, 4, 5]}
+        ]
+      } );
+  } );
+
+
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+
+/**/CSS Override
+:css
+
+  select {
+    color: black;
+    display: initial;
+    background-color: initial;
+    width: initial;
+    padding: initial;
+    border-radius: initial;
+    height: initial;
+  }
+
+  label {
+    color: initial;
+  }
+
+  input[type=search] {
+    height: initial;
+
+  }
+
+  .dataTables_length {
+    margin-top: 15px;
+  }

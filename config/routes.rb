@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   post "/new_folder/:parent_id" => "dashboard#new_folder", :as => "new_folder"
   get "/delete_folder/:id" => "dashboard#delete_folder", :as => "delete_folder"
   get "/move_file" => "dashboard#move_file", :as => "move_file"
-  get "/move_folder" => "dashboard#move_folder", :as => "move_folder"  
+  get "/move_folder" => "dashboard#move_folder", :as => "move_folder"
 
   # view page
   get "/view_doc/:id" => "view#show", :as => "view_doc"
@@ -111,13 +111,13 @@ Rails.application.routes.draw do
   get '/config-reset' => "config#reset_config", :as => "reset_config"
   post '/config' => "config#post_config", :as => "save_config"
 
-  #tax return
+  # tax return
   get "/tax_return" => "tax_return#show", :as => "tax_return"
   get "/tax_create-claim" => "tax_return#show", :as => "tax_create_claim"
   post "/tax_submit-claim" => "tax_return#submit_claim", :as => "tax_submit_claim"
   get "/tax_reset-claims" => "tax_return#tax_reset", :as => "tax_reset"
 
-  #upload route
+  # upload route
   post "/tax-upload/:filename" => "tax_return#tax_upload", :as => "tax_upload"
 
   # tax return - search process
@@ -137,9 +137,15 @@ Rails.application.routes.draw do
   get "/media-content" => "media_content#show", :as => "media_content"
   post "/media-content/search" => "media_content#search_show", :as => "search_show"
 
-  # Box Events
+  # box events
   get "/event-activity" => "eventstream#show", :as => "eventstream"
 
+  # user management
+  get "/user-management" => "user_management#show", :as => "user_management"
+  post "/user-management/provision-okta-user" => "user_management#provision_okta_user", :as => "provision_okta"
+  post "/user-management/delete-user" => "user_management#delete_user", :as => "delete_user"
+  get "/user-management-password" => "user_management#enter_password", :as => "enter_password"
+  post "/user-management-password" => "user_management#enter_password_submit", :as => "enter_password_submit"
 
   #request for proposal
   get "/request_for_proposal" => "request_for_proposal#show", :as => "request_for_proposal"
