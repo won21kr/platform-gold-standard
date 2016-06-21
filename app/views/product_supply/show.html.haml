@@ -1,0 +1,101 @@
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} repeat
+          = alt_text("Medical Supplies")
+        %h6.caption.thin{:style => "font-size: 16px;"}
+          Browse and order medical supplies
+      -# product list
+      .col.s8
+        .col.s12
+          .col.s6{:style => ""}
+            %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
+              %li.tab{:style => "font-size: 12px !important;"}
+                %a{:href => "#newclaim", :class => "#{'active' if @currentPage == 'newClaim'}"}
+                  Products
+              %li.tab{:style => "font-size: 12px !important;"}
+                %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted'}"}
+                  Order History
+        - @supplies.each do |key, value|
+          .col.l6.s12
+            .card
+              .card-content
+                %div.card-title.activator.grey-text.text-darken-4{:style => "font-size: 18px; line-height: 25px; height: 40px"}
+                  = value[:folderName]
+              .card-image.waves-effect.waves-block.waves-light
+                %img.activator{:src => "#{thumbnail_url(value[:image].id)}"}
+              .card-content
+                -# %div.card-title.activator.grey-text.text-darken-4
+                -#   = value[:folderName]
+
+                - value[:sheets].each do |sheet|
+                  %a{"data-lity" => "", :href => preview_url(sheet.id)}
+                    = sheet.name.split('.').first
+                .card-action{:style => "padding: 5px 20px 5px 20px; margin-top: 10px"}
+                  .row{:style => "margin-bottom: 0px"}
+                    .col.s4.push-s8
+                      %label{:for => "quantity-#{key}"} Quantity
+                      %input{:id => "quantity-#{key}", :max => "300", :min => "0",
+                                     :name => "#{value[:folderName]}", :step => "10",
+                                     :type => "number", :value => "0",
+                                     :style => "margin-bottom: -20px"}
+      -# cart
+      .col.s4#cart-container
+        %h5
+          Supply Cart
+        %form.form-horizontal{:role => "form", :method => "post", :action => order_supplies_path}
+          %table.table
+            %thead
+              %tr
+                %th Product
+                %th Quantity
+            %tbody#cart
+          %button.btn.pull-right.white.black-text#cartCheckout{:type => "submit", style: "margin-top: 10px"} Order
+
+#floating-cart-div
+
+:javascript
+
+
+  // update cart quantity values on change input
+  $(document).on('change', 'input', function() {
+
+    var cartItems = [];
+
+    inputs = document.getElementsByTagName('input');
+    for (i = 0; i < inputs.length; ++i) {
+      if (inputs[i].value > 0 && inputs[i].id) {
+        cartItems.push({'name': inputs[i].name,
+                          'id': inputs[i].id,
+                          'value': inputs[i].value});
+      }
+    }
+
+    $.ajax({
+      type: "POST",
+      url: '/update-cart',
+      data: {"cart": cartItems},
+      success: function (data) {
+        $("#cart").html(data);
+      },
+      error: function(xhr, textStatus, errorThrown) {
+        alert(xhr.responseText);
+      }
+    });
+  });
+
+
+  $(document).ready(function() {
+    // Floating cart scroll
+    $(window).scroll(function(){
+    $("#cart-container").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px", "duration": "5000"});
+    });
+    var totaltext = "";
+    $("#floating-cart-div").html(totaltext);
+  });

@@ -156,6 +156,11 @@ Rails.application.routes.draw do
   get 'disable_shared_link' => "request_for_proposal#disable_shared_link", :as => "rfp_disable_shared_link"
   post "/rfp_send_grid_message" => "request_for_proposal#send_grid_method", :as => "rfp_send_grid"
 
+  # product supply
+  get "/product-supply" => "product_supply#show", :as => "product_supply"
+  post "/update-cart" => "product_supply#update_cart"
+  post "/order-supplies" => "product_supply#order_supplies"
+
   #third-party api's
   post "/send_twilio_message" => "config#twilio_method"
   post "/send_grid_message" => "config#send_grid_method", :as => "send_grid_method"

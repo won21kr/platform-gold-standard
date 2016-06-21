@@ -1,0 +1,7 @@
+%input{:name => 'orders', :value => cartItems, :type => "hidden"}
+- cartItems.each_with_index do |item, i|
+  %tr
+    %td
+      = item['name']
+    %td
+      = item['value']
