@@ -12,39 +12,67 @@
         %h6.caption.thin{:style => "font-size: 16px;"}
           Browse and order medical supplies
       -# product list
+      .col.s8.push-s2{:style => "margin-top: 10px;"}
+        .flash
+          = render partial: "shared/flash_messages", flash: flash
       .col.s8
         .col.s12
-          .col.s6{:style => ""}
+          .col.s6{:style => "margin-bottom: 20px"}
             %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
               %li.tab{:style => "font-size: 12px !important;"}
-                %a{:href => "#newclaim", :class => "#{'active' if @currentPage == 'newClaim'}"}
+                %a{:href => "#product-supplies", :class => "#{'active' if @currentPage == 'newClaim'}"}
                   Products
               %li.tab{:style => "font-size: 12px !important;"}
-                %a{:href => "#submittedclaims", :class => "#{'active' if @currentPage == 'submitted'}"}
+                %a{:href => "#order-history", :class => "#{'active' if @currentPage == 'submitted'}"}
                   Order History
-        - @supplies.each do |key, value|
-          .col.l6.s12
-            .card
-              .card-content
-                %div.card-title.activator.grey-text.text-darken-4{:style => "font-size: 18px; line-height: 25px; height: 40px"}
-                  = value[:folderName]
-              .card-image.waves-effect.waves-block.waves-light
-                %img.activator{:src => "#{thumbnail_url(value[:image].id)}"}
-              .card-content
-                -# %div.card-title.activator.grey-text.text-darken-4
-                -#   = value[:folderName]
+        %div#product-supplies
+          - @supplies.each do |key, value|
+            .col.l6.s12
+              .card
+                .card-content
+                  %div.card-title.activator.grey-text.text-darken-4{:style => "font-size: 18px; line-height: 25px; height: 40px"}
+                    = value[:folderName]
+                .card-image.waves-effect.waves-block.waves-light
+                  %img.activator{:src => "#{thumbnail_url(value[:image].id)}"}
+                .card-content
+                  -# %div.card-title.activator.grey-text.text-darken-4
+                  -#   = value[:folderName]
 
-                - value[:sheets].each do |sheet|
-                  %a{"data-lity" => "", :href => preview_url(sheet.id)}
-                    = sheet.name.split('.').first
-                .card-action{:style => "padding: 5px 20px 5px 20px; margin-top: 10px"}
-                  .row{:style => "margin-bottom: 0px"}
-                    .col.s4.push-s8
-                      %label{:for => "quantity-#{key}"} Quantity
-                      %input{:id => "quantity-#{key}", :max => "300", :min => "0",
-                                     :name => "#{value[:folderName]}", :step => "10",
-                                     :type => "number", :value => "0",
-                                     :style => "margin-bottom: -20px"}
+                  - value[:sheets].each do |sheet|
+                    %a{"data-lity" => "", :href => preview_url(sheet.id)}
+                      = sheet.name.split('.').first
+                  .card-action{:style => "padding: 5px 20px 5px 20px; margin-top: 10px"}
+                    .row{:style => "margin-bottom: 0px"}
+                      .col.s4.push-s8
+                        %label{:for => "quantity-#{key}"} Quantity
+                        %input{:id => "quantity-#{key}", :max => "300", :min => "0",
+                                       :name => "#{value[:folderName]}", :step => "10",
+                                       :type => "number", :value => "0",
+                                       :style => "margin-bottom: -20px"}
+        %div#order-history
+          %table.highlight.order_history{:style => "margin-top: 20px"}
+            %thead
+              %tr
+                %th{"data-field" => "id"} Order ID
+                %th{"data-field" => "id"} Date Submitted
+                %th{"data-field" => "name"} Status
+
+            - @orderHistory.each do |item|
+              %tr{"data-lity" => "", :href => preview_url(item.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                %td
+                  = rand(10 ** 10)
+                %td
+                  - if item.name.include? "SIGNED"
+                    = DateTime.strptime(item.created_at).strftime("%B %d, %Y %l:%M %p")
+                  - else
+                    NA
+                %td
+                  - if item.name.include? "SIGNED"
+                    order submitted
+                  - else
+                    pending signature
+                    %a.btn.pull-right.white.black-text{:href => "#"} Sign
+
       -# cart
       .col.s4#cart-container
         %h5
@@ -62,6 +90,9 @@
 
 :javascript
 
+  $(document).ready(function(){
+    $('ul.tabs').tabs();
+  });
 
   // update cart quantity values on change input
   $(document).on('change', 'input', function() {

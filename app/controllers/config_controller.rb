@@ -30,6 +30,7 @@ class ConfigController < ApplicationController
       session[:dicom_viewer] = "off"
       session[:media_content] = "off"
       session[:eventstream] = "off"
+      session[:product_supply] = "off"
 
       # Okta
       session[:okta] = "off"
@@ -119,10 +120,11 @@ class ConfigController < ApplicationController
     session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
     session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
+    session[:product_supply] = !params[:product_supply].blank? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
-      capture_user_data
+      # capture_user_data
       # Mixpanel capture event
       mixpanel_capture
     end
@@ -217,6 +219,7 @@ class ConfigController < ApplicationController
     query["dicom_viewer"] = session[:dicom_viewer]
     query["media_content"] = session[:media_content]
     query["eventstream"] = session[:eventstream]
+    query["product_supply"] = session[:product_supply]
 
     session[:config_url] = template.expand({"query" => query})
     puts "config_url: " + session[:config_url]

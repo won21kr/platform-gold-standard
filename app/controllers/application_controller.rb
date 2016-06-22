@@ -89,5 +89,6 @@ class ApplicationController < ActionController::Base
     session[:dicom_viewer] = query['dicom_viewer'] unless query['dicom_viewer'].blank?
     session[:media_content] = query['media_content'] unless query['media_content'].blank?
     session[:eventstream] = query['eventstream'] unless query['eventstream'].blank?
+    session[:product_supply] = query['product_supply'] unless query['product_supply'].blank?
   end
 end
