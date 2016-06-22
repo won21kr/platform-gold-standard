@@ -1,5 +1,6 @@
 class ProductSupplyController < SecuredController
 
+  DOCUSIGN_CLIENT = DocusignRest::Client.new
   skip_before_filter :verify_authenticity_token
 
   def show
@@ -51,6 +52,9 @@ class ProductSupplyController < SecuredController
     end
     @orderHistory = client.folder_items(@orderFormFolder, fields: [:id, :name, :created_at])
 
+    if (params[:page_redirect] == "orders")
+      @currentPage = params[:page_redirect]
+    end
 
   end
 
@@ -85,11 +89,11 @@ class ProductSupplyController < SecuredController
     path = "#{session[:userinfo]['info']['name']}\ -\ Order\ Forms"
     doc.configure_pdf(client, filename, path, ENV['ORDER_FORM'])
 
-    flash[:notice] = "Thanks for submitting your order! Please review and sign your order."
-    redirect_to product_supply_path
+    flash[:notice] = "Thanks for filling out your order! Please review and sign your order form."
+    redirect_to product_supply_path(page_redirect: "orders")
   end
 
-  # start loan agreement docusign process
+  # start order docusign process
   def order_docusign
 
     fileId = params[:file_id]
@@ -106,12 +110,10 @@ class ProductSupplyController < SecuredController
     @url = recipient_view["url"]
   end
 
-  # create docusign envelope for loan agreement
+  # create docusign envelope for order form
   def create_docusign_envelope(box_doc_id)
 
     box_user = user_client
-    #
-    # puts "#{box_doc_id} box file id"
 
     box_file = box_user.file_from_id(box_doc_id)
     raw_file = box_user.download_file(box_file)
@@ -156,8 +158,8 @@ class ProductSupplyController < SecuredController
     envelope
   end
 
-  # docusign response for loan agreement
-  def docusign_response_loan
+  # docusign response for order form
+  def docusign_response_order
     utility = DocusignRest::Utility.new
 
     if params[:event] == "signing_complete"
@@ -184,15 +186,34 @@ class ProductSupplyController < SecuredController
         temp_file.delete
       end
 
-      flash[:notice] = "Thanks! Order form signed and submitted."
-      render :text => utility.breakout_path(product_supply_path), content_type: 'text/html'
+      flash[:notice] = "Order form signed and submitted to a company representative."
+      render :text => utility.breakout_path(product_supply_path(page_redirect: "orders")), content_type: 'text/html'
     else
       flash[:error] = "You chose not to sign the document."
-      render :text => utility.breakout_path(product_supply_path), content_type: 'text/html'
+      render :text => utility.breakout_path(product_supply_path(page_redirect: "orders")), content_type: 'text/html'
     end
   end
 
+  def product_supply_reset
 
+    client = user_client
+    path = "#{session[:userinfo]['info']['name']}\ -\ Order\ Forms"
+
+    begin
+      @ordersFolder = Rails.cache.fetch("/orders-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path(path)
+      end
+      @orders = client.folder_items(@ordersFolder, fields: [:id, :name])
+    rescue
+      puts "folder not yet created"
+    end
+
+    @orders.each do |c|
+      client.delete_file(c)
+    end
+
+    redirect_to product_supply_path
+  end
 
 
 end

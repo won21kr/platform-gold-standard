@@ -20,10 +20,10 @@
           .col.s6{:style => "margin-bottom: 20px"}
             %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
               %li.tab{:style => "font-size: 12px !important;"}
-                %a{:href => "#product-supplies", :class => "#{'active' if @currentPage == 'newClaim'}"}
+                %a{:href => "#product-supplies", :class => "#{'active' if @currentPage == 'products'}"}
                   Products
               %li.tab{:style => "font-size: 12px !important;"}
-                %a{:href => "#order-history", :class => "#{'active' if @currentPage == 'submitted'}"}
+                %a{:href => "#order-history", :class => "#{'active' if @currentPage == 'orders'}"}
                   Order History
         %div#product-supplies
           - @supplies.each do |key, value|
@@ -50,41 +50,49 @@
                                        :type => "number", :value => "0",
                                        :style => "margin-bottom: -20px"}
         %div#order-history
-          %table.highlight.order_history{:style => "margin-top: 20px"}
-            %thead
-              %tr
-                %th{"data-field" => "id"} Order ID
-                %th{"data-field" => "id"} Date Submitted
-                %th{"data-field" => "name"} Status
-
-            - @orderHistory.each do |item|
-              %tr{"data-lity" => "", :href => preview_url(item.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                %td
-                  = rand(10 ** 10)
-                %td
-                  - if item.name.include? "SIGNED"
-                    = DateTime.strptime(item.created_at).strftime("%B %d, %Y %l:%M %p")
-                  - else
-                    NA
-                %td
-                  - if item.name.include? "SIGNED"
-                    order submitted
-                  - else
-                    pending signature
-                    %a.btn.pull-right.white.black-text{:href => "#"} Sign
+          - if @orderHistory.length == 0
+            %h6{:style => "margin-top: 10px"}
+              You have not yet submitted an order
+          - else
+            %table.highlight.order_history{:style => "margin-top: 20px"}
+              %thead
+                %tr
+                  %th
+                  %th{"data-field" => "id"} Order ID
+                  %th{"data-field" => "id"} Date Submitted
+                  %th{"data-field" => "name"} Status
+              - @orderHistory.each do |item|
+                %tr
+                  %td{:style => "cursor:pointer", "data-lity" => "", :href => preview_url(item.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                    = image_tag(thumbnail_url(item.id), width: '40px')
+                  %td
+                    = rand(10 ** 10)
+                  %td
+                    - if item.name.include? "SIGNED"
+                      = DateTime.strptime(item.created_at).strftime("%B %d, %Y %l:%M %p")
+                    - else
+                      NA
+                  %td
+                    - if item.name.include? "SIGNED"
+                      Submitted
+                    - else
+                      Pending Signature
+                      %a.btn.pull-right.white.black-text{:href => order_docusign_path(item.id), :style => "text-decoration: none"} Sign
 
       -# cart
       .col.s4#cart-container
         %h5
           Supply Cart
         %form.form-horizontal{:role => "form", :method => "post", :action => order_supplies_path}
-          %table.table
-            %thead
-              %tr
-                %th Product
-                %th Quantity
-            %tbody#cart
-          %button.btn.pull-right.white.black-text#cartCheckout{:type => "submit", style: "margin-top: 10px"} Order
+          #cart
+            %table.table
+              %thead
+                %tr
+                  %th Product
+                  %th Quantity
+
+%p{:style=>"text-align: right; font-size: 10px;"}
+  = link_to "reset", product_supply_reset_path
 
 #floating-cart-div
 

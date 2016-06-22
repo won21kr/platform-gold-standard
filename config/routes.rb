@@ -160,6 +160,10 @@ Rails.application.routes.draw do
   get "/product-supply" => "product_supply#show", :as => "product_supply"
   post "/update-cart" => "product_supply#update_cart"
   post "/order-supplies" => "product_supply#order_supplies"
+  get "/order-sign/:file_id" => "product_supply#order_docusign", :as => "order_docusign"
+  get "docusign_response_order/:envelope_id" => "product_supply#docusign_response_order", :as => "docusign_response_order"
+  get "/reset-orders" => "product_supply#product_supply_reset", :as => "product_supply_reset"
+
 
   #third-party api's
   post "/send_twilio_message" => "config#twilio_method"
