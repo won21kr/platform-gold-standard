@@ -12,11 +12,11 @@
         %h6.caption.thin{:style => "font-size: 16px;"}
           Browse and order medical supplies
       -# product list
-      .col.s8.push-s2{:style => "margin-top: 10px;"}
-        .flash
-          = render partial: "shared/flash_messages", flash: flash
       .col.s8
         .col.s12
+          .col.s12{:style => "margin-top: 10px;"}
+            .flash
+              = render partial: "shared/flash_messages", flash: flash
           .col.s6{:style => "margin-bottom: 20px"}
             %ul.tabs{:style => "background-color: transparent; width: 80% !important;"}
               %li.tab{:style => "font-size: 12px !important;"}
@@ -61,6 +61,7 @@
                   %th{"data-field" => "id"} Order ID
                   %th{"data-field" => "id"} Date Submitted
                   %th{"data-field" => "name"} Status
+                  %th
               - @orderHistory.each do |item|
                 %tr
                   %td{:style => "cursor:pointer", "data-lity" => "", :href => preview_url(item.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
@@ -74,14 +75,18 @@
                       NA
                   %td
                     - if item.name.include? "SIGNED"
-                      Submitted
+                      %span
+                        Submitted
                     - else
-                      Pending Signature
+                      %span
+                        Pending Signature
+                  - if !item.name.include? "SIGNED"
+                    %td
                       %a.btn.pull-right.white.black-text{:href => order_docusign_path(item.id), :style => "text-decoration: none"} Sign
 
       -# cart
-      .col.s4#cart-container
-        %h5
+      .col.s4#cart-container{:style => "margin-top: -45px"}
+        %h5{:style => "font-size: 20px"}
           Supply Cart
         %form.form-horizontal{:role => "form", :method => "post", :action => order_supplies_path}
           #cart
@@ -133,7 +138,7 @@
   $(document).ready(function() {
     // Floating cart scroll
     $(window).scroll(function(){
-    $("#cart-container").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px", "duration": "5000"});
+    $("#cart-container").stop().animate({"marginTop": ($(window).scrollTop() - 45) + "px", "marginLeft":($(window).scrollLeft()) + "px", "duration": "5000"});
     });
     var totaltext = "";
     $("#floating-cart-div").html(totaltext);
