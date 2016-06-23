@@ -23,7 +23,7 @@
               = "My Files"
           %li.tab{:style => "font-size: 12px !important;"}
             %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
-              = @sharedFolder.name
+              = alt_text("Shared Files")
       // Table + upload button
       .col.s12{:style => "margin-left: 30px"}
         #myfiles.myvault_table
