@@ -212,6 +212,8 @@
                   = ", Media Content"
                 - if (session[:eventstream] == 'on')
                   = ", Box Events"
+                - if (session[:product_supply] == 'on')
+                  = ", Product Supply"
             %tr
               %td Encoded Configuration URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
