@@ -45,7 +45,7 @@
               %form.uploadbtn.hide_above992{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
                 .form-group
                   -# %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#newfolder", :style => "font-color: #263238 !important; text-decoration: none;"} New Folder
-                  %button.waves-effect.btn.white.black-text.btn-file
+                  %span.waves-effect.btn.white.black-text.btn-file
                     Upload
                     %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
 
@@ -60,7 +60,7 @@
               %a.waves-effect.btn.white.black-text.modal-trigger{:href => "#modal2", :style => "font-color: #263238 !important; text-decoration: none;", "data-intro" => "Upload files to the Box folder selected above", "data-position" => "left"} Upload
             %form.uploadbtn.hide_above992{id: "file-upload", method: 'POST', action: 'blah', class: 'form-horizontal', :style => "text-align: center"}
               .form-group
-                %button.waves-effect.btn.white.black-text.btn-file-shared
+                %span.waves-effect.btn.white.black-text.btn-file-shared
                   Upload
                   %input{type: 'file', id: "file-select", name: 'files', :href => "#"}
           .col.s12
