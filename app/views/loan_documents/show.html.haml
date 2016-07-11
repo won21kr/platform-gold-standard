@@ -40,7 +40,7 @@
                         %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => "#loanVaultDocs"} Upload
                       - else
                         .form-group
-                          %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn
+                          %span.waves-effect.btn.white.black-text.btn-file.loanupload_btn
                             Upload
                             %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - elsif @docStatus["Loan Agreement"] == "Signature Needed"
@@ -67,7 +67,7 @@
                         %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => "#w2VaultDocs"} Upload
                       - else
                         .form-group
-                          %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn
+                          %span.waves-effect.btn.white.black-text.btn-file.loanupload_btn
                             Upload
                             %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - else
@@ -91,7 +91,7 @@
                         %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn.modal-trigger{:href => "#taxVaultDocs"} Upload
                       - else
                         .form-group
-                          %button.waves-effect.btn.white.black-text.btn-file.loanupload_btn
+                          %span.waves-effect.btn.white.black-text.btn-file.loanupload_btn
                             Upload
                             %input{type: 'file', name: 'file', :href => "#", :onChange => "form.submit()"}
                   - else
