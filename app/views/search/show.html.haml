@@ -10,142 +10,145 @@
           %span.glyphicon.glyphicon-sort-by-attributes-alt{:style => "font-size: 22px;"}
           = alt_text("Resources")
         %h6.caption.thin{:style => "font-size: 16px;"}
-          Find relevant content, fast
+          = alt_text("Find relevant content, fast")
         .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
           %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
           %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
             info
-      // Messaging
-      .col.s5.push-s7{:style => "margin-top:-20px; text-align: right"}
-        .styleoverlay{:style => "margin-left: 130px;"}
-        - if (!@text.nil?)
-          = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-        - elsif @root == true
-          .breadcrumb.hide_mobile
-            %li
-              %li.active{:href => "#", "data-intro" => "Your current folder path. On creation of your App User you were granted Viewer access to these folders", "data-position" => "bottom"} Resources
-        - elsif !@subName.nil?
-          .breadcrumb.hide_mobile{:style => "vertical-align: top"}
-            %li{ "data-intro" => "Look here for a breadcrumb view of your current folder", "data-position" => "bottom"}
-              %a{:href => "/resources"} Resources
-            %li.active{:href => "#", :style => ""}
-              = @subName
+
+      - if !@industry
+        // Messaging
+        .col.s5.push-s7{:style => "margin-top:-20px; text-align: right"}
+          .styleoverlay{:style => "margin-left: 130px;"}
+          - if (!@text.nil?)
+            = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
+          - elsif @root == true
+            .breadcrumb.hide_mobile
+              %li
+                %li.active{:href => "#", "data-intro" => "Your current folder path. On creation of your App User you were granted Viewer access to these folders", "data-position" => "bottom"} Resources
+          - elsif !@subName.nil?
+            .breadcrumb.hide_mobile{:style => "vertical-align: top"}
+              %li{ "data-intro" => "Look here for a breadcrumb view of your current folder", "data-position" => "bottom"}
+                %a{:href => "/resources"} Resources
+              %li.active{:href => "#", :style => ""}
+                = @subName
 
 
-      // Search and filtering\
-      .col.s12#search{:style => "margin-top: 50px; margin-left: 60px;"}
-        = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
-          // input
-          .col.s3
-            = f.input :query, placeholder: "Search...", input_html: {:style => "size: 40; height: 1.05rem;", :type => "text", class: 'search', id: 'search', "data-intro" => "Leverage Box's search api capabilities to query against file name, type, metadata, and more", "data-position" => "bottom"}
-          // search button
-          -# .col.s2
-          -#   = f.button :submit, "Submit", :style => "margin-top: 5px;", class: 'btn white black-text'
-          // file type filter
-          .filters{:style => "margin-left: 300px;"}
-            .filtergroup_m{:style => "margin-left: 0px;"}
-              .col.s4.filter_m{:style => "z-index: 9999999 !important; width: 100px;", "data-intro" => "Filter search results by file type and metadata templates. Each of these dropdowns represent metadata values in Box", "data-position" => "bottom"}
-                %span.border-select
-                  %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
-                    %i.material-icons arrow_drop_down
-                    Type
-                %ul.dropdown-content{:id => "dropdown1",}
-                  %li
-                    = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
-                  %li
-                    = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
-                  %li
-                    = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
-                  %li
-                    = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
-              // category filter
-              .col.s4.filter_m{:style => "width: 120px;"}
-                %span.border-select
-                  %a.dropdown-button{"data-activates" => "dropdown2", :href => "#!", :style => "color: black"}
-                    %i.material-icons arrow_drop_down
-                    Category
-                %ul.dropdown-content{:id => "dropdown2"}
-                  %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
+        // Search and filtering\
+        .col.s12#search{:style => "margin-top: 50px; margin-left: 60px;"}
+          = simple_form_for(:search, html: {class: 'form-search'}, :url => "#", defaults: { label: false }) do |f|
+            // input
+            .col.s3
+              = f.input :query, placeholder: "Search...", input_html: {:style => "size: 40; height: 1.05rem;", :type => "text", class: 'search', id: 'search', "data-intro" => "Leverage Box's search api capabilities to query against file name, type, metadata, and more", "data-position" => "bottom"}
+            // search button
+            -# .col.s2
+            -#   = f.button :submit, "Submit", :style => "margin-top: 5px;", class: 'btn white black-text'
+            // file type filter
+            .filters{:style => "margin-left: 300px;"}
+              .filtergroup_m{:style => "margin-left: 0px;"}
+                .col.s4.filter_m{:style => "z-index: 9999999 !important; width: 100px;", "data-intro" => "Filter search results by file type and metadata templates. Each of these dropdowns represent metadata values in Box", "data-position" => "bottom"}
+                  %span.border-select
+                    %a.dropdown-button{"data-activates" => "dropdown1", :href => "#!", :style => "color: black;"}
+                      %i.material-icons arrow_drop_down
+                      Type
+                  %ul.dropdown-content{:id => "dropdown1",}
                     %li
-                      = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post, :style => "text-decoration: none"
-                  %li
-                    = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post, :style => "text-decoration: none"
-                  %li
-                    = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post, :style => "text-decoration: none"
-              // privacy filter
-              .col.s4.filter_m{:style => "100px;"}
-                %span.border-select
-                  %a.dropdown-button{"data-activates" => "dropdown3", :href => "#!", :style => "color: black"}
-                    %i.material-icons arrow_drop_down
-                    Privacy
-                %ul.dropdown-content{:id => "dropdown3"}
-                  %li
-                    = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post, :style => "text-decoration: none"
-                  %li
-                    = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post, :style => "text-decoration: none"
+                      = link_to "pdf", search_path(:filter_query => "pdf", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                    %li
+                      = link_to 'docx', search_path(:filter_query => "docx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                    %li
+                      = link_to 'pptx', search_path(:filter_query => "pptx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                    %li
+                      = link_to 'xlsx', search_path(:filter_query => "xlsx", :filter => "file_type"), :method => :post, :style => "text-decoration: none"
+                // category filter
+                .col.s4.filter_m{:style => "width: 120px;"}
+                  %span.border-select
+                    %a.dropdown-button{"data-activates" => "dropdown2", :href => "#!", :style => "color: black"}
+                      %i.material-icons arrow_drop_down
+                      Category
+                  %ul.dropdown-content{:id => "dropdown2"}
+                    %div{:style => "text-overflow: ellipsis; width: 7em; overflow: hidden; white-space: nowrap; list-style-position:inside;"}
+                      %li
+                        = link_to "Training", search_path(:filter_query => "Training Material", :key => "type"), :method => :post, :style => "text-decoration: none"
+                    %li
+                      = link_to 'Onboard', search_path(:filter_query => "Onboarding Document", :key => "type"), :method => :post, :style => "text-decoration: none"
+                    %li
+                      = link_to 'Research', search_path(:filter_query => "Case Study", :key => "type"), :method => :post, :style => "text-decoration: none"
+                // privacy filter
+                .col.s4.filter_m{:style => "100px;"}
+                  %span.border-select
+                    %a.dropdown-button{"data-activates" => "dropdown3", :href => "#!", :style => "color: black"}
+                      %i.material-icons arrow_drop_down
+                      Privacy
+                  %ul.dropdown-content{:id => "dropdown3"}
+                    %li
+                      = link_to "External", search_path(:filter_query => "External", :key => "audience"), :method => :post, :style => "text-decoration: none"
+                    %li
+                      = link_to 'Internal', search_path(:filter_query => "Internal", :key => "audience"), :method => :post, :style => "text-decoration: none"
 
-      // Results: folders, search, filter
-      .col.s12{:style => "margin-left: 30px"}
-        - if @results.nil? or @results.count == 0
-          %h6.center{:style => "margin-top: 35px;"}
-            There were no results matching your search criteria.
-        - else
-          / either results were found for your search or were are in the resource root folder / sub-folder
-          / are we in the root folder?
-          - if (@root == true)
-            -# .nav-wrapper
-            -#   %a.breadcrumb{:href => "/resources"}
-            -#     Resources
-            -#   %a.breadcrumb{:href => "#!"}
-            %table.highlight.resources_table
-              %thead
-                %tr
-                  %th{"data-field" => "id"} Folder
-                  %th{"data-field" => "name"} Name
-                  %th{"data-field" => "modified"} Last Modified
-                  %th{"data-field" => "modified"} Description
-              - @results.each_with_index do |folder, i|
-                %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
-                  %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
-                    = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
-                  %td
-                    .filename.name_elipses{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
-                      = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
-                  %td
-                    .name_elipses
-                      = DateTime.strptime(folder.content_modified_at).strftime("%B %d, %Y")
-                  %td
-                    .name_elipses
-                      = folder.description
-          -# - if (!@text.nil?)
-          -#   = "Found #{@results.count} results for #{@search_type}: '#{@text}'"
-          - if (@root != true)
-            %table.highlight.resources_table
-              %thead
-                %tr
-                  %th{"data-field" => "id"} File
-                  %th{"data-field" => "name"} Name
-                  %th{"data-field" => "price"} Category
-                  %th.hide_mobile{"data-field" => "foop"} Created
-                  %th{"data-field" => "foop"} Privacy
+        // Results: folders, search, filter
+        .col.s12{:style => "margin-left: 30px"}
+          - if @results.nil? or @results.count == 0
+            %h6.center{:style => "margin-top: 35px;"}
+              There were no results matching your search criteria.
+          - else
+            / either results were found for your search or were are in the resource root folder / sub-folder
+            / are we in the root folder?
+            - if (@root == true)
+              -# .nav-wrapper
+              -#   %a.breadcrumb{:href => "/resources"}
+              -#     Resources
+              -#   %a.breadcrumb{:href => "#!"}
+              %table.highlight.resources_table
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} Folder
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "modified"} Last Modified
+                    %th{"data-field" => "modified"} Description
+                - @results.each_with_index do |folder, i|
+                  %tr{:onclick => "location.href = '/resources/#{folder.id}'"}
+                    %td{"data-intro" => i==0 ? "We've added your App User to the 'Customer' group in Box with access to these folders. Search or click to navigate content." : nil,  "data-position" => i==0 ? "left" : nil}
+                      = image_tag("https://hostr.co/file/eMmzO9cqCEjm/Folder.png", height: '50px')
+                    %td
+                      .filename.name_elipses{:style => "font-size: 16px; color: #333 !important; text-decoration: none;"}
+                        = link_to folder.name, sub_resource_path(folder.id), {:style=>'color:#333; text-decoration: none; font-size: 14px;'}
+                    %td
+                      .name_elipses
+                        = DateTime.strptime(folder.content_modified_at).strftime("%B %d, %Y")
+                    %td
+                      .name_elipses
+                        = folder.description
+            - if (@root != true)
+              %table.highlight.resources_table
+                %thead
+                  %tr
+                    %th{"data-field" => "id"} File
+                    %th{"data-field" => "name"} Name
+                    %th{"data-field" => "price"} Category
+                    %th.hide_mobile{"data-field" => "foop"} Created
+                    %th{"data-field" => "foop"} Privacy
 
 
-              - @results.each_with_index do |result, i|
-                %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
-                  %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser via the Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
-                    = image_tag(thumbnail_url(result.id), :width => "40px")
-                  %td
-                    .name_elipses
-                      = result.name
-                  %td
-                    .name_elipses
-                      = result.type
-                  %td.hide_mobile
-                    .name_elipses
-                      = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
-                  %td
-                    .name_elipses
-                      = result.audience
+                - @results.each_with_index do |result, i|
+                  %tr{"data-lity" => "", :href => preview_url(result.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                    %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser via the Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
+                      = image_tag(thumbnail_url(result.id), :width => "40px")
+                    %td
+                      .name_elipses
+                        = result.name
+                    %td
+                      .name_elipses
+                        = result.type
+                    %td.hide_mobile
+                      .name_elipses
+                        = DateTime.strptime(result.created_at).strftime("%B %d, %Y %l:%M %p")
+                    %td
+                      .name_elipses
+                        = result.audience
+      - else
+        = render 'search/industry'
+
 
 #viewModal.modal.modal-fixed-footer{:style => "height: 80%; max-height: 80%; background-color: white"}
   .modal-content

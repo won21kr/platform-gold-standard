@@ -86,6 +86,14 @@
             %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
             %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "FFFFFF", :style => "color: black", :value => session[:navbar_color]}
 
+            %label.label-div{:for => "industry", :style => "color: black; margin-bottom: 20px"} Preconfigured Industries
+            %br{:style => "margin-bottom: 20px"}
+            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none"} Industry Select
+            %br
+            %ul.dropdown-content{:id => "industry-drop"}
+              %li
+                = link_to "Financial Services", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
             #demo.collapse
@@ -106,7 +114,6 @@
                   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
-
 
 
           .col.s5.push-s1
@@ -241,3 +248,8 @@
   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
   });
+
+  $('.dropdown-button').dropdown({
+      constrain_width: false // Does not change width of dropdown to that of the activator
+    }
+  );

@@ -109,6 +109,7 @@ Rails.application.routes.draw do
   # config page
   get '/config' => "config#show", :as => 'config'
   get '/config-reset' => "config#reset_config", :as => "reset_config"
+  get '/config-industry' => "config#configure_industry", :as => "configure_industry"
   post '/config' => "config#post_config", :as => "save_config"
 
   # tax return

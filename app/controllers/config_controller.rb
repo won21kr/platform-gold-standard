@@ -102,6 +102,7 @@ class ConfigController < ApplicationController
     end
 
     session[:background] = params[:background]
+    ap params[:alt_text]
     session[:alt_text] = params[:alt_text]
 
     # Okta configuration
@@ -163,6 +164,32 @@ class ConfigController < ApplicationController
     event = tracker.track('1234', 'Configuration - Reset')
     session.clear
     redirect_to config_path
+  end
+
+  # configure the app for a certain industry
+  def configure_industry
+
+    industry = params[:industry]
+    session.clear
+
+    case industry
+    when "finserv"
+      session[:company] = "Blue Advisors"
+      session[:industry_resources] = ENV['FINSERV_RESOURCES']
+      session[:loan_docs] = 'on'
+      session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
+      session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared financial documents\",
+                             \"Shared Files\" : \"Shared (with Advisor)\",
+                             \"Resources\" : \"Financial Resources\",
+                             \"Find relevant content, fast\" : \"Browse relevant financial documents\",
+                             \"Onboarding Tasks\" : \"Client Onboarding\"}"
+      session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
+    else
+    end
+
+    redirect_to '/home'
   end
 
   private

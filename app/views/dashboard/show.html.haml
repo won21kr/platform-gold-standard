@@ -20,7 +20,7 @@
         %ul.tabs#claim-tabs1{:style => "background-color: transparent; width: 80% !important;"}
           %li.tab{:style => "font-size: 12px !important;"}
             %a{:href => "#myfiles", :class => "#{'active' if @myFolder.id == @currentFolder}"}
-              = "My Files"
+              = alt_text("My Files")
           %li.tab{:style => "font-size: 12px !important;"}
             %a{:href => "#sharedfiles", :class => "#{'active' if @sharedFolder.id == @currentFolder}"}
               = alt_text("Shared Files")
