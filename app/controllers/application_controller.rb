@@ -62,6 +62,7 @@ class ApplicationController < ActionController::Base
     session[:company] = query['company'] unless query['company'].blank?
     session[:logo] = query['logo'] unless query['logo'].blank?
     session[:navbar_color] = '#' + query['back_color'] unless query['back_color'].blank?
+    session[:industry] = query['industry'] unless query['industry'].blank?
 
     session[:alt_text] = query['alt_text'] unless query['alt_text'].blank?
     begin

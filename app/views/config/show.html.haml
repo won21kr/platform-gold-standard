@@ -93,6 +93,9 @@
             %ul.dropdown-content{:id => "industry-drop"}
               %li
                 = link_to "Financial Services", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+              %li
+                = link_to "Healthcare", configure_industry_path(:industry => "healthcare"), :style => "text-decoration: none"
+
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings

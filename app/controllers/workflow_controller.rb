@@ -12,7 +12,6 @@ class WorkflowController < SecuredController
     # also, update the current workflow status state
     @onboardDoc = get_onboarding_doc
     session[:current_page] = "workflow"
-    # tab_usage(session[:current_page])
     session[:task_status] = 1
 
 
@@ -31,20 +30,38 @@ class WorkflowController < SecuredController
     elsif(@status == "approved" or @status == "pendingSig")
       mixpanel_tab_event("Onboarding Tasks", "Pending Signature")
       # create docusign doc
-      envelope_response = create_docusign_envelope(@onboardDoc.id)
+      case session[:industry]
+      when "finserv"
+        anchor_string = "signature (see instructions)"
+        x_offset = '0'
+        y_offset = '-10'
+      when "healthcare"
+        anchor_string = "Signature of patient"
+        x_offset = '0'
+        y_offset = '-30'
+      else
+        anchor_string = "Signature:"
+        x_offset = '100'
+        y_offset = '0'
+      end
+
+      envelope_response = create_docusign_envelope(@onboardDoc.id, anchor_string, x_offset, y_offset)
 
       # set up docusign view, fetch url
-      recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
-        envelope_id: envelope_response["envelopeId"],
-        name: "Marcus Doe",
-        email: "mmitchell+standard@box.com",
-        return_url: docusign_response_url(envelope_response["envelopeId"])
-      )
+      begin
+        recipient_view = DOCUSIGN_CLIENT.get_recipient_view(
+          envelope_id: envelope_response["envelopeId"],
+          name: "Marcus Doe",
+          email: "mmitchell+standard@box.com",
+          return_url: docusign_response_url(envelope_response["envelopeId"])
+        )
 
-      @url = recipient_view["url"]
-      session[:progress] = 2
-      session[:task_status] = 1
-      @message = "Step 3. Sign the onboarding contract"
+        @url = recipient_view["url"]
+        session[:progress] = 2
+        session[:task_status] = 1
+        @message = "Step 3. Sign the onboarding contract"
+      rescue
+      end
     elsif(@status == "signed")
       mixpanel_tab_event("Onboarding Tasks", "Workflow Complete")
       set_preview_url(@onboardDoc.id)
@@ -66,6 +83,8 @@ class WorkflowController < SecuredController
       # use form variables to fill out html template file,
       # convert html file to a pdf and upload to Box
       filename = "tmp/Onboarding Contract.pdf"
+
+      # HEY MATT!!!! FIX THIS ISSUE!!! IT BREAKS WHEN YOU SWITCH BETWEEN INDUSTRIES!!!!
 
       # the "Doc" module code can be found in app/models/
       doc = Doc.new({:tel => params[:tel], :address => params[:address],
@@ -164,7 +183,7 @@ class WorkflowController < SecuredController
   private
 
 
-  def create_docusign_envelope(box_doc_id)
+  def create_docusign_envelope(box_doc_id, anchor_string, x_offset, y_offset)
 
     box_user = user_client
 
@@ -176,7 +195,6 @@ class WorkflowController < SecuredController
       temp_file.write(raw_file)
       temp_file.close
 
-      ap DOCUSIGN_CLIENT
       envelope = DOCUSIGN_CLIENT.create_envelope_from_document(
         email: {
           subject: "Signature Requested",
@@ -191,7 +209,7 @@ class WorkflowController < SecuredController
             name: 'Marcus Doe',
             email: 'mmitchell+standard@box.com',
             role_name: 'Client',
-            sign_here_tabs: [{anchor_string: "Signature:", anchor_x_offset: '100', anchor_y_offset: '0'}]
+            sign_here_tabs: [{anchor_string: anchor_string, anchor_x_offset: x_offset, anchor_y_offset: y_offset}]
           }
         ],
         files: [
@@ -204,6 +222,7 @@ class WorkflowController < SecuredController
       session[envelope["envelopeId"]] = {box_doc_id: box_file.id, box_doc_name: box_file.name}
     rescue => ex
       puts ex.message
+      box_user.delete_file(box_doc_id)
     ensure
       temp_file.delete
     end
@@ -291,6 +310,18 @@ class WorkflowController < SecuredController
     elsif((file = client.folder_items(@completedFolder, fields: [:id]).files).size > 0)
       # document has already been signed
       @status = "signed"
+
+    elsif(!session[:industry].nil?)
+      # use industry document
+      file = Array.new
+      case session[:industry]
+      when 'finserv'
+        file.push(client.copy_file(ENV['FINSERV_FORM'], @sigReqFolder))
+      when 'healthcare'
+        file.push(client.copy_file(ENV['HEALTHCARE_FORM'], @sigReqFolder))
+      else
+      end
+      @status = "pendingSig"
 
     else
       # the information form has not yet been filled out by the customer

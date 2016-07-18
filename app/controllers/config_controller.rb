@@ -177,15 +177,33 @@ class ConfigController < ApplicationController
       session[:company] = "Blue Advisors"
       session[:industry_resources] = ENV['FINSERV_RESOURCES']
       session[:loan_docs] = 'on'
+      session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
       session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
       session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
                              \"My Files\" : \"Personal\",
                              \"Your personal and shared files\" : \"You personal and shared financial documents\",
                              \"Shared Files\" : \"Shared (with Advisor)\",
-                             \"Resources\" : \"Financial Resources\",
+                             \"Resources\" : \"Client Resources\",
                              \"Find relevant content, fast\" : \"Browse relevant financial documents\",
-                             \"Onboarding Tasks\" : \"Client Onboarding\"}"
-      session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
+                             \"Onboarding Tasks\" : \"Tax Return Form\"}"
+      session[:industry] = "finserv"
+      # copy over files + folders
+
+    when "healthcare"
+      session[:company] = "Blue Care"
+      session[:industry_resources] = ENV['HEALTHCARE_RESOURCES']
+      session[:background] = 'https://platform-staging.box.com/shared/static/0mh4ysttxj5h8wg742iovy3hmdj4umvj.png'
+      session[:logo] = 'https://platform-staging.box.com/shared/static/lc6swn86txsxzysb5phhgcjm54bbunwd.png'
+      session[:alt_text] = "{\"My Vault\" : \"Patient Vault\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared medical documents\",
+                             \"Shared Files\" : \"Shared (with Physician)\",
+                             \"Resources\" : \"Patient Education\",
+                             \"Find relevant content, fast\" : \"Browse relevant medical documents\",
+                             \"Onboarding Tasks\" : \"Medical Release Form\"}"
+      session[:industry] = "healthcare"
+      # copy over files + folders
+
     else
     end
 
