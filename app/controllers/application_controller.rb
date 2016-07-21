@@ -42,10 +42,11 @@ class ApplicationController < ActionController::Base
 
   # Capture tab event
   def mixpanel_tab_event(tab, event)
+    company = session[:company].nil? ? "NA" : session[:company]
     tracker = Mixpanel.client
     event = tracker.track(session[:box_id], 'Tab Usage', {:tab => tab,
                                                 :event => event,
-                                                :company => session[:company] unless session[:company].blank?})
+                                                :company => company})
   end
 
   private
