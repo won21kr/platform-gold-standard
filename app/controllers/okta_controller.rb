@@ -7,8 +7,6 @@ class OktaController < ApplicationController
     puts "okta callback..."
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
-    mixpanel_capture
-
 
     # Get User Box ID from Okta
     okta_client = HTTPClient.new
