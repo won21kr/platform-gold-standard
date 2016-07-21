@@ -170,13 +170,19 @@ class ConfigController < SecuredController
   def configure_industry
 
     industry = params[:industry]
-    session.clear
 
     case industry
     when "finserv"
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      session.clear
       session[:company] = "Blue Advisors"
       session[:industry_resources] = ENV['FINSERV_RESOURCES']
       session[:loan_docs] = 'on'
+      session[:tax_return] = 'on'
       session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
       session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
       session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
@@ -187,9 +193,15 @@ class ConfigController < SecuredController
                              \"Find relevant content, fast\" : \"Browse relevant financial documents\",
                              \"Onboarding Tasks\" : \"Tax Return Form\"}"
       session[:industry] = "finserv"
-      # copy over files + folders
 
     when "healthcare"
+
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      session.clear
       session[:company] = "Blue Care"
       session[:industry_resources] = ENV['HEALTHCARE_RESOURCES']
       session[:background] = 'https://platform-staging.box.com/shared/static/0mh4ysttxj5h8wg742iovy3hmdj4umvj.png'
@@ -211,6 +223,65 @@ class ConfigController < SecuredController
   end
 
   private
+
+  # delete all vault content and replace with predefined industry folder structure
+  def copy_content(industry)
+
+    puts "copying content..."
+    client = user_client
+    threads = []
+
+    # get "My Files" and "Shared Files" folder objects
+    myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      client.folder_from_path('My Files')
+    end
+    myFolderContents = client.folder_items(myFolder, fields: [:id, :type])
+
+    sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
+      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+    end
+    sharedFolderContents = client.folder_items(sharedFolder, fields: [:id]).files
+
+    # delete vault folder contents
+    myFolderContents.each do |f|
+      if (f.type == "folder")
+        client.delete_folder(f, recursive: true)
+      else
+        client.delete_file(f)
+      end
+    end
+
+    sharedFolderContents.each do |f|
+      threads << Thread.new do
+        client.delete_file(f)
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+    # fetch industry folder items
+    case industry
+    when "finserv"
+      industryParentItems = client.folder_items(ENV['FINSERV_VAULT_CONTENT'], fields: [:id, :type])
+    when "healthcare"
+      industryParentItems = client.folder_items(ENV['HEALTHCARE_VAULT_CONTENT'], fields: [:id, :type])
+    else
+    end
+
+    # copy industry folder items over
+    industryParentItems.each do |f|
+      threads << Thread.new do
+        if f.type == "folder"
+          client.copy_folder(f, myFolder)
+        else
+          client.copy_file(f, myFolder)
+        end
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+  end
 
   def mixpanel_capture
 
