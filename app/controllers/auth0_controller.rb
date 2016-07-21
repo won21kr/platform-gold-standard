@@ -18,11 +18,10 @@ class Auth0Controller < ApplicationController
       Auth0API.client.patch_user_metadata(uid, { box_id: box_user.id})
       setup_box_account
 
-      mixpanel_capture
-      
       puts "created new box user and set box_id in auth0 metadata"
     end
 
+    mixpanel_capture
     redirect_to dashboard_path
   end
 

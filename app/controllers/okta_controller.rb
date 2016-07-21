@@ -22,6 +22,7 @@ class OktaController < ApplicationController
     session[:userinfo]['info']['name'] = json['profile']['email']
 
 
+    mixpanel_capture
     redirect_to dashboard_path
   end
 
