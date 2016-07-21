@@ -1,4 +1,4 @@
-class ConfigController < ApplicationController
+class ConfigController < SecuredController
 
   skip_before_filter :verify_authenticity_token
   # before_action :check_config

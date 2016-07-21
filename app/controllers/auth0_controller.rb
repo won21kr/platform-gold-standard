@@ -40,7 +40,9 @@ class Auth0Controller < ApplicationController
   # capture mixpanel login event
   def mixpanel_capture
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Login', {:username => session[:userinfo]['info']['name'], :auth => 'Auth0'})
+    tracker.people.set(session[:box_id], {'$email' => session[:userinfo]['info']['name']})
+    tracker.people.increment(session[:box_id], {'Logins' => 1})
+    tracker.track(session[:box_id], 'Login', {:auth => 'Auth0'})
   end
 
   # create folders for user and add to group
