@@ -7,7 +7,6 @@ class OktaController < ApplicationController
     puts "okta callback..."
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
-    mixpanel_capture
 
 
     # Get User Box ID from Okta
@@ -24,6 +23,7 @@ class OktaController < ApplicationController
     # error check
     begin
       user = user_client
+      mixpanel_capture
       redirect_to dashboard_path
     rescue
       session[:userinfo] = nil
@@ -94,7 +94,9 @@ class OktaController < ApplicationController
   # capture mixpanel login event
   def mixpanel_capture
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Login', {:username => session[:userinfo]['info']['name'], :auth => 'Okta'})
+    tracker.people.set(session[:box_id], {'$email' => session[:userinfo]['info']['name']})
+    tracker.people.increment(session[:box_id], {'Logins' => 1})
+    tracker.track(session[:box_id], 'Login', {:auth => 'Okta'})
   end
 
   # create folders for user and add to group

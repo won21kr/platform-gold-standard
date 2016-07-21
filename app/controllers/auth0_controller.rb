@@ -1,7 +1,6 @@
 class Auth0Controller < ApplicationController
   def callback
     session[:userinfo] = request.env['omniauth.auth']
-    mixpanel_capture
 
     auth0_meta = session[:userinfo]['extra']['raw_info']['app_metadata']
     if auth0_meta and auth0_meta.has_key?('box_id')
@@ -28,6 +27,7 @@ class Auth0Controller < ApplicationController
       puts "created new box user and set box_id in auth0 metadata"
     end
 
+    mixpanel_capture
     redirect_to dashboard_path
   end
 
@@ -40,7 +40,9 @@ class Auth0Controller < ApplicationController
   # capture mixpanel login event
   def mixpanel_capture
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Login', {:username => session[:userinfo]['info']['name'], :auth => 'Auth0'})
+    tracker.people.set(session[:box_id], {'$email' => session[:userinfo]['info']['name']})
+    tracker.people.increment(session[:box_id], {'Logins' => 1})
+    tracker.track(session[:box_id], 'Login', {:auth => 'Auth0'})
   end
 
   # create folders for user and add to group

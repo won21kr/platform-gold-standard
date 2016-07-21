@@ -173,18 +173,18 @@ class ConfigController < ApplicationController
     # configuration[:tab_configuration] = tab_config
 
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Configuration - General', configuration)
+    event = tracker.track(session[:box_id], 'Configuration - General', configuration)
 
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'My Vault')
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Resources') unless session[:resources] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Onboarding Tasks') unless session[:onboarding] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Medical Credentialing') unless session[:medical_credentialing] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Loan Origination') unless session[:loan_docs] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Upload & Sign') unless session[:upload_sign] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
-    tracker.track('1234', 'Configuration - Tabs', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'My Vault')
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Resources') unless session[:resources] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Onboarding Tasks') unless session[:onboarding] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Medical Credentialing') unless session[:medical_credentialing] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Loan Origination') unless session[:loan_docs] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Upload & Sign') unless session[:upload_sign] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Tax Return') unless session[:tax_return] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Submit A Claim') unless session[:create_claim] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'Box Events') unless session[:eventstream] != "on"
+    tracker.track(session[:box_id], 'Configuration - Tabs', 'tab_configuration' => 'DICOM Viewer') unless session[:dicom_viewer] != "on"
   end
 
   # construct configuration URL
