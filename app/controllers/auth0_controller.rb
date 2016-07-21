@@ -1,7 +1,6 @@
 class Auth0Controller < ApplicationController
   def callback
     session[:userinfo] = request.env['omniauth.auth']
-    mixpanel_capture
 
     auth0_meta = session[:userinfo]['extra']['raw_info']['app_metadata']
     if auth0_meta and auth0_meta.has_key?('box_id')
@@ -19,12 +18,8 @@ class Auth0Controller < ApplicationController
       Auth0API.client.patch_user_metadata(uid, { box_id: box_user.id})
       setup_box_account
 
-      # mixpanel create user
-      # tracker = Mixpanel::Tracker.new('6626ce667ecfc52ecd9b823c730fa8f5')
-      # ap tracker.people.set(session[:box_id], {
-      #     '$name'       => session[:userinfo]['info']['name'],
-      # });
-
+      mixpanel_capture
+      
       puts "created new box user and set box_id in auth0 metadata"
     end
 

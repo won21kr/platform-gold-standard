@@ -72,8 +72,8 @@ class OktaController < ApplicationController
       query[:profile] = {}
       query[:profile][:boxId] = session[:box_id]
       res = okta_client.post(uri, body: Oj.dump(query), header: headers)
-      mixpanel_capture
 
+      mixpanel_capture
       setup_box_account
       redirect_to dashboard_path
     end
