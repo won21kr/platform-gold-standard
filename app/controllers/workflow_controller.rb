@@ -39,6 +39,10 @@ class WorkflowController < SecuredController
         anchor_string = "Signature of patient"
         x_offset = '0'
         y_offset = '-30'
+      when "insurance"
+        anchor_string = "Signature:"
+        x_offset = '90'
+        y_offset = '5'
       else
         anchor_string = "Signature:"
         x_offset = '100'
@@ -319,6 +323,8 @@ class WorkflowController < SecuredController
         file.push(client.copy_file(ENV['FINSERV_FORM'], @sigReqFolder))
       when 'healthcare'
         file.push(client.copy_file(ENV['HEALTHCARE_FORM'], @sigReqFolder))
+      when 'insurance'
+        file.push(client.copy_file(ENV['INSURANCE_FORM'], @sigReqFolder))
       else
       end
       @status = "pendingSig"

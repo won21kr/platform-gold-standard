@@ -88,14 +88,15 @@
 
             %label.label-div{:for => "industry", :style => "color: black; margin-bottom: 20px"} Preconfigured Industries
             %br{:style => "margin-bottom: 20px"}
-            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none"} Industry Select
+            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none"} -- Industry Select --
             %br
             %ul.dropdown-content{:id => "industry-drop"}
               %li
-                = link_to "Financial Services", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+                = link_to "Wealth Management", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+              %li
+                = link_to "Insurance", configure_industry_path(:industry => "insurance"), :style => "text-decoration: none"
               %li
                 = link_to "Healthcare", configure_industry_path(:industry => "healthcare"), :style => "text-decoration: none"
-
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings

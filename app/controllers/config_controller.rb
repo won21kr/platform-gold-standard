@@ -214,7 +214,28 @@ class ConfigController < SecuredController
                              \"Find relevant content, fast\" : \"Browse relevant medical documents\",
                              \"Onboarding Tasks\" : \"Medical Release Form\"}"
       session[:industry] = "healthcare"
+
+    when "insurance"
+
       # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      session.clear
+      session[:company] = "Blue Insurance"
+      # session[:industry_resources] = ENV['INSURANCE_RESOURCES']
+      session[:create_claim] = "on"
+      session[:background] = 'https://platform-staging.box.com/shared/static/7bmw68id15gxv4sxixnnfttxmvjvwv47.png'
+      session[:logo] = 'https://platform-staging.box.com/shared/static/8dr0t56a218bfk92sop0op4d6zct9jz6.png'
+      session[:alt_text] = "{\"My Vault\" : \"Insurance Documents\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared insurance documents\",
+                             \"Shared Files\" : \"Shared (with Agent)\",
+                             \"Resources\" : \"Education\",
+                             \"Find relevant content, fast\" : \"Browse educational insurance documents\",
+                             \"Onboarding Tasks\" : \"Incident Report Form\"}"
+      session[:industry] = "insurance"
 
     else
     end
@@ -265,6 +286,8 @@ class ConfigController < SecuredController
       industryParentItems = client.folder_items(ENV['FINSERV_VAULT_CONTENT'], fields: [:id, :type])
     when "healthcare"
       industryParentItems = client.folder_items(ENV['HEALTHCARE_VAULT_CONTENT'], fields: [:id, :type])
+    when "insurance"
+      industryParentItems = client.folder_items(ENV['INSURANCE_VAULT_CONTENT'], fields: [:id, :type])
     else
     end
 
