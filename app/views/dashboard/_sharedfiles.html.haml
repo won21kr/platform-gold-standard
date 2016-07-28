@@ -8,7 +8,7 @@
     %tbody
       / list file contents
       - @sharedFiles.each_with_index do |f, i|
-        %tr
+        %tr{:id => "#{f.id}"}
           %td{:style => "z-index: 99999999", "data-intro" => i==0 ? "Edit file names. Box File ID's remain unchanged so paths to the file will never break." : nil,  "data-position" => i==0 ? "left" : nil}
             = link_to view_doc_path(f.id, folder: @sharedFolder.id) do
               = image_tag(thumbnail_url(f.id), width: '40px')
@@ -21,10 +21,10 @@
             = DateTime.strptime(f.modified_at).strftime("%B %d, %Y %l:%M %p")
           / file action options
           %td{"data-intro" => i==0 ? "View, Unshare, Download, and Delete files from Box" : nil,  "data-position" => i==0 ? "left" : nil}
-            %a.dropdown-button.white.btn{"data-activates" => "sharefileOptions", :href => "#", :style => "padding-left: 7px; padding-right: 7px"}
+            %a.dropdown-button.white.btn{"data-activates" => "options#{f.id}", :href => "#", :style => "padding-left: 7px; padding-right: 7px"}
               %span.fa.fa-ellipsis-h{:style => "text-decoration: none; color: #263238; font-size: 150%; margin-top: 9px"}
 
-            %ul#sharefileOptions.dropdown-content.dropdown-options
+            %ul.dropdown-content.dropdown-options{:id => "options#{f.id}"}
               %li
                 %a.vault-dropdown-item{href: view_doc_path(f.id, folder: @sharedFolder.id)}
                   %span.glyphicon.glyphicon-eye-open{:style => "top: 3px;"}
