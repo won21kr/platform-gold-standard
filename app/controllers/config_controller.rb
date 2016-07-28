@@ -184,7 +184,7 @@ class ConfigController < SecuredController
       session[:loan_docs] = 'on'
       session[:tax_return] = 'on'
       session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
-      session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
+      # session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
       session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
                              \"My Files\" : \"Personal\",
                              \"Your personal and shared files\" : \"You personal and shared financial documents\",
@@ -204,7 +204,7 @@ class ConfigController < SecuredController
       session.clear
       session[:company] = "Blue Care"
       session[:industry_resources] = ENV['HEALTHCARE_RESOURCES']
-      session[:background] = 'https://platform-staging.box.com/shared/static/0mh4ysttxj5h8wg742iovy3hmdj4umvj.png'
+      # session[:background] = 'https://platform-staging.box.com/shared/static/0mh4ysttxj5h8wg742iovy3hmdj4umvj.png'
       session[:logo] = 'https://platform-staging.box.com/shared/static/lc6swn86txsxzysb5phhgcjm54bbunwd.png'
       session[:alt_text] = "{\"My Vault\" : \"Patient Vault\",
                              \"My Files\" : \"Personal\",
@@ -226,7 +226,7 @@ class ConfigController < SecuredController
       session[:company] = "Blue Insurance"
       # session[:industry_resources] = ENV['INSURANCE_RESOURCES']
       session[:create_claim] = "on"
-      session[:background] = 'https://platform-staging.box.com/shared/static/7bmw68id15gxv4sxixnnfttxmvjvwv47.png'
+      # session[:background] = 'https://platform-staging.box.com/shared/static/7bmw68id15gxv4sxixnnfttxmvjvwv47.png'
       session[:logo] = 'https://platform-staging.box.com/shared/static/8dr0t56a218bfk92sop0op4d6zct9jz6.png'
       session[:alt_text] = "{\"My Vault\" : \"Insurance Documents\",
                              \"My Files\" : \"Personal\",

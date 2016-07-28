@@ -76,9 +76,15 @@
             %b Custom Branding
             .br{:style => "margin-bottom: 12px"}
 
-            %label.label-div{:for => "company", :style => "color: black"} Company Name
-            %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
-
+            .row
+              .col.s6
+                %label.label-div{:for => "company", :style => "color: black"} Company Name (real opportunity)
+                %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
+              .col.s1{:style => "margin-top: 20px"}
+                %p or
+              .col.s5{:style => "margin-top: 20px"}
+                %input.form-control#company1{:type => "radio", :name => "company-radio", :style => "color: black"}
+                %label.label-div{:for => "company-radio", :style => "color: black"} Not a real opp
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "http://www.example.com/logo.png", :style => "color: black", :value => session[:logo]}
