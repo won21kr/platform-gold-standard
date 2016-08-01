@@ -90,6 +90,7 @@ class ConfigController < SecuredController
 
     session[:company] = params[:company]
     session[:logo] = params[:logo]
+    session[:realopp] = params[:realopp]
 
     if !params[:navbar_color].blank? and params[:navbar_color] != ""
       if (params[:navbar_color][0] == '#')
@@ -102,7 +103,6 @@ class ConfigController < SecuredController
     end
 
     session[:background] = params[:background]
-    ap params[:alt_text]
     session[:alt_text] = params[:alt_text]
 
     # Okta configuration
@@ -312,6 +312,7 @@ class ConfigController < SecuredController
 
     configuration[:username] = session[:userinfo]['info']['name'] unless session[:userinfo].blank?
     configuration[:company] = session[:company] unless session[:company].blank?
+    configuration[:realopp] = session[:realopp] unless session[:realopp].blank?
     configuration[:okta] = session[:okta] unless session[:okta] != "on"
     configuration[:logo_url] = session[:logo] unless session[:logo].blank?
     configuration[:home_url] = session[:background] unless session[:background].blank?

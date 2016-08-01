@@ -71,20 +71,23 @@
         %h6{:style => "margin-top: 20px; margin-bottom: 25px;"}
           Build Your App Below
       .col.s10.push-s1.hide_below_480{:style => "margin-bottom: 40px"}
+
         %form{:action => save_config_path, :method => "post", :role => "form"}
           .col.s6
             %b Custom Branding
             .br{:style => "margin-bottom: 12px"}
 
+            %label.label-div{:for => "company", :style => "color: black"} Company Name
+            %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
+
             .row
-              .col.s6
-                %label.label-div{:for => "company", :style => "color: black"} Company Name (real opportunity)
-                %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
-              .col.s1{:style => "margin-top: 20px"}
-                %p or
-              .col.s5{:style => "margin-top: 20px"}
-                %input.form-control#company1{:type => "radio", :name => "company-radio", :style => "color: black"}
-                %label.label-div{:for => "company-radio", :style => "color: black"} Not a real opp
+              .col.s8
+                %label.label-div{:for => "realopp", :style => "color: black"} Is this demo attached to a real opportunity? *required
+              .col.s4
+                %input.form-control.validate#realopp-yes{:type => "radio", :name => "realopp", :style => "color: black", :value => "yes", :required => "required"}
+                %label.label-div{:for => "realopp-yes", :style => "color: black; margin-right: 10px"} Yes
+                %input.form-control.validate#realopp-no{:type => "radio", :name => "realopp", :style => "color: black", :value => "no"}
+                %label.label-div{:for => "realopp-no", :style => "color: black;"} No
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "http://www.example.com/logo.png", :style => "color: black", :value => session[:logo]}
@@ -94,15 +97,15 @@
 
             %label.label-div{:for => "industry", :style => "color: black; margin-bottom: 20px"} Preconfigured Industries
             %br{:style => "margin-bottom: 20px"}
-            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none"} -- Industry Select --
+            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none; width: 260px"} Industry Select
             %br
             %ul.dropdown-content{:id => "industry-drop"}
               %li
-                = link_to "Wealth Management", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+                = link_to "Finserv - Wealth Management", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+              -# %li
+              -#   = link_to "Insurance", configure_industry_path(:industry => "insurance"), :style => "text-decoration: none"
               %li
-                = link_to "Insurance", configure_industry_path(:industry => "insurance"), :style => "text-decoration: none"
-              %li
-                = link_to "Healthcare", configure_industry_path(:industry => "healthcare"), :style => "text-decoration: none"
+                = link_to "Healthcare - Patient Portal", configure_industry_path(:industry => "healthcare"), :style => "text-decoration: none"
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
@@ -250,6 +253,7 @@
           We take <a href="https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/edit">feedback</a> seriously.     &nbsp;&nbsp;-DemoEng
 
 :javascript
+
   $(document).ready(function() {
     $('select').material_select();
   });
