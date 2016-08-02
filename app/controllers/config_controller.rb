@@ -237,10 +237,40 @@ class ConfigController < SecuredController
                              \"Onboarding Tasks\" : \"Incident Report Form\"}"
       session[:industry] = "insurance"
 
+    when "nonprofit"
+
+      auth = nil
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      if !session[:okta].nil? and session[:okta] == 'on'
+        auth = "okta"
+      end
+
+      session.clear
+      session[:company] = "Impact Cloud"
+      session[:industry_resources] = ENV['NONPROFIT_RESOURCES']
+      session[:logo] = 'https://platform-staging.box.com/shared/static/8drrkvwgfurgm2cedn5yfx9kf4lfbsji.png'
+      session[:alt_text] = "{\"My Vault\" : \"Disaster Site Captures\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared disaster site captures\",
+                             \"Shared Files\" : \"Shared (with org)\",
+                             \"Resources\" : \"Volunteering Resources\",
+                             \"Find relevant content, fast\" : \"Browse relevant volunteer resources\",
+                             \"Onboarding Tasks\" : \"Volunteer Agreement\"}"
+      session[:industry] = "nonprofit"
+
+      # turn on okta auth
+      if (auth == "okta")
+        session[:okta] = "on"
+      end
+
     else
     end
 
-    redirect_to '/home'
+    redirect_to '/'
   end
 
   private
@@ -288,6 +318,8 @@ class ConfigController < SecuredController
       industryParentItems = client.folder_items(ENV['HEALTHCARE_VAULT_CONTENT'], fields: [:id, :type])
     when "insurance"
       industryParentItems = client.folder_items(ENV['INSURANCE_VAULT_CONTENT'], fields: [:id, :type])
+    when "nonprofit"
+      industryParentItems = client.folder_items(ENV['NONPROFIT_VAULT_CONTENT'], fields: [:id, :type])
     else
     end
 

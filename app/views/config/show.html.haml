@@ -84,9 +84,9 @@
               .col.s8
                 %label.label-div{:for => "realopp", :style => "color: black"} Is this demo attached to a real opportunity? *required
               .col.s4
-                %input.form-control.validate#realopp-yes{:type => "radio", :name => "realopp", :style => "color: black", :value => "yes", :required => "required"}
+                %input.form-control.validate#realopp-yes{:type => "radio", :name => "realopp", :style => "color: black", :value => "yes", :required => "required", :checked => session[:realopp] == "yes" ? true : false}
                 %label.label-div{:for => "realopp-yes", :style => "color: black; margin-right: 10px"} Yes
-                %input.form-control.validate#realopp-no{:type => "radio", :name => "realopp", :style => "color: black", :value => "no"}
+                %input.form-control.validate#realopp-no{:type => "radio", :name => "realopp", :style => "color: black", :value => "no", :checked => session[:realopp] == "no" ? true : false}
                 %label.label-div{:for => "realopp-no", :style => "color: black;"} No
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
@@ -97,7 +97,7 @@
 
             %label.label-div{:for => "industry", :style => "color: black; margin-bottom: 20px"} Preconfigured Industries
             %br{:style => "margin-bottom: 20px"}
-            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none; width: 260px"} Industry Select
+            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none; width: 280px"} Industry Select
             %br
             %ul.dropdown-content{:id => "industry-drop"}
               %li
@@ -106,6 +106,9 @@
               -#   = link_to "Insurance", configure_industry_path(:industry => "insurance"), :style => "text-decoration: none"
               %li
                 = link_to "Healthcare - Patient Portal", configure_industry_path(:industry => "healthcare"), :style => "text-decoration: none"
+              %li
+                = link_to "Nonprofit - Emergency Response", configure_industry_path(:industry => "nonprofit"), :style => "text-decoration: none"
+
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings

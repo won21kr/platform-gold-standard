@@ -15,7 +15,7 @@ class SearchController < SecuredController
     session[:current_page] = "search"
     mixpanel_tab_event("Resources", "Main Page")
 
-    # has this been configured for an industry?    
+    # has this been configured for an industry?
     if (!session[:industry_resources].nil?)
       @industry = true
       resourceFolderId = session[:industry_resources]
