@@ -11,35 +11,29 @@ class SearchController < SecuredController
     # get user client to make API calls
     client = user_client
     @results = nil
+    @industry = false
     session[:current_page] = "search"
     mixpanel_tab_event("Resources", "Main Page")
 
-    # get root resource folder
-    @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 15.minutes) do
-      puts "miss"
-      client.folder_from_id(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :size])
-    end
+    # has this been configured for an industry?
+    if (!session[:industry_resources].nil?)
+      @industry = true
+      resourceFolderId = session[:industry_resources]
 
-    # check if search query was entered
-    if((params[:search].nil? or params[:search][:query] == "") and params[:filter_query].nil?)
-      # search query was not entered
-
-      # Check if we are in the root resource folder or a sub-resource folder
+      # get root industry resource folder
+      resource = Rails.cache.fetch("/resource_folder/#{resourceFolderId}", :expires_in => 15.minutes) do
+        puts "miss"
+        client.folder_from_id(resourceFolderId, fields: [:id, :name, :size])
+      end
+      # need roots, subname, and results
       if(params[:folder_id].nil?)
-        # in root resource folder
-
-        # get resource subfolder objects
-        @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/subfolers", :expires_in => 15.minutes) do
-          client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :content_modified_at, :description])
-        end
-
-        # tell view that we are in the root resource folder
         @root = true
+        @results = Rails.cache.fetch("/resource_folder/#{resourceFolderId}/subfolders", :expires_in => 15.minutes) do
+          client.folder_items(resourceFolderId, fields: [:id, :name, :content_modified_at, :description])
+        end
       else
-        # in a resource subfolder
-
         # get subfolder contents and subfolder name
-        @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/#{params[:folder_id]}", :expires_in => 15.minutes) do
+        @results = Rails.cache.fetch("/resource_folder/#{resourceFolderId}/#{params[:folder_id]}", :expires_in => 15.minutes) do
           puts "miss"
           client.folder_items(params[:folder_id], fields: [:id, :name, :created_at, :parent])
         end
@@ -47,76 +41,115 @@ class SearchController < SecuredController
         # get subfolder
         subFolder = @results.first.parent
         @subName = subFolder.name
-        session[:current]
       end
+
+    # get generic resource folder
     else
-      # a search query was enterd
 
-      # search based on search text query or filter query
-      if(!params[:search].nil?)
-        @text = params[:search][:query]
-      else
-        @text = params[:filter_query]
+      # get root resource folder
+      @resource = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}", :expires_in => 15.minutes) do
+        puts "miss"
+        client.folder_from_id(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :size])
       end
 
-      # perform Box search, get results
-      if (!params[:search].nil?)
-        @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
-        @search_type = "file name"
-        mixpanel_tab_event("Resources", "Search File Name")
-      elsif (params[:filter] == "file_type")
-        @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
-        @search_type = "file type"
-        mixpanel_tab_event("Resources", "Search File Type")
-      else
-        mixpanel_tab_event("Resources", "Search Metadata")
-        mdfilters = {"templateKey" => "#{ENV['METADATA_KEY']}", "scope" => "enterprise",
-                     "filters" => {"#{params["key"]}" => "#{params["filter_query"]}"}}
-        @results = client.search(mdfilters: mdfilters, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
-        # @search_type = params["key"]
+      # check if search query was entered
+      if((params[:search].nil? or params[:search][:query] == "") and params[:filter_query].nil?)
+        # search query was not entered
 
-        # little hack to change message name
-        if(params["key"] == 'type')
-          @search_type = "category"
-        elsif(params["key"] == 'audience')
-          @search_type = "privacy"
-        end
-      end
+        # Check if we are in the root resource folder or a sub-resource folder
+        if(params[:folder_id].nil?)
+          # in root resource folder
 
-      @results = @results.files
-    end
+          # get resource subfolder objects
+          @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/subfolders", :expires_in => 15.minutes) do
+            client.folder_items(ENV['RESOURCE_FOLDER'], fields: [:id, :name, :content_modified_at, :description])
+          end
 
-    # set current folder session variable
-    if (!@subName.nil?)
-      session[:rfolder] = subFolder.id
-    else
-      session[:rfolder] = ""
-    end
+          # tell view that we are in the root resource folder
+          @root = true
+        else
+          # in a resource subfolder
 
-
-    # attach metadata to each result file if we're not in the root folder
-    if (@root.nil?)
-      @results.each do |r|
-        class << r
-          attr_accessor :type, :audience
-        end
-
-        begin
-          meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 15.minutes) do
+          # get subfolder contents and subfolder name
+          @results = Rails.cache.fetch("/resource_folder/#{ENV['RESOURCE_FOLDER']}/#{params[:folder_id]}", :expires_in => 15.minutes) do
             puts "miss"
-            client.all_metadata(r)["entries"]
+            client.folder_items(params[:folder_id], fields: [:id, :name, :created_at, :parent])
           end
 
-          meta.each do |m|
-            if (m["$template"] == "#{ENV['METADATA_KEY']}")
-              r.type = m["type"]
-              r.audience = m["audience"]
+          # get subfolder
+          subFolder = @results.first.parent
+          @subName = subFolder.name
+          session[:current]
+        end
+      else
+        # a search query was enterd
+
+        # search based on search text query or filter query
+        if(!params[:search].nil?)
+          @text = params[:search][:query]
+        else
+          @text = params[:filter_query]
+        end
+
+        # perform Box search, get results
+        if (!params[:search].nil?)
+          @results = client.search(@text, content_types: :name, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+          @search_type = "file name"
+          mixpanel_tab_event("Resources", "Search File Name")
+        elsif (params[:filter] == "file_type")
+          @results = client.search(@text, content_types: :name, file_extensions: @text, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+          @search_type = "file type"
+          mixpanel_tab_event("Resources", "Search File Type")
+        else
+          mixpanel_tab_event("Resources", "Search Metadata")
+          mdfilters = {"templateKey" => "#{ENV['METADATA_KEY']}", "scope" => "enterprise",
+                       "filters" => {"#{params["key"]}" => "#{params["filter_query"]}"}}
+          @results = client.search(mdfilters: mdfilters, ancestor_folder_ids: ENV['RESOURCE_FOLDER'])
+          # @search_type = params["key"]
+
+          # little hack to change message name
+          if(params["key"] == 'type')
+            @search_type = "category"
+          elsif(params["key"] == 'audience')
+            @search_type = "privacy"
+          end
+        end
+
+        @results = @results.files
+      end
+
+      # set current folder session variable
+      if (!@subName.nil?)
+        session[:rfolder] = subFolder.id
+      else
+        session[:rfolder] = ""
+      end
+
+
+      # attach metadata to each result file if we're not in the root folder
+      if (@root.nil?)
+        @results.each do |r|
+          class << r
+            attr_accessor :type, :audience
+          end
+
+          begin
+            meta = Rails.cache.fetch("/metadata/#{r.id}", :expires_in => 15.minutes) do
+              puts "miss"
+              client.all_metadata(r)["entries"]
             end
-          end
 
-        rescue
-          r.type = ""
-          r.audience = ""
+            meta.each do |m|
+              if (m["$template"] == "#{ENV['METADATA_KEY']}")
+                r.type = m["type"]
+                r.audience = m["audience"]
+              end
+            end
+
+          rescue
+            r.type = ""
+            r.audience = ""
+          end
         end
       end
     end

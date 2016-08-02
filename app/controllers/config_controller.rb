@@ -30,6 +30,7 @@ class ConfigController < SecuredController
       session[:dicom_viewer] = "off"
       # session[:media_content] = "off"
       session[:eventstream] = "off"
+      session[:product_supply] = "off"
 
       # Okta
       session[:okta] = "off"
@@ -88,6 +89,7 @@ class ConfigController < SecuredController
 
     session[:company] = params[:company]
     session[:logo] = params[:logo]
+    session[:realopp] = params[:realopp]
 
     if !params[:navbar_color].blank? and params[:navbar_color] != ""
       if (params[:navbar_color][0] == '#')
@@ -118,10 +120,11 @@ class ConfigController < SecuredController
     session[:dicom_viewer] = !params[:dicom_viewer].blank? ? 'on' : 'off'
     # session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
+    session[:product_supply] = !params[:product_supply].blank? ? 'on' : 'off'
 
     # capture all user data and upload to csv, only if in production
     if (ENV['RACK_ENV'] == 'production')
-      capture_user_data
+      # capture_user_data
       # Mixpanel capture event
       mixpanel_capture
     end
@@ -158,7 +161,177 @@ class ConfigController < SecuredController
     redirect_to config_path
   end
 
+  # configure the app for a certain industry
+  def configure_industry
+
+    industry = params[:industry]
+
+    case industry
+    when "finserv"
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      session.clear
+      session[:company] = "Blue Advisors"
+      session[:industry_resources] = ENV['FINSERV_RESOURCES']
+      session[:loan_docs] = 'on'
+      session[:tax_return] = 'on'
+      session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
+      # session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
+      session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared financial documents\",
+                             \"Shared Files\" : \"Shared (with Advisor)\",
+                             \"Resources\" : \"Client Resources\",
+                             \"Find relevant content, fast\" : \"Browse relevant financial documents\",
+                             \"Onboarding Tasks\" : \"Tax Return Form\"}"
+      session[:industry] = "finserv"
+
+    when "healthcare"
+
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      session.clear
+      session[:company] = "Blue Care"
+      session[:industry_resources] = ENV['HEALTHCARE_RESOURCES']
+      # session[:background] = 'https://platform-staging.box.com/shared/static/0mh4ysttxj5h8wg742iovy3hmdj4umvj.png'
+      session[:logo] = 'https://platform-staging.box.com/shared/static/lc6swn86txsxzysb5phhgcjm54bbunwd.png'
+      session[:alt_text] = "{\"My Vault\" : \"Patient Vault\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared medical documents\",
+                             \"Shared Files\" : \"Shared (with Physician)\",
+                             \"Resources\" : \"Patient Education\",
+                             \"Find relevant content, fast\" : \"Browse relevant medical documents\",
+                             \"Onboarding Tasks\" : \"Medical Release Form\"}"
+      session[:industry] = "healthcare"
+
+    when "insurance"
+
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      session.clear
+      session[:company] = "Blue Insurance"
+      # session[:industry_resources] = ENV['INSURANCE_RESOURCES']
+      session[:create_claim] = "on"
+      # session[:background] = 'https://platform-staging.box.com/shared/static/7bmw68id15gxv4sxixnnfttxmvjvwv47.png'
+      session[:logo] = 'https://platform-staging.box.com/shared/static/8dr0t56a218bfk92sop0op4d6zct9jz6.png'
+      session[:alt_text] = "{\"My Vault\" : \"Insurance Documents\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"You personal and shared insurance documents\",
+                             \"Shared Files\" : \"Shared (with Agent)\",
+                             \"Resources\" : \"Education\",
+                             \"Find relevant content, fast\" : \"Browse educational insurance documents\",
+                             \"Onboarding Tasks\" : \"Incident Report Form\"}"
+      session[:industry] = "insurance"
+
+    when "nonprofit"
+
+      auth = nil
+      # copy over files + folders
+      if session[:userinfo].present?
+        copy_content(industry)
+      end
+
+      if !session[:okta].nil? and session[:okta] == 'on'
+        auth = "okta"
+      end
+
+      session.clear
+      session[:company] = "Impact Cloud"
+      session[:industry_resources] = ENV['NONPROFIT_RESOURCES']
+      session[:logo] = 'https://platform-staging.box.com/shared/static/8drrkvwgfurgm2cedn5yfx9kf4lfbsji.png'
+      session[:alt_text] = "{\"My Vault\" : \"Disaster Site Captures\",
+                             \"My Files\" : \"Personal\",
+                             \"Your personal and shared files\" : \"Your personal and shared disaster site captures\",
+                             \"Shared Files\" : \"Shared (with org)\",
+                             \"Resources\" : \"Volunteering Resources\",
+                             \"Find relevant content, fast\" : \"Browse relevant volunteer resources\",
+                             \"Onboarding Tasks\" : \"Volunteer Agreement\"}"
+      session[:industry] = "nonprofit"
+
+      # turn on okta auth
+      if (auth == "okta")
+        session[:okta] = "on"
+      end
+
+    else
+    end
+
+    redirect_to '/'
+  end
+
   private
+
+  # delete all vault content and replace with predefined industry folder structure
+  def copy_content(industry)
+
+    puts "copying content..."
+    client = user_client
+    threads = []
+
+    # get "My Files" and "Shared Files" folder objects
+    myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
+      client.folder_from_path('My Files')
+    end
+    myFolderContents = client.folder_items(myFolder, fields: [:id, :type])
+
+    sharedFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/shared_folder", :expires_in => 10.minutes) do
+      client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files")
+    end
+    sharedFolderContents = client.folder_items(sharedFolder, fields: [:id]).files
+
+    # delete vault folder contents
+    myFolderContents.each do |f|
+      if (f.type == "folder")
+        client.delete_folder(f, recursive: true)
+      else
+        client.delete_file(f)
+      end
+    end
+
+    sharedFolderContents.each do |f|
+      threads << Thread.new do
+        client.delete_file(f)
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+    # fetch industry folder items
+    case industry
+    when "finserv"
+      industryParentItems = client.folder_items(ENV['FINSERV_VAULT_CONTENT'], fields: [:id, :type])
+    when "healthcare"
+      industryParentItems = client.folder_items(ENV['HEALTHCARE_VAULT_CONTENT'], fields: [:id, :type])
+    when "insurance"
+      industryParentItems = client.folder_items(ENV['INSURANCE_VAULT_CONTENT'], fields: [:id, :type])
+    when "nonprofit"
+      industryParentItems = client.folder_items(ENV['NONPROFIT_VAULT_CONTENT'], fields: [:id, :type])
+    else
+    end
+
+    # copy industry folder items over
+    industryParentItems.each do |f|
+      threads << Thread.new do
+        if f.type == "folder"
+          client.copy_folder(f, myFolder)
+        else
+          client.copy_file(f, myFolder)
+        end
+      end
+    end
+
+    threads.each { |thr| thr.join }
+
+  end
 
   def mixpanel_capture
 
@@ -166,6 +339,7 @@ class ConfigController < SecuredController
 
     configuration[:username] = session[:userinfo]['info']['name'] unless session[:userinfo].blank?
     configuration[:company] = session[:company] unless session[:company].blank?
+    configuration[:realopp] = session[:realopp] unless session[:realopp].blank?
     configuration[:okta] = session[:okta] unless session[:okta] != "on"
     configuration[:logo_url] = session[:logo] unless session[:logo].blank?
     configuration[:home_url] = session[:background] unless session[:background].blank?
@@ -212,6 +386,7 @@ class ConfigController < SecuredController
     query["dicom_viewer"] = session[:dicom_viewer]
     # query["media_content"] = session[:media_content]
     query["eventstream"] = session[:eventstream]
+    query["product_supply"] = session[:product_supply]
 
     session[:config_url] = template.expand({"query" => query})
     puts "config_url: " + session[:config_url]

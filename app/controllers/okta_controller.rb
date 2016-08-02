@@ -8,7 +8,6 @@ class OktaController < ApplicationController
     session[:userinfo] =  {}
     session[:userinfo]['info'] = {}
 
-
     # Get User Box ID from Okta
     okta_client = HTTPClient.new
     headers = {"Authorization" => "SSWS #{ENV['OKTA_TOKEN']}",
@@ -81,8 +80,8 @@ class OktaController < ApplicationController
       query[:profile] = {}
       query[:profile][:boxId] = session[:box_id]
       res = okta_client.post(uri, body: Oj.dump(query), header: headers)
-      mixpanel_capture
 
+      mixpanel_capture
       setup_box_account
       redirect_to dashboard_path
     end

@@ -71,6 +71,7 @@
         %h6{:style => "margin-top: 20px; margin-bottom: 25px;"}
           Build Your App Below
       .col.s10.push-s1.hide_below_480{:style => "margin-bottom: 40px"}
+
         %form{:action => save_config_path, :method => "post", :role => "form"}
           .col.s6
             %b Custom Branding
@@ -79,12 +80,35 @@
             %label.label-div{:for => "company", :style => "color: black"} Company Name
             %input.form-control#company{:type => "text", :name => "company", :placeholder => "Box", :style => "color: black", :value => session[:company]}
 
+            .row
+              .col.s8
+                %label.label-div{:for => "realopp", :style => "color: black"} Is this demo attached to a real opportunity? *required
+              .col.s4
+                %input.form-control.validate#realopp-yes{:type => "radio", :name => "realopp", :style => "color: black", :value => "yes", :required => "required", :checked => session[:realopp] == "yes" ? true : false}
+                %label.label-div{:for => "realopp-yes", :style => "color: black; margin-right: 10px"} Yes
+                %input.form-control.validate#realopp-no{:type => "radio", :name => "realopp", :style => "color: black", :value => "no", :checked => session[:realopp] == "no" ? true : false}
+                %label.label-div{:for => "realopp-no", :style => "color: black;"} No
 
             %label.label-div{:for => "logo", :style => "color: black"} Company Logo URL
             %input.form-control#logo{:type => "text", :name => "logo", :placeholder => "http://www.example.com/logo.png", :style => "color: black", :value => session[:logo]}
 
             %label.label-div{:for => "navbar_color", :style => "color: black"} Logo Background Color
             %input.form-control#navbar_color{:type => "text", :name => "navbar_color", :placeholder => "FFFFFF", :style => "color: black", :value => session[:navbar_color]}
+
+            %label.label-div{:for => "industry", :style => "color: black; margin-bottom: 20px"} Preconfigured Industries
+            %br{:style => "margin-bottom: 20px"}
+            %a.dropdown-button.btn.white{"data-activates" => "industry-drop", :href => "#!", :style => "color: black; margin-bottom: 30px; margin-top: 15px; text-decoration: none; width: 280px"} Industry Select
+            %br
+            %ul.dropdown-content{:id => "industry-drop"}
+              %li
+                = link_to "Finserv - Wealth Management", configure_industry_path(:industry => "finserv"), :style => "text-decoration: none"
+              -# %li
+              -#   = link_to "Insurance", configure_industry_path(:industry => "insurance"), :style => "text-decoration: none"
+              %li
+                = link_to "Healthcare - Patient Portal", configure_industry_path(:industry => "healthcare"), :style => "text-decoration: none"
+              %li
+                = link_to "Nonprofit - Emergency Response", configure_industry_path(:industry => "nonprofit"), :style => "text-decoration: none"
+
 
             -# Advanced features
             %a.tooltipped{"data-toggle" => "collapse", :href => "#demo", :style => "text-decoration: none", 'data-position'=>"right", 'data-delay'=>"50", 'data-tooltip'=>"Expand"} Advanced Settings
@@ -106,7 +130,6 @@
                   %label.checkbox{:for => "okta", :style => "color: black"} Use Okta as 3rd-party auth
               .col.s1
                 %a.btn.waves-effect.white.black-text{:style => "font-size: 80%; font-color: #263238 !important; text-decoration: none; margin-top: 30px; padding: 0px 0.4rem; margin-left: -10px", :href => "/home"} Preview
-
 
 
           .col.s5.push-s1
@@ -151,6 +174,9 @@
             %p
               %input#eventstream{:type => "checkbox", :name => "eventstream", :checked => session[:eventstream] == 'on'}
               %label.checkbox.less_lineheight.longer_name_elipses{:for => "eventstream", :style => "color: black"} Box Events
+            %p
+              %input#product_supply{:type => "checkbox", :name => "product_supply", :checked => session[:product_supply] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "product_supply", :style => "color: black"} Product Supply (In development)
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit
@@ -211,6 +237,8 @@
                 -#   = ", Media Content"
                 - if (session[:eventstream] == 'on')
                   = ", Box Events"
+                - if (session[:product_supply] == 'on')
+                  = ", Product Supply"
             %tr
               %td Encoded Configuration URL:
               %td{:style => "word-wrap: break-word; min-width: 260px; max-width: 260px"}
@@ -230,6 +258,7 @@
           We take <a href="https://docs.google.com/forms/d/12H3Djqazr__eIH15bXEShxHGGqw20ljjMnh28LWmm_Y/edit">feedback</a> seriously.     &nbsp;&nbsp;-DemoEng
 
 :javascript
+
   $(document).ready(function() {
     $('select').material_select();
   });
@@ -238,3 +267,8 @@
   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
   });
+
+  $('.dropdown-button').dropdown({
+      constrain_width: false // Does not change width of dropdown to that of the activator
+    }
+  );

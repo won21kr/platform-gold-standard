@@ -18,7 +18,7 @@ class HomeController < ApplicationController
 
   def login
     puts "login background page"
-    mixpanel_tab_event("Home Page", "Home Background Screen")
+    # mixpanel_tab_event("Home Page", "Home Background Screen")
   end
 
   def reset_logins

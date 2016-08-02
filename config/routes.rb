@@ -109,6 +109,7 @@ Rails.application.routes.draw do
   # config page
   get '/config' => "config#show", :as => 'config'
   get '/config-reset' => "config#reset_config", :as => "reset_config"
+  get '/config-industry' => "config#configure_industry", :as => "configure_industry"
   post '/config' => "config#post_config", :as => "save_config"
 
   # tax return
@@ -155,6 +156,15 @@ Rails.application.routes.draw do
   get 'shared_link' => "request_for_proposal#enable_shared_link", :as => "rfp_enable_shared_link"
   get 'disable_shared_link' => "request_for_proposal#disable_shared_link", :as => "rfp_disable_shared_link"
   post "/rfp_send_grid_message" => "request_for_proposal#send_grid_method", :as => "rfp_send_grid"
+
+  # product supply
+  get "/product-supply" => "product_supply#show", :as => "product_supply"
+  post "/update-cart" => "product_supply#update_cart"
+  post "/order-supplies" => "product_supply#order_supplies"
+  get "/order-sign/:file_id" => "product_supply#order_docusign", :as => "order_docusign"
+  get "docusign_response_order/:envelope_id" => "product_supply#docusign_response_order", :as => "docusign_response_order"
+  get "/reset-orders" => "product_supply#product_supply_reset", :as => "product_supply_reset"
+
 
   #third-party api's
   post "/send_twilio_message" => "config#twilio_method"

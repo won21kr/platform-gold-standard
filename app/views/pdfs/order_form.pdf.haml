@@ -1,0 +1,38 @@
+%form#ss-form{:action => "https://docs.google.com/forms/d/1uvzLN_vS2y9v9wgjItIG9m3qSH8Q6RB1qVgFVnEvdbU/formResponse", :method => "POST", :onsubmit => "", :target => "_self"}
+.panel.panel-primary
+  .panel-heading
+
+  .panel-title.pull-right
+  %h1
+    Supply Order Form -
+    = @info[:username]
+  -# = wicked_pdf_image_tag "medical.png", :width => 1050, :padding =>20, :style => "border-bottom: 3px solid black;  width:1100px;"
+  %ol.ss-question-list{:role => "list", :style => "padding-left: 0"}
+  .panel.panel-primary
+  %h2.panel-heading.center
+    .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px;margin-top:10px; border-radius: 20px !important;"}
+      .errorbox-good{:role => "listitem"}
+        .ss-item.ss-section-header{:dir => "auto"}
+          .ss-form-entry
+            %h3.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} Order
+            .ss-section-description.ss-no-ignore-whitespace
+
+      %table.table
+        %thead
+          %tr
+            %th Product
+            %th Quantity
+        %tbody
+          - @info[:orders].each do |item|
+            %tr
+              %td
+                = item['name']
+              %td
+                = item['value']
+
+      .ss-q-title{:style =>"margin-top: 30px"}
+        = "#{DateTime.now.strftime("%B %d, %Y %l:%M %p")}"
+
+%h3.panel-heading.center
+  .panel-body{:style => "background-color:#fff; padding:15px; margin-left:5px;margin-top:10px; border-radius: 20px !important;"}
+    %h2.ss-section-title{:style=> "border-bottom: 2px solid black;  width:1030px;"} Signature:

@@ -323,6 +323,10 @@
     // overflow: hidden
     // text-overflow: ellipsis
 
+  .scrollable-sidenav
+    min-height: 77% !important
+    overflow-y: auto
+
   #mobile-menu
     display: none
 
@@ -330,12 +334,23 @@
     margin-left: 35px !important
 
 @media all and (min-width : 1225px) and (max-width : 1440px)
-
   .hide_above992
     display: none !important
 
   .hide_above768
     display: none !important
+
+  .scrollable-sidenav
+    min-height: 77%
+    overflow-y: auto
+
+// @media all and (min-width : 1441px) and (max-width : 100000px)
+//
+//   .hide_above992
+//     display: none !important
+//
+//   .hide_above768
+//     display: none !important
 
 @media all and (min-width : 1441px) and (max-width : 100000px)
 
@@ -344,6 +359,11 @@
 
   .hide_above768
     display: none !important
+
+  .scrollable-sidenav
+    min-height: 86%
+    overflow-y: auto
+
 
 
 
