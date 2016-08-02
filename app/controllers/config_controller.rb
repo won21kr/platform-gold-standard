@@ -255,7 +255,7 @@ class ConfigController < SecuredController
       session[:logo] = 'https://platform-staging.box.com/shared/static/8drrkvwgfurgm2cedn5yfx9kf4lfbsji.png'
       session[:alt_text] = "{\"My Vault\" : \"Disaster Site Captures\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared disaster site captures\",
+                             \"Your personal and shared files\" : \"Your personal and shared disaster site captures\",
                              \"Shared Files\" : \"Shared (with org)\",
                              \"Resources\" : \"Volunteering Resources\",
                              \"Find relevant content, fast\" : \"Browse relevant volunteer resources\",
