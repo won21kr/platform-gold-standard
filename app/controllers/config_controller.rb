@@ -156,7 +156,7 @@ class ConfigController < SecuredController
   # clear session
   def reset_config
     tracker = Mixpanel.client
-    event = tracker.track('1234', 'Configuration - Reset')
+    event = tracker.track(session[:box_id], 'Configuration - Reset')
     session.clear
     redirect_to config_path
   end
@@ -180,7 +180,7 @@ class ConfigController < SecuredController
       end
 
       if (ENV['RACK_ENV'] == 'production')
-        event = tracker.track(session[:box_id], 'Configuration - Industry', 'Financial Services - Wealth Management')
+        event = tracker.track(session[:box_id], 'Configuration - Industry', {"industry" => 'Financial Services - Wealth Management'})
       end
       session.clear
       session[:company] = "Blue Advisors"
@@ -205,7 +205,7 @@ class ConfigController < SecuredController
       end
 
       if (ENV['RACK_ENV'] == 'production')
-        event = tracker.track(session[:box_id], 'Configuration - Industry', 'Healthcare - Patient Portal')
+        event = tracker.track(session[:box_id], 'Configuration - Industry', {"industry" => 'Healthcare - Patient Portal'})
       end
       session.clear
       session[:company] = "Blue Care"
