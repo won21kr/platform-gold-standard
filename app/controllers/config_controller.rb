@@ -167,6 +167,11 @@ class ConfigController < SecuredController
     industry = params[:industry]
     tracker = Mixpanel.client
 
+    # if configured for okta
+    if !session[:okta].nil? and session[:okta] == 'on'
+      auth = "okta"
+    end
+
     case industry
     when "finserv"
       # copy over files + folders
@@ -243,10 +248,6 @@ class ConfigController < SecuredController
       # copy over files + folders
       if session[:userinfo].present?
         copy_content(industry)
-      end
-
-      if !session[:okta].nil? and session[:okta] == 'on'
-        auth = "okta"
       end
 
       session.clear
