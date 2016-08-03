@@ -165,6 +165,7 @@ class ConfigController < SecuredController
   def configure_industry
 
     industry = params[:industry]
+    tracker = Mixpanel.client
 
     case industry
     when "finserv"
@@ -173,16 +174,18 @@ class ConfigController < SecuredController
         copy_content(industry)
       end
 
+      if (ENV['RACK_ENV'] == 'production')
+        event = tracker.track(session[:box_id], 'Configuration - Industry', 'Financial Services - Wealth Management')
+      end
       session.clear
       session[:company] = "Blue Advisors"
       session[:industry_resources] = ENV['FINSERV_RESOURCES']
       session[:loan_docs] = 'on'
       session[:tax_return] = 'on'
-      session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
-      # session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
+      session[:logo] = 'https://platform-standard.box.com/shared/static/dr23u9ln8i7bhral3zu9sutt0svrtb7s.png'
       session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared financial documents\",
+                             \"Your personal and shared files\" : \"Your personal and shared financial documents\",
                              \"Shared Files\" : \"Shared (with Advisor)\",
                              \"Resources\" : \"Client Resources\",
                              \"Find relevant content, fast\" : \"Browse relevant financial documents\",
@@ -196,14 +199,16 @@ class ConfigController < SecuredController
         copy_content(industry)
       end
 
+      if (ENV['RACK_ENV'] == 'production')
+        event = tracker.track(session[:box_id], 'Configuration - Industry', 'Healthcare - Patient Portal')
+      end
       session.clear
       session[:company] = "Blue Care"
       session[:industry_resources] = ENV['HEALTHCARE_RESOURCES']
-      # session[:background] = 'https://platform-staging.box.com/shared/static/0mh4ysttxj5h8wg742iovy3hmdj4umvj.png'
-      session[:logo] = 'https://platform-staging.box.com/shared/static/lc6swn86txsxzysb5phhgcjm54bbunwd.png'
+      session[:logo] = 'https://platform-standard.box.com/shared/static/didaw2crgfw71jn0btat2n8qxyer5gii.png'
       session[:alt_text] = "{\"My Vault\" : \"Patient Vault\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared medical documents\",
+                             \"Your personal and shared files\" : \"Your personal and shared medical documents\",
                              \"Shared Files\" : \"Shared (with Physician)\",
                              \"Resources\" : \"Patient Education\",
                              \"Find relevant content, fast\" : \"Browse relevant medical documents\",
@@ -225,7 +230,7 @@ class ConfigController < SecuredController
       session[:logo] = 'https://platform-staging.box.com/shared/static/8dr0t56a218bfk92sop0op4d6zct9jz6.png'
       session[:alt_text] = "{\"My Vault\" : \"Insurance Documents\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared insurance documents\",
+                             \"Your personal and shared files\" : \"Your personal and shared insurance documents\",
                              \"Shared Files\" : \"Shared (with Agent)\",
                              \"Resources\" : \"Education\",
                              \"Find relevant content, fast\" : \"Browse educational insurance documents\",
@@ -344,6 +349,7 @@ class ConfigController < SecuredController
     configuration[:logo_url] = session[:logo] unless session[:logo].blank?
     configuration[:home_url] = session[:background] unless session[:background].blank?
     configuration[:alt_text] = session[:alt_text] unless session[:alt_text].blank?
+    configuration[:industry] = session[:industry] unless session[:industry].blank?
     # configuration[:tab_configuration] = tab_config
 
     tracker = Mixpanel.client
