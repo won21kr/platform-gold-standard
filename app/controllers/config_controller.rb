@@ -170,6 +170,12 @@ class ConfigController < SecuredController
   def configure_industry
 
     industry = params[:industry]
+    tracker = Mixpanel.client
+
+    # if configured for okta
+    if !session[:okta].nil? and session[:okta] == 'on'
+      auth = "okta"
+    end
 
     case industry
     when "finserv"
@@ -178,6 +184,9 @@ class ConfigController < SecuredController
         copy_content(industry)
       end
 
+      if (ENV['RACK_ENV'] == 'production')
+        event = tracker.track(session[:box_id], 'Configuration - Industry', {"industry" => 'Financial Services - Wealth Management'})
+      end
       session.clear
       session[:company] = "Blue Advisors"
       session[:industry_resources] = ENV['FINSERV_RESOURCES']
@@ -243,10 +252,6 @@ class ConfigController < SecuredController
       # copy over files + folders
       if session[:userinfo].present?
         copy_content(industry)
-      end
-
-      if !session[:okta].nil? and session[:okta] == 'on'
-        auth = "okta"
       end
 
       session.clear
