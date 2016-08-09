@@ -196,7 +196,7 @@ class ConfigController < SecuredController
       # session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
       session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared financial documents\",
+                             \"Your personal and shared files\" : \"Your personal and shared financial documents\",
                              \"Shared Files\" : \"Shared (with Advisor)\",
                              \"Resources\" : \"Client Resources\",
                              \"Find relevant content, fast\" : \"Browse relevant financial documents\",
@@ -217,7 +217,7 @@ class ConfigController < SecuredController
       session[:logo] = 'https://platform-staging.box.com/shared/static/lc6swn86txsxzysb5phhgcjm54bbunwd.png'
       session[:alt_text] = "{\"My Vault\" : \"Patient Vault\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared medical documents\",
+                             \"Your personal and shared files\" : \"Your personal and shared medical documents\",
                              \"Shared Files\" : \"Shared (with Physician)\",
                              \"Resources\" : \"Patient Education\",
                              \"Find relevant content, fast\" : \"Browse relevant medical documents\",
@@ -239,7 +239,7 @@ class ConfigController < SecuredController
       session[:logo] = 'https://platform-staging.box.com/shared/static/8dr0t56a218bfk92sop0op4d6zct9jz6.png'
       session[:alt_text] = "{\"My Vault\" : \"Insurance Documents\",
                              \"My Files\" : \"Personal\",
-                             \"Your personal and shared files\" : \"You personal and shared insurance documents\",
+                             \"Your personal and shared files\" : \"Your personal and shared insurance documents\",
                              \"Shared Files\" : \"Shared (with Agent)\",
                              \"Resources\" : \"Education\",
                              \"Find relevant content, fast\" : \"Browse educational insurance documents\",

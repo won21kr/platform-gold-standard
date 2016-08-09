@@ -14,7 +14,7 @@ class SearchController < SecuredController
     @industry = false
     session[:current_page] = "search"
     mixpanel_tab_event("Resources", "Main Page")
-
+    
     # has this been configured for an industry?
     if (!session[:industry_resources].nil?)
       @industry = true
