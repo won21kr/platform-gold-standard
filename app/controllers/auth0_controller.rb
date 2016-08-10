@@ -22,7 +22,12 @@ class Auth0Controller < ApplicationController
     end
 
     mixpanel_capture
-    redirect_to dashboard_path
+
+    if (session[:industry] == "nonprofit")
+      redirect_to workflow_path
+    else
+      redirect_to dashboard_path
+    end
   end
 
   def failure

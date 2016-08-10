@@ -80,6 +80,38 @@ class WorkflowController < SecuredController
 
   end
 
+  def volunteer_form_submit
+
+    client = user_client
+    phoneNumber = params[:tel]
+    zipCode = params[:zip]
+
+    # get workflow folder paths
+    path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
+    sigReqPath = "#{path}/Signature\ Required/"
+
+    workflowFolder = Rails.cache.fetch("/folder/workflowFolder/#{session[:box_id]}", :expires_in => 15.minutes) do
+      client.folder_from_path(path)
+    end
+
+    @sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
+      begin
+        client.folder_from_path(sigReqPath)
+      rescue
+        # folder doesn't exist, create
+        client.create_folder("Signature Required", workflowFolder)
+      end
+    end
+
+    # CARY TWILIO CODE HERE!!!!
+
+    # SFDC STRUCTURED DATA CODE HERE!
+
+    client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder)
+
+    redirect_to workflow_path
+  end
+
   def form_submit
 
     puts "submitting form"
@@ -320,6 +352,7 @@ class WorkflowController < SecuredController
     elsif(!session[:industry].nil?)
       # use industry document
       file = Array.new
+      @status = "pendingSig"
       case session[:industry]
       when 'finserv'
         file.push(client.copy_file(ENV['FINSERV_FORM'], @sigReqFolder))
@@ -328,10 +361,10 @@ class WorkflowController < SecuredController
       when 'insurance'
         file.push(client.copy_file(ENV['INSURANCE_FORM'], @sigReqFolder))
       when 'nonprofit'
-        file.push(client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder))
+        # file.push(client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder))
+        @status = "toFill"
       else
       end
-      @status = "pendingSig"
 
     else
       # the information form has not yet been filled out by the customer

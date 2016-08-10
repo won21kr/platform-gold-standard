@@ -16,7 +16,7 @@
           info
 
       // Workflow
-      - if (session[:progress] == 0)
+      - if (session[:progress] == 0 and session[:industry].nil?)
         .col.s2.push-s10.hide_mobile{:style => "margin-top: -20px; z-index: 999999;", "data-intro" => "Your current progress in this workflow", "data-position" => "left"}
           %h7
             Step 1 of 3
@@ -38,6 +38,19 @@
             .form-group
               %label.control-label.col-sm-2{:for => "id"} Customer ID:
               %input#id.form-control{:type => "text", :placeholder => "1234-1234132", :name => "id"}
+            %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+            .form-group
+              -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
+              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Submit
+      - elsif (session[:progress] == 0 and !session[:industry].nil?)
+        .col.s8.push-s2{:style => "margin-top: 20px", "data-position" => "left"}
+          %form.form-horizontal{:role => "form", :method => "post", :action => volunteer_form_submit_path}
+            .form-group
+              %label.control-label.col-sm-2{:for => "tel"} Phone:
+              %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel", :required => ""}
+            .form-group
+              %label.control-label.col-sm-2{:for => "zip"} Zip Code:
+              %input#zip.form-control{:placeholder => "94022", :type => "text", :name => "zip", :required => ""}
             %input{:name => "formSubmit", :type => "hidden", :value => "true"}
             .form-group
               -# %a.waves-effect.btn.white.black-text{:type => "submit", :href => "#modal1", :style => "font-color: #263238 !important; text-decoration: none;"} Submit for Approval
