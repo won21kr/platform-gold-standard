@@ -83,8 +83,9 @@ class WorkflowController < SecuredController
   def volunteer_form_submit
 
     client = user_client
-    phoneNumber = params[:tel]
-    zipCode = params[:zip]
+    session[:volunteerForm] = {'name' => params[:name],
+                               'mobile' => params[:tel],
+                               'zip' => params[:zip]}
 
     # get workflow folder paths
     path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
@@ -102,8 +103,6 @@ class WorkflowController < SecuredController
         client.create_folder("Signature Required", workflowFolder)
       end
     end
-
-    # CARY TWILIO CODE HERE!!!!
 
     # SFDC STRUCTURED DATA CODE HERE!
 
@@ -167,6 +166,10 @@ class WorkflowController < SecuredController
 
       ensure
         temp_file.delete
+      end
+
+      if (session[:industry] == "nonprofit") # and some twilio number check
+          # CARY TWILIO CODE HERE!!!!
       end
 
       flash[:notice] = "Thanks! Document successfully signed."

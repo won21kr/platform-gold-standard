@@ -46,8 +46,11 @@
         .col.s8.push-s2{:style => "margin-top: 20px", "data-position" => "left"}
           %form.form-horizontal{:role => "form", :method => "post", :action => volunteer_form_submit_path}
             .form-group
-              %label.control-label.col-sm-2{:for => "tel"} Phone:
-              %input#tel.form-control{:placeholder => "555-555-5555", :type => "tel", :name => "tel", :required => ""}
+              %label.control-label.col-sm-2{:for => "name"} Full Name:
+              %input#name.form-control{:placeholder => "Marcus Doe", :type => "text", :name => "name", :required => ""}
+            .form-group
+              %label.control-label.col-sm-2{:for => "tel"} Mobile Phone:
+              %input#tel.form-control{:placeholder => "1112223333", :type => "tel", :name => "tel", :required => ""}
             .form-group
               %label.control-label.col-sm-2{:for => "zip"} Zip Code:
               %input#zip.form-control{:placeholder => "94022", :type => "text", :name => "zip", :required => ""}
