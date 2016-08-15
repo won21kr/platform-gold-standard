@@ -166,6 +166,14 @@ class WorkflowController < SecuredController
         box_user.update_file(file, name: box_info[:box_doc_name])
         box_user.delete_file(box_info[:box_doc_id])
 
+        updated_folder = box_user.create_shared_link_for_folder(signed_folder, access: :open)
+        shared_link = updated_folder.shared_link.url
+        user_vault_path = "Industry\ Resources/Nonprofit"
+        user_vault_folder = box_user.folder_from_path(user_vault_path)
+        user_vault_updated = box_user.create_shared_link_for_folder(user_vault_folder, access: :open)
+        user_vault_shared_link = user_vault_updated.shared_link.url
+
+
         # box_user.create_metadata(file, meta)
 
       ensure
@@ -173,7 +181,7 @@ class WorkflowController < SecuredController
       end
 
       if (session[:industry] == "nonprofit") # and some twilio number check
-          # CARY TWILIO CODE HERE!!!!
+          twilio(session[:volunteerForm]['mobile'], shared_link, user_vault_shared_link)
       end
 
       flash[:notice] = "Thanks! Document successfully signed."
@@ -389,6 +397,28 @@ class WorkflowController < SecuredController
 
   def set_preview_url(id)
     @previewURL = user_client.embed_url(id)
+  end
+
+  def twilio(phoneNumber, shared_link, user_vault_shared_link)
+    account_sid = ENV['ACCOUNT_SID']
+    auth_token = ENV['AUTH_TOKEN']
+    client = Twilio::REST::Client.new account_sid, auth_token
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - Twilio')
+
+    from = +16507535096 # Your Twilio number
+
+    friends = {
+      phoneNumber => "New Volunteer"
+    }
+    friends.each do |key, value|
+      client.account.messages.create(
+      :from => from,
+      :to => key,
+      :body => "Thank you for signing up to be a new volunteer! You can find a signed copy of your volunter waiver here: " + shared_link +
+        " Please take a look at your new volunteer information packet found here: " + user_vault_shared_link
+      )
+    end
   end
 
 end
