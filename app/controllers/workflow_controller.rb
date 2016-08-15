@@ -90,7 +90,7 @@ class WorkflowController < SecuredController
     response_boolean = valid?(session[:volunteerForm]['mobile'])
 
     if(response_boolean == false)
-      flash[:notice] = "There seems to be a problem with the mobile number you have entered!"
+      flash[:notice] = "Please enter a valid phone number!"
       redirect_to workflow_path
     elsif(response_boolean == true)
 
@@ -170,8 +170,8 @@ class WorkflowController < SecuredController
         box_user.update_file(file, name: box_info[:box_doc_name])
         box_user.delete_file(box_info[:box_doc_id])
 
-        updated_folder = box_user.create_shared_link_for_folder(signed_folder, access: :open)
-        shared_link = updated_folder.shared_link.url
+        updated_file = box_user.create_shared_link_for_file(file, access: :open)
+        file_shared_link = updated_file.shared_link.url
         user_vault_path = "Industry\ Resources/Nonprofit"
         user_vault_folder = box_user.folder_from_path(user_vault_path)
         user_vault_updated = box_user.create_shared_link_for_folder(user_vault_folder, access: :open)
@@ -185,7 +185,7 @@ class WorkflowController < SecuredController
       end
 
       if (session[:industry] == "nonprofit") # and some twilio number check
-        twilio(session[:volunteerForm]['mobile'], shared_link, user_vault_shared_link)
+        twilio(session[:volunteerForm]['mobile'], file_shared_link, user_vault_shared_link)
       end
 
       flash[:notice] = "Thanks! Document successfully signed."
