@@ -80,6 +80,7 @@ class WorkflowController < SecuredController
 
   end
 
+  # parse the volunteer form data, copy over new signature doc, create new contact in salesforce
   def volunteer_form_submit
 
     client = user_client
@@ -95,6 +96,8 @@ class WorkflowController < SecuredController
       client.folder_from_path(path)
     end
 
+
+    # get sig required folder and copy file over
     @sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
       begin
         client.folder_from_path(sigReqPath)
@@ -103,10 +106,11 @@ class WorkflowController < SecuredController
         client.create_folder("Signature Required", workflowFolder)
       end
     end
-
-    # SFDC STRUCTURED DATA CODE HERE!
-
     client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder)
+
+
+    # DAVID!!! SFDC STRUCTURED DATA CODE HERE!
+    # Salesforce call
 
     redirect_to workflow_path
   end
