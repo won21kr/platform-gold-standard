@@ -89,31 +89,35 @@ class WorkflowController < SecuredController
                                'zip' => params[:zip],
                                'skills' => params[:skills]}
 
-    # get workflow folder paths
-    path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
-    sigReqPath = "#{path}/Signature\ Required/"
+    response_boolean = valid?(session[:volunteerForm]['mobile'])
 
-    workflowFolder = Rails.cache.fetch("/folder/workflowFolder/#{session[:box_id]}", :expires_in => 15.minutes) do
-      client.folder_from_path(path)
-    end
+    if(response_boolean == false)
+      flash[:notice] = "Please enter a valid phone number!"
+      redirect_to workflow_path
+    elsif(response_boolean == true)
 
+      # get workflow folder paths
+      path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
+      sigReqPath = "#{path}/Signature\ Required/"
 
-    # get sig required folder and copy file over
-    @sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
-      begin
-        client.folder_from_path(sigReqPath)
-      rescue
-        # folder doesn't exist, create
-        client.create_folder("Signature Required", workflowFolder)
+      workflowFolder = Rails.cache.fetch("/folder/workflowFolder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path(path)
       end
+
+      @sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
+        begin
+          client.folder_from_path(sigReqPath)
+        rescue
+          # folder doesn't exist, create
+          client.create_folder("Signature Required", workflowFolder)
+        end
+      end
+      client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder)
+
+      # SFDC STRUCTURED DATA CODE HERE!
+
+      redirect_to workflow_path
     end
-    client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder)
-
-
-    # DAVID!!! SFDC STRUCTURED DATA CODE HERE!
-    # Salesforce call, use data from session[:volunteerForm]
-
-    redirect_to workflow_path
   end
 
   def form_submit
@@ -167,8 +171,8 @@ class WorkflowController < SecuredController
         box_user.update_file(file, name: box_info[:box_doc_name])
         box_user.delete_file(box_info[:box_doc_id])
 
-        updated_folder = box_user.create_shared_link_for_folder(signed_folder, access: :open)
-        shared_link = updated_folder.shared_link.url
+        updated_file = box_user.create_shared_link_for_file(file, access: :open)
+        file_shared_link = updated_file.shared_link.url
         user_vault_path = "Industry\ Resources/Nonprofit"
         user_vault_folder = box_user.folder_from_path(user_vault_path)
         user_vault_updated = box_user.create_shared_link_for_folder(user_vault_folder, access: :open)
@@ -182,13 +186,13 @@ class WorkflowController < SecuredController
       end
 
       if (session[:industry] == "nonprofit") # and some twilio number check
-          twilio(session[:volunteerForm]['mobile'], shared_link, user_vault_shared_link)
+        twilio(session[:volunteerForm]['mobile'], file_shared_link, user_vault_shared_link)
       end
 
       flash[:notice] = "Thanks! Document successfully signed."
       render :text => utility.breakout_path(workflow_path), content_type: 'text/html'
     else
-      flash[:error] = "You chose not to sign the document."
+      flash[:notice] = "You chose not to sign this document!"
       render :text => utility.breakout_path(workflow_path), content_type: 'text/html'
     end
   end
@@ -420,6 +424,21 @@ class WorkflowController < SecuredController
         " Please take a look at your new volunteer information packet found here: " + user_vault_shared_link
       )
     end
+  end
+
+  def valid?(phone_number)
+    lookup_client = Twilio::REST::LookupsClient.new(ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN'])
+    begin
+      response = lookup_client.phone_numbers.get(phone_number)
+      response.phone_number #if invalid, throws an exception. If valid, no problems.
+      return true
+    rescue => e
+      if e.code == 20404
+        return false
+      else
+        raise e
+    end
+  end
   end
 
 end
