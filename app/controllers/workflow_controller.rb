@@ -86,7 +86,8 @@ class WorkflowController < SecuredController
     client = user_client
     session[:volunteerForm] = {'name' => params[:name],
                                'mobile' => params[:tel],
-                               'zip' => params[:zip]}
+                               'zip' => params[:zip],
+                               'skills' => params[:skills]}
 
     # get workflow folder paths
     path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
@@ -110,7 +111,7 @@ class WorkflowController < SecuredController
 
 
     # DAVID!!! SFDC STRUCTURED DATA CODE HERE!
-    # Salesforce call
+    # Salesforce call, use data from session[:volunteerForm]
 
     redirect_to workflow_path
   end
@@ -415,7 +416,7 @@ class WorkflowController < SecuredController
       client.account.messages.create(
       :from => from,
       :to => key,
-      :body => "Thank you for signing up to be a new volunteer! You can find a signed copy of your volunter waiver here: " + shared_link +
+      :body => "Thank you for signing up to be a new volunteer! You can find a signed copy of your volunteer waiver here: " + shared_link +
         " Please take a look at your new volunteer information packet found here: " + user_vault_shared_link
       )
     end
