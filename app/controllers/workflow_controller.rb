@@ -185,7 +185,10 @@ class WorkflowController < SecuredController
       end
 
       if (session[:industry] == "nonprofit") # and some twilio number check
-        twilio(session[:volunteerForm]['mobile'], file_shared_link, user_vault_shared_link)
+        client = bitly
+        shorten_file = client.shorten(file_shared_link)
+        shorten_vault_folder = client.shorten(user_vault_shared_link)
+        twilio(session[:volunteerForm]['mobile'], shorten_file.urls, shorten_vault_folder.urls)
       end
 
       flash[:notice] = "Thanks! Document successfully signed."
@@ -426,18 +429,24 @@ class WorkflowController < SecuredController
   end
 
   def valid?(phone_number)
-    lookup_client = Twilio::REST::LookupsClient.new(ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN'])
-    begin
-      response = lookup_client.phone_numbers.get(phone_number)
-      response.phone_number #if invalid, throws an exception. If valid, no problems.
-      return true
-    rescue => e
-      if e.code == 20404
-        return false
-      else
-        raise e
+      lookup_client = Twilio::REST::LookupsClient.new(ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN'])
+      begin
+        response = lookup_client.phone_numbers.get(phone_number)
+        response.phone_number #if invalid, throws an exception. If valid, no problems.
+        return true
+      rescue => e
+        if e.code == 20404
+          return false
+        else
+          raise e
+      end
     end
   end
+
+  def bitly
+    authorize = UrlShortener::Authorize.new ENV['BITLY_LOGIN'], ENV['BITLY_API_KEY']
+    client = UrlShortener::Client.new authorize
+    return client
   end
 
 end
