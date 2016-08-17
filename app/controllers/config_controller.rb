@@ -191,7 +191,6 @@ class ConfigController < SecuredController
       session[:company] = "Blue Advisors"
       session[:industry_resources] = ENV['FINSERV_RESOURCES']
       session[:loan_docs] = 'on'
-      session[:tax_return] = 'on'
       session[:logo] = 'https://platform-staging.box.com/shared/static/d51xjgxeku8ktihe53yw1g0m2jnw593x.png'
       # session[:background] = 'https://platform-staging.box.com/shared/static/1gwe4kkkgycqoa0mg7i11jntaew0curl.png'
       session[:alt_text] = "{\"My Vault\" : \"Document Vault\",
@@ -200,7 +199,7 @@ class ConfigController < SecuredController
                              \"Shared Files\" : \"Shared (with Advisor)\",
                              \"Resources\" : \"Client Resources\",
                              \"Find relevant content, fast\" : \"Browse relevant financial documents\",
-                             \"Onboarding Tasks\" : \"Tax Return Form\"}"
+                             \"Onboarding Tasks\" : \"Sign Tax Return\"}"
       session[:industry] = "finserv"
 
     when "healthcare"
@@ -221,7 +220,7 @@ class ConfigController < SecuredController
                              \"Shared Files\" : \"Shared (with Physician)\",
                              \"Resources\" : \"Patient Education\",
                              \"Find relevant content, fast\" : \"Browse relevant medical documents\",
-                             \"Onboarding Tasks\" : \"Medical Release Form\"}"
+                             \"Onboarding Tasks\" : \"Sign Release Form\"}"
       session[:industry] = "healthcare"
 
     when "insurance"
