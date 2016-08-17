@@ -57,6 +57,7 @@ gem "skylight"
 gem "sendgrid-ruby"
 gem 'mixpanel-ruby'
 gem 'twilio-ruby'
+gem 'url_shortener'
 
 # Gems only used on heroku
 group :production, :staging do

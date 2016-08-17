@@ -80,6 +80,46 @@ class WorkflowController < SecuredController
 
   end
 
+  # parse the volunteer form data, copy over new signature doc, create new contact in salesforce
+  def volunteer_form_submit
+
+    client = user_client
+    session[:volunteerForm] = {'name' => params[:name],
+                               'mobile' => params[:tel],
+                               'zip' => params[:zip],
+                               'skills' => params[:skills]}
+
+    response_boolean = valid?(session[:volunteerForm]['mobile'])
+
+    if(response_boolean == false)
+      flash[:notice] = "Please enter a valid phone number!"
+      redirect_to workflow_path
+    elsif(response_boolean == true)
+
+      # get workflow folder paths
+      path = "#{session[:userinfo]['info']['name']}\ -\ Shared\ Files/Onboarding\ Workflow"
+      sigReqPath = "#{path}/Signature\ Required/"
+
+      workflowFolder = Rails.cache.fetch("/folder/workflowFolder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path(path)
+      end
+
+      @sigReqFolder = Rails.cache.fetch("/folder/#{sigReqPath}/#{session[:box_id]}", :expires_in => 15.minutes) do
+        begin
+          client.folder_from_path(sigReqPath)
+        rescue
+          # folder doesn't exist, create
+          client.create_folder("Signature Required", workflowFolder)
+        end
+      end
+      client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder)
+
+      # SFDC STRUCTURED DATA CODE HERE!
+
+      redirect_to workflow_path
+    end
+  end
+
   def form_submit
 
     puts "submitting form"
@@ -131,16 +171,31 @@ class WorkflowController < SecuredController
         box_user.update_file(file, name: box_info[:box_doc_name])
         box_user.delete_file(box_info[:box_doc_id])
 
+        updated_file = box_user.create_shared_link_for_file(file, access: :open)
+        file_shared_link = updated_file.shared_link.url
+        user_vault_path = "Industry\ Resources/Nonprofit"
+        user_vault_folder = box_user.folder_from_path(user_vault_path)
+        user_vault_updated = box_user.create_shared_link_for_folder(user_vault_folder, access: :open)
+        user_vault_shared_link = user_vault_updated.shared_link.url
+
+
         # box_user.create_metadata(file, meta)
 
       ensure
         temp_file.delete
       end
 
+      if (session[:industry] == "nonprofit") # and some twilio number check
+        client = bitly
+        shorten_file = client.shorten(file_shared_link)
+        shorten_vault_folder = client.shorten(user_vault_shared_link)
+        twilio(session[:volunteerForm]['mobile'], shorten_file.urls, shorten_vault_folder.urls)
+      end
+
       flash[:notice] = "Thanks! Document successfully signed."
       render :text => utility.breakout_path(workflow_path), content_type: 'text/html'
     else
-      flash[:error] = "You chose not to sign the document."
+      flash[:notice] = "You chose not to sign this document!"
       render :text => utility.breakout_path(workflow_path), content_type: 'text/html'
     end
   end
@@ -320,6 +375,7 @@ class WorkflowController < SecuredController
     elsif(!session[:industry].nil?)
       # use industry document
       file = Array.new
+      @status = "pendingSig"
       case session[:industry]
       when 'finserv'
         file.push(client.copy_file(ENV['FINSERV_FORM'], @sigReqFolder))
@@ -328,10 +384,10 @@ class WorkflowController < SecuredController
       when 'insurance'
         file.push(client.copy_file(ENV['INSURANCE_FORM'], @sigReqFolder))
       when 'nonprofit'
-        file.push(client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder))
+        # file.push(client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder))
+        @status = "toFill"
       else
       end
-      @status = "pendingSig"
 
     else
       # the information form has not yet been filled out by the customer
@@ -349,6 +405,49 @@ class WorkflowController < SecuredController
 
   def set_preview_url(id)
     @previewURL = user_client.embed_url(id)
+  end
+
+  def twilio(phoneNumber, shared_link, user_vault_shared_link)
+    account_sid = ENV['ACCOUNT_SID']
+    auth_token = ENV['AUTH_TOKEN']
+    client = Twilio::REST::Client.new account_sid, auth_token
+    tracker = Mixpanel.client
+    event = tracker.track('1234', 'Configuration - Twilio')
+
+    from = +16507535096 # Your Twilio number
+
+    friends = {
+      phoneNumber => "New Volunteer"
+    }
+    friends.each do |key, value|
+      client.account.messages.create(
+      :from => from,
+      :to => key,
+      :body => "Thank you for signing up to be a new volunteer! You can find a signed copy of your volunteer waiver here: " + shared_link +
+        " Please take a look at your new volunteer information packet found here: " + user_vault_shared_link
+      )
+    end
+  end
+
+  def valid?(phone_number)
+      lookup_client = Twilio::REST::LookupsClient.new(ENV['ACCOUNT_SID'], ENV['AUTH_TOKEN'])
+      begin
+        response = lookup_client.phone_numbers.get(phone_number)
+        response.phone_number #if invalid, throws an exception. If valid, no problems.
+        return true
+      rescue => e
+        if e.code == 20404
+          return false
+        else
+          raise e
+      end
+    end
+  end
+
+  def bitly
+    authorize = UrlShortener::Authorize.new ENV['BITLY_LOGIN'], ENV['BITLY_API_KEY']
+    client = UrlShortener::Client.new authorize
+    return client
   end
 
 end

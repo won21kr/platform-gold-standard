@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   # workflow
   get "/onboarding-tasks" => "workflow#show", :as => "workflow"
   post "/onboarding-tasks" => "workflow#form_submit", :as => "form_submit"
+  post "/onboarding-tasks-volunteer" => "workflow#volunteer_form_submit", :as => "volunteer_form_submit"
   get "docusign_response/:envelope_id" => "workflow#docusign_response", :as => "docusign_response"
   get "/onboarding-tasks/reset-workflow" => "workflow#reset_workflow", :as => "reset_workflow"
 
