@@ -169,4 +169,8 @@ Rails.application.routes.draw do
   #third-party api's
   post "/send_twilio_message" => "config#twilio_method"
   post "/send_grid_message" => "config#send_grid_method", :as => "send_grid_method"
+
+  #blue care
+  get "/bluecare" => "bluecare#show", :as => "bluecare"
+
 end
