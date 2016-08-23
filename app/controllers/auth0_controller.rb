@@ -25,9 +25,12 @@ class Auth0Controller < ApplicationController
 
     if (session[:industry] == "nonprofit")
       redirect_to workflow_path
+    elsif (session[:blue_care] == "on")
+      redirect_to bluecare_path
     else
       redirect_to dashboard_path
     end
+
   end
 
   def failure

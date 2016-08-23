@@ -153,7 +153,7 @@ class ConfigController < SecuredController
                                tax_return: session[:tax_return] == "on" ? true : false,
                                submit_claim: session[:create_claim] == "on" ? true : false,
                                eventstream: session[:eventstream] == "on" ? true : false,
-                               media_content: session[:media_content] == "on" ? true : false)
+                               media_content: session[:media_content] == "on" ? true : false,
                                blue_care: session[:blue_care] == "on" ? true : false)
     user_data.save
     # ap user_data
