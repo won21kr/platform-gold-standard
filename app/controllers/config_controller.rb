@@ -261,9 +261,9 @@ class ConfigController < SecuredController
                              \"My Files\" : \"Personal\",
                              \"Your personal and shared files\" : \"Your personal and shared disaster site captures\",
                              \"Shared Files\" : \"Shared (with org)\",
-                             \"Resources\" : \"Volunteering Resources\",
-                             \"Find relevant content, fast\" : \"Browse relevant volunteer resources\",
-                             \"Onboarding Tasks\" : \"Volunteer Agreement\"}"
+                             \"Resources\" : \"Resources\",
+                             \"Find relevant content, fast\" : \"Browse relevant responder resources\",
+                             \"Onboarding Tasks\" : \"Responder Agreement\"}"
       session[:industry] = "nonprofit"
 
       # turn on okta auth
