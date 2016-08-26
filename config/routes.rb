@@ -170,4 +170,14 @@ Rails.application.routes.draw do
   #third-party api's
   post "/send_twilio_message" => "config#twilio_method"
   post "/send_grid_message" => "config#send_grid_method", :as => "send_grid_method"
+
+  #blue care
+  get "/bluecare" => "bluecare#show", :as => "bluecare"
+  get "/bluecare_copy-from-vault/:file_id" => "bluecare#bluecare_copy_from_vault", :as => "bluecare_copy_from_vault"
+  get "/bluecare_loan-agreement-sign/:file_id" => "bluecare#bluecare_loan_docusign", :as => "bluecare_loan_docusign"
+  get "bluecare_docusign_response_loan/:envelope_id" => "bluecare#bluecare_docusign_response_loan", :as => "bluecare_docusign_response_loan"
+  get "/reset-blue-care" => "bluecare#reset_bluecare", :as => "reset_bluecare"
+
+
+
 end
