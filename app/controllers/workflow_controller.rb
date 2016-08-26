@@ -423,8 +423,8 @@ class WorkflowController < SecuredController
       client.account.messages.create(
       :from => from,
       :to => key,
-      :body => "Thank you for signing up to be a new volunteer! You can find a signed copy of your volunteer waiver here: " + shared_link +
-        " Please take a look at your new volunteer information packet found here: " + user_vault_shared_link
+      :body => "Thank you for signing up to be a volunteer! You can find a signed copy of your waiver here: " + shared_link +
+        " Please take a look at your information packet found here: " + user_vault_shared_link
       )
     end
   end

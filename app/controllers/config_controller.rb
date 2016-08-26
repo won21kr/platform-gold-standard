@@ -264,7 +264,6 @@ class ConfigController < SecuredController
                              \"My Files\" : \"Personal\",
                              \"Your personal and shared files\" : \"Your personal and shared disaster site captures\",
                              \"Shared Files\" : \"Shared (with org)\",
-                             \"Resources\" : \"Resources\",
                              \"Find relevant content, fast\" : \"Browse relevant responder resources\",
                              \"Onboarding Tasks\" : \"Responder Agreement\"}"
       session[:industry] = "nonprofit"
