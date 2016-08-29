@@ -127,16 +127,16 @@ class WorkflowController < SecuredController
       ap firstName
       ap lastName
       ap city
-      create_salesforce_contact(firstName, lastName, mobile, email)
+      create_salesforce_contact(firstName, lastName, mobile, email, city)
 
       redirect_to workflow_path
     end
   end
 
-  def create_salesforce_contact(firstName, lastName, mobile, email)
+  def create_salesforce_contact(firstName, lastName, mobile, email, city)
     ap "Inside Saleforce Method"
     salesforce_client = Salesforce.salesforce_admin
-    salesforce_client.create('Contact', FirstName: firstName, LastName: lastName, MobilePhone: mobile, Email: email)
+    salesforce_client.create('Contact', FirstName: firstName, LastName: lastName, MobilePhone: mobile, Email: email, MailingCity: city)
   end
 
   def form_submit
