@@ -33,7 +33,7 @@ class ConfigController < SecuredController
       session[:product_supply] = "off"
 
       # Okta
-      session[:okta] = "off"
+      # session[:okta] = "off"
     end
 
     config_url
@@ -174,6 +174,7 @@ class ConfigController < SecuredController
 
     industry = params[:industry]
     tracker = Mixpanel.client
+    auth = nil
 
     # if configured for okta
     if !session[:okta].nil? and session[:okta] == 'on'
@@ -250,7 +251,6 @@ class ConfigController < SecuredController
 
     when "nonprofit"
 
-      auth = nil
       # copy over files + folders
       if session[:userinfo].present?
         copy_content(industry)
@@ -267,6 +267,7 @@ class ConfigController < SecuredController
                              \"Find relevant content, fast\" : \"Browse relevant responder resources\",
                              \"Onboarding Tasks\" : \"Responder Agreement\"}"
       session[:industry] = "nonprofit"
+
 
       # turn on okta auth
       if (auth == "okta")
