@@ -8,6 +8,8 @@ class SalesforceController < SecuredController
     client = user_client
     session[:current_page] = "salesforce"
 
+
+
     # get "My Files" and "Shared Files" folder objects
     # @myFolder = Rails.cache.fetch("/folder/#{session[:box_id]}/my_folder", :expires_in => 10.minutes) do
     #   client.folder_from_path('My Files')
@@ -29,7 +31,6 @@ class SalesforceController < SecuredController
     if(@currentFolder == @salesforceFolder.id)
       @files = client.folder_items(@salesforceFolder, fields: [:name, :id, :created_at, :modified_at]).files
     end
-
   end
 
   def search_vault(name)

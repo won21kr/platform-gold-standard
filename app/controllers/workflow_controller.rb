@@ -84,10 +84,17 @@ class WorkflowController < SecuredController
   def volunteer_form_submit
 
     client = user_client
-    session[:volunteerForm] = {'name' => params[:name],
-                               'mobile' => params[:tel],
-                               'zip' => params[:zip],
-                               'skills' => params[:skills]}
+
+    name = params[:name]
+    mobile = params[:tel]
+    city = params[:city]
+    skills = params[:skills]
+    email = session[:userinfo]['info']['name']
+
+    session[:volunteerForm] = {'name' => name,
+                               'mobile' => mobile,
+                               'city' => city,
+                               'skills' => skills}
 
     response_boolean = valid?(session[:volunteerForm]['mobile'])
 
@@ -114,10 +121,22 @@ class WorkflowController < SecuredController
       end
       client.copy_file(ENV['NONPROFIT_FORM'], @sigReqFolder)
 
-      # SFDC STRUCTURED DATA CODE HERE!
+      #SFDC
+      firstName = name.split(" ").first
+      lastName = name.split(" ").last
+      ap firstName
+      ap lastName
+      ap city
+      create_salesforce_contact(firstName, lastName, mobile, email, city)
 
       redirect_to workflow_path
     end
+  end
+
+  def create_salesforce_contact(firstName, lastName, mobile, email, city)
+    ap "Inside Saleforce Method"
+    salesforce_client = Salesforce.salesforce_admin
+    salesforce_client.create('Contact', FirstName: firstName, LastName: lastName, MobilePhone: mobile, Email: email, MailingCity: city)
   end
 
   def form_submit
@@ -247,7 +266,6 @@ class WorkflowController < SecuredController
   def create_docusign_envelope(box_doc_id, anchor_string, x_offset, y_offset)
 
     box_user = user_client
-
     box_file = box_user.file_from_id(box_doc_id)
     raw_file = box_user.download_file(box_file)
     temp_file = Tempfile.open("box_doc_", Rails.root.join('tmp'), :encoding => 'ascii-8bit')
