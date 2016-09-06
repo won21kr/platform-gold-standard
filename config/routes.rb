@@ -179,5 +179,8 @@ Rails.application.routes.draw do
   get "/reset-blue-care" => "bluecare#reset_bluecare", :as => "reset_bluecare"
 
 
+  # nonprofit analytics
+  get "/analytics" => "analytics#show", :as => 'analytics'
+
 
 end
