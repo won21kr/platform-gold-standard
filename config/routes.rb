@@ -182,6 +182,7 @@ Rails.application.routes.draw do
   get "/messaging-system" => "messaging_system#show", :as => "messaging_system"
   get "/compose-message" => "messaging_system#compose_message", :as => "compose_message"
   post "/compose-message" => "messaging_system#save_message", :as => "save_message"
+  get "/delete-message/:id" => "messaging_system#delete_message", :as => "delete_message"
 
   # nonprofit analytics
   get "/analytics" => "analytics#show", :as => 'analytics'

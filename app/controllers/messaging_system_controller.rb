@@ -83,5 +83,16 @@ class MessagingSystemController < ApplicationController
     redirect_to messaging_system_path
   end
 
+  # delete message
+  def delete_message
+
+    client = user_client
+    folderId = params[:id]
+
+    client.delete_folder(folderId, recursive: true)
+
+    redirect_to messaging_system_path
+  end
+
 
 end
