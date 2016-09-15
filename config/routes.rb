@@ -178,6 +178,10 @@ Rails.application.routes.draw do
   get "bluecare_docusign_response_loan/:envelope_id" => "bluecare#bluecare_docusign_response_loan", :as => "bluecare_docusign_response_loan"
   get "/reset-blue-care" => "bluecare#reset_bluecare", :as => "reset_bluecare"
 
+  # messaging system
+  get "/messaging-system" => "messaging_system#show", :as => "messaging_system"
+  get "/compose-message" => "messaging_system#compose_message", :as => "compose_message"
+  post "/compose-message" => "messaging_system#save_message", :as => "save_message"
 
   # nonprofit analytics
   get "/analytics" => "analytics#show", :as => 'analytics'

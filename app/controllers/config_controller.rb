@@ -32,6 +32,8 @@ class ConfigController < SecuredController
       session[:eventstream] = "off"
       session[:product_supply] = "off"
 
+      session[:messaging_system] = "off"
+
       # Okta
       # session[:okta] = "off"
     end
@@ -123,6 +125,7 @@ class ConfigController < SecuredController
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
     session[:product_supply] = !params[:product_supply].blank? ? 'on' : 'off'
     session[:blue_care] = !params[:blue_care].blank? ? 'on' : 'off'
+    session[:messaging_system] = !params[:messaging_system].blank? ? 'on' : 'off'
 
 
     # capture all user data and upload to csv, only if in production
@@ -400,6 +403,7 @@ class ConfigController < SecuredController
     query["eventstream"] = session[:eventstream]
     query["product_supply"] = session[:product_supply]
     query["blue_care"] = session[:blue_care]
+    query["messaging_system"] = session[:messaging_system]
 
     session[:config_url] = template.expand({"query" => query})
     puts "config_url: " + session[:config_url]

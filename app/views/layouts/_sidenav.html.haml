@@ -56,6 +56,9 @@
     - if session[:product_supply] == 'on'
       %li{:class => "#{'active' if session[:current_page] == "product_supply"}"}
         %a{:href => "/product-supply", :style => "text-decoration: none;"} Medical Supplies Portal
+    - if session[:messaging_system] == 'on'
+      %li{:class => "#{'active' if session[:current_page] == "messaging_system"}"}
+        %a{:href => "/messaging-system", :style => "text-decoration: none;"} Messaging System
     - if session[:industry] == 'nonprofit'
       %li{:class => "#{'active' if session[:current_page] == "analytics"}"}
         %a{:href => "/analytics", :style => "text-decoration: none;"} Analytics (Admin)

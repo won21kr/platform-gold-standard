@@ -1,0 +1,61 @@
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} email
+          = alt_text("Message Center")
+        -# %h6.caption.thin{:style => "font-size: 16px;"}
+        -#   = alt_text("Your personal and shared files")
+        -# .help-icon.btn.hide_mobile{"data-toggle" => "chardinjs", :id => "opentour", :onclick => "chardinToggle()", :style => "padding: none; font-color: #fff !important;"}
+        -#   %i.material-icons.prefix{:style => "font-size: 18px; color: #222222;"} info_outline
+        -#   %span{:style => "color: #222222; position: relative; top: -4px; left: 0px; text-transform: lowercase; font-size: 12px;"}
+        -#     info
+
+      -# Messages
+      .col.s3{:style => "margin-top: 40px; border-style: solid"}
+        %a.btn.white.black-text{:href => "/compose-message", :style => "margin-bottom: 20px; text-decoration: none"} Compose
+
+        .row
+          .col.s9
+            %h6.col.s9 Inbox
+            %h6.col.s2 0
+          .col.s9{:style => "border-style: solid"}
+            %h6.col.s9 Sent
+            %h6.col.s2
+              = @messages.size
+          .col.s9
+            %h6.col.s9 Deleted
+            %h6.col.s2 0
+
+
+
+      -# Inbox Display
+      .col.s9{:style => "margin-top: 20px"}
+        %table
+          %thead
+            %h5 Messages
+            %tr
+              %th Subject
+              %th Message
+              %th
+          %tbody
+            - if @messages.size == 0
+              %tr
+                %td
+                  %span
+                    %i.material-icons error
+                    Notice! No current items exist in this folder
+            - else
+              - @messages.each do |message|
+                %tr
+                  %td
+                    = message.name
+                  %td
+                    = message.description
+                  %td
+                    %button.waves-effect.btn.white.black-text{:href => "#"} Delete

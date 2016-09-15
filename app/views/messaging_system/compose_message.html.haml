@@ -1,0 +1,61 @@
+.container
+  = render 'layouts/sidenav'
+  .row
+    .index-banner.section.no-pad-bot
+  .row
+    .col.m12.l10.push-l2{:style => "margin-top: 25px;"}
+      // Title
+      .col.s12
+        %h3.thin{:style => "margin-top: 40px; font-size: 28px; letter-spacing: 1.5px; text-color: #002557;"}
+          %i.material-icons.prefix{:style => "font-size: 28px;"} email
+          = alt_text("Message Center")
+
+      -# Messages
+      .col.s3{:style => "margin-top: 40px"}
+        %a.btn.white.black-text.disabled{:href => "#", :style => "margin-bottom: 20px; text-decoration: none"} Compose
+
+        .row
+          .col.s9
+            %h6.col.s9 Inbox
+            %h6.col.s2 0
+          .col.s9{:style => "border-style: solid"}
+            %h6.col.s9 Sent
+            %h6.col.s2
+              = @messages.size
+          .col.s9
+            %h6.col.s9 Deleted
+            %h6.col.s2 0
+
+      -# Compose Message
+      .col.s9{:style => "margin-top: 40px"}
+        %h5 Compose Message
+        %p This compose message tool allows you to target specific audiences to send messages
+
+        -# Message Form
+        %form.form-horizontal{:role => "form", :method => "post", :action => "#", :enctype => "multipart/form-data"}
+
+          .col.s6
+            %label.control-label.col-sm-2{:for => "companies"} Companies:
+            %input#companies.form-control{:placeholder => "Select Companies", :type => "text", :name => "companies"}
+          .col.s6
+            %label.control-label.col-sm-2{:for => "users"} Users:
+            %input#users.form-control{:placeholder => "", :type => "text", :name => "users"}
+
+          .col.s6
+            %label.control-label.col-sm-2{:for => "subject"} Subject:
+            %input#subject.form-control{:type => "text", :placeholder => "Enter a subject", :name => "subject", :required => ""}
+
+          .col.s12
+            %label.control-label.col-sm-2{:for => "message"} Message:
+            %textarea#message.form-control{:style => "height: 5rem !important", :type => "text", :placeholder => "Enter your message here", :name => "message"}
+
+          .col.s12{:style => "margin-top: 20px"}
+            %label.control-label.col-sm-2{:for => "files"} Add File(s): Suggested file types: .csv, .pdf, .xls, .xlsx, .docx, .doc
+          .col.s12
+            %input#files.multi{:type => "file", id: "files", :style => "margin-top: 10px", :name => "files[]", :multiple => true}
+
+          .col.s12
+            %input{:name => "formSubmit", :type => "hidden", :value => "true"}
+            .form-group{:style => "margin-top: 40px"}
+              %button.waves-effect.btn.white.black-text{:type => "submit", :style => "text-decoration: none;"} Send Message
+              %a{:style => "margin-left: 20px", :href => "/messaging-system"} Cancel
