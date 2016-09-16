@@ -11,14 +11,14 @@
           = alt_text("Message Center")
 
       -# Messages
-      .col.s3{:style => "margin-top: 40px"}
+      .col.s3.message-tabs
         %a.btn.white.black-text.disabled{:href => "#", :style => "margin-bottom: 20px; text-decoration: none"} Compose
 
         .row
           .col.s9
             %h6.col.s9 Inbox
             %h6.col.s2 0
-          .col.s9{:style => "border-style: solid"}
+          .col.s9.sent-selected
             %h6.col.s9 Sent
             %h6.col.s2
               = @messages.size
@@ -33,6 +33,43 @@
 
         -# Message Form
         %form.form-horizontal{:role => "form", :method => "post", :action => "#", :enctype => "multipart/form-data"}
+
+          .col.s12
+            %label.control-label.col-sm-2{:for => "audience"} Audience:
+            %div.radio-button-wrapper
+              %input#audience_all.form-control.audience-radio{:type => "radio", :name => "audience_radio", :value => "audience_all"}
+              %label{:for => "audience_all"} All City National Online Users
+              %input#audience_business.form-control.audience-radio{:type => "radio", :name => "audience_radio", :value => "audience_business"}
+              %label{:for => "audience_business"} City National Online Business Portal User
+              %input#audience_personal.form-control.audience-radio{:type => "radio", :name => "audience_radio", :value => "audience_personal"}
+              %label{:for => "audience_personal"} City National Online Personal Portal User
+
+          .col.s6
+            %label.control-label.col-sm-2{:for => "services"} Services:
+            %div.checkbox-wrapper
+              %input#services_all.form-control{:type => "checkbox", :name => "all", :value => "all"}
+              %label{:for => "services_all"} All
+              %br/
+              %input#services_downstream.form-control{:type => "checkbox", :name => "downstream_service", :value => "downstream_service"}
+              %label{:for => "services_downstream"} Downstream Service
+
+          .col.s6
+            %label.control-label.col-sm-2{:for => "user_roles"} User Roles:
+            %div.checkbox-wrapper
+              %input#user_roles_all.form-control{:type => "checkbox", :name => "all", :value => "all"}
+              %label{:for => "user_roles_all"} All
+              %br/
+              %input#user_roles_client_admins.form-control{:type => "checkbox", :name => "client_admins", :value => "client_admins"}
+              %label{:for => "user_roles_client_admins"} Client Admins
+              %br/
+              %input#user_roles_client_users.form-control{:type => "checkbox", :name => "client_users", :value => "client_users"}
+              %label{:for => "user_roles_client_users"} Client Users
+              %br/
+              %input#user_roles_service_admins.form-control{:type => "checkbox", :name => "service_admins", :value => "service_admins"}
+              %label{:for => "user_roles_service_admins"} Service Admins
+              %br/
+              %input#user_roles_service_users.form-control{:type => "checkbox", :name => "service_users", :value => "service_users"}
+              %label{:for => "user_roles_service_users"} Service Users
 
           .col.s6
             %label.control-label.col-sm-2{:for => "companies"} Companies:

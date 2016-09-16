@@ -94,5 +94,30 @@ class MessagingSystemController < ApplicationController
     redirect_to messaging_system_path
   end
 
+  # show message thread
+  def show_message
+
+    client = user_client
+    folderId = params[:id]
+
+    # fetch parent messages folder and individual messages subfolders
+    # if no parent "Messages" folder exists, create one
+    begin
+      @messagesFolder = Rails.cache.fetch("/messages-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
+      end
+
+      @message = client.folder_from_id(folderId, fields: [:id, :name, :description])
+      @files = client.folder_items(folderId, fields: [:id, :name])
+      ap @message
+      ap @files
+
+    rescue
+      puts "Error should never be here"
+      @files = []
+    end
+
+  end
+
 
 end

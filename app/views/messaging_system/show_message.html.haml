@@ -21,12 +21,10 @@
           .col.s9.sent-selected
             %h6.col.s9 Sent
             %h6.col.s2
-              = @messages.size
+              = @files.size
           .col.s9
             %h6.col.s9 Deleted
             %h6.col.s2 0
-
-
 
       -# Inbox Display
       .col.s9{:style => "margin-top: 20px"}
@@ -38,19 +36,38 @@
               %th Message
               %th
           %tbody
-            - if @messages.size == 0
+            - if @files.size == 0
               %tr
                 %td
                   %span
                     %i.material-icons error
                     Notice! No current items exist in this folder
             - else
-              - @messages.each do |message|
+              %tr
+                %td
+                  = @message.name
+                %td
+                  = @message.description
+                %td
+                  %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + @message.id, :style => "text-decoration: none"} Delete
+
+      .col.s9{:style => "margin-top: 20px"}
+        %table
+          %thead
+            %h5 Attachments
+          %tbody
+            - if @files.size == 0
+              %tr
+                %td
+                  %span
+                    %i.material-icons error
+                    Notice! No current items exist in this folder
+            - else
+              - @files.each do |file|
                 %tr
                   %td
-                    %a{:href => "/show-message/" + message.id, :style => "text-decoration: none; color: #333333"}
-                      = message.name
+                    thumbnail
                   %td
-                    = message.description
+                    = file.name
                   %td
-                    %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + message.id, :style => "text-decoration: none"} Delete
+                    %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + file.id, :style => "text-decoration: none"} Delete
