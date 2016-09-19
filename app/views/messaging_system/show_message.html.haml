@@ -63,12 +63,12 @@
                     %i.material-icons error
                     No current attachments exist in this folder
             - else
-              - @files.each do |file|
-                %tr
+              - @files.each do |file, i|
+                %tr{"data-lity" => "", :href => preview_url(file.id), :class => "tooltipped", 'data-position'=>"left", 'data-delay'=>"50", 'data-tooltip'=>"View"}
+                  %td{"data-intro" => i==0 ? "Each of these documents are viewable in the browser via the Box Preview endpoint" : nil,  "data-position" => i==0 ? "left" : nil}
+                    = image_tag(thumbnail_url(file.id), :width => "40px")
                   %td
-                    %img{:alt => "thumbnail", :src => "/thumbnail/" + file.id, :width => "42", :height => "42"}
-                  %td
-                    %a{:href => "/preview/" + file.id, :style => "text-decoration: none; color: #333333"}
+                    .name_elipses
                       = file.name
         %div
           %a{:href => "/messaging-system", :style => "text-decoration: none; color: #333333"}
