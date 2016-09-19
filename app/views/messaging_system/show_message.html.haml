@@ -12,7 +12,7 @@
 
       -# Messages
       .col.s3.message-tabs
-        %a.btn.white.black-text{:href => "/compose-message", :style => "margin-bottom: 20px; text-decoration: none"} Compose
+        %a.btn.white.black-text{:href => "/compose-message"} Compose
 
         .row
           .col.s9
@@ -41,7 +41,7 @@
                 %td
                   %span
                     %i.material-icons error
-                    Notice! No current items exist in this folder
+                    No current messages exist in this folder
             - else
               %tr
                 %td
@@ -51,8 +51,8 @@
                 %td
                   %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + @message.id, :style => "text-decoration: none"} Delete
 
-      .col.s9{:style => "margin-top: 20px"}
-        %table
+      .col.s5{:style => "margin-top: 20px"}
+        %table{:style => "margin-bottom: 50px"}
           %thead
             %h5 Attachments
           %tbody
@@ -61,13 +61,15 @@
                 %td
                   %span
                     %i.material-icons error
-                    Notice! No current items exist in this folder
+                    No current attachments exist in this folder
             - else
               - @files.each do |file|
                 %tr
                   %td
-                    thumbnail
+                    %img{:alt => "thumbnail", :src => "/thumbnail/" + file.id, :width => "42", :height => "42"}
                   %td
-                    = file.name
-                  %td
-                    %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + file.id, :style => "text-decoration: none"} Delete
+                    %a{:href => "/preview/" + file.id, :style => "text-decoration: none; color: #333333"}
+                      = file.name
+        %div
+          %a{:href => "/messaging-system", :style => "text-decoration: none; color: #333333"}
+            Back to messages

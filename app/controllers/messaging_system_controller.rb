@@ -107,16 +107,31 @@ class MessagingSystemController < ApplicationController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
       end
 
-      @message = client.folder_from_id(folderId, fields: [:id, :name, :description])
+      @message = client.folder_from_id(folderId, fields: [:id, :name, :description, :created_by])
       @files = client.folder_items(folderId, fields: [:id, :name])
-      ap @message
-      ap @files
 
     rescue
       puts "Error should never be here"
       @files = []
     end
 
+  end
+
+  def preview
+    client = user_client
+    folderId = params[:id]
+    begin
+      @messagesFolder = Rails.cache.fetch("/messages-folder/#{session[:box_id]}", :expires_in => 15.minutes) do
+        client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
+      end
+
+      @preview_url = client.embed_url(folderId)
+      ap @preview_url
+
+    rescue
+      puts "Error should never be here"
+      @files = []
+    end
   end
 
 
