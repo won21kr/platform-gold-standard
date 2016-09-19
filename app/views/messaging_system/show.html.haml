@@ -34,8 +34,8 @@
           %thead
             %h5 Messages
             %tr
+              %th Collaborators
               %th Subject
-              %th Message
               %th
           %tbody
             - if @messages.size == 0
@@ -48,9 +48,10 @@
               - @messages.each do |message|
                 %tr
                   %td
+                    - @collaborators.each do |collaborator|
+                      = collaborator.accessible_by.name
+                  %td
                     %a{:href => "/show-message/" + message.id, :style => "text-decoration: none; color: #333333"}
                       = message.name
-                  %td
-                    = message.description
                   %td
                     %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + message.id, :style => "text-decoration: none"} Delete
