@@ -31,8 +31,13 @@
         %table
           %thead
             %h5 Messages
+            %span{:style => "padding-right: 50px; margin-bottom: 20px"}
+              Subject:
+              = @message.name
+            %span{:style => "float: right; margin-bottom: 20px"}
+              Collaborators: clangston
             %tr
-              %th Subject
+              %th Sender
               %th Message
               %th
           %tbody
@@ -45,7 +50,7 @@
             - else
               %tr
                 %td
-                  = @message.name
+                  clangston
                 %td
                   = @message.description
                 %td
