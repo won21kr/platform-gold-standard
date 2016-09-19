@@ -14,7 +14,9 @@ class MessagingSystemController < ApplicationController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
       end
 
-      @messages = client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      @messages = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/all-messages/#{@messagesFolder.id}", :expires_in => 15.minutes) do
+        client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      end
 
     rescue
       puts "folder not yet created, create"
@@ -40,7 +42,9 @@ class MessagingSystemController < ApplicationController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
       end
 
-      @messages = client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      @messages = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/all-messages/#{@messagesFolder.id}", :expires_in => 15.minutes) do
+        client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      end
 
     rescue
       puts "folder not yet created, create"
@@ -123,11 +127,17 @@ class MessagingSystemController < ApplicationController
       end
 
       # get total number of messages in "Sent" folder
-      @sentMessages = client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      @sentMessages = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/all-messages/#{@messagesFolder.id}", :expires_in => 15.minutes) do
+        client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      end
 
-      # fetch current message folder and attachment files
-      @message = client.folder_from_id(folderId, fields: [:id, :name, :description, :created_by])
-      @files = client.folder_items(folderId, fields: [:id, :name])
+      # fetch current displayed message folder and attachment files
+      @message = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/current-message/#{folderId}", :expires_in => 15.minutes) do
+        client.folder_from_id(folderId, fields: [:id, :name, :description, :created_by])
+      end
+      @files = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/current-message/#{folderId}/items", :expires_in => 15.minutes) do
+        client.folder_items(folderId, fields: [:id, :name])
+      end
 
       # Fetch message thread from file comments
       @messageThreadFile = @files.select{|file| file.name == "Messages.txt"}.first
