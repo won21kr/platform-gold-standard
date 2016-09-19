@@ -129,9 +129,7 @@ class MessagingSystemController < ApplicationController
       end
 
       # get total number of messages in "Sent" folder
-      @sentMessages = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/all-messages/#{@messagesFolder.id}", :expires_in => 15.minutes) do
-        client.folder_items(@messagesFolder, fields: [:id, :name, :description])
-      end
+      @sentMessages = client.folder_items(@messagesFolder, fields: [:id, :name, :description])
 
       # fetch current displayed message folder and attachment files
       @message = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/current-message/#{folderId}", :expires_in => 15.minutes) do
