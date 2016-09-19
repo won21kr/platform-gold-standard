@@ -135,9 +135,8 @@ class MessagingSystemController < ApplicationController
       @message = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/current-message/#{folderId}", :expires_in => 15.minutes) do
         client.folder_from_id(folderId, fields: [:id, :name, :description, :created_by])
       end
-      @files = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/current-message/#{folderId}/items", :expires_in => 15.minutes) do
-        client.folder_items(folderId, fields: [:id, :name])
-      end
+      @files = client.folder_items(folderId, fields: [:id, :name, :created_at])
+      ap @files
 
       # Fetch message thread from file comments
       @messageThreadFile = @files.select{|file| file.name == "Messages.txt"}.first

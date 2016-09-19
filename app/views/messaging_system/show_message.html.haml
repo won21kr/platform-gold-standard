@@ -82,6 +82,9 @@
                       %td
                         .name_elipses
                           = file.name
+                      %td
+                        %span.date.sub-text
+                          = DateTime.strptime(file.created_at).strftime("%m/%d/%y at %l:%M %p")
           %div
             %a{:href => "/messaging-system", :style => "text-decoration: none; color: #333333"}
               Back to messages
