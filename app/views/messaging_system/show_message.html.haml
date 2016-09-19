@@ -34,7 +34,7 @@
           %div{:style => "margin-bottom: 40px"}
             Collaborators:
             - @collaborators.each do |collaborator|
-              = collaborator.accessible_by.name
+              = collaborator.accessible_by.login
           %h6 Message Thread
           %ul
             - @messageThread.each do |m|

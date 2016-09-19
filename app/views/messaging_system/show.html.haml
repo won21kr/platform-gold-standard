@@ -49,7 +49,7 @@
                 %tr
                   %td
                     - @collaborators.each do |collaborator|
-                      = collaborator.accessible_by.name
+                      = collaborator.accessible_by.login
                   %td
                     %a{:href => "/show-message/" + message.id, :style => "text-decoration: none; color: #333333"}
                       = message.name

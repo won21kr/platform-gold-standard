@@ -14,10 +14,10 @@ class MessagingSystemController < ApplicationController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
       end
 
-      @collaborators = client.folder_collaborations(@messagesFolder, fields: [:accessible_by])
+      @messages = client.folder_items(@messagesFolder, fields: [:id, :name, :description])
 
-      @messages = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/all-messages/#{@messagesFolder.id}", :expires_in => 15.minutes) do
-        client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+      @collaborators = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/collaborators/#{@messagesFolder.id}", :expires_in => 15.minutes) do
+        client.folder_collaborations(@messagesFolder, fields: [:accessible_by])
       end
 
     rescue
@@ -145,8 +145,9 @@ class MessagingSystemController < ApplicationController
       @messageThreadFile = @files.select{|file| file.name == "Messages.txt"}.first
       @messageThread = client.file_comments(@messageThreadFile)
 
-      @collaborators = client.folder_collaborations(@messagesFolder, fields: [:accessible_by])
-      ap @collaborators
+      @collaborators = Rails.cache.fetch("/messages-folder/#{session[:box_id]}/collaborators/#{@messagesFolder.id}", :expires_in => 15.minutes) do
+        client.folder_collaborations(@messagesFolder, fields: [:accessible_by])
+      end
 
     rescue
       puts "Error should never be here"
