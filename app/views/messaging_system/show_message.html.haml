@@ -21,55 +21,61 @@
           .col.s9.sent-selected
             %h6.col.s9 Sent
             %h6.col.s2
-              = @files.size
+              = @sentMessages.size
           .col.s9
             %h6.col.s9 Deleted
             %h6.col.s2 0
 
-      -# Inbox Display
-      .col.s9{:style => "margin-top: 20px"}
-        %table
-          %thead
-            %h5 Messages
-            %tr
-              %th Subject
-              %th Message
-              %th
-          %tbody
-            - if @files.size == 0
-              %tr
-                %td
-                  %span
-                    %i.material-icons error
-                    No current messages exist in this folder
-            - else
-              %tr
-                %td
-                  = @message.name
-                %td
-                  = @message.description
-                %td
-                  %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + @message.id, :style => "text-decoration: none"} Delete
+      -# Display message thread
+      .col.s9
+        .col.s12{:style => "margin-top: 20px"}
+          %h5{:style => "margin-bottom: 40px"}
+            = "Subject: " + @message.name
+          %h6 Message Thread
+          %ul
+            - @messageThread.each do |m|
+              %li{:style => "margin-bottom: 10px"}
+                .commenterImage
+                  - if (m.created_by.id == ENV['EMPL_ID'])
+                    = image_tag "empl.png"
+                  - else
+                    = image_tag "new_user.png"
+                .commentText
+                  %p
+                    = m.message
+                  %span.date.sub-text
+                    - if (m.created_by.id == ENV['EMPL_ID'])
+                      = m.created_by.login + ", " + DateTime.strptime(m.created_at).strftime("%m/%d/%y at %l:%M %p")
+                    - else
+                      = m.created_by.name + ", " + DateTime.strptime(m.created_at).strftime("%m/%d/%y at %l:%M %p")
 
-      .col.s5{:style => "margin-top: 20px"}
-        %table{:style => "margin-bottom: 50px"}
-          %thead
-            %h5 Attachments
-          %tbody
-            - if @files.size == 0
-              %tr
-                %td
-                  %span
-                    %i.material-icons error
-                    No current attachments exist in this folder
-            - else
-              - @files.each do |file|
+          / allow user to submit message
+          %form.form-inline{:role => "form", :action => post_message_path(messageId: @message.id, threadFileId: @messageThreadFile.id), :method => "post"}
+            .commentbox
+              %label{:for => "message", :style => "left: 0"} Add a message
+              %textarea.input{:style => "width: 100%; height: 100%; background-color: #fff;", :rows => "4", :cols => "50", :name => "message", :required => true}
+            .form-group{:style => "margin-bottom: 30px"}
+              %button.btn.white.black-text{:style => "margin-top: 5px"} Post
+
+        .col.s12{:style => "margin-top: 20px"}
+          %table{:style => "margin-bottom: 50px"}
+            %thead
+              %h6 File Attachments
+            %tbody
+              - if @files.size == 0
                 %tr
                   %td
-                    %img{:alt => "thumbnail", :src => "/thumbnail/" + file.id, :width => "42", :height => "42"}
-                  %td
-                    %a{:href => "/preview/" + file.id, :style => "text-decoration: none; color: #333333"}
-                      = file.name
-        %div
-          %a{:href => "/messaging-system", :style => "text-decoration: none; color: #333333"}
-            Back to messages
+                    %span
+                      %i.material-icons error
+                      No current attachments exist in this folder
+              - else
+                - @files.each do |file|
+                  %tr
+                    %td
+                      %img{:alt => "thumbnail", :src => "/thumbnail/" + file.id, :width => "42", :height => "42"}
+                    %td
+                      %a{:href => "/preview/" + file.id, :style => "text-decoration: none; color: #333333"}
+                        = file.name
+          %div
+            %a{:href => "/messaging-system", :style => "text-decoration: none; color: #333333"}
+              Back to messages

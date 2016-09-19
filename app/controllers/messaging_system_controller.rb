@@ -60,6 +60,7 @@ class MessagingSystemController < ApplicationController
     subject = params[:subject]
     files = params[:files]
     client = user_client
+    threads = []
 
     # fetch parent messages folder
     begin
@@ -72,13 +73,26 @@ class MessagingSystemController < ApplicationController
 
     # Create new message folder and add message into folder description
     newMessageFolder = client.create_folder(subject, @messagesFolder)
-    client.update_folder(newMessageFolder, description: message)
 
-    # upload each file to new message folder
+    # upload each file to new message folder, multithreaded
     files.each do |file|
-      ap file.original_filename
-      file = client.upload_file(file.tempfile, newMessageFolder, name: file.original_filename)
+      threads << Thread.new do
+        file = client.upload_file(file.tempfile, newMessageFolder, name: file.original_filename)
+      end
     end
+
+    # Upload new txt file for attaching comments
+    # and attach message as first comment
+    threads << Thread.new do
+      file = File.open("Messages.txt", "w")
+      file.write("Message Thread File")
+      messagesFile = client.upload_file(file, newMessageFolder)
+      client.add_comment_to_file(messagesFile, message: message)
+      file.close
+    end
+
+    # rejoin all threads
+    threads.each { |thr| thr.join }
 
     redirect_to messaging_system_path
   end
@@ -89,6 +103,7 @@ class MessagingSystemController < ApplicationController
     client = user_client
     folderId = params[:id]
 
+    # delete message
     client.delete_folder(folderId, recursive: true)
 
     redirect_to messaging_system_path
@@ -107,14 +122,36 @@ class MessagingSystemController < ApplicationController
         client.folder_from_path("#{session[:userinfo]['info']['name']} - Shared Files/Messages Folder")
       end
 
+      # get total number of messages in "Sent" folder
+      @sentMessages = client.folder_items(@messagesFolder, fields: [:id, :name, :description])
+
+      # fetch current message folder and attachment files
       @message = client.folder_from_id(folderId, fields: [:id, :name, :description, :created_by])
       @files = client.folder_items(folderId, fields: [:id, :name])
+
+      # Fetch message thread from file comments
+      @messageThreadFile = @files.select{|file| file.name == "Messages.txt"}.first
+      @messageThread = client.file_comments(@messageThreadFile)
 
     rescue
       puts "Error should never be here"
       @files = []
     end
 
+  end
+
+  # post message
+  def post_message
+
+    folderId = params[:messageId]
+    fileId = params[:threadFileId]
+    message = params[:message]
+    client = user_client
+
+    # attach new comment
+    client.add_comment_to_file(fileId, message: message)
+
+    redirect_to show_message_path(folderId)
   end
 
 end
