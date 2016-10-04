@@ -89,11 +89,11 @@
             %thead
               %h6 File Attachments
             %tbody
-              - if @files.size == 0
+              - if @files.size == 1
                 %tr
                   %td
                     %span
-                      %i.material-icons error
+                      %i.material-icons.icon-center error
                       No current attachments exist in this folder
               - else
                 - @files.each do |file, i|

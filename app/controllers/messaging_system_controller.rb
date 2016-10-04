@@ -64,9 +64,9 @@ class MessagingSystemController < ApplicationController
 
     message = params[:message]
     subject = params[:subject]
-    files = params[:files]
     client = user_client
     threads = []
+    files = params[:files] ? params[:files] : []
 
     # fetch parent messages folder
     begin
@@ -136,7 +136,6 @@ class MessagingSystemController < ApplicationController
         client.folder_from_id(folderId, fields: [:id, :name, :description, :created_by])
       end
       @files = client.folder_items(folderId, fields: [:id, :name, :created_at])
-      ap @files
 
       # Fetch message thread from file comments
       @messageThreadFile = @files.select{|file| file.name == "Messages.txt"}.first
