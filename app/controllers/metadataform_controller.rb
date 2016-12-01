@@ -34,8 +34,9 @@ class MetadataformController < SecuredController
     metaValue5 = params[:metaValue5]
     metaValue6 = params[:metaValue6]
     metaValue7 = params[:metaValue7]
-    metaValue8 = params[:metaValue8]
 
+
+    ap params
 
     folder = client.folder_from_path("Metadata\ User\ Uploads/Uploads\ -\ #{session[:box_id]}")
     uploads = client.folder_items(folder, fields: [:name, :id])
@@ -47,12 +48,19 @@ class MetadataformController < SecuredController
             "Date Witnessed" => metaValue4,
             "Location" => metaValue5,
             "Borough" => metaValue6,
-            "Crime Type" => metaValue7,
-            "Description" => metaValue8}
+            "Crime Type" => metaValue7}
+
 
     # attach metadata
     uploads.each_with_index do |f, i|
       begin
+        msg = "New upload. Please review and complete the task"
+        ap msg
+        employee_id = '258918405'
+        ap employee_id
+        task = client.create_task(f, action: :review, message: msg)
+        ap task
+        client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
         client.create_metadata(f, meta)
         metadata = client.metadata(f, scope: :global, template: :properties)
       rescue Exception => e

@@ -1,4 +1,6 @@
-
+.col.s12{:style => "margin-top: 70px; margin-left: 30px"}
+  .col.s8.push-s2.flash
+    = render partial: "shared/flash_messages", flash: flash
 
 .container{:style => "margin-bottom: 50px;"}
   = render 'layouts/metadataform_nav'
@@ -77,20 +79,16 @@
                 .col-sm-5
                   %select{:type => "text", :name => "metaValue6"}
                     %option{:disabled => "disabled", :selected => "selected", :value => ""} Choose your option
-                    %option{:value => "1"} Islington
-                    %option{:value => "2"} Southwark
+                    %option{:value => "Islington"} Islington
+                    %option{:value => "Southwark"} Southwark
               .form-group
                 %label.col-sm-2.control-label{:for => "metaField7", :style => "text-align: left"}
                   Crime Type
                 .col-sm-5
-                  %datalist#listid2{:type => "text", :name => "metaValue7"}
-                    %option{:value => "Domestic"} Domestic
-                    %option{:value => "Theft"} Theft
-              .form-group
-                %label.col-sm-2.control-label{:style => "text-align: left"}
-                  Description
-                .col-sm-5
-                  %textarea{:cols => "50", :name => "description", :rows => "15", :name => "metaValue8"} Enter description here...
+                  %select{:type => "text", :name => "metaValue7"}
+                    %option{:disabled => "disabled", :selected => "selected", :value => ""} Choose your option
+                    %option{:value => "Islington"} Domestic
+                    %option{:value => "Southwark"} Theft
               .form-group
                 %br
                 .col-sm-5
@@ -100,14 +98,9 @@
   / ----------------------------------------------  Javascript ------------------------------------------------------
 :javascript
   $(document).ready(function (){
-
-
     $('select').material_select();
-
-
-
-   validate();
-   $('#programVal').change(validate);
+    validate();
+    $('#programVal').change(validate);
   });
 
   function validate(){
