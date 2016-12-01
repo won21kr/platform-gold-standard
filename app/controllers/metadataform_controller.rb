@@ -50,17 +50,16 @@ class MetadataformController < SecuredController
             "Borough" => metaValue6,
             "Crime Type" => metaValue7}
 
-
     # attach metadata
     uploads.each_with_index do |f, i|
-      begin
-        msg = "New upload. Please review and complete the task"
-        ap msg
-        employee_id = '258918405'
-        ap employee_id
+      if meta["Borough"] == "Islington"
+        # create task
+        msg = "Please review and complete the task"
         task = client.create_task(f, action: :review, message: msg)
-        ap task
         client.create_task_assignment(task, assign_to: ENV['EMPL_ID'])
+      else
+      end
+      begin
         client.create_metadata(f, meta)
         metadata = client.metadata(f, scope: :global, template: :properties)
       rescue Exception => e
