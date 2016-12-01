@@ -60,6 +60,6 @@ class MetadataformController < SecuredController
       end
       flash[:notice] = "Thank you for submitting"
     end
-    redirect_to 'metadataform_path'
+    redirect_to '/metadataform'
   end
 end
