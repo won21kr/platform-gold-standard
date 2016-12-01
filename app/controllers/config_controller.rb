@@ -122,7 +122,7 @@ class ConfigController < SecuredController
     session[:media_content] = !params[:media_content].blank? ? 'on' : 'off'
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
     session[:product_supply] = !params[:product_supply].blank? ? 'on' : 'off'
-    session[:blue_care] = !params[:blue_care].blank? ? 'on' : 'off'
+    session[:meta_form] = !params[:meta_form].blank? ? 'on' : 'off'
 
 
     # capture all user data and upload to csv, only if in production
@@ -154,7 +154,7 @@ class ConfigController < SecuredController
                                submit_claim: session[:create_claim] == "on" ? true : false,
                                eventstream: session[:eventstream] == "on" ? true : false,
                                media_content: session[:media_content] == "on" ? true : false,
-                               blue_care: session[:blue_care] == "on" ? true : false)
+                               meta_form: session[:meta_form] == "on" ? true : false)
     user_data.save
     # ap user_data
     # ap Userconfig.all
@@ -399,7 +399,7 @@ class ConfigController < SecuredController
     query["media_content"] = session[:media_content]
     query["eventstream"] = session[:eventstream]
     query["product_supply"] = session[:product_supply]
-    query["blue_care"] = session[:blue_care]
+    query["meta_form"] = session[:meta_form]
 
     session[:config_url] = template.expand({"query" => query})
     puts "config_url: " + session[:config_url]

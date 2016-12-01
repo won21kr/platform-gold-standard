@@ -1,0 +1,13 @@
+%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
+
+.header{:style => "width: 100%; position: absolute; left: 0; top: 0px; height: 125px !important;"}
+  .defaultsize{:style => "position: absolute; top: 10px; left: 46%;"}
+    %img.brand-logo{:src => "http://www.allinlondon.co.uk/images/venues/images_all/10982507.jpg", :style => "width: 125px;"}
+  .name{:style => "position: absolute; top: 5px; right: 125px;"}
+    %span
+      -# = image_tag (session[:userinfo][:info][:image]), :width => '30px', :class => 'img-circle'
+    %span
+      -# = "#{session[:userinfo][:info][:name]}"
+.flash
+  .container
+    = render partial: "shared/flash_messages", flash: flash

@@ -1,0 +1,178 @@
+
+
+.container{:style => "margin-bottom: 50px;"}
+  = render 'layouts/metadataform_nav'
+
+.container
+  .row
+    %h6{:style => "margin-top: 20px; margin-bottom: 5;"}
+    .col.s10.push-s1{:style => "margin-top: 175px"}
+      .col.s4.hide_mobile
+        .center
+          %i.material-icons.prefix{:style => "font-size: 35px; color: #0087F7;"} open_in_browser
+          %h6
+            %b
+              Upload a file
+          %p{:style => "text-align: left;"}
+            This is the Settings page where you can edit the look and feel of the Platform Standard app. Add a company logo, change the theme color, and tweak the login page to your liking. Even turn on and off features that make sense for your demo.
+      .col.s4.hide_mobile
+        .center
+          %i.material-icons.prefix{:style => "font-size: 35px; color: #0087F7;"} info_outline
+          %h6
+            %b
+              Describe the crime
+          %p{:style => "text-align: left;"}
+            We need to ask you a few questions to ensure that the crime is investigated appropriately. Please provide as much detail as you can in the form below.
+      .col.s4.hide_mobile
+        .center
+          %i.material-icons.prefix{:style => "font-size: 35px; color: #0087F7;"} done
+          %h6
+            %b
+              Thank you for your help
+          %p{:style => "text-align: left;"}
+            Personal information (such as name and address) submitted via this facility will only be used for policing purposes. This complies with the Data Protection Act 1998, details of which can be found at <a href="https://www.legislation.org.uk">legislation.org.uk</a>.
+
+      .col.s10.push-s1{:style => "margin-top: 40px"}
+        .modal-body
+          -# %form#my_awesome_dropzone.dropzone{:action => "/file-upload", :method => "post", :role => "form", :style => "padding: 20px 20px; border: 2px dashed #0087f7; border-radius: 5px;"}
+          -#   .fallback
+          -#     %input{:multiple => "", :name => "file", :type => "file"}
+          .drop-area
+            .row
+              .col-md-12
+                = simple_form_for(:vault, html:{class: 'dropzone', id:'my-dropzone'}, url: upload_url(@metaUploadsFolder.id))  {}
+          %br
+            %h6 Please answer these questions
+            %br
+
+            %form.form-horizontal{:action => "/attach-metadata", :method => "post", :role => "form"}
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaField1", :style => "text-align: left"}
+                  Name
+                .col-sm-5
+                  %input#firstname.form-control{:placeholder => "Your full name", :style => "text-align: left", :type => "text", :name => "metaValue1"}
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaField2", :style => "text-align: left"}
+                  E-mail Address
+                .col-sm-5
+                  %input#firstname.form-control{:placeholder => "Your email", :style => "text-align: left", :type => "text", :name => "metaValue2"}
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaValue3", :style => "text-align: left"}
+                  Telephone
+                .col-sm-5
+                  %input#firstname.form-control{:placeholder => "Your phone number", :style => "text-align: left", :type => "text", :name => "metaValue3"}
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaField4", :style => "text-align: left"}
+                  Date Witnessed
+                .col-sm-5
+                  %input#lastname.form-control{:type => "date", :name => "metaValue4"}
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaField5", :style => "text-align: left"}
+                  Location
+                .col-sm-5
+                  %input#firstname.form-control{:placeholder => "Address of the crime", :style => "text-align: left", :type => "text", :name => "metaValue5"}
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaField6", :style => "text-align: left"}
+                  Borough
+                .col-sm-5
+                  %select{:type => "text", :name => "metaValue6"}
+                    %option{:disabled => "disabled", :selected => "selected", :value => ""} Choose your option
+                    %option{:value => "1"} Islington
+                    %option{:value => "2"} Southwark
+              .form-group
+                %label.col-sm-2.control-label{:for => "metaField7", :style => "text-align: left"}
+                  Crime Type
+                .col-sm-5
+                  %datalist#listid2{:type => "text", :name => "metaValue7"}
+                    %option{:value => "Domestic"} Domestic
+                    %option{:value => "Theft"} Theft
+              .form-group
+                %label.col-sm-2.control-label{:style => "text-align: left"}
+                  Description
+                .col-sm-5
+                  %textarea{:cols => "50", :name => "description", :rows => "15", :name => "metaValue8"} Enter description here...
+              .form-group
+                %br
+                .col-sm-5
+                  %button.btn.btn.btn-lg.buttonColor{:type => "submit", :style => "text-align: center; width: 100%; margin-bottom: 30px;"} Submit
+
+
+  / ----------------------------------------------  Javascript ------------------------------------------------------
+:javascript
+  $(document).ready(function (){
+
+
+    $('select').material_select();
+
+
+
+   validate();
+   $('#programVal').change(validate);
+  });
+
+  function validate(){
+   if ($('#programVal').val().length   >   0) {
+     $("#uploadBtn").prop("disabled", false);
+   }
+   else {
+     $("#uploadBtn").prop("disabled", true);
+   }
+  }
+
+
+  function submitForms(){
+    document.getElementById("metaForm").submit();
+      //document.getElementById("mydropzone2").submit();
+    }
+
+    $('#displayBtn').on("click",function(){
+      $('#content').modal('show');
+    });
+
+    $('#metabtn').on("click",function(){
+      $('#metaModal').modal('show');
+    });
+
+  Dropzone.options.myAwesomeDropzone = {
+    init: function() {
+      this.on("queuecomplete", function(file) {
+        setTimeout(function() {location.reload();}, 2000);
+      });
+    }
+  };
+
+
+
+  // CLIENT SIDE UPLOAD
+  $(document).on('change', '.btn-file :file', function() {
+
+    var input = $(this),
+      numFiles = input.get(0).files ? input.get(0).files.length : 1,
+      files = input.get(0).files,
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    var theInput = input.parent().get(0);
+    theInput.innerText = "Uploading...";
+
+    // The Box OAuth 2 Header. Add your access token.
+    var headers = { Authorization: 'Bearer #{@user_access_token}'};
+    var uploadUrl = 'https://upload.box.com/api/2.0/files/content';
+    var formData = new FormData();
+
+    // Add the destination folder for the upload to the form
+    formData.append('files', files[0], files[0].name);
+    formData.append('parent_id', '#{@metaUploadsFolder.id}');
+
+
+    $.ajax({
+      url: uploadUrl,
+      headers: headers,
+      type: 'POST',
+      // This prevents JQuery from trying to append the form as a querystring
+      processData: false,
+      contentType: false,
+      data: formData
+    }).complete(function ( data ) {
+      console.log('finished uploading to Box');
+      location.href = "Metadata\ User\ Uploads/Uploads\ -\ #{session[:box_id]}";
+    });
+  });
