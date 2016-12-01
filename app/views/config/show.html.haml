@@ -177,6 +177,9 @@
             %p
               %input#product_supply{:type => "checkbox", :name => "product_supply", :checked => session[:product_supply] == 'on'}
               %label.checkbox.less_lineheight.longer_name_elipses{:for => "product_supply", :style => "color: black"} Product Supply (In development)
+            %p
+              %input#messaging_system{:type => "checkbox", :name => "messaging_system", :checked => session[:messaging_system] == 'on'}
+              %label.checkbox.less_lineheight.longer_name_elipses{:for => "messaging_system", :style => "color: black"} Messaging System (In development)              
           .col.s12{:style => "margin-top: 20px"}
             %button.btn.waves-effect.white.black-text{:style => "font-color: #263238 !important; text-decoration: none;", :type => "submit", :style => "margin-top: 10px;"}
               Submit

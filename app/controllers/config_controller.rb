@@ -32,8 +32,10 @@ class ConfigController < SecuredController
       session[:eventstream] = "off"
       session[:product_supply] = "off"
 
+      session[:messaging_system] = "off"
+
       # Okta
-      session[:okta] = "off"
+      # session[:okta] = "off"
     end
 
     config_url
@@ -123,6 +125,9 @@ class ConfigController < SecuredController
     session[:eventstream] = !params[:eventstream].blank? ? 'on' : 'off'
     session[:product_supply] = !params[:product_supply].blank? ? 'on' : 'off'
     session[:meta_form] = !params[:meta_form].blank? ? 'on' : 'off'
+    session[:blue_care] = !params[:blue_care].blank? ? 'on' : 'off'
+    session[:messaging_system] = !params[:messaging_system].blank? ? 'on' : 'off'
+
 
 
     # capture all user data and upload to csv, only if in production
@@ -174,6 +179,7 @@ class ConfigController < SecuredController
 
     industry = params[:industry]
     tracker = Mixpanel.client
+    auth = nil
 
     # if configured for okta
     if !session[:okta].nil? and session[:okta] == 'on'
@@ -250,7 +256,6 @@ class ConfigController < SecuredController
 
     when "nonprofit"
 
-      auth = nil
       # copy over files + folders
       if session[:userinfo].present?
         copy_content(industry)
@@ -264,10 +269,10 @@ class ConfigController < SecuredController
                              \"My Files\" : \"Personal\",
                              \"Your personal and shared files\" : \"Your personal and shared disaster site captures\",
                              \"Shared Files\" : \"Shared (with org)\",
-                             \"Resources\" : \"Volunteering Resources\",
-                             \"Find relevant content, fast\" : \"Browse relevant volunteer resources\",
-                             \"Onboarding Tasks\" : \"Volunteer Agreement\"}"
+                             \"Find relevant content, fast\" : \"Browse relevant responder resources\",
+                             \"Onboarding Tasks\" : \"Responder Agreement\"}"
       session[:industry] = "nonprofit"
+
 
       # turn on okta auth
       if (auth == "okta")
@@ -400,6 +405,7 @@ class ConfigController < SecuredController
     query["eventstream"] = session[:eventstream]
     query["product_supply"] = session[:product_supply]
     query["meta_form"] = session[:meta_form]
+    query["messaging_system"] = session[:messaging_system]
 
     session[:config_url] = template.expand({"query" => query})
     puts "config_url: " + session[:config_url]

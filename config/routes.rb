@@ -179,6 +179,16 @@ Rails.application.routes.draw do
   get "/reset-blue-care" => "metadataform#reset_metadataform", :as => "reset_metadataform"
   post "/attach-metadata" => "metadataform#attachmetadata", :as => "attachmetadata"
 
+  # messaging system
+  get "/messaging-system" => "messaging_system#show", :as => "messaging_system"
+  get "/compose-message" => "messaging_system#compose_message", :as => "compose_message"
+  post "/compose-message" => "messaging_system#save_message", :as => "save_message"
+  get "/delete-message/:id" => "messaging_system#delete_message", :as => "delete_message"
+  get "/show-message/:id" => "messaging_system#show_message", :as => "show_message"
+  post "/post-message" => "messaging_system#post_message", :as => "post_message"
+
+  # nonprofit analytics
+  get "/analytics" => "analytics#show", :as => 'analytics'
 
 
 end

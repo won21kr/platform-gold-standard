@@ -58,6 +58,7 @@ gem "sendgrid-ruby"
 gem 'mixpanel-ruby'
 gem 'twilio-ruby'
 gem 'url_shortener'
+gem 'restforce'
 
 # Gems only used on heroku
 group :production, :staging do
