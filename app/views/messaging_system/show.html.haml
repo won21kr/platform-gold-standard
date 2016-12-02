@@ -35,7 +35,8 @@
           = alt_text("Message Center")
 
       -# Messages
-      .col.s3.message-tabs
+
+      .col.s3.message-tabs.messages_box
         %a.btn.white.black-text{:href => "/compose-message"} Compose
 
         .row
@@ -70,10 +71,12 @@
               - @messages.each do |message|
                 %tr
                   %td
-                    - @collaborators.each do |collaborator|
-                      = collaborator.accessible_by.login
+                    %div.short_name_elipses{:style => "inline;"}
+                      - @collaborators.each do |collaborator|
+                        = collaborator.accessible_by.login
                   %td
-                    %a{:href => "/show-message/" + message.id, :style => "text-decoration: none; color: #333333"}
-                      = message.name
+                    %div.name_elipses{:style => "inline;"}
+                      %a{:href => "/show-message/" + message.id, :style => "text-decoration: none; color: #333333"}
+                        = message.name
                   %td
                     %a.waves-effect.btn.white.black-text{:href => "/delete-message/" + message.id, :style => "text-decoration: none"} Delete

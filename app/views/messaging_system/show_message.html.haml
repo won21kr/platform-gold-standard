@@ -34,7 +34,7 @@
           = alt_text("Message Center")
 
       -# Messages
-      .col.s3.message-tabs
+      .col.s3.message-tabs.messages_box
         %a.btn.white.black-text{:href => "/compose-message"} Compose
 
         .row
@@ -50,7 +50,7 @@
             %h6.col.s2 0
 
       -# Display message thread
-      .col.s9
+      .col.s9.messages_box
         .col.s12{:style => "margin-top: 20px"}
           %h5
             = "Subject: " + @message.name

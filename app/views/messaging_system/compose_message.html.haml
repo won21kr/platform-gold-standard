@@ -35,7 +35,7 @@
           = alt_text("Message Center")
 
       -# Messages
-      .col.s3.message-tabs
+      .col.s3.message-tabs.messages_box
         %a.btn.white.black-text.disabled{:href => "#"} Compose
 
         .row
@@ -51,7 +51,7 @@
             %h6.col.s2 0
 
       -# Compose Message
-      .col.s9{:style => "margin-top: 40px"}
+      .col.s9.full_width{:style => "margin-top: 40px"}
         %h5 Compose Message
         %p This compose message tool allows you to target specific audiences to send messages
 
@@ -59,41 +59,44 @@
         %form.form-horizontal{:role => "form", :method => "post", :action => "#", :enctype => "multipart/form-data"}
 
           .col.s12
-            %label.control-label.col-sm-2{:for => "audience"} Audience:
+            %label.control-label.col-sm-2{:for => "audience", :contenteditable => "true"} Audience:
             %div.radio-button-wrapper
-              %input#audience_all.form-control.audience-radio{:type => "radio", :name => "audience_radio", :value => "audience_all"}
-              %label{:for => "audience_all"} All City National Online Users
-              %input#audience_business.form-control.audience-radio{:type => "radio", :name => "audience_radio", :value => "audience_business"}
-              %label{:for => "audience_business"} City National Online Business Portal User
-              %input#audience_personal.form-control.audience-radio{:type => "radio", :name => "audience_radio", :value => "audience_personal"}
-              %label{:for => "audience_personal"} City National Online Personal Portal User
+              %span.block.audience-radio
+                %input#audience_all.form-control{:type => "radio", :name => "audience_radio", :value => "audience_all"}
+                %label{:for => "audience_all", :contenteditable => "true"} All City National Online Users
+              %span.block.audience-radio
+                %input#audience_business.form-control{:type => "radio", :name => "audience_radio", :value => "audience_business"}
+                %label{:for => "audience_business", :contenteditable => "true"} City National Online Business Portal Use
+              %span.block.audience-radio
+                %input#audience_personal.form-control{:type => "radio", :name => "audience_radio", :value => "audience_personal"}
+                %label{:for => "audience_personal", :contenteditable => "true"} City National Online Personal Portal User
 
-          .col.s6
-            %label.control-label.col-sm-2{:for => "services"} Services:
+          .col.s6.messages_box
+            %label.control-label.col-sm-2{:for => "services", :contenteditable => "true"} Services:
             %div.checkbox-wrapper
               %input#services_all.form-control{:type => "checkbox", :name => "all", :value => "all"}
-              %label{:for => "services_all"} All
+              %label{:for => "services_all", :contenteditable => "true", :cursor => "none"} All
               %br/
               %input#services_downstream.form-control{:type => "checkbox", :name => "downstream_service", :value => "downstream_service"}
-              %label{:for => "services_downstream"} Downstream Service
+              %label{:for => "services_downstream", :contenteditable => "true"} Downstream Service
 
-          .col.s6
-            %label.control-label.col-sm-2{:for => "user_roles"} User Roles:
+          .col.s6.messages_box
+            %label.control-label.col-sm-2{:for => "user_roles", :contenteditable => "true"} User Roles:
             %div.checkbox-wrapper
               %input#user_roles_all.form-control{:type => "checkbox", :name => "all", :value => "all"}
-              %label{:for => "user_roles_all"} All
+              %label{:for => "user_roles_all", :contenteditable => "true"} All
               %br/
               %input#user_roles_client_admins.form-control{:type => "checkbox", :name => "client_admins", :value => "client_admins"}
-              %label{:for => "user_roles_client_admins"} Client Admins
+              %label{:for => "user_roles_client_admins", :contenteditable => "true"} Client Admins
               %br/
               %input#user_roles_client_users.form-control{:type => "checkbox", :name => "client_users", :value => "client_users"}
-              %label{:for => "user_roles_client_users"} Client Users
+              %label{:for => "user_roles_client_users", :contenteditable => "true"} Client Users
               %br/
               %input#user_roles_service_admins.form-control{:type => "checkbox", :name => "service_admins", :value => "service_admins"}
-              %label{:for => "user_roles_service_admins"} Service Admins
+              %label{:for => "user_roles_service_admins", :contenteditable => "true"} Service Admins
               %br/
               %input#user_roles_service_users.form-control{:type => "checkbox", :name => "service_users", :value => "service_users"}
-              %label{:for => "user_roles_service_users"} Service Users
+              %label{:for => "user_roles_service_users", :contenteditable => "true"} Service Users
 
           .col.s6
             %label.control-label.col-sm-2{:for => "companies"} Companies:
