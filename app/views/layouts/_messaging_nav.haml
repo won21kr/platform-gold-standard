@@ -1,0 +1,55 @@
+%meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}
+
+%div.nav-wrapper{:style => "margin-top: 20px; width: 100%; height: 52px; background-color: #013e75"}
+  -# %a.material-icons{:href => "#", "data-activates" => "mobile-demo"}
+  -#   %i.material-icons
+  %ul.msg-header-list.hide-on-med-and-down
+    %li.msg-list-item.left
+      %a{:href => "/"} Home
+    %li.msg-list-item.left
+      %a{:href => "/"} Admin
+    %li.msg-list-item.left
+      %a{:href => "/"} Support Services
+    %li.msg-list-item.left
+      %a{:href => "/"} Reporting
+    %li.msg-list-item.right
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} email
+    %li.msg-list-item.right
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} call
+    %li.msg-list-item.right
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} live_help
+    %li.msg-list-item.right
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} search
+  %a.button-collapse#mobile-menu{"data-activates" => "mobile-demo", :href => "#"}
+    %i.material-icons{:style => "font-size: 28px; margin-top: 14px; color: #fff; position: fixed; z-index: 20;"}
+      reorder
+
+  %ul.msg-header-list.side-nav#mobile-demo
+    %li
+      %a{:href => "/"} Home
+    %li
+      %a{:href => "/"} Admin
+    %li
+      %a{:href => "/"} Support Services
+    %li
+      %a{:href => "/"} Reporting
+    %li
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} email
+    %li
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} call
+    %li
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} live_help
+    %li
+      %a{:href => "/"}
+        %i.material-icons.prefix{:style => "font-size: 28px;"} search
+
+:javascript
+  // Initialize collapse button
+  $(".button-collapse").sideNav();
